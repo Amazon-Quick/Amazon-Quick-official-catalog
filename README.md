@@ -1,17 +1,23 @@
-## My Project
+# Amazon Quick Official Marketplace
 
-TODO: Fill this README out!
+This is the official marketplace repository for Amazon Quick. It contains curated, production-ready skills, plugins, agents, and integration configs that can be installed into Amazon Quick to extend its capabilities. Every asset here has been reviewed for quality, security, and usefulness before being published.
 
-Be sure to:
+[![License](https://img.shields.io/badge/license-MIT--0-blue.svg)](LICENSE)
 
-* Change the title in this README
-* Edit your repository description on GitHub
+## What is Amazon Quick?
 
-## Security
+[Amazon Quick](https://aws.amazon.com/quick) is an agentic AI workspace that helps enterprise teams automate tasks, analyze data, and conduct research. It includes Amazon Quick Sight for business intelligence, Amazon Quick Flows for workflow automation, Amazon Quick Automate for end-to-end process automation, Amazon Quick Index for connecting organizational data, Amazon Quick Research for cited research reports, and Apps in Amazon Quick for building managed web applications.
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+## Browse skills and plugins
+
+See the full catalog on the documentation site:
+
+[Amazon-Quick.github.io/amazon-quick-official-marketplace](https://Amazon-Quick.github.io/amazon-quick-official-marketplace)
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-This library is licensed under the MIT-0 License. See the LICENSE file.
-
+MIT-0 -- see [LICENSE](LICENSE).

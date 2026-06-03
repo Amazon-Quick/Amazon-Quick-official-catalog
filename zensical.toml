@@ -1,0 +1,12 @@
+[project]
+site_name = "Amazon Quick Official Marketplace"
+site_url = "https://Amazon-Quick.github.io/amazon-quick-official-marketplace"
+repo_url = "https://github.com/Amazon-Quick/amazon-quick-official-marketplace"
+extra_css = ["assets/stylesheets/custom.css"]
+nav = [
+    { Home = "index.md" },
+    { "What is a Skill?" = "getting-started.md" },
+    { "Skill Catalog" = "skill-catalog.md" },
+]
+
+[project.markdown_extensions.zensical.extensions.macros]

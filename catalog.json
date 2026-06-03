@@ -1,0 +1,37 @@
+{
+  "categories": [
+    {
+      "name": "General Purpose",
+      "assets": [
+        {
+          "path": "skills/skill-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/ooo-setup",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Engineering",
+      "assets": []
+    },
+    {
+      "name": "Sales & Marketing",
+      "assets": []
+    },
+    {
+      "name": "Finance & Operations",
+      "assets": []
+    },
+    {
+      "name": "HR & People",
+      "assets": []
+    },
+    {
+      "name": "Security",
+      "assets": []
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+:root > * {
+  --md-primary-fg-color: #C95100;
+  --md-primary-fg-color--light: #E06B1F;
+  --md-primary-fg-color--dark: #A34200;
+  --md-accent-fg-color: #FFC435;
+  --md-accent-fg-color--transparent: rgba(255, 196, 53, 0.1);
+}
+
+.md-content img[alt="Amazon Quick"] {
+  display: block;
+  margin: 0 auto;
+}
+
+.md-content h1#amazon-quick-official-marketplace {
+  text-align: center;
+}
+
+.md-content h1#amazon-quick-official-marketplace + p {
+  text-align: center;
+  border-bottom: 2px solid var(--md-primary-fg-color);
+  padding-bottom: 1em;
+}

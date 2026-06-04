@@ -30,7 +30,32 @@
       "assets": []
     },
     {
-      "name": "Security",
+      "name": "Security & Compliance",
+      "assets": []
+    },
+    {
+      "name": "Content & Writing",
+      "assets": []
+    },
+    {
+      "name": "Design & Creative",
+      "assets": []
+    },
+    {
+      "name": "Leadership & Strategy",
+      "assets": [
+        {
+          "path": "skills/business-case-builder",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Research & Intelligence",
+      "assets": []
+    },
+    {
+      "name": "Knowledge & Learning",
       "assets": []
     }
   ]

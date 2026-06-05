@@ -14,6 +14,10 @@
         {
           "path": "skills/document-comparison",
           "type": "skill"
+        },
+        {
+          "path": "skills/file-organizer",
+          "type": "skill"
         }
       ]
     },

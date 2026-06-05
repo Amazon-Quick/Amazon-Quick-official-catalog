@@ -28,6 +28,7 @@ dev = [
     "loguru>=0.7,<1",
     "mdformat>=1,<2",
     "mkdocs-macros-plugin>=1,<2",
+    "pathspec>=1,<2",
     "pydantic>=2,<3",
     "pyyaml>=6,<7",
     "ruff>=0.15,<1",

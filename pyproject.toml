@@ -15,15 +15,11 @@ packages = ["scripts"]
 
 [project.scripts]
 build = "scripts.build:cli"
-lint = "scripts.build:lint"
-format-check = "scripts.build:format_check"
-markdown-check = "scripts.build:markdown"
-security-scan = "scripts.build:security"
+fix = "scripts.build:fix"
 release = "scripts.release:release"
 docs-build = "scripts.build:docs"
 docs-serve = "scripts.build:docs_serve"
 help = "scripts.help:help"
-fix = "scripts.build:fix"
 
 [dependency-groups]
 dev = [

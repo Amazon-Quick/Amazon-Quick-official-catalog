@@ -10,6 +10,10 @@
         {
           "path": "skills/ooo-setup",
           "type": "skill"
+        },
+        {
+          "path": "skills/document-comparison",
+          "type": "skill"
         }
       ]
     },
@@ -19,7 +23,40 @@
     },
     {
       "name": "Sales & Marketing",
-      "assets": []
+      "assets": [
+        {
+          "path": "skills/competitor-intel",
+          "type": "skill"
+        },
+        {
+          "path": "skills/deal-pipeline-manager",
+          "type": "skill"
+        },
+        {
+          "path": "skills/follow-up-cadence",
+          "type": "skill"
+        },
+        {
+          "path": "skills/lead-prospector",
+          "type": "skill"
+        },
+        {
+          "path": "skills/outreach-sequence-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/proposal-generator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/seo-content-writer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/social-post-creator",
+          "type": "skill"
+        }
+      ]
     },
     {
       "name": "Finance & Operations",

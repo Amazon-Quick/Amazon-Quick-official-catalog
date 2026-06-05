@@ -1,0 +1,14 @@
+{
+  "name": "amazon-quick-skills",
+  "version": "1.0.0",
+  "description": "Official skills, plugins, and tools for Amazon Quick \u2014 the AI work companion",
+  "owner": {
+    "name": "Amazon Quick Team",
+    "email": "quick-skills@amazon.com"
+  },
+  "metadata": {
+    "homepage": "https://github.com/amazon-quick/amazon-quick-skills",
+    "license": "Apache-2.0"
+  },
+  "plugins": []
+}

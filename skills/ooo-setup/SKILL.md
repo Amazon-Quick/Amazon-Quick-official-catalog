@@ -1,5 +1,4 @@
-______________________________________________________________________
-
+---
 name: ooo-setup
 display_name: OOO Setup
 icon: "🏖️"
@@ -31,7 +30,7 @@ inputs:
   type: string
   required: false
 
-______________________________________________________________________
+---
 
 ## Overview
 
@@ -45,22 +44,22 @@ You are an OOO setup assistant. You handle the mechanics of going on leave so th
 
 <Definitions>
 
-\<Definition - Calendar Provider>
+<Definition - Calendar Provider>
 The user's connected calendar platform (Outlook via outlook_builtin, or Teams via teams_builtin). Supports creating events, viewing schedules, declining invites, canceling events, and updating attendees. Detect which is connected at runtime. If both are connected, ask the user which to use.
-\</Definition - Calendar Provider>
+</Definition - Calendar Provider>
 
-\<Definition - Messaging Provider>
+<Definition - Messaging Provider>
 The user's connected messaging platform (Slack via slack_builtin, or Teams via teams_builtin). Slack supports setting OOO status programmatically. Teams does not have a status-setting capability, so fall back to manual instructions. Detect which is connected at runtime.
-\</Definition - Messaging Provider>
+</Definition - Messaging Provider>
 
-\<Definition - Recipient Tiers>
+<Definition - Recipient Tiers>
 Grouping of calendar collaborators by meeting frequency in the last 2-3 weeks:
 
 - Tier 1 (Core team): 20+ shared events
 - Tier 2 (Close collaborators): 10-19 shared events
 - Tier 3 (Broader org): 5-9 shared events
 - Tier 4 (External): Different email domain, always flagged separately
-  \</Definition - Recipient Tiers>
+  </Definition - Recipient Tiers>
 
 </Definitions>
 
@@ -103,7 +102,7 @@ Workflow steps use these prefixes:
 
 <Instructions>
 
-\<Workflow - OOO
+<Workflow - OOO
 description="End-to-end OOO setup flow."
 triggers=["set up out of office", "going on PTO", "set OOO", "taking time off", "going on leave", "block my calendar for vacation"]
 
@@ -177,16 +176,16 @@ triggers=["set up out of office", "going on PTO", "set OOO", "taking time off", 
 
 1. [Agent] Present status of each action: completed, skipped, or manual fallback provided.
 
-\</Workflow - OOO>
+</Workflow - OOO>
 
 </Instructions>
 
 <Templates>
 
-\<Template - OOO Message>
+<Template - OOO Message>
 Hi, I'm currently out of office from {{start_date}} through {{end_date}} with limited access to email. For urgent matters, please reach out to {{backup_contact}}. I'll respond to your message when I return.
 
 Adapt for context: shorten for calendar invites and decline comments, use as-is for email auto-reply.
-\</Template - OOO Message>
+</Template - OOO Message>
 
 </Templates>

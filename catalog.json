@@ -97,7 +97,12 @@
     },
     {
       "name": "Knowledge & Learning",
-      "assets": []
+      "assets": [
+        {
+          "path": "skills/teach-me",
+          "type": "skill"
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{QUIZ_TITLE}}</title>
+<style>
+  /* === Theme Definitions (soft natural gradients) === */
+  [data-theme="soft-pastel"] {
+    --bg: #fef7f4;
+    --surface: #ffffff;
+    --surface-alt: #fdf2ee;
+    --primary: #c04a42;
+    --primary-light: #fde8e4;
+    --accent: #7c6dbd;
+    --accent-light: #ede8f7;
+    --text: #2d2a32;
+    --text-muted: #6e6a75;
+    --border: #efe4e0;
+    --success: #4caf7d;
+    --success-bg: #e8f8ef;
+    --error: #e06060;
+    --error-bg: #fdeaea;
+    --gradient: linear-gradient(135deg, #fef7f4 0%, #f3e8f4 50%, #e8f0fe 100%);
+  }
+  [data-theme="amazon-quick"] {
+    --bg: #fdfbfd;
+    --surface: #ffffff;
+    --surface-alt: #faf6fa;
+    --primary: #9c3090;
+    --primary-light: #fdf0fb;
+    --accent: #d872cc;
+    --accent-light: #fdf4fc;
+    --text: #2d2030;
+    --text-muted: #7a6b7e;
+    --border: #f0e6ef;
+    --success: #067d68;
+    --success-bg: #e0f5f0;
+    --error: #d13212;
+    --error-bg: #fde8e4;
+    --gradient: linear-gradient(135deg, #fdfbfd 0%, #fdf0fb 40%, #fdf4fc 70%, #fdfbfd 100%);
+  }
+
+  [data-theme="ocean-breeze"] {
+    --bg: #f4f9fc;
+    --surface: #ffffff;
+    --surface-alt: #edf5f9;
+    --primary: #1d6d94;
+    --primary-light: #dff0fa;
+    --accent: #1a9e8f;
+    --accent-light: #e0f5f3;
+    --text: #1a2e3a;
+    --text-muted: #5a7283;
+    --border: #d8e8f0;
+    --success: #2d9a6a;
+    --success-bg: #e3f5ed;
+    --error: #d65656;
+    --error-bg: #fdeaea;
+    --gradient: linear-gradient(135deg, #f4f9fc 0%, #e8f4f8 50%, #dff0fa 100%);
+  }
+  [data-theme="warm-earth"] {
+    --bg: #faf8f5;
+    --surface: #ffffff;
+    --surface-alt: #f5f2ed;
+    --primary: #8a5520;
+    --primary-light: #f5ead8;
+    --accent: #6b8e5e;
+    --accent-light: #e8f0e5;
+    --text: #2a2520;
+    --text-muted: #7a6e62;
+    --border: #e8e0d5;
+    --success: #5d9a5e;
+    --success-bg: #e8f2e5;
+    --error: #c75555;
+    --error-bg: #fdeaea;
+    --gradient: linear-gradient(135deg, #faf8f5 0%, #f5ead8 50%, #e8f0e5 100%);
+  }
+  [data-theme="minimal-clean"] {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --surface-alt: #f5f5f5;
+    --primary: #404040;
+    --primary-light: #f0f0f0;
+    --accent: #6366f1;
+    --accent-light: #eef2ff;
+    --text: #171717;
+    --text-muted: #737373;
+    --border: #e5e5e5;
+    --success: #16a34a;
+    --success-bg: #dcfce7;
+    --error: #dc2626;
+    --error-bg: #fee2e2;
+    --gradient: linear-gradient(135deg, #fafafa 0%, #f5f5f5 50%, #fafafa 100%);
+  }
+
+  /* === Base Reset === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
+    background: var(--gradient);
+    min-height: 100vh;
+    color: var(--text);
+    line-height: 1.6;
+    padding: 32px 24px;
+    max-width: 700px;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === Animations === */
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  @keyframes confetti-fall { 0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+  @keyframes scoreReveal { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+  .animate-in { animation: fadeInUp 0.35s ease-out both; }
+  .delay-1 { animation-delay: 0.08s; } .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; } .delay-4 { animation-delay: 0.32s; }
+
+  /* === Theme Selector === */
+  .theme-selector { display: flex; gap: 12px; justify-content: center; margin: 24px 0; flex-wrap: wrap; }
+  .theme-swatch {
+    width: 56px; height: 56px; border-radius: 50%; cursor: pointer;
+    border: 3px solid transparent; transition: all 0.2s ease;
+    position: relative; overflow: hidden;
+  }
+  .theme-swatch:hover { transform: scale(1.1); }
+  .theme-swatch.active { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+  .theme-swatch[data-t="soft-pastel"] { background: linear-gradient(135deg, #fef7f4, #f3e8f4, #e8f0fe); }
+  .theme-swatch[data-t="ocean-breeze"] { background: linear-gradient(135deg, #f4f9fc, #e8f4f8, #dff0fa); }
+  .theme-swatch[data-t="warm-earth"] { background: linear-gradient(135deg, #faf8f5, #f5ead8, #e8f0e5); }
+  .theme-swatch[data-t="minimal-clean"] { background: linear-gradient(135deg, #fafafa, #f0f0f0, #e5e5e5); }
+  .theme-swatch[data-t="amazon-quick"] { background: linear-gradient(135deg, #9c3090, #d872cc, #fdf4fc); }
+  .theme-label { font-size: 0.7rem; text-align: center; margin-top: 4px; color: var(--text-muted); }
+
+  /* === Cards & Layout === */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .title-screen { text-align: center; padding: 48px 20px; animation: fadeInUp 0.4s ease-out; }
+  .title-screen h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .title-meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px; }
+  .quiz-desc { color: var(--text); font-size: 0.9rem; max-width: 500px; margin: 0 auto 20px; line-height: 1.5; }
+  .badge { display: inline-block; background: var(--primary); color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* === Buttons === */
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+  .btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: var(--surface-alt); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--primary-light); }
+
+  /* === Progress === */
+  .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+  .progress-score { font-size: 0.8rem; font-weight: 600; color: var(--primary); }
+  .streak-badge { font-size: 0.8rem; font-weight: 600; color: #f59e0b; display: none; }
+  .progress-track { width: 100%; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 3px; transition: width 0.4s ease; position: relative; }
+  .progress-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); background-size: 200% 100%; animation: shimmer 2.5s infinite; }
+
+  /* === Question === */
+  .q-type { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); background: var(--surface-alt); padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; }
+  .q-stem { font-size: 1.1rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px; }
+  .q-image { margin-bottom: 16px; border-radius: 10px; overflow: hidden; display: none; }
+  .q-image img { width: 100%; height: auto; display: block; }
+
+  /* === Options === */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; background: var(--surface); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; font-size: 0.93rem; font-weight: 500; text-align: left; transition: all 0.2s ease; }
+  .option:hover:not(.disabled) { border-color: var(--primary); transform: translateX(3px); }
+  .option-key { display: flex; align-items: center; justify-content: center; min-width: 28px; height: 28px; background: var(--surface-alt); border-radius: 7px; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); flex-shrink: 0; transition: all 0.2s; }
+  .option:hover:not(.disabled) .option-key { background: var(--primary); color: white; }
+  .option.correct { border-color: var(--success); background: var(--success-bg); animation: pulse 0.3s; }
+  .option.correct .option-key { background: var(--success); color: white; }
+  .option.incorrect { border-color: var(--error); background: var(--error-bg); animation: shake 0.3s; }
+  .option.incorrect .option-key { background: var(--error); color: white; }
+  .option.disabled { cursor: default; opacity: 0.6; transform: none !important; }
+  .option.disabled.correct { opacity: 1; }
+
+  /* === Feedback === */
+  .feedback { margin-top: 16px; padding: 14px 18px; border-radius: 10px; font-size: 0.88rem; line-height: 1.5; display: none; animation: fadeIn 0.2s ease-out; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--success-bg); border-left: 3px solid var(--success); color: #166534; }
+  .feedback.incorrect { background: var(--error-bg); border-left: 3px solid var(--error); color: #991b1b; }
+  .feedback.hint { background: var(--accent-light); border-left: 3px solid var(--accent); color: var(--text); }
+
+  /* === Citation === */
+  .citation-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 0.78rem; font-weight: 600; color: var(--accent); cursor: pointer; padding: 5px 10px; border-radius: 6px; background: none; border: none; transition: background 0.2s; }
+  .citation-btn:hover { background: var(--accent-light); }
+  .citation-box { margin-top: 8px; padding: 12px 14px; background: var(--surface-alt); border-radius: 8px; font-size: 0.8rem; display: none; border: 1px solid var(--border); }
+  .citation-box.show { display: block; animation: fadeIn 0.2s; }
+  .citation-source { font-weight: 700; margin-bottom: 2px; }
+  .citation-source a { color: var(--primary); text-decoration: underline; }
+  .citation-location { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 4px; }
+  .citation-snippet { font-style: italic; color: var(--text-muted); border-left: 2px solid var(--accent); padding-left: 8px; }
+
+  /* === Action bar === */
+  .action-bar { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .nav-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
+  .kbd-hints { font-size: 0.7rem; color: var(--text-muted); display: flex; gap: 10px; }
+  .kbd { padding: 2px 5px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 3px; font-family: monospace; font-size: 0.68rem; font-weight: 600; }
+
+  /* === Results === */
+  .results { text-align: center; padding: 32px 0; animation: fadeInUp 0.4s ease-out; }
+  .results h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
+  .score-circle { display: inline-flex; align-items: center; justify-content: center; width: 130px; height: 130px; border-radius: 50%; background: var(--surface); border: 4px solid var(--primary); margin: 20px 0; animation: scoreReveal 0.5s ease-out; box-shadow: 0 0 0 8px var(--primary-light); }
+  .score-value { font-size: 2rem; font-weight: 800; }
+  .pass-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin: 12px 0; }
+  .pass-badge.passed { background: var(--success-bg); color: var(--success); }
+  .pass-badge.failed { background: var(--error-bg); color: var(--error); }
+  .stats { display: flex; justify-content: center; gap: 28px; margin: 16px 0; flex-wrap: wrap; }
+  .stat-value { font-size: 1.1rem; font-weight: 700; }
+  .stat-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .missed-section { margin-top: 28px; text-align: left; }
+  .missed-section h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .missed-item { padding: 12px 14px; border-left: 3px solid var(--error); margin-bottom: 10px; background: var(--surface-alt); border-radius: 0 8px 8px 0; }
+  .missed-stem { font-weight: 600; font-size: 0.88rem; margin-bottom: 4px; }
+  .missed-answer { font-size: 0.82rem; color: var(--success); font-weight: 600; }
+  .missed-explanation { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+  .missed-source { font-size: 0.72rem; font-style: italic; color: var(--text-muted); margin-top: 2px; }
+  .results-actions { display: flex; gap: 10px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+
+  /* === Certificate (shown only during print) === */
+  .certificate { display: none; text-align: center; padding: 60px 40px; border: 3px solid var(--primary); border-radius: 0; }
+  .certificate h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+  .certificate .cert-line { font-size: 1rem; margin: 6px 0; color: var(--text-muted); }
+  .certificate .cert-score { font-size: 2.4rem; font-weight: 800; color: var(--primary); margin: 20px 0; }
+  .certificate .cert-date { font-size: 0.85rem; color: var(--text-muted); margin-top: 24px; }
+
+  /* === Study Guide (shown only during print) === */
+  .study-guide-print { display: none; text-align: left; }
+  .study-guide-print h1 { font-size: 1.4rem; margin-bottom: 16px; }
+  .study-guide-print .sg-item { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .study-guide-print .sg-stem { font-weight: 600; margin-bottom: 4px; }
+  .study-guide-print .sg-answer { color: var(--success); font-weight: 600; font-size: 0.9rem; }
+  .study-guide-print .sg-explanation { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+  .study-guide-print .sg-source { font-size: 0.8rem; font-style: italic; margin-top: 4px; }
+
+  /* === Print styles === */
+  @media print {
+    body { padding: 20px; background: white; max-width: none; }
+    .title-screen, #question-screen, .theme-selector, .btn, .action-bar, .nav-footer, .kbd-hints, .confetti-container { display: none !important; }
+    .certificate.printing, .study-guide-print.printing { display: block !important; }
+    .results.printing-results { display: block !important; }
+    #results-screen:not(.printing-results) { display: none !important; }
+  }
+
+  /* === Confetti === */
+  .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; overflow: hidden; }
+  .confetti-piece { position: absolute; top: -10px; width: 8px; height: 8px; border-radius: 2px; animation: confetti-fall 3s linear forwards; }
+
+  /* === Responsive === */
+  @media (max-width: 480px) { body { padding: 20px 16px; } .title-screen h1 { font-size: 1.5rem; } .card { padding: 20px; } .q-stem { font-size: 1rem; } .option { padding: 12px 14px; } .nav-footer { flex-direction: column; gap: 12px; } .kbd-hints { display: none; } }
+</style>
+</head>
+<body data-theme="soft-pastel">
+<div id="app">
+
+  <!-- Title Screen -->
+  <div id="title-screen" class="title-screen">
+    <h1 id="quiz-title">{{QUIZ_TITLE}}</h1>
+    <p class="title-meta" id="quiz-meta">{{QUESTION_COUNT}} questions &middot; {{PASS_RATE}}% to pass</p>
+    <p class="quiz-desc" id="quiz-desc">{{QUIZ_DESCRIPTION}}</p>
+    <span class="badge" id="depth-badge">{{DEPTH_LEVEL}}</span>
+
+    <div class="theme-selector" id="theme-selector">
+      <div>
+        <div class="theme-swatch active" data-t="soft-pastel" onclick="setTheme('soft-pastel')"></div>
+        <div class="theme-label">Pastel</div>
+      </div>
+      <div>
+        <div class="theme-swatch" data-t="ocean-breeze" onclick="setTheme('ocean-breeze')"></div>
+        <div class="theme-label">Ocean</div>
+      </div>
+      <div>
+        <div class="theme-swatch" data-t="warm-earth" onclick="setTheme('warm-earth')"></div>
+        <div class="theme-label">Earth</div>
+      </div>
+      <div>
+        <div class="theme-swatch" data-t="minimal-clean" onclick="setTheme('minimal-clean')"></div>
+        <div class="theme-label">Minimal</div>
+      </div>
+      <div>
+        <div class="theme-swatch" data-t="amazon-quick" onclick="setTheme('amazon-quick')"></div>
+        <div class="theme-label">Quick</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="startQuiz()">Test Your Knowledge &rarr;</button>
+  </div>
+
+  <!-- Question Screen -->
+  <div id="question-screen" style="display:none;">
+    <div class="progress-header">
+      <span class="progress-label" id="progress-label"></span>
+      <span class="streak-badge" id="streak-badge">🔥 <span id="streak-count">0</span></span>
+      <span class="progress-score" id="progress-score">0 correct</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div class="card animate-in" id="question-card" style="margin-top:20px;">
+      <span class="q-type" id="q-type"></span>
+      <div class="q-image" id="q-image"><img id="q-image-src" alt=""></div>
+      <div class="q-stem" id="q-stem"></div>
+      <div class="options" id="options-container"></div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="feedback hint" id="hint-box"></div>
+
+    <div class="action-bar">
+      <button class="btn btn-secondary" id="hint-btn" onclick="showHint()">💡 Hint</button>
+      <button class="btn btn-secondary" id="skip-btn" onclick="skipQuestion()">⏭ Skip</button>
+      <button class="citation-btn" id="citation-btn" onclick="toggleCitation()" style="display:none;">🔗 View Source</button>
+    </div>
+    <div class="citation-box" id="citation-box"></div>
+
+    <div class="nav-footer">
+      <div class="kbd-hints"><span><span class="kbd">1-4</span> select</span><span><span class="kbd">H</span> hint</span><span><span class="kbd">Enter</span> next</span><span><span class="kbd">S</span> source</span></div>
+      <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Results Screen -->
+  <div id="results-screen" style="display:none;"></div>
+
+  <!-- Certificate (print only) -->
+  <div class="certificate" id="certificate">
+    <h1>Certificate of Completion</h1>
+    <div class="cert-line">This certifies completion of</div>
+    <div class="cert-line" style="font-size:1.3rem;font-weight:700;color:var(--text);" id="cert-title"></div>
+    <div class="cert-score" id="cert-score"></div>
+    <div class="cert-line" id="cert-status"></div>
+    <div class="cert-line" id="cert-depth"></div>
+    <div class="cert-date" id="cert-date"></div>
+  </div>
+
+  <!-- Study Guide (print only) -->
+  <div class="study-guide-print" id="study-guide">
+    <h1>Study Guide - Missed Questions</h1>
+    <div id="sg-content"></div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = {{QUESTIONS_JSON}};
+const PASS_RATE = {{PASS_RATE}};
+
+let currentIndex = 0, score = 0, answered = false, startTime = null;
+let streak = 0, longestStreak = 0, hintsUsed = 0;
+const missed = [];
+const skippedQueue = [];
+
+function setTheme(t) {
+  document.body.setAttribute('data-theme', t);
+  document.querySelectorAll('.theme-swatch').forEach(s => s.classList.toggle('active', s.dataset.t === t));
+}
+
+function startQuiz() {
+  document.getElementById('title-screen').style.display = 'none';
+  document.getElementById('question-screen').style.display = 'block';
+  startTime = Date.now();
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = QUESTIONS[currentIndex];
+  answered = false;
+  const pct = (currentIndex / QUESTIONS.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = 'Question ' + (currentIndex + 1) + ' of ' + QUESTIONS.length;
+  document.getElementById('progress-score').textContent = score + ' correct';
+  document.getElementById('q-type').textContent = q.type === 'true_false' ? 'True / False' : 'Multiple Choice';
+  document.getElementById('q-stem').textContent = q.stem;
+
+  // Image
+  const imgEl = document.getElementById('q-image');
+  if (q.image) { document.getElementById('q-image-src').src = q.image; imgEl.style.display = 'block'; }
+  else { imgEl.style.display = 'none'; }
+
+  // Reset
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('hint-box').className = 'feedback hint';
+  document.getElementById('hint-box').textContent = '';
+  document.getElementById('citation-btn').style.display = 'none';
+  document.getElementById('citation-box').className = 'citation-box';
+  document.getElementById('next-btn').disabled = true;
+  document.getElementById('hint-btn').disabled = false;
+  document.getElementById('hint-btn').style.opacity = '1';
+  document.getElementById('skip-btn').style.display = 'inline-flex';
+
+  // Animate card
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none'; card.offsetHeight;
+  card.style.animation = 'fadeInUp 0.3s ease-out both';
+
+  // Options
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  const keys = q.type === 'true_false' ? ['T', 'F'] : ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option animate-in delay-' + (i + 1);
+    btn.innerHTML = '<span class="option-key">' + keys[i] + '</span><span>' + opt + '</span>';
+    btn.onclick = () => selectAnswer(i);
+    container.appendChild(btn);
+  });
+}
+
+function selectAnswer(index) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[currentIndex];
+  document.querySelectorAll('.option').forEach((btn, i) => {
+    btn.classList.add('disabled');
+    if (i === q.correct_index) btn.classList.add('correct');
+    if (i === index && i !== q.correct_index) btn.classList.add('incorrect');
+  });
+  const fb = document.getElementById('feedback');
+  if (index === q.correct_index) {
+    score++; streak++;
+    if (streak > longestStreak) longestStreak = streak;
+    document.getElementById('streak-badge').style.display = 'inline';
+    document.getElementById('streak-count').textContent = streak;
+    fb.className = 'feedback correct show';
+    fb.innerHTML = '<strong>\u2713 Correct!</strong> ' + q.explanation;
+  } else {
+    streak = 0;
+    document.getElementById('streak-badge').style.display = streak > 0 ? 'inline' : 'none';
+    fb.className = 'feedback incorrect show';
+    fb.innerHTML = '<strong>\u2717 Incorrect.</strong> ' + q.explanation;
+    missed.push(q);
+  }
+  document.getElementById('progress-score').textContent = score + ' correct';
+  document.getElementById('citation-btn').style.display = 'inline-flex';
+  document.getElementById('next-btn').disabled = false;
+  document.getElementById('skip-btn').style.display = 'none';
+  document.getElementById('next-btn').querySelector('span') && (document.getElementById('next-btn').textContent =
+    (currentIndex === QUESTIONS.length - 1 && skippedQueue.length === 0) ? 'See How You Did \u2192' : 'Next \u2192');
+}
+
+function showHint() {
+  const q = QUESTIONS[currentIndex];
+  if (!q.hint || answered) return;
+  hintsUsed++;
+  const hb = document.getElementById('hint-box');
+  hb.className = 'feedback hint show';
+  hb.textContent = '\uD83D\uDCA1 ' + q.hint;
+  document.getElementById('hint-btn').disabled = true;
+  document.getElementById('hint-btn').style.opacity = '0.4';
+}
+
+function skipQuestion() {
+  if (answered) return;
+  skippedQueue.push(QUESTIONS.splice(currentIndex, 1)[0]);
+  if (currentIndex >= QUESTIONS.length) { QUESTIONS.push(...skippedQueue.splice(0)); }
+  showQuestion();
+}
+
+function toggleCitation() {
+  const box = document.getElementById('citation-box');
+  const q = QUESTIONS[currentIndex];
+  if (box.classList.contains('show')) { box.classList.remove('show'); return; }
+  const link = q.citation.href
+    ? '<a href="' + q.citation.href + '" target="_blank">' + q.citation.source + '</a>'
+    : q.citation.source;
+  box.innerHTML = '<div class="citation-source">' + link + '</div><div class="citation-location">' + q.citation.location + '</div><div class="citation-snippet">"' + q.citation.snippet + '"</div>';
+  box.classList.add('show');
+}
+
+function nextQuestion() {
+  if (!answered) return;
+  currentIndex++;
+  if (currentIndex >= QUESTIONS.length && skippedQueue.length > 0) { QUESTIONS.push(...skippedQueue.splice(0)); }
+  if (currentIndex >= QUESTIONS.length) { showResults(); } else { showQuestion(); }
+}
+
+function showResults() {
+  document.getElementById('question-screen').style.display = 'none';
+  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  const min = Math.floor(elapsed / 60), sec = elapsed % 60;
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  const passed = pct >= PASS_RATE;
+  if (passed) spawnConfetti();
+
+  let html = '<div class="results"><div class="results-header"><h2>' + (passed ? '\uD83C\uDF89 Congratulations!' : '\uD83D\uDCDA Keep Learning!') + '</h2><p style="color:var(--text-muted);">Here\'s How You Did</p></div>';
+  html += '<div class="score-circle"><span class="score-value">' + pct + '%</span></div>';
+  html += '<div class="pass-badge ' + (passed ? 'passed' : 'failed') + '">' + (passed ? '\u2713 Passed (' + PASS_RATE + '% required)' : '\u2717 Needs Review (' + PASS_RATE + '% required)') + '</div>';
+  html += '<div class="stats"><div><div class="stat-value">' + score + '/' + QUESTIONS.length + '</div><div class="stat-label">Correct</div></div>';
+  html += '<div><div class="stat-value">' + min + 'm ' + sec + 's</div><div class="stat-label">Time</div></div>';
+  html += '<div><div class="stat-value">\uD83D\uDD25 ' + longestStreak + '</div><div class="stat-label">Best Streak</div></div>';
+  html += '<div><div class="stat-value">' + hintsUsed + '</div><div class="stat-label">Hints</div></div></div>';
+
+  if (missed.length > 0) {
+    html += '<div class="missed-section"><h3>Review Missed Questions</h3>';
+    missed.forEach(q => {
+      const src = q.citation.href ? '<a href="' + q.citation.href + '" target="_blank">' + q.citation.source + '</a>' : q.citation.source;
+      html += '<div class="missed-item"><div class="missed-stem">' + q.stem + '</div><div class="missed-answer">\u2713 ' + q.options[q.correct_index] + '</div><div class="missed-explanation">' + q.explanation + '</div><div class="missed-source">Source: ' + src + '</div></div>';
+    });
+    html += '</div>';
+  }
+  html += '<div class="results-actions">';
+  if (missed.length > 0) html += '<button class="btn btn-secondary" onclick="printStudyGuide()">\uD83D\uDCDD Print Study Guide</button>';
+  if (passed) html += '<button class="btn btn-primary" onclick="printCertificate()">\uD83C\uDF93 Print Certificate</button>';
+  html += '<button class="btn btn-secondary" onclick="restartQuiz()">\uD83D\uDD01 Try Again</button>';
+  html += '</div></div>';
+
+  const screen = document.getElementById('results-screen');
+  screen.innerHTML = html; screen.style.display = 'block';
+
+  // Populate print sections
+  populateCertificate(pct, passed);
+  populateStudyGuide();
+}
+
+function populateCertificate(pct, passed) {
+  document.getElementById('cert-title').textContent = document.getElementById('quiz-title').textContent;
+  document.getElementById('cert-score').textContent = pct + '%';
+  document.getElementById('cert-status').textContent = passed ? 'PASSED' : 'NEEDS REVIEW';
+  document.getElementById('cert-depth').textContent = document.getElementById('depth-badge').textContent;
+  document.getElementById('cert-date').textContent = 'Completed: ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function populateStudyGuide() {
+  let html = '';
+  missed.forEach((q, i) => {
+    const src = q.citation.href ? q.citation.source + ' (' + q.citation.href + ')' : q.citation.source;
+    html += '<div class="sg-item"><div class="sg-stem">' + (i+1) + '. ' + q.stem + '</div><div class="sg-answer">Answer: ' + q.options[q.correct_index] + '</div><div class="sg-explanation">' + q.explanation + '</div><div class="sg-source">Source: ' + src + '</div></div>';
+  });
+  document.getElementById('sg-content').innerHTML = html;
+}
+
+function printStudyGuide() {
+  document.getElementById('study-guide').classList.add('printing');
+  document.getElementById('certificate').classList.remove('printing');
+  window.print();
+  setTimeout(() => document.getElementById('study-guide').classList.remove('printing'), 500);
+}
+
+function printCertificate() {
+  document.getElementById('certificate').classList.add('printing');
+  document.getElementById('study-guide').classList.remove('printing');
+  window.print();
+  setTimeout(() => document.getElementById('certificate').classList.remove('printing'), 500);
+}
+
+function restartQuiz() {
+  currentIndex = 0; score = 0; answered = false;
+  streak = 0; longestStreak = 0; hintsUsed = 0;
+  missed.length = 0; skippedQueue.length = 0;
+  startTime = Date.now();
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('results-screen').innerHTML = '';
+  document.getElementById('question-screen').style.display = 'block';
+  document.getElementById('streak-badge').style.display = 'none';
+  showQuestion();
+}
+
+function spawnConfetti() {
+  const c = document.createElement('div'); c.className = 'confetti-container'; document.body.appendChild(c);
+  const colors = ['#e8766d','#7c6dbd','#4caf7d','#f59e0b','#2e8ab8','#ec4899'];
+  for (let i = 0; i < 40; i++) { const p = document.createElement('div'); p.className = 'confetti-piece'; p.style.left = Math.random()*100+'%'; p.style.background = colors[Math.floor(Math.random()*colors.length)]; p.style.animationDelay = Math.random()*1.5+'s'; p.style.animationDuration = (2+Math.random()*2)+'s'; c.appendChild(p); }
+  setTimeout(() => c.remove(), 5000);
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (document.getElementById('question-screen').style.display === 'none') { if (e.key === 'Enter') startQuiz(); return; }
+  const q = QUESTIONS[currentIndex];
+  const max = q.type === 'true_false' ? 2 : 4;
+  if (e.key >= '1' && e.key <= String(max)) selectAnswer(parseInt(e.key) - 1);
+  if (e.key === 'Enter' && answered) nextQuestion();
+  if (e.key.toLowerCase() === 's') toggleCitation();
+  if (e.key.toLowerCase() === 'h' && !answered) showHint();
+  if (q.type === 'true_false') { if (e.key.toLowerCase() === 't') selectAnswer(0); if (e.key.toLowerCase() === 'f') selectAnswer(1); }
+});
+</script>
+</body>
+</html>

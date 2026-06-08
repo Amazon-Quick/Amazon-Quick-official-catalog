@@ -17,6 +17,7 @@ packages = ["scripts"]
 build = "scripts.build:cli"
 fix = "scripts.build:fix"
 release = "scripts.release:release"
+skill-security = "scripts.build:skill_security"
 docs-build = "scripts.build:docs"
 docs-serve = "scripts.build:docs_serve"
 help = "scripts.help:help"
@@ -24,6 +25,7 @@ help = "scripts.help:help"
 [dependency-groups]
 dev = [
     "bandit[toml]>=1,<2",
+    "cisco-ai-skill-scanner>=2,<3",
     "click>=8,<9",
     "loguru>=0.7,<1",
     "mdformat>=1,<2",
@@ -35,6 +37,9 @@ dev = [
     "safety>=3,<4",
     "zensical",
 ]
+
+[tool.uv]
+constraint-dependencies = ["onnxruntime<=1.23.2"]
 
 [tool.ruff]
 target-version = "py313"

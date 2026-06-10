@@ -11,11 +11,11 @@
   margin: 0 auto;
 }
 
-.md-content h1#amazon-quick-official-marketplace {
+.md-content h1#amazon-quick-official-catalog {
   text-align: center;
 }
 
-.md-content h1#amazon-quick-official-marketplace + p {
+.md-content h1#amazon-quick-official-catalog + p {
   text-align: center;
   border-bottom: 2px solid var(--md-primary-fg-color);
   padding-bottom: 1em;

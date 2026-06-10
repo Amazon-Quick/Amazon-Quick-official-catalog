@@ -1,6 +1,6 @@
-# Amazon Quick Official Marketplace
+# Amazon Quick Official Catalog
 
-This is the official marketplace repository for Amazon Quick. It contains curated, production-ready skills, plugins, agents, and integration configs that can be installed into Amazon Quick to extend its capabilities. Every asset here has been reviewed for quality, security, and usefulness before being published.
+This is the official catalog repository for Amazon Quick. It contains curated, agent skills, plugins, agents, and integration configs that can be installed into Amazon Quick to extend its capabilities. Every asset here has been reviewed by the Amazon Quick specialist team.
 
 [![License](https://img.shields.io/badge/license-MIT--0-blue.svg)](LICENSE)
 
@@ -12,7 +12,7 @@ This is the official marketplace repository for Amazon Quick. It contains curate
 
 See the full catalog on the documentation site:
 
-[Amazon-Quick.github.io/amazon-quick-official-marketplace](https://Amazon-Quick.github.io/amazon-quick-official-marketplace)
+[Amazon-Quick.github.io/amazon-quick-official-catalog](https://Amazon-Quick.github.io/amazon-quick-official-catalog)
 
 ## Contributing
 

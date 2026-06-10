@@ -113,7 +113,7 @@ wheels = [
 ]
 
 [[package]]
-name = "amazon-quick-official-marketplace"
+name = "amazon-quick-official-catalog"
 version = "1.0.0"
 source = { editable = "." }
 

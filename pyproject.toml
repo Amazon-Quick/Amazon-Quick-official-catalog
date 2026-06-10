@@ -1,7 +1,7 @@
 [project]
-name = "amazon-quick-official-marketplace"
+name = "amazon-quick-official-catalog"
 version = "1.0.0"
-description = "Official marketplace for Amazon Quick skills, plugins, and integrations"
+description = "Official catalog for Amazon Quick skills, plugins, and integrations"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []

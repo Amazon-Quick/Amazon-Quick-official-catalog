@@ -64,7 +64,20 @@
     },
     {
       "name": "Finance & Operations",
-      "assets": []
+      "assets": [
+        {
+          "path": "skills/payroll-forecast",
+          "type": "skill"
+        },
+        {
+          "path": "skills/deposit-collection",
+          "type": "skill"
+        },
+        {
+          "path": "skills/bill-pay-optimizer",
+          "type": "skill"
+        }
+      ]
     },
     {
       "name": "HR & People",

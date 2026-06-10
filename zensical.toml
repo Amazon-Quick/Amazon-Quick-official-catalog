@@ -1,7 +1,7 @@
 [project]
-site_name = "Amazon Quick Official Marketplace"
-site_url = "https://Amazon-Quick.github.io/amazon-quick-official-marketplace"
-repo_url = "https://github.com/Amazon-Quick/amazon-quick-official-marketplace"
+site_name = "Amazon Quick Official Catalog"
+site_url = "https://Amazon-Quick.github.io/amazon-quick-official-catalog"
+repo_url = "https://github.com/Amazon-Quick/amazon-quick-official-catalog"
 extra_css = ["assets/stylesheets/custom.css"]
 nav = [
     { Home = "index.md" },

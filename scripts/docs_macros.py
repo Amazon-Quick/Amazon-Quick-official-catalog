@@ -11,7 +11,7 @@ from pathlib import Path
 import yaml
 from pydantic import BaseModel
 
-REPO_URL = "https://github.com/Amazon-Quick/amazon-quick-official-marketplace"
+REPO_URL = "https://github.com/Amazon-Quick/amazon-quick-official-catalog"
 
 
 class AssetEntry(BaseModel):

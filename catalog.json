@@ -66,6 +66,10 @@
       "name": "Finance & Operations",
       "assets": [
         {
+          "path": "skills/business-pulse",
+          "type": "skill"
+        },
+        {
           "path": "skills/payroll-forecast",
           "type": "skill"
         },
@@ -75,6 +79,14 @@
         },
         {
           "path": "skills/bill-pay-optimizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/job-to-invoice",
+          "type": "skill"
+        },
+        {
+          "path": "skills/invoice-chaser",
           "type": "skill"
         }
       ]
@@ -89,7 +101,12 @@
     },
     {
       "name": "Content & Writing",
-      "assets": []
+      "assets": [
+        {
+          "path": "skills/eliminate-ai-writing-tropes",
+          "type": "skill"
+        }
+      ]
     },
     {
       "name": "Design & Creative",
@@ -113,6 +130,10 @@
       "assets": [
         {
           "path": "skills/teach-me",
+          "type": "skill"
+        },
+        {
+          "path": "skills/amazon-quick-community",
           "type": "skill"
         }
       ]

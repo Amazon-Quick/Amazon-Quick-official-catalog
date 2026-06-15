@@ -18,6 +18,10 @@
         {
           "path": "skills/file-organizer",
           "type": "skill"
+        },
+        {
+          "path": "skills/retrospective",
+          "type": "skill"
         }
       ]
     },
@@ -92,6 +96,27 @@
       ]
     },
     {
+      "name": "Retail",
+      "assets": [
+        {
+          "path": "skills/retail-merchant-briefing",
+          "type": "skill"
+        },
+        {
+          "path": "skills/retail-supply-chain-pulse",
+          "type": "skill"
+        },
+        {
+          "path": "skills/retail-content-generator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/retail-analytics-concierge",
+          "type": "skill"
+        }
+      ]
+    },
+    {
       "name": "HR & People",
       "assets": []
     },
@@ -123,17 +148,30 @@
     },
     {
       "name": "Research & Intelligence",
-      "assets": []
+      "assets": [
+        {
+          "path": "skills/browser-data-scraper",
+          "type": "skill"
+        },
+        {
+          "path": "skills/ecommerce-conversion-insights",
+          "type": "skill"
+        }
+      ]
     },
     {
       "name": "Knowledge & Learning",
       "assets": [
         {
+          "path": "skills/amazon-quick-community",
+          "type": "skill"
+        },
+        {
           "path": "skills/teach-me",
           "type": "skill"
         },
         {
-          "path": "skills/amazon-quick-community",
+          "path": "skills/research-paper-digest",
           "type": "skill"
         }
       ]

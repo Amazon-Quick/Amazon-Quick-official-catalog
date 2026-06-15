@@ -4,8 +4,8 @@ display_name: Skill Builder
 icon: "🏗️"
 description: "Build Amazon Quick agent skill directories following the Quick Skills standard. Use when the user asks to 'build a skill', 'create a skill', 'make a new skill', 'author a skill', 'convert this to a skill', 'save this as a skill', or wants to turn an agent prompt, workflow, or completed task into a reusable skill."
 created_date: "2026-05-21"
-last_updated: "2026-05-26"
-tools: [get_current_time, file_read, file_write, folder_create, save_skill, generate_skill_evals, extract_session_data, recall_memories, file_rag_search, web_search]
+last_updated: "2026-06-15"
+tools: [get_current_time, file_read, file_write, folder_create, save_skill, generate_skill_evals, extract_session_data, file_rag_search, web_search]
 inputs:
 
 - name: source_material
@@ -142,7 +142,7 @@ triggers=["User asks to build, create, modify, save, test, or audit a skill"]
 
 <Workflow - Plan
 description="Research, identify requirements, and determine the approach."
-tools=[file_read, recall_memories, file_rag_search, web_search, extract_session_data]
+tools=[file_read, file_rag_search, web_search, extract_session_data]
 triggers=["Create a new skill", "Modify an existing skill", "Convert a workflow into a skill"]
 
 >
@@ -426,6 +426,7 @@ triggers=["User asks to audit a skill", "Called from <Workflow - Save> step 5"]
 20. Resources contain only lookup data (tables, URLs, channel maps). Never put procedural logic, authorization rules, decision criteria, or behavioral instructions in a Resource block. If it tells the agent what to DO or how to DECIDE, it belongs inline in the workflow step, in Rules, or in Gotchas.
 21. For connector integrations, use generic names in `depends-on` and natural language in workflow steps. The agent resolves the specific tool and parameters at execution time. For built-in platform tools (`file_read`, `file_write`, `web_search`, `get_current_time`), use the plain name directly since these are stable primitives.
 22. When building a skill that uses connectors, introspect available connector tools during the Plan phase to understand their actions and required parameters. Use this knowledge to ensure workflow steps include enough context (recipients, fields, content) for the executing agent to call the connector successfully. The skill's inputs should collect any user-supplied data the connector needs.
+23. Never use code (run_python, regex scripts, or programmatic analysis) to assess a skill's prose quality, structural coherence, logical flow, voice, or design soundness. Read the full SKILL.md in context and reason about it directly. Code-based tooling (e.g., the repo's scripts/skill_check.py) is appropriate ONLY for mechanical pass/fail schema checks (frontmatter fields present, tags balanced, character limits). All qualitative judgment - does the workflow make sense, are steps logically ordered, is the Identity clear, do Rules prevent the right failures, are Gotchas real non-obvious facts - must come from reading and thinking, not pattern matching. Contributors who are not experts depend on the agent's qualitative reasoning to catch design flaws that regex cannot.
 </Rules>
 
 <Gotchas>

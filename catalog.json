@@ -20,7 +20,15 @@
           "type": "skill"
         },
         {
+          "path": "skills/slide-deck-from-doc",
+          "type": "skill"
+        },
+        {
           "path": "skills/retrospective",
+          "type": "skill"
+        },
+        {
+          "path": "skills/risk-register-builder",
           "type": "skill"
         }
       ]
@@ -135,7 +143,12 @@
     },
     {
       "name": "Design & Creative",
-      "assets": []
+      "assets": [
+        {
+          "path": "skills/template-enforcer",
+          "type": "skill"
+        }
+      ]
     },
     {
       "name": "Leadership & Strategy",

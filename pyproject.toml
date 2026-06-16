@@ -27,6 +27,7 @@ dev = [
     "bandit[toml]>=1,<2",
     "cisco-ai-skill-scanner>=2,<3",
     "click>=8,<9",
+    "jsonschema>=4,<5",
     "loguru>=0.7,<1",
     "mdformat>=1,<2",
     "mkdocs-macros-plugin>=1,<2",

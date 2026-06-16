@@ -100,6 +100,14 @@
         {
           "path": "skills/invoice-chaser",
           "type": "skill"
+        },
+        {
+          "path": "skills/demand-forecast-explainer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/restaurant-morning-briefing",
+          "type": "skill"
         }
       ]
     },

@@ -12,7 +12,7 @@ This is the official catalog repository for Amazon Quick. It contains curated, a
 
 See the full catalog on the documentation site:
 
-[Amazon-Quick.github.io/amazon-quick-official-catalog](https://Amazon-Quick.github.io/amazon-quick-official-catalog)
+[Amazon Quick Official Catalog](https://amazon-quick.github.io/Amazon-Quick-official-catalog)
 
 ## Contributing
 

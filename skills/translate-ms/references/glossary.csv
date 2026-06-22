@@ -1,0 +1,53 @@
+# TRANSLATION GLOSSARY — Document Translator
+#
+# Add custom translations below. One term per row.
+# The skill matches glossary columns to the detected source and target languages.
+#
+# COLUMNS:
+#   match_type — ALWAYS the first column. How to match:
+#       "preserve" = Keep exactly as-is, never translate (e.g. brand names)
+#       "exact"    = Replace with the specified translation (case-insensitive)
+#       "fuzzy"    = Also matches word variations like plurals and verb forms
+#
+#   Remaining columns are your language columns — name them to match how you
+#   request translations. Add as many languages as you need.
+#   The skill's agent reads the column headers and intelligently matches them
+#   to the detected source language and user-requested target language.
+#
+# EXAMPLES:
+#
+#   To keep "AWS Lambda" untranslated in all languages:
+#       match_type,english,french,german
+#       preserve,AWS Lambda,AWS Lambda,AWS Lambda
+#
+#   To enforce a specific French translation for "knowledge base":
+#       match_type,english,french,german
+#       exact,knowledge base,base de connaissances,
+#       (leave german empty — the LLM's default translation will be used)
+#
+#   To match word stems ("scal" matches "scale", "scaling", "scalable"):
+#       match_type,english,french,german
+#       fuzzy,scal,évolutiv,skalier
+#
+#   For a German-to-French glossary (no English column needed):
+#       match_type,german,french
+#       exact,Wissensdatenbank,base de connaissances
+#
+# To add more languages: just add a new column at the end.
+# The agent matches columns to languages using LLM reasoning — spelling
+# variations and abbreviations are handled automatically.
+# ---
+match_type,english,french,german
+preserve,Amazon Bedrock,Amazon Bedrock,Amazon Bedrock
+preserve,Amazon S3,Amazon S3,Amazon S3
+preserve,AWS Lambda,AWS Lambda,AWS Lambda
+preserve,Amazon Neptune,Amazon Neptune,Amazon Neptune
+preserve,Amazon SageMaker,Amazon SageMaker,Amazon SageMaker
+exact,knowledge base,base de connaissances,Wissensdatenbank
+exact,serverless,sans serveur,serverlos
+exact,data lake,lac de données,Data Lake
+exact,machine learning,apprentissage automatique,maschinelles Lernen
+exact,deployment pipeline,pipeline de déploiement,Bereitstellungspipeline
+fuzzy,throughput,débit,Durchsatz
+fuzzy,latency,latence,Latenz
+fuzzy,scalability,évolutivité,Skalierbarkeit

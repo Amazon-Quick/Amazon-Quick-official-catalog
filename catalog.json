@@ -30,12 +30,33 @@
         {
           "path": "skills/risk-register-builder",
           "type": "skill"
+        },
+        {
+          "path": "skills/translate-ms",
+          "type": "skill"
+        },
+        {
+          "path": "skills/dependency-critical-path-analyzer",
+          "type": "skill"
         }
       ]
     },
     {
-      "name": "Engineering",
-      "assets": []
+      "name": "Software Engineering",
+      "assets": [
+        {
+          "path": "skills/release-notes-generator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/architecture-decision-record",
+          "type": "skill"
+        },
+        {
+          "path": "skills/incident-postmortem-writer",
+          "type": "skill"
+        }
+      ]
     },
     {
       "name": "Sales & Marketing",
@@ -108,6 +129,10 @@
         {
           "path": "skills/restaurant-morning-briefing",
           "type": "skill"
+        },
+        {
+          "path": "skills/month-end-close-orchestrator",
+          "type": "skill"
         }
       ]
     },
@@ -134,17 +159,51 @@
     },
     {
       "name": "HR & People",
-      "assets": []
+      "assets": [
+        {
+          "path": "skills/performance-review-drafter",
+          "type": "skill"
+        },
+        {
+          "path": "skills/onboarding-orchestrator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/hr-policy-agent",
+          "type": "skill"
+        }
+      ]
     },
     {
       "name": "Security & Compliance",
-      "assets": []
+      "assets": [
+        {
+          "path": "skills/compliance-automation",
+          "type": "skill"
+        },
+        {
+          "path": "skills/vulnerability-report-summarizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-classification-assistant",
+          "type": "skill"
+        }
+      ]
     },
     {
       "name": "Content & Writing",
       "assets": [
         {
           "path": "skills/eliminate-ai-writing-tropes",
+          "type": "skill"
+        },
+        {
+          "path": "skills/meeting-notes-to-actions",
+          "type": "skill"
+        },
+        {
+          "path": "skills/content-recycler",
           "type": "skill"
         }
       ]
@@ -155,6 +214,10 @@
         {
           "path": "skills/template-enforcer",
           "type": "skill"
+        },
+        {
+          "path": "skills/presentation-theme-creator",
+          "type": "skill"
         }
       ]
     },
@@ -163,6 +226,14 @@
       "assets": [
         {
           "path": "skills/business-case-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/swot-analysis-generator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/goal-tracker-reporter",
           "type": "skill"
         }
       ]
@@ -176,6 +247,10 @@
         },
         {
           "path": "skills/ecommerce-conversion-insights",
+          "type": "skill"
+        },
+        {
+          "path": "skills/market-sizing-tool",
           "type": "skill"
         }
       ]
@@ -193,6 +268,32 @@
         },
         {
           "path": "skills/research-paper-digest",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Customer Success & Support",
+      "assets": [
+        {
+          "path": "skills/customer-health-scorer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/support-ticket-triager",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Legal",
+      "assets": [
+        {
+          "path": "skills/contract-clause-extractor",
+          "type": "skill"
+        },
+        {
+          "path": "skills/regulatory-change-monitor",
           "type": "skill"
         }
       ]

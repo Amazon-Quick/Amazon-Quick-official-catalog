@@ -92,6 +92,14 @@
         {
           "path": "skills/social-post-creator",
           "type": "skill"
+        },
+        {
+          "path": "skills/content-calendar-planner",
+          "type": "skill"
+        },
+        {
+          "path": "skills/email-campaign-builder",
+          "type": "skill"
         }
       ]
     },
@@ -234,6 +242,10 @@
         },
         {
           "path": "skills/goal-tracker-reporter",
+          "type": "skill"
+        },
+        {
+          "path": "skills/standup-summarizer",
           "type": "skill"
         }
       ]

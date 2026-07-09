@@ -1,5 +1,5 @@
 """
-Phase 2 — Document reconstruction for the translate-ms skill.
+Phase 2, Document reconstruction for the translate-ms skill.
 
 Handles translated document XML reconstruction in code rather than by the LLM to ensure deterministic
 placement of translated text into the original XML structure. Reduces expensive reasoning
@@ -185,7 +185,7 @@ def check_translation_coverage():
                 missing.append(p["para_id"])
     print(f"Coverage: {translated}/{total}")
     if missing:
-        print(f"Missing: {len(missing)} paragraphs — IDs: {missing}")
+        print(f"Missing: {len(missing)} paragraphs, IDs: {missing}")
     else:
         print("All paragraphs translated successfully.")
     return missing

@@ -5,14 +5,14 @@ This module defines the TranslationState class and the _STATE singleton instance
 that persists across all run_python calls for the entire translation lifecycle.
 
 _STATE is intentionally in its own file (not in extract.py or reconstruct.py)
-because it belongs to neither phase — it spans the full lifecycle:
+because it belongs to neither phase, it spans the full lifecycle:
   Phase 1 populates it (extract_document fills batches, run_map, stats)
   Phase 2 reads from it (store_translation_result adds translations,
                           reconstruct_document reads everything)
 
 SINGLETON GUARANTEE:
   When loaded via Python's import system, the module cache ensures _STATE is
-  only constructed once — subsequent `from state import _STATE` calls return
+  only constructed once, subsequent `from state import _STATE` calls return
   the same object. When loaded via script concatenation (run_python code paste),
   the `if "_STATE" not in globals()` guard at the bottom prevents re-creation.
   Either way, the singleton is safe.
@@ -45,6 +45,6 @@ class TranslationState:
         self._batch_results_received = 0
 
 
-# Singleton guard — prevents re-creation in Quick's script concatenation mode.
+# Singleton guard, prevents re-creation in Quick's script concatenation mode.
 if "_STATE" not in globals():
     _STATE = TranslationState()

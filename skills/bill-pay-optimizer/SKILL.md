@@ -196,34 +196,34 @@ triggers=["what bills do I need to pay", "what's due this week", "which bills ca
 <Templates>
 
 <Template - Bill Plan>
-# 💳 Bill Pay Plan - {{date}}
+# Bill Pay Plan - {{date}}
 
 {{staleness_warning_if_any}}
 {{buffer_note_if_default}}
 
-## 💰 Spendable Cash
+## Spendable Cash
 **{{spendable_cash}}** (Bank accounts only; restricted funds and non-cash assets excluded)
 
-## 🔴 Needs Your Confirmation
+## Needs Your Confirmation
 {{held_outliers_and_duplicates_or_none}}
 
-## ✅ Pay Now ({{pay_now_total}})
+## Pay Now ({{pay_now_total}})
 {{pay_now_table}}
 
-## ⏳ Wait Until Due / Past-Due Exceptions ({{wait_total}})
+## Wait Until Due / Past-Due Exceptions ({{wait_total}})
 {{wait_table_with_due_dates}}{{past_due_exceptions_with_cost_if_any}}
 
-## 💡 Discount Opportunities
+## Discount Opportunities
 {{discount_table_with_savings_and_annualized_cost_or_none}}
 
-## 📊 After Recommended Payments
+## After Recommended Payments
 - Starting spendable cash: {{spendable_cash}}
 - Paying now: -{{pay_now_total}}
 - **Projected balance (before incoming payments): {{projected_balance}}**
 - If collected (risk-adjusted, does not drive this plan): {{if_collected_or_none}}
 - Buffer status: {{above_or_below_buffer}}
 
-## 📧 Email Scan
+## Email Scan
 {{email_scan_status_and_new_invoices}}
 
 <small>Scope: QuickBooks Bills only. Payroll, owner draws, and auto-debits not entered as bills are NOT included, so this is a bills-only check, not a full cash forecast. This tool does not pay anyone and changes nothing in QuickBooks - you pay through your bank or each vendor's portal.</small>

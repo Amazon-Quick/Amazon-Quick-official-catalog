@@ -4,7 +4,7 @@ display_name: Restaurant Morning Briefing
 icon: "🍽️"
 description: "Generate a daily morning briefing for a restaurant manager covering a 7-day demand outlook with staffing and prep recommendations. Combines live weather data, local event schedules, and competitor activity to calculate demand multipliers, then derives actionable labor and inventory guidance. Use when the user asks for 'morning briefing', 'daily briefing', 'restaurant briefing', 'staffing recommendations', 'labor plan', 'prep guidance', 'prep checklist', 'what should I expect this week'."
 created_date: "2026-06-11"
-last_updated: "2026-06-16"
+last_updated: "2026-07-03"
 tools: [web_search, url_fetch, run_python, get_current_time]
 inputs:
   - name: restaurant_name
@@ -45,7 +45,7 @@ inputs:
 
 ## Overview
 
-Produces a comprehensive morning briefing for restaurant managers with a 7-day demand outlook, staffing plan, and prep guidance, all derived from live weather data, local event schedules, and competitor activity. Recommendations are calculated using heuristic demand multipliers (not statistical forecasting or ML models). Designed to be run daily, either manually or via a scheduled agent.
+Produces a morning briefing for restaurant managers with a 7-day demand outlook, staffing plan, and prep guidance, all derived from live weather data, local event schedules, and competitor activity. Recommendations use heuristic demand multipliers (not statistical forecasting or ML models). Designed to run daily, manually or via a scheduled agent.
 
 ## Workflow
 
@@ -74,70 +74,27 @@ A factor (0.5x to 2.0x) representing expected customer volume relative to a norm
 </Definition - Demand Multiplier>
 
 <Definition - Labor Plan>
-Staffing recommendation for each day expressed as:
-- FOH (Front of House) adjustment: servers, hosts, bussers
-- BOH (Back of House) adjustment: line cooks, prep cooks, dishwashers
-- Call-in recommendation: whether to have extra staff on standby
+Per-day staffing recommendation: FOH (Front of House) adjustment (servers, hosts, bussers), BOH (Back of House) adjustment (line cooks, prep cooks, dishwashers), and a call-in recommendation (whether to keep extra staff on standby).
 </Definition - Labor Plan>
 
 <Definition - Prep Checklist>
-A daily prep list with specific quantities for each food category, scaled to the day's demand multiplier. Formula:
-- Base quantity = normal daily prep amount (derived from {{avg_covers_per_day}} and cuisine type)
-- Adjusted quantity = Base quantity x Demand Multiplier
-- Round to practical kitchen units (lbs, heads, cases, each)
-- Group by prep station: Cold (salads, garnishes), Hot (proteins, sides), Pastry (desserts, bread), Bar (beverages, ice)
-- Flag items with short shelf life that should NOT be over-prepped even on high-demand days
+A daily prep list scaled to the day's demand multiplier. Formula: adjusted quantity = base quantity (normal daily prep from {{avg_covers_per_day}} and cuisine type) x Demand Multiplier, rounded to practical kitchen units (lbs, heads, cases, each). Group by prep station: Cold (salads, garnishes), Hot (proteins, sides), Pastry (desserts, bread), Bar (beverages, ice). Flag short-shelf-life items that should NOT be over-prepped even on high-demand days.
 </Definition - Prep Checklist>
 
 <Definition - Menu & Promo Recommendations>
-Contextual suggestions for menu specials and promotions based on:
-- Weather-driven cravings: hot weather = cold/light items, cold/rainy = comfort food, soups
-- Event tie-ins: sports watching = shareable plates, game-day combos; concerts = pre-show prix fixe
-- Inventory optimization: push items at risk of waste, feature seasonal ingredients at peak freshness
-- Competitor differentiation: counter competitor promos with unique offerings
-- Day-part targeting: lunch specials on slow days, happy hour extensions, late-night menus for event nights
+Contextual specials and promotions driven by: weather cravings (hot = cold/light items, cold/rainy = comfort food and soups), event tie-ins (shareable plates and game-day combos for sports, pre-show prix fixe for concerts), inventory optimization (push waste-risk items, feature peak-freshness seasonal ingredients), competitor differentiation (counter competitor promos with unique offerings), and day-part targeting (lunch specials on slow days, happy hour extensions, late-night menus for event nights).
 </Definition - Menu & Promo Recommendations>
 
 <Definition - Customer Feedback Monitor>
-Social media and review sentiment analysis covering:
-- Google Reviews: Recent ratings and review text (last 7 days)
-- Yelp: Recent reviews and overall trend (improving/declining/stable)
-- Social media mentions: Twitter/X, Instagram, TikTok, Facebook mentions of the restaurant
-- Sentiment categories: Positive (praise, recommendations), Negative (complaints, issues), Neutral (mentions without judgment)
-- Common themes: Food quality, service speed, cleanliness, value, ambiance, specific menu items
-- Actionable signals: Repeated complaints (must fix), trending praise (double down), viral moments (capitalize)
-- Competitor sentiment: How nearby competitors are being reviewed/mentioned (opportunity detection)
-- Response priority: Flag reviews/posts that need immediate management response
+Review and social sentiment analysis across Google Reviews and Yelp (recent ratings, text, and overall trend) and social mentions (Twitter/X, Instagram, TikTok, Facebook). Classify each item Positive (praise), Negative (complaints), or Neutral; group by theme (food quality, service speed, cleanliness, value, ambiance, specific menu items); and surface actionable signals: repeated complaints to fix, trending praise to double down on, viral moments to capitalize on, competitor sentiment for opportunity detection, and reviews/posts needing immediate management response.
 </Definition - Customer Feedback Monitor>
 
 <Definition - In-Store Monitor Content>
-Dynamic recommendations for what to display on in-store digital screens/menu boards throughout the day, driven by:
-- Weather context: Promote cold items when hot (frozen drinks, salads, ice cream), warm items when cold/rainy (soups, hot beverages, comfort food)
-- Time-of-day dayparts: Breakfast, lunch, afternoon, dinner, late night content rotation
-- Event tie-ins: Game-day imagery, themed graphics, countdown clocks for nearby events, "fuel up before the match" messaging
-- Demand level: High-demand periods = upsell premium items, combo deals; Low-demand = value deals, LTOs to drive traffic
-- Inventory push: Feature items with high stock or approaching expiry; suppress items running low
-- Seasonal/trending: LTOs (limited time offers), new menu launches, seasonal ingredients
-- Social proof: Display positive review quotes, star ratings, "Most Ordered" badges
-- Operational: Wait time estimates, mobile order pickup callouts, loyalty rewards reminders
-
-Content types for monitors:
-1. **Hero Promotion** (main screen): Large visual, the single most impactful item/deal for current context
-2. **Menu Board Highlights** (ordering area): Top 3-5 items to spotlight based on weather + demand
-3. **Upsell Prompts** (order confirmation screen): "$1 Freeze?" type contextual add-ons
-4. **Ambient/Brand** (waiting area): Social proof, reviews, behind-the-scenes, event hype content
-5. **Drive-Thru Board** (external): Value-focused quick-decision items optimized for speed
-
-Each recommendation includes: content description, suggested visual style, display duration, daypart targeting, and rotation priority.
+Dynamic screen and menu-board content for the day, driven by: weather context (cold items when hot, warm items when cold/rainy), time-of-day dayparts (breakfast, lunch, afternoon, dinner, late night), event tie-ins (game-day imagery, countdown clocks, "fuel up before the match" messaging), demand level (upsell premium items and combos when high; value deals and LTOs when low), inventory push (feature high-stock or near-expiry items, suppress low ones), seasonal/trending launches, social proof (review quotes, star ratings, "Most Ordered" badges), and operational notes (wait-time estimates, mobile-pickup callouts, loyalty reminders). Output covers five zones detailed in the In-Store Monitor Content workflow: Hero Promotion (main screen), Menu Board Highlights (ordering area), Upsell Prompts (order confirmation), Ambient/Brand (waiting area), and Drive-Thru Board (external). Each recommendation includes content description, visual style, display duration, daypart targeting, and rotation priority.
 </Definition - In-Store Monitor Content>
 
 <Definition - Inventory Guidance>
-Prep and ordering recommendations across categories:
-- Proteins (meat, seafood, poultry)
-- Produce (fresh vegetables, fruits, herbs)
-- Beverages (alcohol, soft drinks, coffee)
-- Dry goods & staples (bread, pasta, rice, oils)
-- Specialty items (desserts, seasonal specials)
+Prep and ordering recommendations across five categories: Proteins (meat, seafood, poultry), Produce (fresh vegetables, fruits, herbs), Beverages (alcohol, soft drinks, coffee), Dry goods & staples (bread, pasta, rice, oils), and Specialty items (desserts, seasonal specials).
 </Definition - Inventory Guidance>
 
 <Definition - Methodology>
@@ -517,13 +474,13 @@ triggers=["menu recommendations", "what specials should I run", "promo ideas", "
 <Templates>
 
 <Template - Morning Briefing>
-# 🍽️ Morning Briefing: {{restaurant_name}}
-**📅 [Date] | [Day of Week]**
-**📍 {{location}}**
+# Morning Briefing: {{restaurant_name}}
+**[Date] | [Day of Week]**
+**{{location}}**
 
 ---
 
-## ☀️ 7-Day Demand & Weather Outlook
+## 7-Day Demand & Weather Outlook
 
 | Day | Date | High/Low | Conditions | Precip % | Impact |
 |-----|------|----------|------------|----------|--------|
@@ -531,7 +488,7 @@ triggers=["menu recommendations", "what specials should I run", "promo ideas", "
 
 ---
 
-## 📅 Key Events & Demand Drivers
+## Key Events & Demand Drivers
 
 | Date | Event | Expected Scale | Distance | Demand Impact |
 |------|-------|----------------|----------|---------------|
@@ -541,18 +498,18 @@ triggers=["menu recommendations", "what specials should I run", "promo ideas", "
 
 ---
 
-## 👥 Labor Plan (Next 7 Days)
+## Labor Plan (Next 7 Days)
 
 | Day | Date | Demand | FOH Adj. | BOH Adj. | Notes |
 |-----|------|--------|----------|----------|-------|
 | ... | ...  | ...    | ...      | ...      | ...   |
 
-**⚡ Implement Today:**
+**Implement Today:**
 - [Specific staffing actions to take today]
 
 ---
 
-## 📦 Inventory & Prep Guidance (Next 7 Days)
+## Inventory & Prep Guidance (Next 7 Days)
 
 | Category | Mon-Wed Adj. | Thu-Fri Adj. | Weekend Adj. | Key Items |
 |----------|-------------|-------------|--------------|-----------|
@@ -562,12 +519,12 @@ triggers=["menu recommendations", "what specials should I run", "promo ideas", "
 | Dry Goods| ...         | ...         | ...          | ...       |
 | Specialty| ...         | ...         | ...          | ...       |
 
-**⚡ Order Today:**
+**Order Today:**
 - [Items that need to be ordered/prepped today for upcoming demand]
 
 ---
 
-## ⚠️ Key Risks & Watch Items
+## Key Risks & Watch Items
 
 - [Risk 1: e.g., "Storm system Thursday could drop demand 30%, have contingency for reduced prep"]
 - [Risk 2: e.g., "Large concert Saturday, expect 45-min wait times, consider reservations-only"]

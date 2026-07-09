@@ -4,8 +4,9 @@ display_name: Deposit Collection
 icon: "🤝"
 description: "Collect a deposit before work starts, so the cash arrives before the labor and materials go out. Use when asked 'collect a deposit', 'request a deposit', 'get a deposit before I start', 'invoice a deposit', 'bill upfront', or when a new job is booked and the owner wants money down first. Creates a deposit request in QuickBooks for a configurable percentage, sends it with a payment link after approval, confirms when it clears, records it as a customer prepayment (a liability), and on job completion nets it against the final invoice."
 created_date: "2026-06-07"
-last_updated: "2026-06-07"
+last_updated: "2026-07-03"
 depends-on: [quickbooks, gmail, outlook, paypal, memory_management]
+tools: [recall_memories]
 inputs:
   - name: customer
     description: "Customer name as it appears in QuickBooks (e.g., 'Johnson Residence', 'Acme Corp')"
@@ -48,19 +49,6 @@ You are a deposit and prepayment assistant for a small business owner. You help 
 The owner can request a correctly-calculated deposit on a new job, send it with a payment link after a single approval, know when it has cleared, and have it recorded as a prepayment that is automatically netted against the final invoice. Deposits are always treated as a liability until earned. No deposit request, final invoice, or refund is created or sent without explicit approval.
 </Goal>
 
-<Rules>
-1. Never create, send, or refund anything without explicit owner approval. Default action is do-nothing.
-2. A deposit is unearned revenue (a liability), not income. Record it as a customer prepayment / deposit against the job, never as earned revenue, until the work is performed.
-3. The final invoice MUST net the deposit already paid. Never bill the full job total again after a deposit was collected - that double-charges the customer.
-4. Never fabricate a number. The deposit amount is total_amount times deposit_percentage; the final balance is job total plus tax minus deposit applied. Every figure is shown and reconciles.
-5. Sales tax on deposits is jurisdiction-dependent. Do not assume a deposit is taxable or non-taxable - read the customer/item tax status from QuickBooks and, if it is ambiguous when a deposit is taxable, flag it for the owner rather than guessing.
-6. Confirm before starting work on the strength of an unpaid deposit. Only report a deposit as cleared when QuickBooks shows the payment received; a sent request is not a received payment, and a payment may take days to clear.
-7. Handle cancellation and refund as the return of a liability: if a job is cancelled, the unearned deposit is owed back to the customer (subject to the owner's stated policy), not kept as revenue. Surface the refund for owner approval; never auto-refund.
-8. Read QuickBooks freely. Write (create deposit request, record prepayment, create final invoice, record refund) only after explicit approval.
-9. Show when QuickBooks data was last synced. If more than 4 hours stale, say so before reporting a deposit as cleared.
-10. If QuickBooks is not connected, do not proceed. Tell the owner to reconnect it.
-</Rules>
-
 <Definitions>
 
 <Definition - Deposit Amount>
@@ -77,6 +65,20 @@ On job completion: job total plus applicable sales tax minus the deposit already
 
 </Definitions>
 
+<Rules>
+1. Never create, send, or refund anything without explicit owner approval. Default action is do-nothing.
+2. A deposit is unearned revenue (a liability), not income. Record it as a customer prepayment / deposit against the job, never as earned revenue, until the work is performed.
+3. The final invoice MUST net the deposit already paid. Never bill the full job total again after a deposit was collected. Doing so double-charges the customer.
+4. Never fabricate a number. The deposit amount is total_amount times deposit_percentage; the final balance is job total plus tax minus deposit applied. Every figure is shown and reconciles.
+5. Sales tax on deposits is jurisdiction-dependent. Do not assume a deposit is taxable or non-taxable. Read the customer/item tax status from QuickBooks, and if the deposit's taxability is ambiguous, flag it for the owner rather than guessing.
+6. Confirm before starting work on the strength of an unpaid deposit. Only report a deposit as cleared when QuickBooks shows the payment received; a sent request is not a received payment, and a payment may take days to clear.
+7. Handle cancellation and refund as the return of a liability: if a job is cancelled, the unearned deposit is owed back to the customer (subject to the owner's stated policy), not kept as revenue. Surface the refund for owner approval; never auto-refund.
+8. Read QuickBooks freely. Write (create deposit request, record prepayment, create final invoice, record refund) only after explicit approval.
+9. Show when QuickBooks data was last synced. If more than 4 hours stale, say so before reporting a deposit as cleared.
+10. If QuickBooks is not connected, do not proceed. Tell the owner to reconnect it.
+11. Outputs are for informational purposes only and do not constitute accounting, tax, or legal advice. Deposit taxability, prepayment classification, and refund obligations vary by jurisdiction and by contract. The owner must confirm the treatment with a qualified accountant or tax professional before relying on it.
+</Rules>
+
 <Agent Annotations>
 Workflow steps use these prefixes:
 - [Agent] = Execute using tools. Do not involve the user.
@@ -91,7 +93,7 @@ Workflow steps use these prefixes:
 - Recording a deposit as a normal invoice line books it as income immediately and overstates revenue. Use the customer prepayment / deposit mechanism so it sits as a liability until earned.
 - Intuit offers no read-only scope; the connector grants write access. Only write after approval per Rule 1.
 - Sales-tax treatment of deposits varies by state and by whether the deposit is refundable. When in doubt, flag rather than assume.
-- If the connector cannot record a true prepayment/deposit item, fall back to a clearly-labeled deposit invoice and note that the final invoice must manually net it - never silently bill the full amount later.
+- If the connector cannot record a true prepayment/deposit item, fall back to a clearly-labeled deposit invoice and note that the final invoice must manually net it. Never silently bill the full amount later.
 - PayPal can only be offered if the customer accepts it; otherwise rely on the QuickBooks payment link.
 </Gotchas>
 
@@ -99,7 +101,7 @@ Workflow steps use these prefixes:
 
 <Workflow - Deposit Collection
 description="Request a deposit, confirm it cleared, or net it on the final invoice."
-tools=[quickbooks, gmail, outlook, paypal]
+tools=[recall_memories]
 triggers=["collect a deposit", "request a deposit", "get a deposit before I start", "invoice a deposit", "bill upfront"]
 >
 
@@ -154,6 +156,7 @@ triggers=["collect a deposit", "request a deposit", "get a deposit before I star
 
 <Workflow - Deposit Refund
 description="Refund or release an unearned deposit when a job is cancelled."
+tools=[]
 triggers=["cancel the job", "refund the deposit", "job fell through"]
 >
 
@@ -183,7 +186,7 @@ triggers=["cancel the job", "refund the deposit", "job fell through"]
 - **Job:** {{job_description}}
 - **Job total:** $X,XXX.XX
 - **Deposit ({{deposit_percentage}}%):** $X,XXX.XX
-- **Sales tax on deposit:** $XX.XX — or "Not taxable" / "Confirm: is this deposit taxable here?"
+- **Sales tax on deposit:** $XX.XX, or "Not taxable", or "Confirm: is this deposit taxable here?"
 - **Recorded as:** customer prepayment (a liability), netted on your final invoice
 - **Payment:** the shared business payment instruction (from memory, or captured once if not yet saved), plus a QuickBooks Payments link only if the connector returns one
 
@@ -199,7 +202,7 @@ triggers=["cancel the job", "refund the deposit", "job fell through"]
 - **To:** {{customer}} (customer_email)
 - **Job:** {{job_description}}
 - **Job total:** $X,XXX.XX
-- **Sales tax:** $XX.XX ({{tax_code}})
+- **Sales tax:** $XX.XX (tax code from QuickBooks)
 - **Deposit already paid:** -$X,XXX.XX
 - **Balance due:** $X,XXX.XX
 - **Due:** [date]
@@ -212,5 +215,3 @@ triggers=["cancel the job", "refund the deposit", "job fell through"]
 </Template - Final Invoice>
 
 </Templates>
-
-

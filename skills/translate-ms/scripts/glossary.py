@@ -1,5 +1,5 @@
 """
-Phase 1 — Custom translation glossary handling.
+Phase 1, Custom translation glossary handling.
 
 Parses the user-editable glossary CSV (references/glossary.csv), matches source
 and target language columns, and generates per-batch glossary instruction blocks
@@ -9,7 +9,7 @@ terminology (brand names to preserve, domain-specific translations, etc.).
 Also provides sanitize_batch_for_embedding() which serializes a batch list to
 compact JSON for safe embedding in worker objective strings.
 
-Self-contained — no cross-file dependencies.
+Self-contained, no cross-file dependencies.
 """
 
 import csv
@@ -122,7 +122,7 @@ def get_glossary_instruction(batch, glossary, glossary_source, glossary_target):
     if not matches:
         return ""
 
-    lines = ["GLOSSARY (use these exact translations — do not override):"]
+    lines = ["GLOSSARY (use these exact translations, do not override):"]
     lines.append("source|target|type")
     for source, target, mtype in matches:
         lines.append(f"{source}|{target}|{mtype}")

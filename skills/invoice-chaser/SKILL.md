@@ -128,17 +128,17 @@ All overdue invoices reviewed, segmented by tier, and follow-up emails either se
 
 <Definitions>
 
-- **Tier Segmentation**: three tiers by days overdue — Friendly (1 to {{friendly_threshold_days}}), Firm ({{friendly_threshold_days}}+1 to {{firm_threshold_days}}), Final Notice ({{firm_threshold_days}}+1 and beyond). Configurable; exactly one tier per invoice.
-- **Order-of-Magnitude Outlier**: any invoice ≥10x the median of the OTHERS (or ≥10x the next-largest); skip the check with fewer than 4 invoices. Flag EVERY match with a "heads up - unusually large, possible data error" annotation. Never block, drop, or reshape it — still drafted, shown in full, sendable; the owner decides at the gate. The ledger figure stands.
-- **Review Scrutiny**: tag each draft HEADS UP (outlier amount, or overdue resting on stale QB data), WORTH A GLANCE (Final Notice, unusually large, first-ever Final Notice, VIP/large account), or ROUTINE. Tags only order/annotate — never block, hold, drop, or reshape any draft.
+- **Tier Segmentation**: three tiers by days overdue. Friendly (1 to {{friendly_threshold_days}}), Firm ({{friendly_threshold_days}}+1 to {{firm_threshold_days}}), Final Notice ({{firm_threshold_days}}+1 and beyond). Configurable; exactly one tier per invoice.
+- **Order-of-Magnitude Outlier**: any invoice ≥10x the median of the OTHERS (or ≥10x the next-largest); skip the check with fewer than 4 invoices. Flag EVERY match with a "heads up - unusually large, possible data error" annotation. Never block, drop, or reshape it. It stays drafted, shown in full, sendable; the owner decides at the gate. The ledger figure stands.
+- **Review Scrutiny**: tag each draft HEADS UP (outlier amount, or overdue resting on stale QB data), WORTH A GLANCE (Final Notice, unusually large, first-ever Final Notice, VIP/large account), or ROUTINE. Tags only order/annotate. They never block, hold, drop, or reshape any draft.
 - **Approval Gate**: decision-card checkpoint. Every draft's FULL body (recipient, subject, message) is shown first, attention-worthy ones ordered first and flagged. Owner approves/edits/skips and chooses STAGE (Gmail drafts) vs SEND. Outlier flags are scrutiny, not blocks. Nothing stages/sends until the owner sees full drafts and gives explicit go-ahead; SEND carries its log + reminder obligations as one action. Default is do-nothing.
-- **Follow-up History**: per-customer log (date, tier, invoice, message ID). Drives prior-contact references, duplicate suppression within {{duplicate_window_days}}, and tier escalation. Authoritative store is structured LOCAL JSON. MAY also append to QB notes (append-only: read, append, update — never overwrite); QB notes are not the source of truth for duplicate suppression.
+- **Follow-up History**: per-customer log (date, tier, invoice, message ID). Drives prior-contact references, duplicate suppression within {{duplicate_window_days}}, and tier escalation. Authoritative store is structured LOCAL JSON. MAY also append to QB notes (append-only: read, append, update, never overwrite); QB notes are not the source of truth for duplicate suppression.
 - **Email Provider**: Gmail or Outlook, detected at runtime. If both connected, ask which. Never send from both in one run.
-- **Payment Instructions**: how customers pay, included in every chase as a "How to pay" line. Any free-text method (pay URL, PayPal/Stripe/Venmo/Zelle/Cash App, bank/ACH, check address, phone, email). Captured ONCE, stored as a SHARED business memory ("business payment instructions for customer invoices") reused by every invoicing skill. {{payment_link}} overrides memory. NEVER fabricated — in particular never a hand-built QuickBooks/Intuit pay URL. Substitute each invoice number into any {invoice}/{invoiceid}/{id} placeholder. If none on file and owner skips, send without one and note it.
+- **Payment Instructions**: how customers pay, included in every chase as a "How to pay" line. Any free-text method (pay URL, PayPal/Stripe/Venmo/Zelle/Cash App, bank/ACH, check address, phone, email). Captured ONCE, stored as a SHARED business memory ("business payment instructions for customer invoices") reused by every invoicing skill. {{payment_link}} overrides memory. NEVER fabricated, and in particular never a hand-built QuickBooks/Intuit pay URL. Substitute each invoice number into any {invoice}/{invoiceid}/{id} placeholder. If none on file and owner skips, send without one and note it.
 - **Cross-Channel Payment**: payments made outside QuickBooks (bank/check/cash) may not be reconciled yet, so Firm/Final Notice emails carry a soft "may have already paid" caveat (owner can disable if books are reconciled).
 - **Reminder Channel**: Email (default), SMS (Twilio; shorter/urgent), or Both (use sparingly). If Twilio not connected, fall back to email-only silently.
 - **Customer Groups**: named segments overriding tone, thresholds, channel, schedule. One group per customer; ungrouped use global defaults.
-- **Reminder Schedule (Interval-Based)**: alternative to tiers — post-due touchpoints (e.g. +3, +7, +14, +21, +30) mapped to tone (+1–14 Friendly, +15–30 Firm, +31+ Final). When `schedule` is set, only draft the next unsent interval per Follow-up History. Values must be ≥0; pre-due reminders belong to Deposit Collection.
+- **Reminder Schedule (Interval-Based)**: alternative to tiers. Post-due touchpoints (e.g. +3, +7, +14, +21, +30) mapped to tone (+1–14 Friendly, +15–30 Firm, +31+ Final). When `schedule` is set, only draft the next unsent interval per Follow-up History. Values must be ≥0; pre-due reminders belong to Deposit Collection.
 </Definitions>
 
 <Rules>
@@ -199,7 +199,7 @@ triggers=["who hasn't paid me", "what's overdue", "chase unpaid invoices", "send
 1. [Agent] Pull all overdue invoices from QuickBooks using `quickbooks__QueryEntities` (entity: Invoice). Query for invoices with a positive balance, then compute days overdue relative to today in-memory. Validate every invoice has a positive balance and a due date in the past. Flag any with missing customer reference.
    Also pull customer notes for each customer with overdue invoices (query the Customer entity via `quickbooks__QueryEntities` and read its notes/memo field). These notes contain chase history from prior runs, payment arrangements, disputes, and owner context - they are needed in Step 5 (Rule 2 precondition) and Step 8 (prior-notification display). Pull them now so they are available without a second round-trip.
    If auth error: prompt owner to re-link QuickBooks.
-   If 0 results: exit early with "No overdue invoices - you're caught up. 🎉"
+   If 0 results: exit early with "No overdue invoices - you're caught up."
 
 2. [Think] Note that QuickBooks data may not reflect payments received outside the system (bank transfers, checks, cash). These unreconciled payments mean some "overdue" invoices may already be paid. The soft-payment caveat in Firm and Final Notice templates accounts for this. No tool call needed - proceed to Step 3.
 
@@ -409,7 +409,7 @@ triggers=["set up customer groups", "segment my customers", "different reminders
 
 <Templates>
 
-**Email subjects** — Friendly: "Quick reminder: Invoice #{{invoice_number}} is past due" · Firm: "Follow-up: Invoice #{{invoice_number}} - {{days_overdue}} days overdue" · Final Notice: "Final Notice: Invoice #{{invoice_number}} - immediate attention required"
+**Email subjects**. Friendly: "Quick reminder: Invoice #{{invoice_number}} is past due" · Firm: "Follow-up: Invoice #{{invoice_number}} - {{days_overdue}} days overdue" · Final Notice: "Final Notice: Invoice #{{invoice_number}} - immediate attention required"
 
 All emails follow Rule 20 formatting (greeting on its own line; blank line between paragraphs; payment line on its own line; sign-off word and owner name on two adjacent lines, no blank line between; plain-text currency like $1,234.56; vary phrasing across runs). Include the "How to pay" line only when a payment instruction is on file.
 
@@ -432,9 +432,9 @@ Thanks,
 John Walker
 ```
 
-**SMS** (≤160 chars) — Friendly: "Hi {{name}}, reminder: Invoice #{{num}} ({{amt}}) was due {{date}}. Questions? Reply or email us." · Firm: "{{name}}: Invoice #{{num}} ({{amt}}) is {{days}}d overdue. Please pay ASAP or contact us." · Final: "FINAL NOTICE: #{{num}} ({{amt}}) {{days}}d overdue. Contact us immediately to avoid escalation."
+**SMS** (≤160 chars). Friendly: "Hi {{name}}, reminder: Invoice #{{num}} ({{amt}}) was due {{date}}. Questions? Reply or email us." · Firm: "{{name}}: Invoice #{{num}} ({{amt}}) is {{days}}d overdue. Please pay ASAP or contact us." · Final: "FINAL NOTICE: #{{num}} ({{amt}}) {{days}}d overdue. Contact us immediately to avoid escalation."
 
-**Run Summary** (end of every run, including dry runs): invoices reviewed; emails sent (count + per tier); skipped (below minimum / duplicate / owner-skipped); missing contact info; logging status; "ℹ️ soft-payment caveat included on Firm/Final" if active; "🏷️ DRY RUN - nothing was sent" if dry run.
+**Run Summary** (end of every run, including dry runs): invoices reviewed; emails sent (count + per tier); skipped (below minimum / duplicate / owner-skipped); missing contact info; logging status; "Note: soft-payment caveat included on Firm/Final" if active; "DRY RUN - nothing was sent" if dry run.
 
-**Auto-Schedule Notification** (activity feed, draft_only mode): "📬 Invoice Chaser ran automatically - {{count}} draft reminders ready for review. {{f}} Friendly, {{fi}} Firm, {{fn}} Final Notice. Total: {{total_amount}}. Review and approve when ready."
+**Auto-Schedule Notification** (activity feed, draft_only mode): "Invoice Chaser ran automatically - {{count}} draft reminders ready for review. {{f}} Friendly, {{fi}} Firm, {{fn}} Final Notice. Total: {{total_amount}}. Review and approve when ready."
 </Templates>

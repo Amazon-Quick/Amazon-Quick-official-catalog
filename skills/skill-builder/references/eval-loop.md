@@ -71,6 +71,10 @@ skill-name-workspace/
 ```
 
 When improving an existing skill, snapshot the current version first and point the baseline at the snapshot, saving to `old_skill/` instead of `without_skill/`. That measures the new version against the real prior one, not against nothing.
+
+The workspace holds working data for the loop, not output that ships. Its per-iteration folders, `metrics.json`, `grading.json`, and `benchmark.json` exist to drive analysis while you iterate. Once the pass is finalized, delete the `skill-name-workspace/` directory, and never commit it. The only eval artifacts that belong in version control are the ones inside the skill's own `evals/`: `evals.json`, the supporting files under `evals/files/`, and `eval_result_<date>.md`.
+
+Keep `eval_result_<date>.md` self-contained for the same reason a skill is (Rule 11): it can report what the runs showed, but it must not send the reader to workspace paths, iteration folders, or per-run files, because those are deleted with the workspace and the reference would dangle. When a case reads a fixture, name it by its committed `evals/files/` path, never its workspace location.
 </workspace_layout>
 
 <improvement_principles>

@@ -1,5 +1,5 @@
 """
-Phase 1 — Document extraction for the translate-ms skill.
+Phase 1, Document extraction for the translate-ms skill.
 
 Offloads XML parsing, run merging, and state management to deterministic code
 (rather than LLM reasoning) eliminates expensive inference steps, enables reliable

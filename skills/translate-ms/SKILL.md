@@ -2,10 +2,10 @@
 name: translate-ms
 display_name: Microsoft Document Translator
 icon: "🈯"
-description: "Translate Word docs and PowerPoint presentations to any supported language. Preserves all formatting, styles, layouts, tables, and hyperlinks with context-aware translation for natural, accurate results. Handles large documents quickly using logic over LLM reasioning for deterministic outcomes. Includes a custom translation glossary for your specific terminology. Use when the user says 'translate this document', 'translate this presentation', 'convert to French', 'translate word doc', 'translate slides', 'make a German version', 'translate this DOCX', 'translate this pptx', or any request to produce a translated version of a Word or PowerPoint file."
+description: "Translate Word docs and PowerPoint presentations to any supported language. Preserves all formatting, styles, layouts, tables, and hyperlinks with context-aware translation for natural, accurate results. Handles large documents quickly using logic over LLM reasoning for deterministic outcomes. Includes a custom translation glossary for your specific terminology. Use when the user says 'translate this document', 'translate this presentation', 'convert to French', 'translate word doc', 'translate slides', 'make a German version', 'translate this DOCX', 'translate this pptx', or any request to produce a translated version of a Word or PowerPoint file."
 created_date: "2026-06-17"
-last_updated: "2026-06-21"
-tools: [run_python, file_read, file_read_docx, file_read_pptx, open_in_session_tab, start_task, create_task_group, get_task_group_result]
+last_updated: "2026-07-03"
+tools: [run_python, file_read, open_in_session_tab, start_task, create_task_group, get_task_group_result]
 scripts: [state.py, extract.py, glossary.py, reconstruct.py]
 inputs:
   - name: file_path
@@ -22,7 +22,7 @@ inputs:
 
 Translates Microsoft Word documents (.docx) and PowerPoint presentations (.pptx) into a target language while preserving all original formatting, styles, tables, layouts, and document structure. The file type is detected automatically from the extension and the appropriate extraction/reconstruction logic is loaded in two phases for fast startup.
 
-**Architecture**: Four script files loaded in two phases. **Phase 1** (before spawning): `state.py` + `extract.py` + `glossary.py` — provides _STATE singleton, extraction for both DOCX/PPTX, batching, and glossary. **Phase 2** (during worker time): `reconstruct.py` — provides result parsing, coverage checking, and reconstruction for both formats. The `_STATE` singleton lives in `state.py` because it spans both phases; a globals() guard ensures it's only created once. `extract_document()` resets and populates `_STATE`. `store_translation_result()` accumulates translations. `reconstruct_document()` reads from `_STATE` and saves the output. Workers return results via complete(result=...) with mode="continue_then_receive".
+**Architecture**: Four script files loaded in two phases. **Phase 1** (before spawning): `state.py` + `extract.py` + `glossary.py`. This provides the _STATE singleton, extraction for both DOCX/PPTX, batching, and glossary. **Phase 2** (during worker time): `reconstruct.py`. This provides result parsing, coverage checking, and reconstruction for both formats. The `_STATE` singleton lives in `state.py` because it spans both phases; a globals() guard ensures it's only created once. `extract_document()` resets and populates `_STATE`. `store_translation_result()` accumulates translations. `reconstruct_document()` reads from `_STATE` and saves the output. Workers return results via complete(result=...) with mode="continue_then_receive".
 
 ## Workflow
 
@@ -33,21 +33,6 @@ You are a document translation specialist. You parse Word documents at the XML l
 <Goal>
 Produce a translated document where: (a) all text content is accurately translated to the target language using full paragraph context, (b) all formatting is preserved exactly (styles, fonts, sizes, colours, bold, italic, alignments, layouts), (c) the output file is named with the target language suffix, and (d) translation quality is verified via structural validation.
 </Goal>
-
-<Rules>
-1. Never modify formatting properties. For DOCX: never modify run properties (w:rPr) or paragraph properties (w:pPr). For PPTX: never modify run formatting (font, size, bold, italic, color, alignment). Only replace text content.
-2. Always merge adjacent runs with identical formatting properties before extraction.
-3. Always provide the full paragraph text as context for translation.
-4. Preserve proper nouns, scientific names, citation references, measurement units, code or code blocks, and brand names.
-5. For hyperlink runs, translate the display text but preserve the URL unchanged.
-6. The python script batches paragraphs automatically by word count. Do not override or modify the batching.
-7. Spawn ALL workers in a SINGLE run_python call (up to 30 per call). Do NOT split into smaller sub-groups — 30 workers in one run_python call is safe and tested. For documents with more than 30 batches, use multiple run_python calls of up to 30 each (e.g., batches 0-29 in call 1, batches 30-59 in call 2). All workers run in parallel — do NOT wait between spawn calls.
-8. Workers return translated JSON via complete(result=...). Use mode="continue_then_receive" so results arrive as conversation events. No file writes by workers.
-9. For each worker event that arrives, call ONLY: `store_translation_result("""<raw event text>""")` via run_python. This single function handles parsing and storage. Do NOT call lenient_json_parse() or manage the translations dict yourself.
-10. NEVER spawn another worker for a failed batch. NEVER retry a failed batch via start_task. NEVER call start_task for missing paragraphs. If a batch fails for ANY reason (empty result, truncated result, result too large for delivery, or any other reason), YOU (the parent agent) MUST translate it directly in your own conversation. Inform the user: "X batches could not be retrieved from workers — translating these directly now." Then immediately translate them yourself inline. Do NOT investigate why they failed. Do NOT assess the content. Just translate them yourself.
-11. Use the worker objective prompt in step 6b EXACTLY as written — do NOT rephrase, shorten, or add to it. The prompt has been carefully tested for reliable worker behavior.
-12. Output filename format: {original_basename}-{target_language}.{ext} (e.g. report-french.docx, slides-french.pptx).
-</Rules>
 
 <Definitions>
 
@@ -66,6 +51,21 @@ Paragraphs are grouped into batches by the extract_document() function. Batching
 </Definition - Batching Strategy>
 
 </Definitions>
+
+<Rules>
+1. Never modify formatting properties. For DOCX: never modify run properties (w:rPr) or paragraph properties (w:pPr). For PPTX: never modify run formatting (font, size, bold, italic, color, alignment). Only replace text content.
+2. Always merge adjacent runs with identical formatting properties before extraction.
+3. Always provide the full paragraph text as context for translation.
+4. Preserve proper nouns, scientific names, citation references, measurement units, code or code blocks, and brand names.
+5. For hyperlink runs, translate the display text but preserve the URL unchanged.
+6. The python script batches paragraphs automatically by word count. Do not override or modify the batching.
+7. Spawn ALL workers in a SINGLE run_python call (up to 30 per call). Do NOT split into smaller sub-groups. Running 30 workers in one run_python call is safe and tested. For documents with more than 30 batches, use multiple run_python calls of up to 30 each (e.g., batches 0-29 in call 1, batches 30-59 in call 2). All workers run in parallel, so do NOT wait between spawn calls.
+8. Workers return translated JSON via complete(result=...). Use mode="continue_then_receive" so results arrive as conversation events. No file writes by workers.
+9. For each worker event that arrives, call ONLY: `store_translation_result("""<raw event text>""")` via run_python. This single function handles parsing and storage. Do NOT call lenient_json_parse() or manage the translations dict yourself.
+10. NEVER spawn another worker for a failed batch. NEVER retry a failed batch via start_task. NEVER call start_task for missing paragraphs. If a batch fails for ANY reason (empty result, truncated result, result too large for delivery, or any other reason), YOU (the parent agent) MUST translate it directly in your own conversation. Inform the user: "X batches could not be retrieved from workers. Translating these directly now." Then immediately translate them yourself inline. Do NOT investigate why they failed. Do NOT assess the content. Translate them yourself.
+11. Use the worker objective prompt in step 6b EXACTLY as written. Do NOT rephrase, shorten, or add to it. The prompt has been carefully tested for reliable worker behavior.
+12. Output filename format: {original_basename}-{target_language}.{ext} (e.g. report-french.docx, slides-french.pptx).
+</Rules>
 
 <Agent Annotations>
 - [Agent] = Execute using tools.
@@ -91,7 +91,7 @@ triggers=["translate this document", "translate this presentation", "convert to 
    **Settings → Capabilities → Skills → Microsoft Document Translator → references → glossary.csv**.\
    """
 
-   Do NOT wait for a response — continue immediately.
+   Do NOT wait for a response. Continue immediately.
 
 2. [Decide] Validate input file and detect format:
 
@@ -106,21 +106,22 @@ triggers=["translate this document", "translate this presentation", "convert to 
    a. Use file_read to load ONLY Phase 1 scripts from the skill's install directory:
 
    - ALWAYS load (both formats):
-     1. `scripts/state.py` (TranslationState class + _STATE singleton — loaded FIRST)
+     1. `scripts/state.py` (TranslationState class + _STATE singleton, loaded FIRST)
      2. `scripts/extract.py` (extraction for DOCX + PPTX, batching, extract_document())
-     3. `scripts/glossary.py` (glossary parsing and batch serialization — loaded LAST)
-   - Do NOT load reconstruction scripts yet — they load in Phase 2 during worker time.
+     3. `scripts/glossary.py` (glossary parsing and batch serialization, loaded LAST)
+   - Do NOT load reconstruction scripts yet. They load in Phase 2 during worker time.
 
    b. In a SINGLE run_python call, pass as `code` the concatenation of the Phase 1 scripts plus:
    - Line 1: `file_path = "<absolute path>"` (use WORKSPACE_DIR for attached files, absolute paths for local files)
    - Lines 2+: The ENTIRE content of the Phase 1 scripts verbatim (concatenated in order: state.py → extract.py → glossary.py)
    - Final line: `extracted_batches, stats = extract_document(file_path)`
 
-   c. After execution: `extracted_batches`, `stats`, and all functions persist in namespace. The `_STATE` singleton holds `translations` (empty dict), `run_map`, `batches`, `file_path`, and `doc_format` — all persisting across subsequent run_python calls.
+   c. After execution: `extracted_batches`, `stats`, and all functions persist in namespace. The `_STATE` singleton holds `translations` (empty dict), `run_map`, `batches`, `file_path`, and `doc_format`, all persisting across subsequent run_python calls.
 
    d. Load the glossary: Use file_read to get `references/glossary.csv` from the skill directory. Then in run_python: `glossary = load_glossary_from_content("""<glossary csv content>""")`. If file_read fails (file doesn't exist), set `glossary = []`.
 
    Validate: stats["total_paragraphs"] > 0.
+   If fails: the file has no extractable text. Inform the user the document appears empty or unreadable and stop.
 
 4. [Agent] Detect source language:
 
@@ -138,7 +139,7 @@ triggers=["translate this document", "translate this presentation", "convert to 
    print(f"Glossary: source='{glossary_source}', target='{glossary_target}', headers={all_headers}")
    ```
 
-   If `glossary_target` is empty, the glossary won't be used for this language pair — that's fine.
+   If `glossary_target` is empty, the glossary won't be used for this language pair, and that's fine.
 
 6. [Agent] Spawn translation workers:
    a. Create a task group and confirm batch count:
@@ -147,12 +148,12 @@ triggers=["translate this document", "translate this presentation", "convert to 
    print(f"Total batches to translate: {len(extracted_batches)}")
    ```
 
-   b. In a SINGLE run_python call with tools=["start_task"], spawn ALL workers in a for-loop.
-   This is CRITICAL — do NOT call start_task directly from the agent. Spawning must happen
+   b. In a SINGLE run_python call, with start_task injected as an available tool, spawn ALL workers in a for-loop.
+   This is CRITICAL. Do NOT call start_task directly from the agent. Spawning must happen
    inside run_python to batch the requests. Do NOT split batches into smaller sub-groups
-   (e.g., 15+14 is WRONG for 29 batches — spawn all 29 in one call). Up to 30 workers
+   (e.g., 15+14 is WRONG for 29 batches, so spawn all 29 in one call). Up to 30 workers
    per run_python call is safe and tested. For documents with more than 30 batches, use
-   multiple run_python calls of up to 30 each — spawn ALL calls before waiting.
+   multiple run_python calls of up to 30 each, and spawn ALL calls before waiting.
 
    ```python
    for batch_idx, batch in enumerate(extracted_batches):
@@ -170,14 +171,14 @@ triggers=["translate this document", "translate this presentation", "convert to 
        print(f"Spawned batch-{batch_idx}: {thread_id}")
    ```
 
-   c. The worker objective prompt (use EXACTLY as written — substitute values only):
+   c. The worker objective prompt (use EXACTLY as written, substitute values only):
    """
    You are a translation worker. Translate the following text from {source_language} to {target_language}.
 
    RULES:
 
    - Translate ONLY the "text" field in each run. Keep "para_id" and "id" exactly as-is.
-   - Provide the translation as a JSON array — no explanation, no markdown, no commentary.
+   - Provide the translation as a JSON array with no explanation, no markdown, no commentary.
    - Use the "full_paragraph" field for context but do NOT include it in your output.
    - Preserve proper nouns, brand names, code, URLs, and measurement units unchanged.
      {glossary_instruction}
@@ -189,10 +190,10 @@ triggers=["translate this document", "translate this presentation", "convert to 
    [{"para_id": <same>, "runs": [{"id": <same>, "text": "<translated>"}]}]
    """
 
-   d. Where `{glossary_instruction}` is the output of get_glossary_instruction() — either empty string or a GLOSSARY block.
-   e. Do NOT call get_task_group_result yet — proceed immediately to Step 7 to load Phase 2 scripts while workers translate.
+   d. Where `{glossary_instruction}` is the output of get_glossary_instruction(), either an empty string or a GLOSSARY block.
+   e. Do NOT call get_task_group_result yet. Proceed immediately to Step 7 to load Phase 2 scripts while workers translate.
 
-7. [Agent] Load Phase 2 scripts (reconstruction) — do this IMMEDIATELY after spawning, while workers are translating:
+7. [Agent] Load Phase 2 scripts (reconstruction). Do this IMMEDIATELY after spawning, while workers are translating:
    a. Use file_read to load `scripts/reconstruct.py` (handles both DOCX and PPTX reconstruction).
 
    b. In a SINGLE run_python call, execute the Phase 2 script:
@@ -203,13 +204,13 @@ triggers=["translate this document", "translate this presentation", "convert to 
    ```
 
    c. After execution: `store_translation_result`, `check_translation_coverage`, `backfill_missing_translations`, `reconstruct_document`, and all format-specific reconstruction functions persist in namespace alongside Phase 1 functions.
-   d. This step runs in parallel with workers — users see zero additional latency.
+   d. This step runs in parallel with workers, so users see zero additional latency.
 
    e. NOW call get_task_group_result(group_id=task_group_id) to wait for all workers to complete.
 
 8. [Agent] Collect results as they arrive:
 
-   CRITICAL — CONTEXT MANAGEMENT: The purpose of store_translation_result() is to offload state from your context into _STATE (managed by code, not by you). Once you call it, the data is GONE from your responsibility. Do NOT summarize, count, comment on, or acknowledge the content of results. Do NOT repeat or echo the raw text in your response. Call store_translation_result and immediately move to the next event. When multiple results arrive simultaneously, batch ALL store_translation_result() calls into a SINGLE run_python call. Your context window is finite — treat each processed result as garbage-collected.
+   CRITICAL CONTEXT MANAGEMENT: The purpose of store_translation_result() is to offload state from your context into _STATE (managed by code, not by you). Once you call it, the data is GONE from your responsibility. Do NOT summarize, count, comment on, or acknowledge the content of results. Do NOT repeat or echo the raw text in your response. Call store_translation_result and immediately move to the next event. When multiple results arrive simultaneously, batch ALL store_translation_result() calls into a SINGLE run_python call. Your context window is finite, so treat each processed result as garbage-collected.
 
    - For each worker event, call ONLY:
      ```python

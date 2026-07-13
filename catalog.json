@@ -1,311 +1,359 @@
 {
   "categories": [
     {
-      "name": "General Purpose",
+      "name": "Amazon Quick",
+      "slug": "amazon-quick",
+      "description": "Skills whose purpose is Amazon Quick itself: building agents and automations with it, administering and configuring it, connecting and embedding it, and learning it through guides and community resources.",
       "assets": [
         {
-          "path": "skills/skill-builder",
+          "path": "skills/amazon-quick/amazon-quick-community",
           "type": "skill"
         },
         {
-          "path": "skills/ooo-setup",
-          "type": "skill"
-        },
-        {
-          "path": "skills/document-comparison",
-          "type": "skill"
-        },
-        {
-          "path": "skills/file-organizer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/slide-deck-from-doc",
-          "type": "skill"
-        },
-        {
-          "path": "skills/retrospective",
-          "type": "skill"
-        },
-        {
-          "path": "skills/risk-register-builder",
-          "type": "skill"
-        },
-        {
-          "path": "skills/translate-ms",
-          "type": "skill"
-        },
-        {
-          "path": "skills/dependency-critical-path-analyzer",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Software Engineering",
-      "assets": [
-        {
-          "path": "skills/release-notes-generator",
-          "type": "skill"
-        },
-        {
-          "path": "skills/architecture-decision-record",
-          "type": "skill"
-        },
-        {
-          "path": "skills/incident-postmortem-writer",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Sales & Marketing",
-      "assets": [
-        {
-          "path": "skills/competitor-intel",
-          "type": "skill"
-        },
-        {
-          "path": "skills/deal-pipeline-manager",
-          "type": "skill"
-        },
-        {
-          "path": "skills/follow-up-cadence",
-          "type": "skill"
-        },
-        {
-          "path": "skills/lead-prospector",
-          "type": "skill"
-        },
-        {
-          "path": "skills/outreach-sequence-builder",
-          "type": "skill"
-        },
-        {
-          "path": "skills/proposal-generator",
-          "type": "skill"
-        },
-        {
-          "path": "skills/seo-content-writer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/social-post-creator",
-          "type": "skill"
-        },
-        {
-          "path": "skills/content-calendar-planner",
-          "type": "skill"
-        },
-        {
-          "path": "skills/email-campaign-builder",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Finance & Operations",
-      "assets": [
-        {
-          "path": "skills/business-pulse",
-          "type": "skill"
-        },
-        {
-          "path": "skills/payroll-forecast",
-          "type": "skill"
-        },
-        {
-          "path": "skills/deposit-collection",
-          "type": "skill"
-        },
-        {
-          "path": "skills/bill-pay-optimizer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/job-to-invoice",
-          "type": "skill"
-        },
-        {
-          "path": "skills/invoice-chaser",
-          "type": "skill"
-        },
-        {
-          "path": "skills/demand-forecast-explainer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/restaurant-morning-briefing",
-          "type": "skill"
-        },
-        {
-          "path": "skills/month-end-close-orchestrator",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Retail",
-      "assets": [
-        {
-          "path": "skills/retail-merchant-briefing",
-          "type": "skill"
-        },
-        {
-          "path": "skills/retail-supply-chain-pulse",
-          "type": "skill"
-        },
-        {
-          "path": "skills/retail-content-generator",
-          "type": "skill"
-        },
-        {
-          "path": "skills/retail-analytics-concierge",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "HR & People",
-      "assets": [
-        {
-          "path": "skills/performance-review-drafter",
-          "type": "skill"
-        },
-        {
-          "path": "skills/onboarding-orchestrator",
-          "type": "skill"
-        },
-        {
-          "path": "skills/hr-policy-agent",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Security & Compliance",
-      "assets": [
-        {
-          "path": "skills/compliance-automation",
-          "type": "skill"
-        },
-        {
-          "path": "skills/vulnerability-report-summarizer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/data-classification-assistant",
+          "path": "skills/amazon-quick/skill-builder",
           "type": "skill"
         }
       ]
     },
     {
       "name": "Content & Writing",
+      "slug": "content-writing",
+      "description": "General writing and editing: documents, summaries, notes, and repurposing.",
       "assets": [
         {
-          "path": "skills/eliminate-ai-writing-tropes",
+          "path": "skills/content-writing/content-recycler",
           "type": "skill"
         },
         {
-          "path": "skills/meeting-notes-to-actions",
+          "path": "skills/content-writing/document-comparison",
           "type": "skill"
         },
         {
-          "path": "skills/content-recycler",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Design & Creative",
-      "assets": [
-        {
-          "path": "skills/template-enforcer",
+          "path": "skills/content-writing/eliminate-ai-writing-tropes",
           "type": "skill"
         },
         {
-          "path": "skills/presentation-theme-creator",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Leadership & Strategy",
-      "assets": [
-        {
-          "path": "skills/business-case-builder",
+          "path": "skills/content-writing/meeting-notes-to-actions",
           "type": "skill"
         },
         {
-          "path": "skills/swot-analysis-generator",
-          "type": "skill"
-        },
-        {
-          "path": "skills/goal-tracker-reporter",
-          "type": "skill"
-        },
-        {
-          "path": "skills/standup-summarizer",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Research & Intelligence",
-      "assets": [
-        {
-          "path": "skills/browser-data-scraper",
-          "type": "skill"
-        },
-        {
-          "path": "skills/ecommerce-conversion-insights",
-          "type": "skill"
-        },
-        {
-          "path": "skills/market-sizing-tool",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Knowledge & Learning",
-      "assets": [
-        {
-          "path": "skills/amazon-quick-community",
-          "type": "skill"
-        },
-        {
-          "path": "skills/teach-me",
-          "type": "skill"
-        },
-        {
-          "path": "skills/research-paper-digest",
+          "path": "skills/content-writing/translate-ms",
           "type": "skill"
         }
       ]
     },
     {
       "name": "Customer Success & Support",
+      "slug": "customer-support",
+      "description": "Customer support and success: triage, knowledge answers, resolution, and retention.",
       "assets": [
         {
-          "path": "skills/customer-health-scorer",
+          "path": "skills/customer-support/customer-health-scorer",
           "type": "skill"
         },
         {
-          "path": "skills/support-ticket-triager",
+          "path": "skills/customer-support/support-ticket-triager",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Data & Analytics",
+      "slug": "data-analytics",
+      "description": "Turning data into answers: querying, BI, dashboards, analysis, and machine learning.",
+      "assets": [
+        {
+          "path": "skills/data-analytics/ecommerce-conversion-insights",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/retail-analytics-concierge",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/retail-merchant-briefing",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Design & Creative",
+      "slug": "design-creative",
+      "description": "Visual design, templates, presentations, and creative production.",
+      "assets": [
+        {
+          "path": "skills/design-creative/presentation-theme-creator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/design-creative/slide-deck-from-doc",
+          "type": "skill"
+        },
+        {
+          "path": "skills/design-creative/template-enforcer",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Finance & Accounting",
+      "slug": "finance-accounting",
+      "description": "Budgeting, forecasting, invoicing, close, and variance analysis.",
+      "assets": [
+        {
+          "path": "skills/finance-accounting/bill-pay-optimizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/business-pulse",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/deposit-collection",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/invoice-chaser",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/job-to-invoice",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/month-end-close-orchestrator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/payroll-forecast",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "General Purpose",
+      "slug": "general-purpose",
+      "description": "Cross-functional, everyday productivity and administration not tied to one function.",
+      "assets": [
+        {
+          "path": "skills/general-purpose/browser-data-scraper",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-purpose/file-organizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-purpose/ooo-setup",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Hospitality",
+      "slug": "hospitality",
+      "description": "Restaurant, food service, and hospitality operations: demand outlook, staffing, prep, and guest experience.",
+      "assets": [
+        {
+          "path": "skills/hospitality/restaurant-morning-briefing",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "HR & People",
+      "slug": "human-resources",
+      "description": "Hiring, onboarding, performance, and HR policy and enablement.",
+      "assets": [
+        {
+          "path": "skills/human-resources/hr-policy-agent",
+          "type": "skill"
+        },
+        {
+          "path": "skills/human-resources/onboarding-orchestrator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/human-resources/performance-review-drafter",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Learning & Enablement",
+      "slug": "learning-enablement",
+      "description": "Teaching, training, knowledge management, and enablement.",
+      "assets": [
+        {
+          "path": "skills/learning-enablement/teach-me",
           "type": "skill"
         }
       ]
     },
     {
       "name": "Legal",
+      "slug": "legal",
+      "description": "Contracts, policy, and regulatory-change review.",
       "assets": [
         {
-          "path": "skills/contract-clause-extractor",
+          "path": "skills/legal/contract-clause-extractor",
           "type": "skill"
         },
         {
-          "path": "skills/regulatory-change-monitor",
+          "path": "skills/legal/regulatory-change-monitor",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Project Management",
+      "slug": "project-management",
+      "description": "Planning, tracking, status reporting, and delivery of projects and programs.",
+      "assets": [
+        {
+          "path": "skills/project-management/dependency-critical-path-analyzer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/project-management/risk-register-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/project-management/standup-summarizer",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Research & Analysis",
+      "slug": "research-analysis",
+      "description": "Market and competitive research, literature synthesis, and briefs.",
+      "assets": [
+        {
+          "path": "skills/research-analysis/competitor-intel",
+          "type": "skill"
+        },
+        {
+          "path": "skills/research-analysis/research-paper-digest",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Sales & Marketing",
+      "slug": "sales-marketing",
+      "description": "Selling and marketing: pipeline, outreach, proposals, campaigns, SEO, and brand.",
+      "assets": [
+        {
+          "path": "skills/sales-marketing/content-calendar-planner",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/deal-pipeline-manager",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/email-campaign-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/follow-up-cadence",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/lead-prospector",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/outreach-sequence-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/proposal-generator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/retail-content-generator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/seo-content-writer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales-marketing/social-post-creator",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Security & Compliance",
+      "slug": "security-compliance",
+      "description": "Security, privacy, risk, and regulatory compliance controls and reviews.",
+      "assets": [
+        {
+          "path": "skills/security-compliance/compliance-automation",
+          "type": "skill"
+        },
+        {
+          "path": "skills/security-compliance/data-classification-assistant",
+          "type": "skill"
+        },
+        {
+          "path": "skills/security-compliance/vulnerability-report-summarizer",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Software Engineering",
+      "slug": "software-engineering",
+      "description": "Writing, reviewing, testing, and shipping software; DevOps; incidents; architecture.",
+      "assets": [
+        {
+          "path": "skills/software-engineering/architecture-decision-record",
+          "type": "skill"
+        },
+        {
+          "path": "skills/software-engineering/incident-postmortem-writer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/software-engineering/release-notes-generator",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Strategy & Leadership",
+      "slug": "strategy-leadership",
+      "description": "Strategy, planning, goals, and executive and board reporting.",
+      "assets": [
+        {
+          "path": "skills/strategy-leadership/business-case-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/strategy-leadership/goal-tracker-reporter",
+          "type": "skill"
+        },
+        {
+          "path": "skills/strategy-leadership/swot-analysis-generator",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Supply Chain & Logistics",
+      "slug": "supply-chain",
+      "description": "Procurement, logistics, inventory, and fulfillment.",
+      "assets": [
+        {
+          "path": "skills/supply-chain/demand-forecast-explainer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/supply-chain/retail-supply-chain-pulse",
           "type": "skill"
         }
       ]

@@ -18,6 +18,7 @@ build = "scripts.build:cli"
 fix = "scripts.build:fix"
 release = "scripts.release:release"
 skill-security = "scripts.build:skill_security"
+category-check = "scripts.category_check:main"
 docs-build = "scripts.build:docs"
 docs-serve = "scripts.build:docs_serve"
 help = "scripts.help:help"
@@ -50,6 +51,7 @@ exclude = [
     ".ruff_cache/",
     "node_modules/",
     "site/",
+    "skills/*/evals/files/",
 ]
 
 [tool.ruff.lint]

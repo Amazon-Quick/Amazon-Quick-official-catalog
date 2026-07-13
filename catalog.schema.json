@@ -30,6 +30,16 @@
           "minLength": 1,
           "maxLength": 64
         },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+          "description": "Kebab-case identifier for the category (e.g. 'sales-marketing')."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "One-sentence description of what this category covers, shown in the UI."
+        },
         "assets": {
           "type": "array",
           "items": {
@@ -49,9 +59,9 @@
         "path": {
           "type": "string",
           "minLength": 3,
-          "maxLength": 128,
-          "pattern": "^(skills|plugins|mcps|agents|acps)/[a-z0-9][a-z0-9-]*[a-z0-9]$",
-          "description": "Relative path in the format '{type_dir}/{kebab-case-name}'. Must start with a valid asset directory prefix and use lowercase kebab-case for the asset name."
+          "maxLength": 192,
+          "pattern": "^(skills|plugins|mcps|agents|acps)/[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9-]*[a-z0-9]$",
+          "description": "Relative path in the format '{type_dir}/{category}/{kebab-case-name}'."
         },
         "type": {
           "type": "string",

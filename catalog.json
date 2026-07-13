@@ -52,6 +52,10 @@
           "type": "skill"
         },
         {
+          "path": "skills/customer-support/payment-failure-diagnoser",
+          "type": "skill"
+        },
+        {
           "path": "skills/customer-support/support-ticket-triager",
           "type": "skill"
         }
@@ -101,6 +105,10 @@
       "description": "Budgeting, forecasting, invoicing, close, and variance analysis.",
       "assets": [
         {
+          "path": "skills/finance-accounting/bank-statement-analyzer",
+          "type": "skill"
+        },
+        {
           "path": "skills/finance-accounting/bill-pay-optimizer",
           "type": "skill"
         },
@@ -109,7 +117,23 @@
           "type": "skill"
         },
         {
+          "path": "skills/finance-accounting/cashflow-forecaster",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/chargeback-dispute-packager",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/corporate-action-interpreter",
+          "type": "skill"
+        },
+        {
           "path": "skills/finance-accounting/deposit-collection",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/fee-and-charge-auditor",
           "type": "skill"
         },
         {
@@ -121,11 +145,43 @@
           "type": "skill"
         },
         {
+          "path": "skills/finance-accounting/loan-affordability-precheck",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/merchant-fee-optimizer",
+          "type": "skill"
+        },
+        {
           "path": "skills/finance-accounting/month-end-close-orchestrator",
           "type": "skill"
         },
         {
           "path": "skills/finance-accounting/payroll-forecast",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/portfolio-holdings-summarizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/portfolio-risk-diversification-check",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/prospectus-plain-language-breakdown",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/settlement-report-summarizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/trade-confirmation-explainer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance-accounting/transaction-reconciliation-helper",
           "type": "skill"
         }
       ]
@@ -180,6 +236,33 @@
       ]
     },
     {
+      "name": "Insurance",
+      "slug": "insurance",
+      "description": "Insurance products across all lines: policies, coverage, claims, premiums, quotes, and appeals.",
+      "assets": [
+        {
+          "path": "skills/insurance/claim-denial-appeal-helper",
+          "type": "skill"
+        },
+        {
+          "path": "skills/insurance/claim-readiness-checker",
+          "type": "skill"
+        },
+        {
+          "path": "skills/insurance/coverage-gap-analyzer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/insurance/policy-document-explainer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/insurance/premium-quote-comparator",
+          "type": "skill"
+        }
+      ]
+    },
+    {
       "name": "Learning & Enablement",
       "slug": "learning-enablement",
       "description": "Teaching, training, knowledge management, and enablement.",
@@ -215,6 +298,10 @@
           "type": "skill"
         },
         {
+          "path": "skills/project-management/retrospective",
+          "type": "skill"
+        },
+        {
           "path": "skills/project-management/risk-register-builder",
           "type": "skill"
         },
@@ -231,6 +318,10 @@
       "assets": [
         {
           "path": "skills/research-analysis/competitor-intel",
+          "type": "skill"
+        },
+        {
+          "path": "skills/research-analysis/market-sizing-tool",
           "type": "skill"
         },
         {
@@ -292,6 +383,10 @@
       "description": "Security, privacy, risk, and regulatory compliance controls and reviews.",
       "assets": [
         {
+          "path": "skills/security-compliance/account-anomaly-screener",
+          "type": "skill"
+        },
+        {
           "path": "skills/security-compliance/compliance-automation",
           "type": "skill"
         },
@@ -312,6 +407,10 @@
       "assets": [
         {
           "path": "skills/software-engineering/architecture-decision-record",
+          "type": "skill"
+        },
+        {
+          "path": "skills/software-engineering/fsi-architecture-assessment",
           "type": "skill"
         },
         {

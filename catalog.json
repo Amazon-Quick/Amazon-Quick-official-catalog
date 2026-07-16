@@ -52,10 +52,6 @@
           "type": "skill"
         },
         {
-          "path": "skills/customer-support/payment-failure-diagnoser",
-          "type": "skill"
-        },
-        {
           "path": "skills/customer-support/support-ticket-triager",
           "type": "skill"
         }
@@ -100,14 +96,53 @@
       ]
     },
     {
+      "name": "Energy & Utilities",
+      "slug": "energy-utilities",
+      "description": "Energy and utilities across the value chain: markets and pricing, electrification, grid and infrastructure planning, and sustainability.",
+      "assets": [
+        {
+          "path": "skills/energy-utilities/battery-storage-analyst",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/carbon-footprint-calculator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/drilling-operations-analyst",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/energy-market-intelligence",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/ev-fleet-planning",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/grid-capacity-planning",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/microgrid-design",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/power-plant-performance",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/well-completion-optimization",
+          "type": "skill"
+        }
+      ]
+    },
+    {
       "name": "Finance & Accounting",
       "slug": "finance-accounting",
       "description": "Budgeting, forecasting, invoicing, close, and variance analysis.",
       "assets": [
-        {
-          "path": "skills/finance-accounting/bank-statement-analyzer",
-          "type": "skill"
-        },
         {
           "path": "skills/finance-accounting/bill-pay-optimizer",
           "type": "skill"
@@ -117,23 +152,7 @@
           "type": "skill"
         },
         {
-          "path": "skills/finance-accounting/cashflow-forecaster",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/chargeback-dispute-packager",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/corporate-action-interpreter",
-          "type": "skill"
-        },
-        {
           "path": "skills/finance-accounting/deposit-collection",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/fee-and-charge-auditor",
           "type": "skill"
         },
         {
@@ -145,43 +164,11 @@
           "type": "skill"
         },
         {
-          "path": "skills/finance-accounting/loan-affordability-precheck",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/merchant-fee-optimizer",
-          "type": "skill"
-        },
-        {
           "path": "skills/finance-accounting/month-end-close-orchestrator",
           "type": "skill"
         },
         {
           "path": "skills/finance-accounting/payroll-forecast",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/portfolio-holdings-summarizer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/portfolio-risk-diversification-check",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/prospectus-plain-language-breakdown",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/settlement-report-summarizer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/trade-confirmation-explainer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/finance-accounting/transaction-reconciliation-helper",
           "type": "skill"
         }
       ]
@@ -206,9 +193,40 @@
       ]
     },
     {
+      "name": "Healthcare & Life Sciences",
+      "slug": "healthcare",
+      "description": "Healthcare and life sciences: clinical care, claims and quality measurement, prior authorization, and regulated clinical-trial data.",
+      "assets": [
+        {
+          "path": "skills/healthcare/cdisc-submission-compliance",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/healthcare-claims-analytics",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/hedis-measure-calculation",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/hedis-measure-specification",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/prior-authorization-clinical-policy",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/prior-authorization-decision-automation",
+          "type": "skill"
+        }
+      ]
+    },
+    {
       "name": "Hospitality",
       "slug": "hospitality",
-      "description": "Restaurant, food service, and hospitality operations: demand outlook, staffing, prep, and guest experience.",
+      "description": "Hotels, restaurants, travel, and guest services: reservations, front-of-house, and hospitality operations.",
       "assets": [
         {
           "path": "skills/hospitality/restaurant-morning-briefing",
@@ -231,33 +249,6 @@
         },
         {
           "path": "skills/human-resources/performance-review-drafter",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Insurance",
-      "slug": "insurance",
-      "description": "Insurance products across all lines: policies, coverage, claims, premiums, quotes, and appeals.",
-      "assets": [
-        {
-          "path": "skills/insurance/claim-denial-appeal-helper",
-          "type": "skill"
-        },
-        {
-          "path": "skills/insurance/claim-readiness-checker",
-          "type": "skill"
-        },
-        {
-          "path": "skills/insurance/coverage-gap-analyzer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/insurance/policy-document-explainer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/insurance/premium-quote-comparator",
           "type": "skill"
         }
       ]
@@ -298,10 +289,6 @@
           "type": "skill"
         },
         {
-          "path": "skills/project-management/retrospective",
-          "type": "skill"
-        },
-        {
           "path": "skills/project-management/risk-register-builder",
           "type": "skill"
         },
@@ -318,10 +305,6 @@
       "assets": [
         {
           "path": "skills/research-analysis/competitor-intel",
-          "type": "skill"
-        },
-        {
-          "path": "skills/research-analysis/market-sizing-tool",
           "type": "skill"
         },
         {
@@ -382,10 +365,6 @@
       "slug": "security-compliance",
       "description": "Security, privacy, risk, and regulatory compliance controls and reviews.",
       "assets": [
-        {
-          "path": "skills/security-compliance/account-anomaly-screener",
-          "type": "skill"
-        },
         {
           "path": "skills/security-compliance/compliance-automation",
           "type": "skill"

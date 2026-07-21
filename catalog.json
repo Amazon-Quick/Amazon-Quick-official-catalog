@@ -135,6 +135,14 @@
         {
           "path": "skills/energy-utilities/well-completion-optimization",
           "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/renewable-energy-assessment",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/nerc-gads-reporting",
+          "type": "skill"
         }
       ]
     },
@@ -432,6 +440,17 @@
         },
         {
           "path": "skills/supply-chain/retail-supply-chain-pulse",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "communications",
+      "slug": "communications",
+      "description": "",
+      "assets": [
+        {
+          "path": "skills/communications/executive-voice-runtime-builder",
           "type": "skill"
         }
       ]

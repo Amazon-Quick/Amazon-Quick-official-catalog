@@ -7,6 +7,8 @@ rates, annually updated hub factors, market prices) MUST be fetched at runtime w
 `url_fetch` or `web_search` from the sources named below. Stable values derived from
 fuel chemistry change rarely but still require citing the source year.
 
+As of July 2026, the current editions are: **eGRID 2023** (released January 2025, Rev 2 June 2025) and **EPA GHG Emission Factors Hub 2025** (January 2025).
+
 ## Global Warming Potentials (IPCC AR5, 100-year)
 
 Use these unless the user specifies a different assessment report.
@@ -52,15 +54,26 @@ Fetch current values at runtime:
 1. `web_search("EPA eGRID summary data current year subregional emission rates")` to
    find the latest eGRID release.
 2. `url_fetch("https://www.epa.gov/egrid/summary-data")` to read the summary page.
-3. Identify the current eGRID year.
-4. Map the facility zip code to an eGRID subregion (EPA Power Profiler at
+3. Identify the current eGRID data year. As of July 2026, the latest is eGRID 2023
+   (data year 2023, released January 2025, Revision 2 June 12, 2025).
+4. The summary table now includes a **CO2e column** (lb CO2e/MWh) that combines
+   CO2, CH4, and N2O using AR5 GWPs. Use the CO2e column directly rather than
+   computing from individual gas columns.
+5. Map the facility zip code to an eGRID subregion (EPA Power Profiler at
    https://www.epa.gov/egrid/power-profiler) or ask the user for the subregion code.
-5. Apply the subregional total output emission rate (lb CO2 per MWh) for that year.
-6. Convert: `tCO2_per_MWh = lb_CO2_per_MWh * 0.000453592`
+6. Apply the subregional total output emission rate (lb CO2e per MWh) for that year.
+7. Convert: `tCO2e_per_MWh = lb_CO2e_per_MWh * 0.000453592`
 
-Subregion codes (reference only, NOT for calculation): AKGD, AKMS, CAMX, ERCT, FRCC,
-MROE, MROW, NEWE, NWPP, NYCW, NYLI, NYUP, RFCE, RFCM, RFCW, RMPA, SPNO, SPSO, SRMV,
-SRSO, SRTV, SRVC. Programmatic access: EPA Envirofacts RESTful service at
+Subregion codes (reference only, NOT for calculation — from eGRID 2023):
+AKGD, AKMS, AZNM, CAMX, ERCT, FRCC, HIMS, HIOA, MROE, MROW, NEWE, NWPP,
+NYCW, NYLI, NYUP, PRMS, RFCE, RFCM, RFCW, RMPA, SPNO, SPSO, SRMV, SRMW,
+SRSO, SRTV, SRVC.
+
+Note: eGRID 2023 added AZNM, HIMS, HIOA, PRMS, and SRMW subregions compared
+to earlier editions. If a previously used subregion code is not in the current
+release, consult the eGRID technical documentation for mapping changes.
+
+Programmatic access: EPA Envirofacts RESTful service at
 https://www.epa.gov/enviro/greenhouse-gas-restful-data-service
 
 ## Refrigerants (GWP, AR5 100-year)
@@ -129,6 +142,14 @@ Purchased electricity, location-based:
 ```
 co2e_t = electricity_mwh * grid_emission_factor_tco2e_per_mwh
 ```
+
+Scope 3, Category 3, Activity C (Transmission & Distribution Losses):
+```
+loss_mwh = electricity_mwh * grid_gross_loss_pct
+co2e_t = loss_mwh * grid_emission_factor_tco2e_per_mwh
+```
+The 2025 EPA GHG Emission Factors Hub (Table 6) now provides grid gross loss
+percentages for each eGRID subregion. Fetch at runtime alongside grid factors.
 
 Purchased electricity, market-based (in priority order): supplier-specific factor,
 then residual mix factor, then grid average as fallback. RECs, GOs, I-RECs, or a

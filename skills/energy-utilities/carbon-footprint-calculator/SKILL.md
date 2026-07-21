@@ -5,7 +5,7 @@ icon: "🌍"
 license: MIT-0
 description: "Calculate an organization's greenhouse gas emissions across Scopes 1, 2, and 3 following the GHG Protocol Corporate Standard, then produce an interactive dashboard and an audit-ready workbook. Use when asked to 'calculate our carbon footprint', 'build a GHG inventory', 'measure Scope 1 2 3 emissions', 'create an emissions report', 'run corporate carbon accounting', or model 'emissions reduction scenarios', or any organizational greenhouse gas accounting request"
 created_date: "2026-07-15"
-last_updated: "2026-07-15"
+last_updated: "2026-07-16"
 tools: [get_current_time, web_search, url_fetch, file_read, file_write, run_python, open_in_session_tab]
 depends-on: [html_design, highcharts, canvas_xlsx]
 ---
@@ -76,7 +76,7 @@ tools=[get_current_time, file_read, run_python, web_search, url_fetch]
 triggers=["User requests a carbon footprint calculation or uploads activity data"]
 >
 
-1. [Agent] Read references/emission-factors.md and references/scopes-and-categories.md. Identify which time-sensitive values the requested calculation needs and fetch each current value with web_search or url_fetch per the procedures in that file (especially eGRID grid factors).
+1. [Agent] Read references/emission-factors.md and references/scopes-and-categories.md. Identify which time-sensitive values the requested calculation needs. At minimum, fetch the current eGRID subregional emission rates from `url_fetch("https://www.epa.gov/egrid/summary-data")` and confirm the EPA GHG Emission Factors Hub edition year from `url_fetch("https://www.epa.gov/climateleadership/ghg-emission-factors-hub")`. Follow the full runtime verification procedure in references/emission-factors.md.
    Validate: Every time-sensitive value to be used has a verified source (URL fetched this session or user-provided).
    If fails: Per Rule 0, stop and ask the user to confirm or provide the value.
 
@@ -145,6 +145,7 @@ triggers=["After data collection (file or guided) completes"]
 2. [Agent] Calculate Scope 2 emissions both ways:
    - Location-based: `electricity_mwh * grid_factor` using the fetched eGRID subregion factor.
    - Market-based: apply RECs or PPA coverage (instrument factor of 0) to covered MWh, grid factor to the residual; if no instruments, market equals location.
+   Use the CO2e total output emission rate (lb CO2e/MWh) from eGRID, which already combines CO2, CH4, and N2O. Convert to tCO2e/MWh with the conversion factor in references/emission-factors.md. If Scope 3 Category 3 (T&D losses) is in scope, also fetch the grid gross loss percentage from the 2025 EPA GHG Emission Factors Hub Table 6.
    Validate: Location-based >= market-based.
    If fails: Verify the REC quantity does not exceed total consumption.
 

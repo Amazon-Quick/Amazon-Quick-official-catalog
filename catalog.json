@@ -228,6 +228,21 @@
         {
           "path": "skills/healthcare/prior-authorization-decision-automation",
           "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/protocol-drafting",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Life Sciences",
+      "slug": "life-sciences",
+      "description": "Life sciences research: biomedical database queries, genomics, drug discovery, variant interpretation, and pathway analysis.",
+      "assets": [
+        {
+          "path": "skills/life-sciences/research-biomedical-databases",
+          "type": "skill"
         }
       ]
     },

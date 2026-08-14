@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentation Title</title>
+<style>
+/* ===== DESIGN TOKENS ===== */
+:root {
+  --primary: #6B2FA0;
+  --primary-light: #F5F0FA;
+  --primary-gradient: linear-gradient(135deg, #6B2FA0, #9B59B6);
+  --dark: #232F3E;
+  --white: #ffffff;
+  --off-white: #fafafa;
+  --text: #1a1a2e;
+  --text-muted: #555;
+  --border: #eee;
+  --border-accent: rgba(107, 47, 160, 0.2);
+  --shadow: 0 2px 12px rgba(107, 47, 160, 0.08);
+  --shadow-hover: 0 4px 20px rgba(107, 47, 160, 0.15);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --content-width: 850px;
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; font-family: var(--font); color: var(--text); background: var(--off-white); }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== DECK CONTAINER ===== */
+.deck {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 64px 80px 60px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+.slide.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.slide.hero {
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+.slide-content {
+  width: 100%;
+  max-width: var(--content-width);
+}
+
+/* ===== TYPOGRAPHY ===== */
+.slide h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+.slide.hero h2 {
+  font-size: 2.4rem;
+  color: var(--primary);
+}
+.slide h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 20px 0 12px;
+}
+
+/* ===== COMPONENTS ===== */
+
+/* Definition block */
+.definition {
+  border-left: 4px solid var(--primary);
+  padding: 16px 24px;
+  background: var(--primary-light);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin: 16px 0;
+}
+.definition p { margin: 0; }
+
+/* Data table */
+.frontmatter-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.8rem;
+  margin: 16px 0;
+}
+.frontmatter-table th {
+  text-align: left;
+  padding: 8px 16px;
+  background: var(--primary-light);
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.frontmatter-table th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+.frontmatter-table th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+.frontmatter-table td {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.field {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.badge.green { background: #e8f5e9; color: #2e7d32; }
+.badge.blue { background: #e3f2fd; color: #1565c0; }
+.badge.orange { background: #fff3e0; color: #e65100; }
+
+/* Card grid */
+.card-grid {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0;
+}
+.card {
+  background: var(--white);
+  border: 2px solid var(--border-accent);
+  border-radius: var(--radius);
+  padding: 24px 16px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.card-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin: 0 auto 8px;
+}
+.card-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Flow row */
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0;
+}
+.flow-card {
+  flex: 1;
+  background: var(--white);
+  border: 2px solid var(--border-accent);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.flow-card h4 {
+  margin: 8px 0 4px;
+  font-size: 0.9rem;
+  color: var(--primary);
+}
+.flow-card p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.flow-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.flow-arrow { color: var(--primary); flex-shrink: 0; }
+
+/* Contrast pair */
+.contrast-box {
+  display: flex;
+  gap: 24px;
+  margin: 24px 0;
+}
+.contrast-item {
+  flex: 1;
+  background: var(--white);
+  border: 2px solid var(--border-accent);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+.contrast-item h3 { margin: 0 0 8px; }
+.contrast-item p { margin: 4px 0; font-size: 0.9rem; }
+
+/* Callout */
+.callout {
+  background: var(--primary-light);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  color: var(--text);
+  margin: 16px 0;
+  border: 1px solid var(--border-accent);
+}
+.callout strong { color: var(--primary); }
+
+/* QR group */
+.qr-group {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin: 24px 0;
+}
+.qr-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.qr-img {
+  width: 120px;
+  height: 120px;
+  border: 2px solid var(--border-accent);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  background: var(--white);
+}
+.qr-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Source link */
+.source {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  z-index: 5;
+}
+.source a { color: var(--text-muted); }
+.source a:hover { color: var(--primary); }
+
+/* ===== NAVIGATION CHROME ===== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--primary-gradient);
+  transition: width 0.3s ease;
+  z-index: 100;
+}
+.slide-num {
+  position: fixed;
+  bottom: 20px;
+  left: 24px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  z-index: 100;
+}
+.nav-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+.nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border-accent);
+  background: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+}
+.nav-btn:hover {
+  background: var(--primary-light);
+  transform: scale(1.05);
+}
+.nav-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+}
+
+/* ===== SPEAKER NOTES PANEL ===== */
+.notes-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 350px;
+  height: 100vh;
+  background: var(--dark);
+  color: #ddd;
+  padding: 32px 24px;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.notes-panel.open { right: 0; }
+.notes-panel h3 {
+  color: var(--white);
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.notes-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--border-accent);
+  background: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  transition: background 0.2s;
+}
+.notes-toggle:hover { background: var(--primary-light); }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ===== SLIDE 1: HERO (TITLE) ===== -->
+  <section class="slide hero visible" data-slide="1" data-notes="Welcome the audience. Introduce yourself and the session topic. Set expectations for the session length and format.">
+    <div class="slide-content">
+      <h2>Your Presentation Title</h2>
+      <p class="subtitle" style="font-size:1.1rem; color:var(--text-muted); margin-top:8px;">Subtitle or tagline goes here</p>
+      <p style="margin-top:24px; font-size:0.9rem; color:var(--text-muted);">Presenter Name</p>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 2: CONTENT (CARD GRID) ===== -->
+  <section class="slide" data-slide="2" data-notes="Walk through the agenda. Each item maps to one slide. Let the audience know questions are welcome throughout.">
+    <div class="slide-content">
+      <h2>Agenda</h2>
+      <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="card"><div class="card-num">1</div><div class="card-label">Topic One</div></div>
+        <div class="card"><div class="card-num">2</div><div class="card-label">Topic Two</div></div>
+        <div class="card"><div class="card-num">3</div><div class="card-label">Topic Three</div></div>
+      </div>
+    </div>
+    <div class="source"><a href="https://example.com" target="_blank">example.com</a></div>
+  </section>
+
+  <!-- ===== SLIDE 3: CONTENT (DEFINITION + TABLE) ===== -->
+  <section class="slide" data-slide="3" data-notes="Start with the formal definition. Then break down the anatomy in the table. The key insight is progressive disclosure.">
+    <div class="slide-content">
+      <h2>Key Concept</h2>
+      <div class="definition">
+        <p>A formal definition of the concept goes here. Keep it to one or two sentences maximum.</p>
+      </div>
+      <h3>Anatomy</h3>
+      <table class="frontmatter-table">
+        <thead><tr><th>Field</th><th>Purpose</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="field">field_one</td><td>What it does</td><td><span class="badge green">Required</span></td></tr>
+          <tr><td class="field">field_two</td><td>What it does</td><td><span class="badge blue">Optional</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="source"><a href="https://example.com" target="_blank">example.com</a></div>
+  </section>
+
+  <!-- ===== SLIDE 4: CONTENT (FLOW ROW) ===== -->
+  <section class="slide" data-slide="4" data-notes="Walk through each step in sequence. Emphasize that each stage gates the next.">
+    <div class="slide-content">
+      <h2>Process Flow</h2>
+      <div class="flow-row">
+        <div class="flow-card">
+          <div class="flow-num">1</div>
+          <h4>Step One</h4>
+          <p>Brief description</p>
+        </div>
+        <div class="flow-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </div>
+        <div class="flow-card">
+          <div class="flow-num">2</div>
+          <h4>Step Two</h4>
+          <p>Brief description</p>
+        </div>
+        <div class="flow-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </div>
+        <div class="flow-card">
+          <div class="flow-num">3</div>
+          <h4>Step Three</h4>
+          <p>Brief description</p>
+        </div>
+      </div>
+    </div>
+    <div class="source"><a href="https://example.com" target="_blank">example.com</a></div>
+  </section>
+
+  <!-- ===== SLIDE 5: CONTENT (CONTRAST PAIR) ===== -->
+  <section class="slide" data-slide="5" data-notes="Draw the contrast clearly. Left side is X, right side is Y. The audience should understand when to use each.">
+    <div class="slide-content">
+      <h2>Comparison</h2>
+      <div class="contrast-box">
+        <div class="contrast-item">
+          <h3>Option A</h3>
+          <p>Key characteristic</p>
+          <p class="small-text" style="font-size:0.8rem; color:var(--text-muted);">Supporting detail</p>
+        </div>
+        <div class="contrast-item">
+          <h3>Option B</h3>
+          <p>Key characteristic</p>
+          <p class="small-text" style="font-size:0.8rem; color:var(--text-muted);">Supporting detail</p>
+        </div>
+      </div>
+      <div class="callout"><strong>Key insight:</strong> A brief summary of when to use which option.</div>
+    </div>
+    <div class="source"><a href="https://example.com" target="_blank">example.com</a></div>
+  </section>
+
+  <!-- ===== SLIDE 6: HERO (CLOSING) ===== -->
+  <section class="slide hero" data-slide="6" data-notes="Thank the audience. Open for questions. Share any follow-up resources or next steps.">
+    <div class="slide-content">
+      <h2>Thank You</h2>
+      <p style="font-size:1rem; color:var(--text-muted); margin-top:12px;">Questions?</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== NAVIGATION CHROME ===== -->
+<div class="progress-bar" id="progressBar"></div>
+<div class="slide-num" id="slideNum">1 / 6</div>
+<div class="nav-controls">
+  <button class="nav-btn" id="prevBtn">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  </button>
+  <button class="nav-btn" id="nextBtn">
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+</div>
+<button class="notes-toggle" id="notesToggle" title="Toggle speaker notes (N)">N</button>
+<div class="notes-panel" id="notesPanel">
+  <h3>Speaker Notes</h3>
+  <div id="notesContent"></div>
+</div>
+
+<!-- ===== NAVIGATION SCRIPT ===== -->
+<script>
+(function() {
+  try {
+    var slides = document.querySelectorAll('[data-slide]');
+    var total = slides.length;
+    var current = 1;
+
+    var progressBar = document.getElementById('progressBar');
+    var slideNum = document.getElementById('slideNum');
+    var notesPanel = document.getElementById('notesPanel');
+    var notesContent = document.getElementById('notesContent');
+    var notesToggle = document.getElementById('notesToggle');
+    var prevBtn = document.getElementById('prevBtn');
+    var nextBtn = document.getElementById('nextBtn');
+
+    function showSlide(n) {
+      if (n < 1) n = 1;
+      if (n > total) n = total;
+      current = n;
+      for (var i = 0; i < slides.length; i++) {
+        if (parseInt(slides[i].getAttribute('data-slide')) === n) {
+          slides[i].classList.add('visible');
+        } else {
+          slides[i].classList.remove('visible');
+        }
+      }
+      if (progressBar) progressBar.style.width = ((n / total) * 100) + '%';
+      if (slideNum) slideNum.textContent = n + ' / ' + total;
+      if (notesContent) {
+        var activeSlide = document.querySelector('[data-slide="' + n + '"]');
+        var notes = activeSlide ? activeSlide.getAttribute('data-notes') : '';
+        notesContent.textContent = notes || '(No notes for this slide)';
+      }
+    }
+
+    function toggleNotes() {
+      if (notesPanel) notesPanel.classList.toggle('open');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); showSlide(current + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); showSlide(current - 1); }
+      if (e.key === 'n' || e.key === 'N') { e.preventDefault(); toggleNotes(); }
+    });
+
+    if (prevBtn) prevBtn.addEventListener('click', function() { showSlide(current - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { showSlide(current + 1); });
+    if (notesToggle) notesToggle.addEventListener('click', toggleNotes);
+
+    showSlide(1);
+  } catch(err) {
+    console.error('Deck navigation error:', err);
+  }
+})();
+</script>
+</body>
+</html>

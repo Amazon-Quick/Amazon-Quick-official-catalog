@@ -3,7 +3,7 @@
     {
       "name": "Amazon Quick",
       "slug": "amazon-quick",
-      "description": "Skills whose purpose is Amazon Quick itself: building agents and automations with it, administering and configuring it, connecting and embedding it, and learning it through guides and community resources.",
+      "description": "Extend and customize Amazon Quick to fit the way you work.",
       "assets": [
         {
           "path": "skills/amazon-quick/amazon-quick-community",
@@ -16,51 +16,24 @@
       ]
     },
     {
-      "name": "Content & Writing",
-      "slug": "content-writing",
-      "description": "General writing and editing: documents, summaries, notes, and repurposing.",
+      "name": "Customer Success",
+      "slug": "customer-success",
+      "description": "Strengthen relationships, accelerate time-to-value, and grow accounts.",
       "assets": [
         {
-          "path": "skills/content-writing/content-recycler",
+          "path": "skills/customer-success/customer-health-scorer",
           "type": "skill"
         },
         {
-          "path": "skills/content-writing/document-comparison",
-          "type": "skill"
-        },
-        {
-          "path": "skills/content-writing/eliminate-ai-writing-tropes",
-          "type": "skill"
-        },
-        {
-          "path": "skills/content-writing/meeting-notes-to-actions",
-          "type": "skill"
-        },
-        {
-          "path": "skills/content-writing/translate-ms",
+          "path": "skills/customer-success/support-ticket-triager",
           "type": "skill"
         }
       ]
     },
     {
-      "name": "Customer Success & Support",
-      "slug": "customer-support",
-      "description": "Customer support and success: triage, knowledge answers, resolution, and retention.",
-      "assets": [
-        {
-          "path": "skills/customer-support/customer-health-scorer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/customer-support/support-ticket-triager",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Data & Analytics",
+      "name": "Data Analytics",
       "slug": "data-analytics",
-      "description": "Turning data into answers: querying, BI, dashboards, analysis, and machine learning.",
+      "description": "Unlock insights from your data to drive faster, smarter decisions.",
       "assets": [
         {
           "path": "skills/data-analytics/ecommerce-conversion-insights",
@@ -77,20 +50,20 @@
       ]
     },
     {
-      "name": "Design & Creative",
-      "slug": "design-creative",
-      "description": "Visual design, templates, presentations, and creative production.",
+      "name": "Design",
+      "slug": "design",
+      "description": "Produce compelling visual work, from concept to final deliverable.",
       "assets": [
         {
-          "path": "skills/design-creative/presentation-theme-creator",
+          "path": "skills/design/presentation-theme-creator",
           "type": "skill"
         },
         {
-          "path": "skills/design-creative/slide-deck-from-doc",
+          "path": "skills/design/slide-deck-from-doc",
           "type": "skill"
         },
         {
-          "path": "skills/design-creative/template-enforcer",
+          "path": "skills/design/template-enforcer",
           "type": "skill"
         }
       ]
@@ -98,7 +71,7 @@
     {
       "name": "Energy & Utilities",
       "slug": "energy-utilities",
-      "description": "Energy and utilities across the value chain: markets and pricing, electrification, grid and infrastructure planning, and sustainability.",
+      "description": "Powering innovation across generation, distribution, and the energy transition.",
       "assets": [
         {
           "path": "skills/energy-utilities/battery-storage-analyst",
@@ -129,11 +102,11 @@
           "type": "skill"
         },
         {
-          "path": "skills/energy-utilities/power-plant-performance",
+          "path": "skills/energy-utilities/nerc-gads-reporting",
           "type": "skill"
         },
         {
-          "path": "skills/energy-utilities/well-completion-optimization",
+          "path": "skills/energy-utilities/power-plant-performance",
           "type": "skill"
         },
         {
@@ -141,61 +114,101 @@
           "type": "skill"
         },
         {
-          "path": "skills/energy-utilities/nerc-gads-reporting",
+          "path": "skills/energy-utilities/well-completion-optimization",
           "type": "skill"
         }
       ]
     },
     {
-      "name": "Finance & Accounting",
-      "slug": "finance-accounting",
-      "description": "Budgeting, forecasting, invoicing, close, and variance analysis.",
+      "name": "Finance",
+      "slug": "finance",
+      "description": "Optimize financial operations and maintain a clear picture of business performance.",
       "assets": [
         {
-          "path": "skills/finance-accounting/bill-pay-optimizer",
+          "path": "skills/finance/bill-pay-optimizer",
           "type": "skill"
         },
         {
-          "path": "skills/finance-accounting/business-pulse",
+          "path": "skills/finance/business-pulse",
           "type": "skill"
         },
         {
-          "path": "skills/finance-accounting/deposit-collection",
+          "path": "skills/finance/deposit-collection",
           "type": "skill"
         },
         {
-          "path": "skills/finance-accounting/invoice-chaser",
+          "path": "skills/finance/invoice-chaser",
           "type": "skill"
         },
         {
-          "path": "skills/finance-accounting/job-to-invoice",
+          "path": "skills/finance/job-to-invoice",
           "type": "skill"
         },
         {
-          "path": "skills/finance-accounting/month-end-close-orchestrator",
+          "path": "skills/finance/month-end-close-orchestrator",
           "type": "skill"
         },
         {
-          "path": "skills/finance-accounting/payroll-forecast",
+          "path": "skills/finance/payroll-forecast",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/fsi-product-management",
           "type": "skill"
         }
       ]
     },
     {
-      "name": "General Purpose",
-      "slug": "general-purpose",
-      "description": "Cross-functional, everyday productivity and administration not tied to one function.",
+      "name": "General Productivity",
+      "slug": "general-productivity",
+      "description": "Streamline everyday work that spans roles and teams.",
       "assets": [
         {
-          "path": "skills/general-purpose/browser-data-scraper",
+          "path": "skills/general-productivity/browser-data-scraper",
           "type": "skill"
         },
         {
-          "path": "skills/general-purpose/file-organizer",
+          "path": "skills/general-productivity/document-comparison",
           "type": "skill"
         },
         {
-          "path": "skills/general-purpose/ooo-setup",
+          "path": "skills/general-productivity/eliminate-ai-writing-tropes",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/file-organizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/meeting-notes-to-actions",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/ooo-setup",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/research-paper-digest",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/second-opinion",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/teach-me",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/translate-ms",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/desktop-cleanup",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/conversation-manager",
           "type": "skill"
         }
       ]
@@ -203,7 +216,7 @@
     {
       "name": "Healthcare & Life Sciences",
       "slug": "healthcare",
-      "description": "Healthcare and life sciences: clinical care, claims and quality measurement, prior authorization, and regulated clinical-trial data.",
+      "description": "Accelerate breakthroughs from research to patient outcomes.",
       "assets": [
         {
           "path": "skills/healthcare/cdisc-submission-compliance",
@@ -232,16 +245,9 @@
         {
           "path": "skills/healthcare/protocol-drafting",
           "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Life Sciences",
-      "slug": "life-sciences",
-      "description": "Life sciences research: biomedical database queries, genomics, drug discovery, variant interpretation, and pathway analysis.",
-      "assets": [
+        },
         {
-          "path": "skills/life-sciences/research-biomedical-databases",
+          "path": "skills/healthcare/research-biomedical-databases",
           "type": "skill"
         }
       ]
@@ -249,7 +255,7 @@
     {
       "name": "Hospitality",
       "slug": "hospitality",
-      "description": "Hotels, restaurants, travel, and guest services: reservations, front-of-house, and hospitality operations.",
+      "description": "Elevate the guest experience from booking to check-out.",
       "assets": [
         {
           "path": "skills/hospitality/restaurant-morning-briefing",
@@ -258,31 +264,43 @@
       ]
     },
     {
-      "name": "HR & People",
-      "slug": "human-resources",
-      "description": "Hiring, onboarding, performance, and HR policy and enablement.",
+      "name": "HR",
+      "slug": "hr",
+      "description": "Attract, develop, and retain talent at every stage of the employee journey.",
       "assets": [
         {
-          "path": "skills/human-resources/hr-policy-agent",
+          "path": "skills/hr/hr-policy-agent",
           "type": "skill"
         },
         {
-          "path": "skills/human-resources/onboarding-orchestrator",
+          "path": "skills/hr/onboarding-orchestrator",
           "type": "skill"
         },
         {
-          "path": "skills/human-resources/performance-review-drafter",
+          "path": "skills/hr/performance-review-drafter",
           "type": "skill"
         }
       ]
     },
     {
-      "name": "Learning & Enablement",
-      "slug": "learning-enablement",
-      "description": "Teaching, training, knowledge management, and enablement.",
+      "name": "Leadership",
+      "slug": "leadership",
+      "description": "Make high-stakes decisions, align teams, and communicate with clarity.",
       "assets": [
         {
-          "path": "skills/learning-enablement/teach-me",
+          "path": "skills/leadership/business-case-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/leadership/executive-voice-runtime-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/leadership/goal-tracker-reporter",
+          "type": "skill"
+        },
+        {
+          "path": "skills/leadership/swot-analysis-generator",
           "type": "skill"
         }
       ]
@@ -290,7 +308,7 @@
     {
       "name": "Legal",
       "slug": "legal",
-      "description": "Contracts, policy, and regulatory-change review.",
+      "description": "Move faster while managing risk and regulatory complexity.",
       "assets": [
         {
           "path": "skills/legal/contract-clause-extractor",
@@ -303,101 +321,32 @@
       ]
     },
     {
-      "name": "Project Management",
-      "slug": "project-management",
-      "description": "Planning, tracking, status reporting, and delivery of projects and programs.",
+      "name": "Marketing",
+      "slug": "marketing",
+      "description": "Reach the right audiences and turn engagement into growth.",
       "assets": [
         {
-          "path": "skills/project-management/dependency-critical-path-analyzer",
+          "path": "skills/marketing/content-calendar-planner",
           "type": "skill"
         },
         {
-          "path": "skills/project-management/risk-register-builder",
+          "path": "skills/marketing/content-recycler",
           "type": "skill"
         },
         {
-          "path": "skills/project-management/standup-summarizer",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Research & Analysis",
-      "slug": "research-analysis",
-      "description": "Market and competitive research, literature synthesis, and briefs.",
-      "assets": [
-        {
-          "path": "skills/research-analysis/competitor-intel",
+          "path": "skills/marketing/email-campaign-builder",
           "type": "skill"
         },
         {
-          "path": "skills/research-analysis/research-paper-digest",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Sales & Marketing",
-      "slug": "sales-marketing",
-      "description": "Selling and marketing: pipeline, outreach, proposals, campaigns, SEO, and brand.",
-      "assets": [
-        {
-          "path": "skills/sales-marketing/content-calendar-planner",
+          "path": "skills/marketing/retail-content-generator",
           "type": "skill"
         },
         {
-          "path": "skills/sales-marketing/deal-pipeline-manager",
+          "path": "skills/marketing/seo-content-writer",
           "type": "skill"
         },
         {
-          "path": "skills/sales-marketing/email-campaign-builder",
-          "type": "skill"
-        },
-        {
-          "path": "skills/sales-marketing/follow-up-cadence",
-          "type": "skill"
-        },
-        {
-          "path": "skills/sales-marketing/lead-prospector",
-          "type": "skill"
-        },
-        {
-          "path": "skills/sales-marketing/outreach-sequence-builder",
-          "type": "skill"
-        },
-        {
-          "path": "skills/sales-marketing/proposal-generator",
-          "type": "skill"
-        },
-        {
-          "path": "skills/sales-marketing/retail-content-generator",
-          "type": "skill"
-        },
-        {
-          "path": "skills/sales-marketing/seo-content-writer",
-          "type": "skill"
-        },
-        {
-          "path": "skills/sales-marketing/social-post-creator",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "Security & Compliance",
-      "slug": "security-compliance",
-      "description": "Security, privacy, risk, and regulatory compliance controls and reviews.",
-      "assets": [
-        {
-          "path": "skills/security-compliance/compliance-automation",
-          "type": "skill"
-        },
-        {
-          "path": "skills/security-compliance/data-classification-assistant",
-          "type": "skill"
-        },
-        {
-          "path": "skills/security-compliance/vulnerability-report-summarizer",
+          "path": "skills/marketing/social-post-creator",
           "type": "skill"
         }
       ]
@@ -405,7 +354,7 @@
     {
       "name": "Software Engineering",
       "slug": "software-engineering",
-      "description": "Writing, reviewing, testing, and shipping software; DevOps; incidents; architecture.",
+      "description": "Build, ship, and operate reliable software at speed.",
       "assets": [
         {
           "path": "skills/software-engineering/architecture-decision-record",
@@ -426,20 +375,74 @@
       ]
     },
     {
-      "name": "Strategy & Leadership",
-      "slug": "strategy-leadership",
-      "description": "Strategy, planning, goals, and executive and board reporting.",
+      "name": "Project Management",
+      "slug": "project-management",
+      "description": "Deliver on scope, schedule, and quality \u2014 every time.",
       "assets": [
         {
-          "path": "skills/strategy-leadership/business-case-builder",
+          "path": "skills/project-management/dependency-critical-path-analyzer",
           "type": "skill"
         },
         {
-          "path": "skills/strategy-leadership/goal-tracker-reporter",
+          "path": "skills/project-management/risk-register-builder",
           "type": "skill"
         },
         {
-          "path": "skills/strategy-leadership/swot-analysis-generator",
+          "path": "skills/project-management/standup-summarizer",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Sales",
+      "slug": "sales",
+      "description": "Build pipeline, accelerate deals, and close with confidence.",
+      "assets": [
+        {
+          "path": "skills/sales/competitor-intel",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/deal-pipeline-manager",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/conversation-manager",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/follow-up-cadence",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/lead-prospector",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/outreach-sequence-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/proposal-generator",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "name": "Security & Compliance",
+      "slug": "security-compliance",
+      "description": "Move fast without compromising security or compliance posture.",
+      "assets": [
+        {
+          "path": "skills/security-compliance/compliance-automation",
+          "type": "skill"
+        },
+        {
+          "path": "skills/security-compliance/data-classification-assistant",
+          "type": "skill"
+        },
+        {
+          "path": "skills/security-compliance/vulnerability-report-summarizer",
           "type": "skill"
         }
       ]
@@ -447,7 +450,7 @@
     {
       "name": "Supply Chain & Logistics",
       "slug": "supply-chain",
-      "description": "Procurement, logistics, inventory, and fulfillment.",
+      "description": "Resolve disruptions faster with intelligent planning and end-to-end visibility.",
       "assets": [
         {
           "path": "skills/supply-chain/demand-forecast-explainer",
@@ -455,17 +458,6 @@
         },
         {
           "path": "skills/supply-chain/retail-supply-chain-pulse",
-          "type": "skill"
-        }
-      ]
-    },
-    {
-      "name": "communications",
-      "slug": "communications",
-      "description": "",
-      "assets": [
-        {
-          "path": "skills/communications/executive-voice-runtime-builder",
           "type": "skill"
         }
       ]

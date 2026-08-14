@@ -55,6 +55,10 @@
       "description": "Produce compelling visual work, from concept to final deliverable.",
       "assets": [
         {
+          "path": "skills/design/html-deck-builder",
+          "type": "skill"
+        },
+        {
           "path": "skills/design/presentation-theme-creator",
           "type": "skill"
         },

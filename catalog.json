@@ -214,6 +214,10 @@
         {
           "path": "skills/general-productivity/conversation-manager",
           "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/markdown-to-docx",
+          "type": "skill"
         }
       ]
     },

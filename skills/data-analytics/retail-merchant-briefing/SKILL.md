@@ -32,6 +32,7 @@ inputs:
     type: number
     required: false
     default: 5
+checksum: "sha256:ad4dbca755cf77b4cd3e14a3cf5f612be7d78bc72176526c6a56206593dc7b6b"
 ---
 
 ## Overview

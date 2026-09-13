@@ -26,6 +26,7 @@ inputs:
     description: "Comma-separated list of schema/table names the user is allowed to query. If set, queries against other tables are blocked."
     type: string
     required: false
+checksum: "sha256:19b198003b9d26a69a6ab6ba66ffa0415ae003af175d25ef26f09dab86a19b9d"
 ---
 
 ## Overview

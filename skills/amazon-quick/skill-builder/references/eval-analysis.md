@@ -1,3 +1,9 @@
+---
+description: "How an analysis task reads a completed benchmark and surfaces patterns the aggregate numbers hide."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Benchmark Analysis
 
 <purpose>

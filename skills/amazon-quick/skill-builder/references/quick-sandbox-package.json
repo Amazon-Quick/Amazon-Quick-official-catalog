@@ -1,0 +1,40 @@
+{
+  "name": "amazon-quick-javascript-sandbox",
+  "description": "Amazon Quick JavaScript sandbox modules. Names only, no version pins: the packaged sandbox is the source of truth for versions. A module absent from these lists is not available in the sandbox.",
+  "private": true,
+  "packages": [
+    "canvas",
+    "docx",
+    "pptxgenjs",
+    "react",
+    "react-dom",
+    "react-icons"
+  ],
+  "allowed_modules": [
+    "assert",
+    "buffer",
+    "canvas",
+    "crypto",
+    "docx",
+    "events",
+    "fs",
+    "fs/promises",
+    "path",
+    "pptxgenjs",
+    "punycode",
+    "querystring",
+    "react",
+    "react-dom/server",
+    "react-icons/bi",
+    "react-icons/fa",
+    "react-icons/hi",
+    "react-icons/md",
+    "stream",
+    "string_decoder",
+    "timers",
+    "url",
+    "util",
+    "zlib"
+  ],
+  "dynamic_installation": "not_supported"
+}

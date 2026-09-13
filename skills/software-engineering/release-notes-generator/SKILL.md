@@ -29,7 +29,7 @@ inputs:
   required: false
   default: "markdown"
   enum: ["platform_release", "chat_post", "wiki", "markdown"]
-
+checksum: "sha256:33dca578454430fde9a57ff1aa2b092a5bb1c644a95dd1cb74f1dadd5778023c"
 ---
 
 ## Overview

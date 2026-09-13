@@ -22,7 +22,7 @@ inputs:
   description: "File path to SLA definitions (JSON or YAML). Maps priority levels to response and resolution time targets. If not provided, the agent uses standard defaults from the Priority Levels definition."
   type: string
   required: false
-
+checksum: "sha256:ac5aa46dcb90522a641c21c9b55682e079790a4e07162b150f09fce4d6b998a2"
 ---
 
 ## Overview

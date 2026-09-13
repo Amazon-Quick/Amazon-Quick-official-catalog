@@ -104,6 +104,7 @@ inputs:
     type: number
     required: false
     default: 3
+checksum: "sha256:84eeef8b4300d013e7b82ef32d91b94e4813dc3a3488b17d98c8b731c35d53be"
 ---
 
 ## Overview

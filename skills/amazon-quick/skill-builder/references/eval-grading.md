@@ -1,3 +1,9 @@
+---
+description: "How a grading task evaluates a skill run's outputs against its assertions."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Grading
 
 <purpose>

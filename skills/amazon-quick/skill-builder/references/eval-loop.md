@@ -1,3 +1,9 @@
+---
+description: "The eval-driven loop: write prompts, run the skill against a baseline, grade, benchmark, and iterate."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Eval Methodology
 
 <purpose>
@@ -23,10 +29,17 @@ Write the prompts and `expected_output` into the existing `evals/evals.json`. Le
 
 Each run is its own background task, starting from clean context. A run that inherits the authoring conversation is not a real test, because the agent already knows the intent. Only an isolated run gives a trustworthy result.
 
+Run the runs sequentially, one `start_task` at a time, awaiting each result before starting the next. Do not use `create_task_group` to run them in parallel: parallel eval runs fail under load with "Response ended prematurely", which is an infrastructure failure, not a skill result. Sequential is slower but reliable.
+
+Run each case's runs at the tier the skill is designed for: read the target skill's `preferred_model` and `preferred_thinking` from its frontmatter and pass them to `start_task` (default `smart` and `high` when unset). A skill authored for a weaker tier must be tested at that tier, or the result does not reflect how it will run.
+
+Run the full case set before making any change. Editing the skill after one case and re-running only that case overfits to it and hides regressions elsewhere. One change at a time, measured against the whole set.
+
 1. `get_current_time` to mark the start.
-2. `create_task_group` for the run.
-3. For each case, `start_task` twice on the `smart` model with an isolated workspace: one told to load the skill, one told not to. Point each at its own output directory in the layout below. Instruct each task to write a `metrics.json` recording its tool-call counts and step count, and a short transcript of what it did.
-4. `get_task_group_result` when the group resolves. `get_current_time` again to bound duration.
+2. For each case, run two isolated `start_task` calls in sequence, each with its own workspace and output directory: the with_skill run told to load the skill, the baseline told not to. Await each before starting the next. Set `model` and `thinking_effort` from the skill's frontmatter. Instruct each run to write a `metrics.json` recording its tool-call counts and step count, and a short transcript of what it did.
+3. `get_current_time` again to bound duration.
+
+The baseline depends only on the prompt, not the skill, so run it once and cache it. On the first iteration, run both configurations. On later iterations, re-run only the with_skill runs and reuse the cached baseline, since re-running an unchanged baseline spends runs for an identical result.
 </phase_2>
 
 <phase_3>
@@ -42,7 +55,9 @@ Skip assertions for what resists pass/fail: writing style, visual polish, whethe
 <phase_4>
 **Grade and aggregate.** Grade each run against its assertions, PASS or FAIL with cited evidence, as an isolated background task following `eval-grading.md`. Do not grade in the authoring session, where knowing the intent biases the verdict.
 
-Once graded, run `scripts/eval_benchmark.py` over the grading files to build `benchmark.json`: pass rate, duration, and tool-call counts for each configuration, plus deltas.
+Grading always runs on the `smart` model, whatever tier the skill itself is tested at: a weaker judge gives unreliable verdicts. The skill's `preferred_model` governs the with_skill and baseline runs, never the grading run.
+
+Once graded, run `scripts/create_benchmark.py` over the grading files to build `benchmark.json`: pass rate, duration, and tool-call counts for each configuration, plus deltas.
 
 Pass rate is the primary signal. Duration and tool-call counts are the cost proxies, since a skill that lifts pass rate but doubles the steps is a different trade-off from one that is better and leaner.
 </phase_4>
@@ -51,6 +66,8 @@ Pass rate is the primary signal. Duration and tool-call counts are the cost prox
 **Analyze and iterate.** Read `benchmark.json` for patterns the aggregates hide, following `eval-analysis.md`: assertions that never discriminate, evals that fail everywhere, high-variance evals, cost outliers.
 
 Improve the skill based on the runs, the analysis, and the user's read of the outputs. Rerun, comparing against the prior version as baseline. Repeat until results satisfy you and the user, then expand the test set and run again at scale.
+
+On a rerun, re-run only the with_skill runs and reuse the cached baseline from the first iteration; the baseline does not change when the skill does. Re-grade the new with_skill runs on `smart`, then rebuild the benchmark against the cached baseline.
 
 Show results each round and let the user steer. If they would rather judge by eye than run a full benchmark, do that.
 </phase_5>

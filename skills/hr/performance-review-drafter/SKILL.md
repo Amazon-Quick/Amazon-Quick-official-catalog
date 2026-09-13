@@ -31,7 +31,7 @@ inputs:
   type: choice
   choices: [self_assessment, manager_review, peer_feedback]
   required: true
-
+checksum: "sha256:9969f2937880d72d8b9ce31c2fde2e64066e491c7bab308a846932c8912630a2"
 ---
 
 ## Overview

@@ -4,7 +4,7 @@ display_name: HTML Deck Builder
 icon: "📊"
 description: "Build professional HTML slide presentations as single self-contained files with keyboard navigation, speaker notes, and progress tracking. Use when asked to 'build a presentation', 'create a slide deck', 'make slides', 'build a deck', 'presentation about X', 'create a slideshow', 'HTML slides for', 'make a deck for my talk', 'slide deck about', or any request to produce a browser-based HTML slideshow."
 created_date: "2026-07-17"
-last_updated: "2026-08-13"
+last_updated: "2026-09-09"
 license: "MIT-0"
 preferred_model: smart
 preferred_thinking: medium
@@ -22,6 +22,7 @@ inputs:
     description: Primary brand color hex code to override the default palette
     type: string
     required: false
+checksum: "sha256:01014f8e6f32f1b45b99b4665d32a3b007d4b97702172f54afa4f6b96f19560f"
 ---
 
 ## Overview
@@ -49,7 +50,8 @@ Content: Heading (h2) starts at fixed top position (64px). Components stack vert
 5. Contrast pair: Two side-by-side cards for comparisons
 6. Callout: Small highlighted note for caveats or tips
 7. SVG tree: Inline SVG hierarchy diagram for composition or architecture
-8. QR group: Scannable QR codes with text labels </Definition - Components>
+8. QR group: Scannable QR codes with text labels
+9. Motion (optional): Ticker, marquee tip bar, animated SVG, animated hero background, faded content-slide background. All with reduced-motion fallbacks. Documented in references/motion-and-animation.md. </Definition - Components>
 
 <Definition - 5/5/5 Rule> Every content slide must satisfy:
 
@@ -67,7 +69,7 @@ Overflow goes to speaker notes, not additional slide clutter. </Definition - 5/5
 - Speaker notes panel: right-side sliding drawer (350px, dark bg, toggled with N key)
 - Source link: centered bottom within each slide (absolute positioned) </Definition - Navigation Chrome>
 
-1. Never put more than 50 words of visible text on a content slide. Detail belongs in speaker notes. 2. Never use emojis as icons. Use inline SVGs from the component library patterns. 3. Never use em dashes in any generated content. Use periods, commas, or semicolons. 4. Never regenerate the entire HTML file to make a single-slide edit. Use file_edit with targeted before/after blocks. 5. Every content slide must have a non-empty data-notes attribute with talking points. 6. Every content slide must have a source link (anchor tag) at bottom-center. 7. All links must be proper hyperlinks with https:// that open in new tabs. 8. Images must be base64 encoded inline (no external URLs) to maintain single-file portability. 9. JavaScript must use var (not const/let), standard for loops, try/catch wrappers, and null-check all DOM references. No arrow functions, no inline onclick handlers. 10. The deck must work without modification in any browser. No framework dependencies, no build tools, no module imports. 1. Inline onclick handlers are blocked by iframe CSP sandbox. Use addEventListener on buttons instead. 2. Base64-encoded images can bloat file size quickly. A single high-res PNG can add 500KB+. Compress images with Pillow before encoding, or prefer SVG for diagrams. 3. When reordering slides, the JavaScript slide count may be hardcoded. Always verify totalSlides matches the actual number of slide sections after any add/delete/reorder operation. 4. The open_in_session_tab preview renders in an iframe. Some CSS behaviors (like vh units, position:fixed) may differ from full-browser rendering. Test navigation works in preview before delivering. 5. Speaker notes are stored as data-notes attributes on slide divs. They do not support markdown rendering. Write them as plain sentences. 6. If the CSS head section gets accidentally removed during a file_edit operation, the entire deck breaks silently (unstyled white page). Always verify the style tag still exists after edits.
+1. Never put more than 50 words of visible text on a content slide. Detail belongs in speaker notes. 2. Never use emojis as icons. Use inline SVGs from the component library patterns. 3. Never use em dashes in any generated content. Use periods, commas, or semicolons. 4. Never regenerate the entire HTML file to make a single-slide edit. Use file_edit with targeted before/after blocks. 5. Every content slide should have a non-empty data-notes attribute with talking points by default. Speaker notes are on by default; omit or strip them only when the user explicitly asks for a deck without notes. 6. Every content slide should have a source link (anchor tag) at bottom-center by default, unless the user asks to remove source links or a slide has no meaningful source. When present, a source link occupies the bottom-center; do not also place a bottom-center marquee bar on that slide (see the per-slide show/hide rule in references/motion-and-animation.md). 7. All links must be proper hyperlinks with https:// that open in new tabs. 8. Images must be base64 encoded inline (no external URLs) to maintain single-file portability. 9. JavaScript must use var (not const/let), standard for loops, try/catch wrappers, and null-check all DOM references. No arrow functions, no inline onclick handlers. 10. The deck must work without modification in any browser. No framework dependencies, no build tools, no module imports. 11. When editing an existing deck, use exact-string edits guarded by assertions and run the post-edit integrity sweep in references/content-rules.md. Do not make loose fuzzy edits against a large single-file deck. 12. Any animation must ship with a prefers-reduced-motion fallback (see references/motion-and-animation.md). 1. Inline onclick handlers are blocked by iframe CSP sandbox. Use addEventListener on buttons instead. 2. Base64-encoded images can bloat file size quickly. A single high-res PNG can add 500KB+. Compress images with Pillow before encoding, or prefer SVG for diagrams. 3. When reordering slides, the JavaScript slide count may be hardcoded. Always verify totalSlides matches the actual number of slide sections after any add/delete/reorder operation. 4. The open_in_session_tab preview renders in an iframe. Some CSS behaviors (like vh units, position:fixed) may differ from full-browser rendering. Test navigation works in preview before delivering. 5. Speaker notes are stored as data-notes attributes on slide divs. They do not support markdown rendering. Write them as plain sentences. 6. If the CSS head section gets accidentally removed during a file_edit operation, the entire deck breaks silently (unstyled white page). Always verify the style tag still exists after edits. 7. Fuzzy or diff-based edits against a large single-file deck have stranded CSS above the html tag and dropped the doctype, which blanks slides. Use exact-string replacement plus the integrity sweep in references/content-rules.md. 8. A broad descendant rule (for example .slide > *) can outrank and override positioned children like an animated background or source link. Scope it with :not() exclusions (see references/content-rules.md). 9. Call the initial showSlide only after all DOM references it uses are defined, or first-render behavior silently no-ops until the user navigates.
 
 <Workflow - Plan description="Gather requirements and produce a slide map for approval" tools=[file_write, open_in_session_tab] triggers=["build a presentation", "create a deck", "make slides", "slide deck about"]
 >
@@ -152,9 +154,15 @@ Validate: Every content slide has non-empty data-notes. If fails, generate notes
 
 Validate: Opens without errors. Navigation works (arrow keys move between slides). If fails, wrap JS in try/catch and null-check DOM refs.
 
+### Step 5
+
+[Agent] Run the integrity sweep from references/content-rules.md: exactly one doctype with nothing before the html tag, exactly one style block, one html/body pair, per-slide div balance, slide count matching the JS total, and balanced JS braces and parens. If motion was used, confirm each animation has a prefers-reduced-motion fallback.
+
+Validate: All integrity checks pass. If any fail, fix before delivering (see the "If the structure is already broken" recovery notes in content-rules.md).
+
 </Workflow - Build>
 
-<Workflow - Embed Assets description="Add images, QR codes, and SVG diagrams to existing slides" tools=[file_read_image, run_python, file_edit] triggers=["add an image", "embed this", "add a QR code", "put this image on slide", "add a diagram"]
+<Workflow - Embed Assets description="Add images, QR codes, SVG diagrams, and motion to existing slides" tools=[file_read_image, run_python, file_edit] triggers=["add an image", "embed this", "add a QR code", "put this image on slide", "add a diagram", "add a ticker", "add a tip bar", "animate", "sliding text", "background image"]
 >
 
 ### Step 1
@@ -164,17 +172,18 @@ Validate: Opens without errors. Navigation works (arrow keys move between slides
 - Image file (png, jpg, svg): base64 encode inline
 - QR code: encode provided SVG data inline
 - SVG diagram: create inline SVG markup from component library patterns
-- Background image: base64 encode, apply as CSS background with 30-40% opacity
+- Background image (hero): base64 encode, apply as CSS background with 30-40% opacity
+- Faded content-slide background, ticker, marquee tip bar, animated SVG, animated hero background: load references/motion-and-animation.md and use its patterns. Each ships with a prefers-reduced-motion fallback that you must include.
 
 ### Step 2
 
-[Agent] Process the asset. For raster images, use run_python to base64 encode. For SVG diagrams, construct markup using the tree/flow patterns in references/component-library.md. For background images, wrap in a positioned div with the title-bg-img class.
+[Agent] Process the asset. For raster images, use run_python to base64 encode (compress first per content-rules.md). For SVG diagrams, construct markup using the tree/flow patterns in references/component-library.md. For hero background images, wrap in a positioned div with the title-bg-img class. For motion patterns, copy the CSS, HTML, and JS from references/motion-and-animation.md and its reduced-motion fallback.
 
 ### Step 3
 
-[Agent] Use file_edit to inject the asset HTML into the target slide section. Do not modify any other slides.
+[Agent] Use file_edit to inject the asset HTML into the target slide section, with exact-string edits guarded by assertions. Do not modify any other slides. If you added CSS or JS, then run the integrity sweep from references/content-rules.md.
 
-Validate: Asset renders in the preview (not a broken image icon). If fails, verify mime type matches the source file format.
+Validate: Asset renders in the preview (not a broken image icon), and the integrity sweep passes. If fails, verify mime type matches the source file format and check for stranded CSS or unbalanced tags per content-rules.md.
 
 </Workflow - Embed Assets>
 
@@ -233,5 +242,6 @@ Reference files loaded on demand during execution:
 - references/design-tokens.md: CSS custom property system. Color palette, typography scale, spacing, borders, shadows, transitions, z-index scale. Read during Build Step 1 to get :root values.
 - references/component-library.md: Eight components with full HTML markup and CSS for each. Read during Build Step 1 and Step 2 to copy patterns into slide construction.
 - references/content-rules.md: The 5/5/5 rule, layout principles, speaker notes format, anti-patterns to avoid, image guidelines, file size limits. Read during Build Step 2 for validation.
+- references/motion-and-animation.md: Optional motion patterns with reduced-motion fallbacks. Vertical auto-scroll ticker, horizontal marquee tip bar, animated SVG diagram (traveling dots), animated hero background, and faded full-bleed content-slide backgrounds. Read during Build or Embed Assets only when the deck calls for motion.
 - references/example-deck.html: A complete working 9-slide presentation demonstrating all components, both layout types, and the full navigation system. Read during Build Step 1 for structural reference.
 - assets/deck-template.html: Minimal starter scaffold with CSS, JS navigation, and one example of each slide type. Read during Build Step 1 as the base for every new deck.

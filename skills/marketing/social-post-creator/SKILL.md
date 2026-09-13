@@ -24,7 +24,7 @@ inputs:
   type: string
   required: false
   default: "engagement"
-
+checksum: "sha256:485ab08dc42c8d2dcc0fc7a6d6018670c88f981cd6655d8d8c9df6ac87787641"
 ---
 
 ## Overview

@@ -7,6 +7,7 @@ created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [file_read, run_python]
+checksum: "sha256:b56b3a1e1fb4f2fa2fd21e297e10af5054d57ec5a38ae8b2f7c94f3c92a1fee0"
 ---
 
 ## Overview
@@ -38,7 +39,7 @@ The eight supported tasks and the reference file that carries each one's code, p
 | Parameter tuning | thresholds, defaults, sensitivity | `references/parameters-and-pitfalls.md` |
 | Domain pitfalls | why a signal is a false positive | `references/parameters-and-pitfalls.md` |
 </Definition - Analysis Tasks>
-</Definition>
+</Definitions>
 
 <Rules>
 0. Security and privacy supersede every other rule. Claims data is Protected Health Information (PHI). Keep it inside the user's own tools and session. Never write claim contents, member identifiers, or provider identifiers to memory, the knowledge graph, external endpoints, or any location outside the user's trusted environment, and never send it over the network.

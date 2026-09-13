@@ -1,11 +1,19 @@
-#!/usr/bin/env python3
-"""Mechanical pass/fail checks for a SKILL.md.
+"""
+description: Run the mechanical, objective pass/fail schema checks on a SKILL.md (frontmatter fields, naming, character and line limits, XML tag balance, block ordering, em dashes and body emojis, rule numbering, and a well-formed checksum field); qualitative review is done by reading, not here. Run as: python check_skill.py <path/to/SKILL.md>.
+last_updated: 2026-09-13
+origin: original
 
 Runs ONLY the objective schema checks that do not require judgment: frontmatter
 fields, naming, character and line limits, XML tag balance, block ordering,
 em dashes and body emojis, and rule numbering. Qualitative review (does the
 workflow make sense, is the voice right, are claims verifiable) is NOT done here
 and must be done by reading, per the skill's Rules.
+
+Architecture: each check is a small private class with a single run(document)
+method returning one CheckResult, or None when the check does not apply. main()
+constructs and injects the ordered list of checks; SkillChecker applies them and
+rolls the results into one ValidationReport. Each check is independently
+testable: build a SkillDocument, call run(doc), assert on the single result.
 
 Standard library only. No third-party packages.
 
@@ -17,17 +25,42 @@ Exit code 0 if all checks pass, 1 if any fail. Prints a report either way.
 
 from __future__ import annotations
 
+import argparse
+import logging
 import re
 import sys
+from dataclasses import dataclass
+from enum import StrEnum
 from pathlib import Path
+from typing import Protocol
+
+
+class _PrintStream:
+    """Routes log records to stdout via print (the sandbox only returns stdout)."""
+
+    def write(self, message: str) -> None:
+        if message.strip():
+            print(message, end="")
+
+    def flush(self) -> None:
+        pass
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    stream=_PrintStream(),
+    force=True,
+)
+logger = logging.getLogger(__name__)
 
 MAX_DESCRIPTION = 1024
-MAX_BODY_LINES = 500
+MAX_BODY_LINES = 1024
 MAX_NAME = 64
 
 REQUIRED_FRONTMATTER = ("name", "description", "created_date", "last_updated")
-# Canonical block order from <Definition - XML Blocks>. Optional blocks may be
-# absent, but present blocks must appear in this relative order.
+DATE_FIELDS = ("created_date", "last_updated")
+HEADINGS = ("## Overview", "## Workflow")
 BLOCK_ORDER = (
     "Identity",
     "Goal",
@@ -39,480 +72,735 @@ BLOCK_ORDER = (
     "Templates",
     "Resources",
 )
+VALID_MODELS = ("fast", "balanced", "smart")
+VALID_THINKING = ("off", "low", "medium", "high")
+DEFAULT_THINKING = "high"
+# Fast mode does not support thinking effort, so it pairs only with "off".
+FAST_MODEL = "fast"
+
+# Compiled once, named for intent, referenced wherever needed.
+FENCE_RE = re.compile(r"```.*?```", re.S)
+DEFINITIONS_RE = re.compile(r"<Definitions>.*?</Definitions>", re.S)
+RULES_BLOCK_RE = re.compile(r"<Rules>(.*?)</Rules>", re.S)
+NAME_RE = re.compile(r'^name\s*:\s*"?([^"\n]+)"?', re.M)
+DESCRIPTION_RE = re.compile(r'^description\s*:\s*"(.*)"\s*$', re.M)
+KEBAB_RE = re.compile(rf"[a-z][a-z0-9-]{{0,{MAX_NAME - 1}}}")
+PAIRED_OPEN_RE = re.compile(r"^\s*<([A-Z][A-Za-z ]*?)>\s*$", re.M)
+PAIRED_CLOSE_RE = re.compile(r"^\s*</([A-Z][A-Za-z ]*?)>\s*$", re.M)
+WORKFLOW_OPEN_RE = re.compile(r"^\s*<Workflow - [^\n>]*$", re.M)
+WORKFLOW_CLOSE_RE = re.compile(r"^\s*</Workflow - [^\n>]+>\s*$", re.M)
+WORKFLOW_OPENER_RE = re.compile(r"<Workflow - [^\n]+\n(?:[^\n]*\n)*?\s*>")
+WORKFLOW_NAME_RE = re.compile(r"<Workflow - ([^\n]+)")
+RULE_NUMBER_RE = re.compile(r"^(\d+)\.\s", re.M)
+RULE_SELF_REF_RE = re.compile(r"Rules \(1-(\d+)\)")
+RULE_CROSSREF_RE = re.compile(r"Rule (\d+)")
+STEP_START_RE = re.compile(r"^\s*1\. \[[A-Za-z ]+\]")
+STEP_PREFIX_RE = re.compile(r"^\s*1\. \[([A-Za-z ]+)\]")
+FRONTMATTER_TOOLS_RE = re.compile(r"^tools\s*:\s*\[([^\]]*)\]", re.M)
+WORKFLOW_TOOLS_RE = re.compile(r"tools=\[([^\]]*)\]")
+INPUT_NAME_RE = re.compile(r"^\s*-\s*name:\s*([A-Za-z0-9_]+)", re.M)
+PLACEHOLDER_RE = re.compile(r"\{\{([A-Za-z0-9_]+)\}\}")
+PREFERRED_MODEL_RE = re.compile(r"preferred_model=([A-Za-z]+)")
+PREFERRED_THINKING_RE = re.compile(r"preferred_thinking=([A-Za-z]+)")
+INPUT_SPLIT_RE = re.compile(r"\n\s*-\s*name\s*:")
+# Emoji live across several Unicode blocks. Each range is named so a human
+# reviewer reads the intent instead of decoding raw code points.
+EMOJI_PICTOGRAPHS = ("\U0001f300", "\U0001faff")  # symbols, pictographs, emoticons
+EMOJI_MISC_SYMBOLS = ("\U00002600", "\U000027bf")  # miscellaneous symbols and dingbats
+EMOJI_CARDS_AND_TILES = ("\U0001f000", "\U0001f0ff")  # mahjong, dominoes, playing cards
+EMOJI_BLOCKS = (EMOJI_PICTOGRAPHS, EMOJI_MISC_SYMBOLS, EMOJI_CARDS_AND_TILES)
+EMOJI_RE = re.compile(
+    "[" + "".join(f"{low}-{high}" for low, high in EMOJI_BLOCKS) + "]"
+)
+EM_DASH = "\u2014"  # the em dash character, rendered "—"
+CHECKSUM_VALUE_RE = re.compile(r'^checksum\s*:\s*"?sha256:[0-9a-f]{64}"?\s*$', re.M)
+# Reference-file header standard: every references/*.md and scripts/*.py must
+# declare description, last_updated, and exactly one of source_url or origin.
+HEADER_DESCRIPTION_RE = re.compile(r"^description\s*:", re.M)
+HEADER_LAST_UPDATED_RE = re.compile(r"^last_updated\s*:", re.M)
+HEADER_PROVENANCE_RE = re.compile(r"^(?:source_url|origin)\s*:", re.M)
+PY_DOCSTRING_RE = re.compile(r'"""(.*?)"""', re.S)
+MD_FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.S)
+HEADER_FILE_GROUPS = (("references", "*.md"), ("scripts", "*.py"))
 
 
-def split_frontmatter(text: str) -> tuple[str, str]:
-    """Return (frontmatter_text, body_text). Frontmatter is between the first
-    two '---' fences. If absent, frontmatter is '' and body is the whole file."""
-    lines = text.splitlines()
-    fences = [i for i, ln in enumerate(lines) if ln.strip() == "---"]
-    if len(fences) >= 2:
-        fm = "\n".join(lines[fences[0] + 1 : fences[1]])
-        body = "\n".join(lines[fences[1] + 1 :])
-        return fm, body
-    return "", text
+class CheckStatus(StrEnum):
+    """Outcome category for a single check result."""
+
+    PASS = "PASS"  # nosec B105 - enum status label, not a credential
+    FAIL = "FAIL"
+    WARNING = "WARNING"
 
 
-def _strip_examples(body: str) -> str:
-    """Remove fenced code blocks and the <Definitions> section from the body.
+@dataclass(frozen=True)
+class CheckResult:
+    """One check outcome: a status category and a natural-language reason."""
 
-    Both contain illustrative syntax (example tools=[...] lists, {{name}}
-    placeholders) that describes the format rather than using it. Checks that
-    look for real usage must not treat those examples as violations.
+    status_code: CheckStatus
+    status_reason: str
+
+    @classmethod
+    def passed(cls, reason: str) -> CheckResult:
+        return cls(CheckStatus.PASS, reason)
+
+    @classmethod
+    def failed(cls, reason: str) -> CheckResult:
+        return cls(CheckStatus.FAIL, reason)
+
+    @classmethod
+    def of(cls, ok: bool, reason: str) -> CheckResult:
+        return cls(CheckStatus.PASS if ok else CheckStatus.FAIL, reason)
+
+
+@dataclass(frozen=True)
+class ValidationReport:
+    """The rolled-up result of every applicable check for one document."""
+
+    results: list[CheckResult]
+
+    @property
+    def failures(self) -> list[CheckResult]:
+        return [r for r in self.results if r.status_code is CheckStatus.FAIL]
+
+    @property
+    def warnings(self) -> list[CheckResult]:
+        return [r for r in self.results if r.status_code is CheckStatus.WARNING]
+
+    @property
+    def ok(self) -> bool:
+        return not self.failures
+
+    @property
+    def exit_code(self) -> int:
+        return 1 if self.failures else 0
+
+
+@dataclass(frozen=True)
+class SkillDocument:
+    """A parsed SKILL.md: frontmatter, body, and the directory it lives in.
+
+    Parsed once at the boundary (from_path) so checks receive a trusted value
+    object instead of re-reading or re-parsing the file.
     """
-    no_fences = re.sub(r"```.*?```", "", body, flags=re.S)
-    no_defs = re.sub(r"<Definitions>.*?</Definitions>", "", no_fences, flags=re.S)
-    return no_defs
 
+    frontmatter: str
+    body: str
+    dirname: str
+    skill_dir: Path | None = None
 
-def check_frontmatter(fm: str, results: list) -> None:
-    for field in REQUIRED_FRONTMATTER:
-        if re.search(rf"^{field}\s*:", fm, re.M):
-            results.append((True, f"frontmatter: {field} present"))
+    @classmethod
+    def from_path(cls, path: Path) -> SkillDocument:
+        text = path.read_text(encoding="utf-8")
+        lines = text.splitlines()
+        fences = [i for i, ln in enumerate(lines) if ln.strip() == "---"]
+        if len(fences) >= 2:
+            frontmatter = "\n".join(lines[fences[0] + 1 : fences[1]])
+            body = "\n".join(lines[fences[1] + 1 :])
         else:
-            results.append((False, f"frontmatter: {field} MISSING"))
+            frontmatter, body = "", text
+        resolved = path.resolve().parent
+        return cls(
+            frontmatter=frontmatter,
+            body=body,
+            dirname=resolved.name,
+            skill_dir=resolved,
+        )
 
-    m = re.search(r'^name\s*:\s*"?([^"\n]+)"?', fm, re.M)
-    if m:
-        name = m.group(1).strip()
-        if re.fullmatch(rf"[a-z][a-z0-9-]{{0,{MAX_NAME - 1}}}", name):
-            results.append((True, f"name '{name}' is valid kebab-case"))
-        else:
-            results.append(
-                (
-                    False,
-                    f"name '{name}' is not valid kebab-case (lowercase, hyphens, <= {MAX_NAME} chars)",
-                )
-            )
+    def body_without_fences(self) -> str:
+        return FENCE_RE.sub("", self.body)
 
-    m = re.search(r'^description\s*:\s*"(.*)"\s*$', fm, re.M)
-    if m:
+    def body_without_examples(self) -> str:
+        """Body with fenced code and the Definitions block removed, since both
+        carry illustrative syntax that must not count as real usage."""
+        return DEFINITIONS_RE.sub("", self.body_without_fences())
+
+    def rules_block(self) -> str | None:
+        """The inner text of <Rules>...</Rules>, or None when absent."""
+        m = RULES_BLOCK_RE.search(self.body)
+        return m.group(1) if m else None
+
+    def rule_numbers(self) -> list[int]:
+        block = self.rules_block()
+        return [int(n) for n in RULE_NUMBER_RE.findall(block)] if block else []
+
+    def name_value(self) -> str | None:
+        m = NAME_RE.search(self.frontmatter)
+        return m.group(1).strip() if m else None
+
+
+class Check(Protocol):
+    """A single validation. Returns one result, or None when not applicable."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None: ...
+
+
+class _RequiredFieldCheck:
+    """One required frontmatter field is present."""
+
+    def __init__(self, field: str) -> None:
+        self.field = field
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        present = bool(re.search(rf"^{self.field}\s*:", document.frontmatter, re.M))
+        return CheckResult.of(
+            present,
+            f"frontmatter: {self.field} present"
+            if present
+            else f"frontmatter: {self.field} MISSING",
+        )
+
+
+class _NameFormatCheck:
+    """Frontmatter name is valid kebab-case."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        name = document.name_value()
+        if name is None:
+            return None
+        valid = bool(KEBAB_RE.fullmatch(name))
+        return CheckResult.of(
+            valid,
+            f"name '{name}' is valid kebab-case"
+            if valid
+            else f"name '{name}' is not valid kebab-case (lowercase, hyphens, <= {MAX_NAME} chars)",
+        )
+
+
+class _DescriptionLengthCheck:
+    """Description is within the character limit."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        m = DESCRIPTION_RE.search(document.frontmatter)
+        if not m:
+            return None
         n = len(m.group(1))
-        ok = n <= MAX_DESCRIPTION
-        results.append((ok, f"description length {n} (limit {MAX_DESCRIPTION})"))
+        return CheckResult.of(
+            n <= MAX_DESCRIPTION, f"description length {n} (limit {MAX_DESCRIPTION})"
+        )
 
-    for date_field in ("created_date", "last_updated"):
-        m = re.search(rf'^{date_field}\s*:\s*"?(\d{{4}}-\d{{2}}-\d{{2}})"?', fm, re.M)
-        if re.search(rf"^{date_field}\s*:", fm, re.M):
-            results.append(
-                (
-                    bool(m),
-                    f"{date_field} is ISO YYYY-MM-DD"
-                    if m
-                    else f"{date_field} not ISO YYYY-MM-DD",
+
+class _DateFormatCheck:
+    """A date field, when present, is ISO YYYY-MM-DD."""
+
+    def __init__(self, field: str) -> None:
+        self.field = field
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        if not re.search(rf"^{self.field}\s*:", document.frontmatter, re.M):
+            return None
+        m = re.search(
+            rf'^{self.field}\s*:\s*"?(\d{{4}}-\d{{2}}-\d{{2}})"?',
+            document.frontmatter,
+            re.M,
+        )
+        return CheckResult.of(
+            bool(m),
+            f"{self.field} is ISO YYYY-MM-DD"
+            if m
+            else f"{self.field} not ISO YYYY-MM-DD",
+        )
+
+
+class _HeadingCheck:
+    """A required markdown heading is present."""
+
+    def __init__(self, heading: str) -> None:
+        self.heading = heading
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        ok = self.heading in document.body
+        return CheckResult.of(
+            ok,
+            f"heading '{self.heading}' present"
+            if ok
+            else f"heading '{self.heading}' MISSING (save_skill requires it)",
+        )
+
+
+class _BlockOrderCheck:
+    """Present canonical blocks appear in the defined relative order."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        no_fences = document.body_without_fences()
+        seen = [
+            block
+            for block in BLOCK_ORDER
+            if re.search(rf"^<{re.escape(block)}>", no_fences, re.M)
+        ]
+        canonical = [b for b in BLOCK_ORDER if b in seen]
+        if seen == canonical:
+            return CheckResult.passed(f"block ordering correct ({', '.join(seen)})")
+        return CheckResult.failed(
+            f"block ordering off: found {seen}, expected order {canonical}"
+        )
+
+
+class _TagBalanceCheck:
+    """Every paired block and workflow opener has a matching close."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        no_fences = document.body_without_fences()
+        opens = PAIRED_OPEN_RE.findall(no_fences)
+        closes = PAIRED_CLOSE_RE.findall(no_fences)
+        wf_opens = WORKFLOW_OPEN_RE.findall(no_fences)
+        wf_closes = WORKFLOW_CLOSE_RE.findall(no_fences)
+        unbalanced = []
+        for tag in set(opens):
+            if opens.count(tag) != closes.count(tag):
+                unbalanced.append(
+                    f"<{tag}> x{opens.count(tag)} vs </{tag}> x{closes.count(tag)}"
                 )
-            )
-
-
-def check_headings(body: str, results: list) -> None:
-    for heading in ("## Overview", "## Workflow"):
-        ok = heading in body
-        results.append(
-            (
-                ok,
-                f"heading '{heading}' present"
-                if ok
-                else f"heading '{heading}' MISSING (save_skill requires it)",
-            )
-        )
-
-
-def check_block_order(body: str, results: list) -> None:
-    """Present canonical blocks must appear in the defined relative order.
-
-    Only inspects opening tags at the start of a line, ignoring fenced code
-    blocks so template examples inside ``` do not count.
-    """
-    no_fences = re.sub(r"```.*?```", "", body, flags=re.S)
-    seen = []
-    for block in BLOCK_ORDER:
-        if re.search(rf"^<{re.escape(block)}>", no_fences, re.M):
-            seen.append(block)
-    canonical = [b for b in BLOCK_ORDER if b in seen]
-    if seen == canonical:
-        results.append((True, f"block ordering correct ({', '.join(seen)})"))
-    else:
-        results.append(
-            (False, f"block ordering off: found {seen}, expected order {canonical}")
-        )
-
-
-def check_tag_balance(body: str, results: list) -> None:
-    """Every <Block> / <Workflow - X> opening tag has a matching close.
-
-    Skips fenced code blocks and inline-attribute workflow openers (which span
-    multiple lines and close with '>' on their own).
-    """
-    no_fences = re.sub(r"```.*?```", "", body, flags=re.S)
-    # Simple paired blocks like <Identity>...</Identity>
-    opens = re.findall(r"^\s*<([A-Z][A-Za-z ]*?)>\s*$", no_fences, re.M)
-    closes = re.findall(r"^\s*</([A-Z][A-Za-z ]*?)>\s*$", no_fences, re.M)
-    # Workflow openers use inline attributes spanning lines: <Workflow - X ... >
-    wf_opens = re.findall(r"^\s*<Workflow - [^\n>]*$", no_fences, re.M)
-    wf_closes = re.findall(r"^\s*</Workflow - [^\n>]+>\s*$", no_fences, re.M)
-    unbalanced = []
-    for tag in set(opens):
-        if opens.count(tag) != closes.count(tag):
+        if len(wf_opens) != len(wf_closes):
             unbalanced.append(
-                f"<{tag}> x{opens.count(tag)} vs </{tag}> x{closes.count(tag)}"
+                f"<Workflow - ...> openers x{len(wf_opens)} vs closers x{len(wf_closes)}"
             )
-    if len(wf_opens) != len(wf_closes):
-        unbalanced.append(
-            f"<Workflow - ...> openers x{len(wf_opens)} vs closers x{len(wf_closes)}"
+        if unbalanced:
+            return CheckResult.failed("tag balance issues: " + "; ".join(unbalanced))
+        return CheckResult.passed("all block and workflow tags balanced")
+
+
+class _BodyLengthCheck:
+    """Body stays within the line limit."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        n = len(document.body.splitlines())
+        return CheckResult.of(
+            n <= MAX_BODY_LINES, f"body length {n} lines (limit {MAX_BODY_LINES})"
         )
-    if unbalanced:
-        results.append((False, "tag balance issues: " + "; ".join(unbalanced)))
-    else:
-        results.append((True, "all block and workflow tags balanced"))
 
 
-def check_body_length(body: str, results: list) -> None:
-    n = len(body.splitlines())
-    ok = n <= MAX_BODY_LINES
-    results.append((ok, f"body length {n} lines (limit {MAX_BODY_LINES})"))
+class _EmDashCheck:
+    """No em dashes in body prose (fenced code excluded)."""
 
-
-def check_em_dash_and_emoji(body: str, results: list) -> None:
-    # Strip fenced code blocks so example content (e.g. an icon in a sample
-    # frontmatter) is not flagged. Blank the lines to keep line numbers stable.
-    def blank_fences(text: str) -> list[str]:
-        out, in_fence = [], False
-        for line in text.splitlines():
-            if line.strip().startswith("```"):
-                in_fence = not in_fence
-                out.append("")
-                continue
-            out.append("" if in_fence else line)
-        return out
-
-    scan = blank_fences(body)
-    # Em dash: U+2014. Report line numbers.
-    em_lines = [i + 1 for i, ln in enumerate(scan) if "\u2014" in ln]
-    results.append(
-        (
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        scan = _blank_fences(document.body)
+        em_lines = [i + 1 for i, ln in enumerate(scan) if EM_DASH in ln]
+        return CheckResult.of(
             not em_lines,
             "no em dashes" if not em_lines else f"em dashes on body lines {em_lines}",
         )
-    )
 
-    emoji_pattern = re.compile(
-        "[\U0001f300-\U0001faff\U00002600-\U000027bf\U0001f000-\U0001f0ff]"
-    )
-    emoji_lines = [i + 1 for i, ln in enumerate(scan) if emoji_pattern.search(ln)]
-    results.append(
-        (
+
+class _EmojiCheck:
+    """No emojis in body prose (fenced code excluded)."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        scan = _blank_fences(document.body)
+        emoji_lines = [i + 1 for i, ln in enumerate(scan) if EMOJI_RE.search(ln)]
+        return CheckResult.of(
             not emoji_lines,
             "no body emojis"
             if not emoji_lines
             else f"emojis on body lines {emoji_lines}",
         )
-    )
 
 
-def check_rule_numbering(body: str, results: list) -> None:
-    """Rules inside <Rules>...</Rules> must be numbered sequentially from 1."""
-    m = re.search(r"<Rules>(.*?)</Rules>", body, re.S)
-    if not m:
-        return  # No Rules block; nothing to check.
-    nums = [int(x) for x in re.findall(r"^(\d+)\.\s", m.group(1), re.M)]
-    if not nums:
-        results.append((False, "Rules block present but no numbered rules found"))
-        return
-    expected = list(range(1, len(nums) + 1))
-    if nums == expected:
-        results.append((True, f"rules numbered sequentially 1-{len(nums)}"))
-    else:
-        results.append((False, f"rule numbering not sequential: {nums}"))
-        return
-    # Self-reference check: if a rule says "Rules (1-N)", N must equal the count.
-    ref = re.search(r"Rules \(1-(\d+)\)", m.group(1))
-    if ref:
+class _RuleSequentialNumberingCheck:
+    """Rules are numbered sequentially from 1."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        if document.rules_block() is None:
+            return None
+        nums = document.rule_numbers()
+        if not nums:
+            return CheckResult.failed("Rules block present but no numbered rules found")
+        if nums == list(range(1, len(nums) + 1)):
+            return CheckResult.passed(f"rules numbered sequentially 1-{len(nums)}")
+        return CheckResult.failed(f"rule numbering not sequential: {nums}")
+
+
+class _RuleSelfReferenceCheck:
+    """A 'Rules (1-N)' self-reference matches the actual rule count.
+
+    Only applies when numbering is sequential, mirroring the original: a
+    non-sequential block reports that failure and does not also self-check.
+    """
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        block = document.rules_block()
+        if block is None:
+            return None
+        nums = document.rule_numbers()
+        if not nums or nums != list(range(1, len(nums) + 1)):
+            return None
+        ref = RULE_SELF_REF_RE.search(block)
+        if not ref:
+            return None
         n = int(ref.group(1))
         ok = n == len(nums)
-        results.append(
-            (
-                ok,
-                f"rule self-reference says 1-{n}, actual count {len(nums)}"
-                + ("" if ok else " MISMATCH"),
+        return CheckResult.of(
+            ok,
+            f"rule self-reference says 1-{n}, actual count {len(nums)}"
+            + ("" if ok else " MISMATCH"),
+        )
+
+
+class _StepFailurePathCheck:
+    """[Agent] and [Ask user] steps declare an 'If fails:' path."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        offenders = []
+        for prefix, block in self._workflow_steps(document.body):
+            if prefix in ("Agent", "Ask user") and "If fails:" not in block:
+                offenders.append(f"[{prefix}] {block.splitlines()[0].strip()[:50]}")
+        if offenders:
+            return CheckResult.failed(
+                f"steps missing 'If fails:' ({len(offenders)}): " + "; ".join(offenders)
             )
+        return CheckResult.passed(
+            "all [Agent]/[Ask user] steps have an 'If fails:' path"
         )
 
-
-def _workflow_steps(body: str):
-    """Yield (prefix, block_text) for each numbered step inside <Instructions>.
-
-    A step starts at a line matching '1. [Prefix]' and runs until the next such
-    line or the end of Instructions. Fenced code blocks are stripped first so
-    template examples do not count as real steps.
-    """
-    no_fences = re.sub(r"```.*?```", "", body, flags=re.S)
-    if "<Instructions>" not in no_fences:
-        return
-    region = no_fences[no_fences.index("<Instructions>") :]
-    lines = region.splitlines()
-    starts = [
-        i for i, ln in enumerate(lines) if re.match(r"^\s*1\. \[[A-Za-z ]+\]", ln)
-    ]
-    for idx, start in enumerate(starts):
-        end = starts[idx + 1] if idx + 1 < len(starts) else len(lines)
-        block = "\n".join(lines[start:end])
-        m = re.match(r"^\s*1\. \[([A-Za-z ]+)\]", lines[start])
-        yield m.group(1).strip(), block
+    @staticmethod
+    def _workflow_steps(body: str):
+        no_fences = FENCE_RE.sub("", body)
+        if "<Instructions>" not in no_fences:
+            return
+        region = no_fences[no_fences.index("<Instructions>") :]
+        lines = region.splitlines()
+        starts = [i for i, ln in enumerate(lines) if STEP_START_RE.match(ln)]
+        for idx, start in enumerate(starts):
+            end = starts[idx + 1] if idx + 1 < len(starts) else len(lines)
+            block = "\n".join(lines[start:end])
+            yield STEP_PREFIX_RE.match(lines[start]).group(1).strip(), block
 
 
-def check_step_failure_paths(body: str, results: list) -> None:
-    """Rule 13: [Agent] and [Ask user] steps need an 'If fails:' path.
+class _WorkflowToolsCheck:
+    """Every tool used in a workflow tools=[...] is declared in frontmatter."""
 
-    [Decide] steps handle failure through their branches, and [Think] steps run
-    an internal protocol, so both are exempt.
-    """
-    offenders = []
-    for prefix, block in _workflow_steps(body):
-        if prefix in ("Agent", "Ask user") and "If fails:" not in block:
-            first_line = block.splitlines()[0].strip()[:50]
-            offenders.append(f"[{prefix}] {first_line}")
-    if offenders:
-        results.append(
-            (
-                False,
-                f"steps missing 'If fails:' ({len(offenders)}): "
-                + "; ".join(offenders),
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        m = FRONTMATTER_TOOLS_RE.search(document.frontmatter)
+        declared = (
+            {t.strip() for t in m.group(1).split(",") if t.strip()} if m else set()
+        )
+        used = set()
+        for block in WORKFLOW_TOOLS_RE.findall(document.body_without_examples()):
+            used |= {t.strip() for t in block.split(",") if t.strip()}
+        undeclared = sorted(
+            t for t in (used - declared) if t not in ("...", "built_in_tool")
+        )
+        if undeclared:
+            return CheckResult.failed(
+                f"workflow tools not in frontmatter `tools`: {undeclared}"
             )
-        )
-    else:
-        results.append((True, "all [Agent]/[Ask user] steps have an 'If fails:' path"))
+        return CheckResult.passed("all workflow tools are declared in frontmatter")
 
 
-def check_workflow_tools(fm: str, body: str, results: list) -> None:
-    """Every tool named in a workflow tools=[...] must be declared in frontmatter
-    `tools:`. Catches drift between what a workflow calls and what is declared."""
-    m = re.search(r"^tools\s*:\s*\[([^\]]*)\]", fm, re.M)
-    declared = set()
-    if m:
-        declared = {t.strip() for t in m.group(1).split(",") if t.strip()}
-    # Strip fenced code AND the <Definitions> block: both describe tool syntax
-    # with literal example placeholders (e.g. tools=[built_in_tool, ...]) rather
-    # than declaring real usage.
-    scan = _strip_examples(body)
-    used = set()
-    for block in re.findall(r"tools=\[([^\]]*)\]", scan):
-        used |= {t.strip() for t in block.split(",") if t.strip()}
-    # Ignore ellipsis placeholders that appear in illustrative snippets.
-    undeclared = sorted(
-        t for t in (used - declared) if t not in ("...", "built_in_tool")
-    )
-    if undeclared:
-        results.append(
-            (False, f"workflow tools not in frontmatter `tools`: {undeclared}")
-        )
-    else:
-        results.append((True, "all workflow tools are declared in frontmatter"))
+class _InputPlaceholderCheck:
+    """Declared inputs and {{placeholders}} used in the body stay consistent."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        declared = set(INPUT_NAME_RE.findall(document.frontmatter))
+        used = set(PLACEHOLDER_RE.findall(document.body_without_examples()))
+        undeclared = sorted(used - declared)
+        if undeclared:
+            return CheckResult.failed(
+                f"input placeholder issues: used but not declared: {undeclared}"
+            )
+        return CheckResult.passed("input placeholders consistent with declarations")
 
 
-def check_input_placeholders(fm: str, body: str, results: list) -> None:
-    """Input names declared in frontmatter and {{placeholders}} used in the body
-    must be consistent: no declared-but-unused, no used-but-undeclared."""
-    declared = set(re.findall(r"^\s*-\s*name:\s*([A-Za-z0-9_]+)", fm, re.M))
-    # Skip Definitions and fenced examples, which describe the {{name}} syntax
-    # itself with literal placeholder words rather than using real inputs.
-    used = set(re.findall(r"\{\{([A-Za-z0-9_]+)\}\}", _strip_examples(body)))
-    issues = []
-    undeclared = sorted(used - declared)
-    if undeclared:
-        issues.append(f"used but not declared: {undeclared}")
-    # Declared-but-unused is only a warning for XML-scaffold skills (inputs flow
-    # through workflow steps), so report it but do not fail on it alone.
-    if issues:
-        results.append((False, "input placeholder issues: " + "; ".join(issues)))
-    else:
-        results.append((True, "input placeholders consistent with declarations"))
+class _WorkflowAttributesCheck:
+    """Every workflow opener carries description=, tools=, triggers=, and any
+    advisory hints hold valid enum values."""
 
-
-VALID_MODELS = ("fast", "balanced", "smart")
-VALID_THINKING = ("off", "low", "medium", "high", "max")
-
-
-def check_workflow_attributes(body: str, results: list) -> None:
-    """Every <Workflow - X> opener must carry description=, tools=, and triggers=.
-
-    Reads each opener from the '<Workflow - ' line up to the closing '>' on its
-    own line, so multi-line inline attributes are captured. Fenced examples are
-    stripped first.
-    """
-    no_fences = re.sub(r"```.*?```", "", body, flags=re.S)
-    # Capture each opener header: from '<Workflow - X' to the line that is just '>'.
-    openers = re.findall(r"<Workflow - [^\n]+\n(?:[^\n]*\n)*?\s*>", no_fences)
-    missing = []
-    hint_errors = []
-    for opener in openers:
-        name = re.search(r"<Workflow - ([^\n]+)", opener).group(1).strip()
-        for attr in ("description=", "tools=", "triggers="):
-            if attr not in opener:
-                missing.append(f"'{name}' missing {attr.rstrip('=')}")
-        # Optional advisory execution hints, validated only when present.
-        hm = re.search(r"preferred_model=([A-Za-z]+)", opener)
-        if hm and hm.group(1) not in VALID_MODELS:
-            hint_errors.append(f"'{name}' preferred_model={hm.group(1)} invalid")
-        ht = re.search(r"preferred_thinking=([A-Za-z]+)", opener)
-        if ht and ht.group(1) not in VALID_THINKING:
-            hint_errors.append(f"'{name}' preferred_thinking={ht.group(1)} invalid")
-    if hint_errors:
-        missing.extend(hint_errors)
-    if missing:
-        results.append((False, "workflow attribute gaps: " + "; ".join(missing)))
-    else:
-        results.append(
-            (True, f"all {len(openers)} workflows have description, tools, triggers")
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        openers = WORKFLOW_OPENER_RE.findall(document.body_without_fences())
+        missing = []
+        for opener in openers:
+            name = WORKFLOW_NAME_RE.search(opener).group(1).strip()
+            for attr in ("description=", "tools=", "triggers="):
+                if attr not in opener:
+                    missing.append(f"'{name}' missing {attr.rstrip('=')}")
+            hm = PREFERRED_MODEL_RE.search(opener)
+            if hm and hm.group(1) not in VALID_MODELS:
+                missing.append(f"'{name}' preferred_model={hm.group(1)} invalid")
+            ht = PREFERRED_THINKING_RE.search(opener)
+            if ht and ht.group(1) not in VALID_THINKING:
+                missing.append(f"'{name}' preferred_thinking={ht.group(1)} invalid")
+        if missing:
+            return CheckResult.failed("workflow attribute gaps: " + "; ".join(missing))
+        return CheckResult.passed(
+            f"all {len(openers)} workflows have description, tools, triggers"
         )
 
 
-def check_preferred_fields(fm: str, results: list) -> None:
-    """preferred_model and preferred_thinking, when present, must hold valid
-    enum values. Both are optional, so absence is not a failure."""
-    for field, valid in (
-        ("preferred_model", VALID_MODELS),
-        ("preferred_thinking", VALID_THINKING),
-    ):
-        m = re.search(rf'^{field}\s*:\s*"?([A-Za-z]+)"?', fm, re.M)
+class _PreferredFieldCheck:
+    """A preferred_* frontmatter field, when present, holds a valid value."""
+
+    def __init__(self, field: str, valid: tuple[str, ...]) -> None:
+        self.field = field
+        self.valid = valid
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        m = re.search(
+            rf'^{self.field}\s*:\s*"?([A-Za-z]+)"?', document.frontmatter, re.M
+        )
         if not m:
-            continue  # optional; absence is fine
+            return None
         val = m.group(1)
-        if val in valid:
-            results.append((True, f"{field} '{val}' is valid"))
-        else:
-            results.append(
-                (False, f"{field} '{val}' invalid (must be one of {', '.join(valid)})")
+        return CheckResult.of(
+            val in self.valid,
+            f"{self.field} '{val}' is valid"
+            if val in self.valid
+            else f"{self.field} '{val}' invalid (must be one of {', '.join(self.valid)})",
+        )
+
+
+class _RuleCrossRefCheck:
+    """Every 'Rule N' reference in the body points to a rule that exists."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        if document.rules_block() is None:
+            return None
+        rule_count = len(document.rule_numbers())
+        body = document.body
+        outside = body[: body.index("<Rules>")] + body[body.index("</Rules>") :]
+        refs = sorted({int(n) for n in RULE_CROSSREF_RE.findall(outside)})
+        broken = [n for n in refs if n < 1 or n > rule_count]
+        if broken:
+            return CheckResult.failed(
+                f"'Rule N' references out of range (rule count {rule_count}): {broken}"
             )
+        if refs:
+            return CheckResult.passed(
+                f"all {len(refs)} 'Rule N' references point to existing rules (1-{rule_count})"
+            )
+        return CheckResult.passed("no 'Rule N' cross-references to validate")
 
 
-def check_rule_crossrefs(body: str, results: list) -> None:
-    """Every 'Rule N' reference in the body must point to a rule that exists.
+class _NameMatchesDirectoryCheck:
+    """Frontmatter name matches the skill directory name."""
 
-    Deleting or renumbering a rule silently breaks 'see Rule N' pointers, and
-    sequential-numbering checks do not catch it. This verifies each referenced
-    number falls within the actual rule count. It cannot verify the reference
-    points to the intended rule (that needs reading), only that N exists.
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        if not document.dirname:
+            return None
+        name = document.name_value()
+        if name is None:
+            return None
+        if name == document.dirname:
+            return CheckResult.passed(f"name '{name}' matches directory")
+        return CheckResult.failed(
+            f"name '{name}' does not match directory '{document.dirname}'"
+        )
+
+
+class _ChoiceOptionsCheck:
+    """Any input with type: choice also declares options."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        blocks = INPUT_SPLIT_RE.split(document.frontmatter)
+        offenders = []
+        for blk in blocks[1:]:
+            first = blk.splitlines()[0].strip().strip('"') if blk.strip() else "?"
+            if re.search(r"type\s*:\s*choice", blk) and not re.search(
+                r"options\s*:", blk
+            ):
+                offenders.append(first)
+        if offenders:
+            return CheckResult.failed(
+                f"inputs with type choice missing options: {offenders}"
+            )
+        return CheckResult.passed("choice inputs declare options (or none present)")
+
+
+class _DateOrderCheck:
+    """created_date is on or before last_updated."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        c = re.search(
+            r'^created_date\s*:\s*"?(\d{4}-\d{2}-\d{2})', document.frontmatter, re.M
+        )
+        u = re.search(
+            r'^last_updated\s*:\s*"?(\d{4}-\d{2}-\d{2})', document.frontmatter, re.M
+        )
+        if not (c and u):
+            return None
+        if c.group(1) <= u.group(1):
+            return CheckResult.passed("created_date is on or before last_updated")
+        return CheckResult.failed(
+            f"created_date {c.group(1)} is after last_updated {u.group(1)}"
+        )
+
+
+class _SkillChecksumFieldCheck:
+    """The frontmatter carries a well-formed checksum (sha256 + 64 hex chars).
+
+    Only the field's presence and format are validated. create_checksum.py owns
+    computing the digest, so this check never recomputes it.
     """
-    m = re.search(r"<Rules>(.*?)</Rules>", body, re.S)
-    if not m:
-        return
-    rule_count = len(re.findall(r"^\s*(\d+)\.\s", m.group(1), re.M))
-    # References elsewhere in the body, excluding the Rules block itself.
-    outside = body[: body.index("<Rules>")] + body[body.index("</Rules>") :]
-    refs = sorted({int(n) for n in re.findall(r"Rule (\d+)", outside)})
-    broken = [n for n in refs if n < 1 or n > rule_count]
-    if broken:
-        results.append(
-            (
-                False,
-                f"'Rule N' references out of range (rule count {rule_count}): {broken}",
-            )
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        line = re.search(r"^checksum\s*:.*$", document.frontmatter, re.M)
+        if line is None:
+            return CheckResult.failed("checksum field missing (run create_checksum.py)")
+        ok = bool(CHECKSUM_VALUE_RE.search(document.frontmatter))
+        return CheckResult.of(
+            ok,
+            "checksum field well-formed (sha256:<64 hex>)"
+            if ok
+            else f"checksum field malformed: {line.group(0).strip()}",
         )
-    elif refs:
-        results.append(
-            (
-                True,
-                f"all {len(refs)} 'Rule N' references point to existing rules (1-{rule_count})",
-            )
-        )
-    else:
-        results.append((True, "no 'Rule N' cross-references to validate"))
 
 
-def check_name_matches_directory(fm: str, dirname: str, results: list) -> None:
-    """Frontmatter `name` must match the skill's directory name.
+class FileHeaderValidator:
+    """Validates that a file's header carries the required fields (pure).
 
-    <Definition - Frontmatter> requires this, but no other check verifies it.
-    Skipped when the directory name is unavailable.
+    Given a file's text and whether it is Python, it extracts the header (the
+    module docstring for .py, the YAML frontmatter for .md) and returns the list
+    of missing fields: description, last_updated, and source_url-or-origin.
     """
-    if not dirname:
-        return
-    m = re.search(r'^name\s*:\s*"?([^"\n]+)"?', fm, re.M)
-    if not m:
-        return  # missing name already caught by check_frontmatter
-    name = m.group(1).strip()
-    if name == dirname:
-        results.append((True, f"name '{name}' matches directory"))
-    else:
-        results.append((False, f"name '{name}' does not match directory '{dirname}'"))
+
+    def __init__(self, text: str, is_python: bool) -> None:
+        self.text = text
+        self.is_python = is_python
+
+    def validate(self) -> list[str]:
+        """Return the required header fields that are missing (empty if valid)."""
+        header = self._header()
+        missing = []
+        if not HEADER_DESCRIPTION_RE.search(header):
+            missing.append("description")
+        if not HEADER_LAST_UPDATED_RE.search(header):
+            missing.append("last_updated")
+        if not HEADER_PROVENANCE_RE.search(header):
+            missing.append("source_url or origin")
+        return missing
+
+    def _header(self) -> str:
+        if self.is_python:
+            match = PY_DOCSTRING_RE.search(self.text)
+            return match.group(1) if match else ""
+        match = MD_FRONTMATTER_RE.match(self.text)
+        return match.group(1) if match else ""
 
 
-def check_choice_options(fm: str, results: list) -> None:
-    """Any input with `type: choice` must also declare `options`."""
-    # Split the inputs section into per-input blocks by the "- name:" marker.
-    blocks = re.split(r"\n\s*-\s*name\s*:", fm)
-    offenders = []
-    for blk in blocks[1:]:
-        first = blk.splitlines()[0].strip().strip('"') if blk.strip() else "?"
-        if re.search(r"type\s*:\s*choice", blk) and not re.search(r"options\s*:", blk):
-            offenders.append(first)
-    if offenders:
-        results.append((False, f"inputs with type choice missing options: {offenders}"))
-    else:
-        results.append((True, "choice inputs declare options (or none present)"))
+class _FileHeadersCheck:
+    """Every README.md, references/*.md, and scripts/*.py carries the required
+    header fields.
 
+    Enforces the reference-file header standard across the skill's files, not
+    just SKILL.md. Skipped when the document was not loaded from a directory (a
+    unit test building a SkillDocument by hand), so pure checks stay pure.
+    """
 
-def check_date_order(fm: str, results: list) -> None:
-    """created_date must be on or before last_updated."""
-    c = re.search(r'^created_date\s*:\s*"?(\d{4}-\d{2}-\d{2})', fm, re.M)
-    u = re.search(r'^last_updated\s*:\s*"?(\d{4}-\d{2}-\d{2})', fm, re.M)
-    if not (c and u):
-        return  # presence/format already handled by check_frontmatter
-    if c.group(1) <= u.group(1):
-        results.append((True, "created_date is on or before last_updated"))
-    else:
-        results.append(
-            (False, f"created_date {c.group(1)} is after last_updated {u.group(1)}")
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        if document.skill_dir is None:
+            return None
+        offenders = []
+        for path in self._files(document.skill_dir):
+            missing = FileHeaderValidator(
+                path.read_text(encoding="utf-8"), path.suffix == ".py"
+            ).validate()
+            if missing:
+                rel = path.relative_to(document.skill_dir).as_posix()
+                offenders.append(f"{rel} (missing {', '.join(missing)})")
+        if offenders:
+            return CheckResult.failed("file header issues: " + "; ".join(offenders))
+        return CheckResult.passed(
+            "README, references, and scripts carry required headers"
         )
+
+    @staticmethod
+    def _files(skill_dir: Path):
+        readme = skill_dir / "README.md"
+        if readme.is_file():
+            yield readme
+        for sub, pattern in HEADER_FILE_GROUPS:
+            base = skill_dir / sub
+            if not base.is_dir():
+                continue
+            for path in sorted(base.rglob(pattern)):
+                if "__pycache__" not in path.parts:
+                    yield path
+
+
+def _blank_fences(text: str) -> list[str]:
+    """Return body lines with fenced code blanked, preserving line numbers."""
+    out, in_fence = [], False
+    for line in text.splitlines():
+        if line.strip().startswith("```"):
+            in_fence = not in_fence
+            out.append("")
+            continue
+        out.append("" if in_fence else line)
+    return out
+
+
+def build_checks() -> list[Check]:
+    """The ordered list of checks. Injected into SkillChecker by main()."""
+    return [
+        _RequiredFieldCheck("name"),
+        _RequiredFieldCheck("description"),
+        _RequiredFieldCheck("created_date"),
+        _RequiredFieldCheck("last_updated"),
+        _NameFormatCheck(),
+        _DescriptionLengthCheck(),
+        _DateFormatCheck("created_date"),
+        _DateFormatCheck("last_updated"),
+        _HeadingCheck("## Overview"),
+        _HeadingCheck("## Workflow"),
+        _BlockOrderCheck(),
+        _TagBalanceCheck(),
+        _BodyLengthCheck(),
+        _EmDashCheck(),
+        _EmojiCheck(),
+        _RuleSequentialNumberingCheck(),
+        _RuleSelfReferenceCheck(),
+        _StepFailurePathCheck(),
+        _WorkflowToolsCheck(),
+        _InputPlaceholderCheck(),
+        _WorkflowAttributesCheck(),
+        _PreferredFieldCheck("preferred_model", VALID_MODELS),
+        _PreferredFieldCheck("preferred_thinking", VALID_THINKING),
+        _RuleCrossRefCheck(),
+        _NameMatchesDirectoryCheck(),
+        _ChoiceOptionsCheck(),
+        _DateOrderCheck(),
+        _SkillChecksumFieldCheck(),
+        _FileHeadersCheck(),
+    ]
+
+
+class SkillChecker:
+    """Applies an injected list of checks to one SKILL.md and rolls up a report."""
+
+    def __init__(self, path: Path, checks: list[Check]) -> None:
+        self.path = path
+        self.checks = checks
+
+    def check(self) -> ValidationReport:
+        document = SkillDocument.from_path(self.path)
+        results = [
+            result
+            for check in self.checks
+            if (result := check.run(document)) is not None
+        ]
+        return ValidationReport(results)
 
 
 def main() -> int:
-    if len(sys.argv) != 2:
-        print("usage: python check_skill.py <path/to/SKILL.md>", file=sys.stderr)
-        return 2
-    path = Path(sys.argv[1])
+    parser = argparse.ArgumentParser(
+        description="Mechanical pass/fail checks for a SKILL.md."
+    )
+    parser.add_argument("skill_md", help="Path to the SKILL.md file.")
+    args = parser.parse_args()
+
+    path = Path(args.skill_md)
     if not path.is_file():
-        print(f"error: not a file: {path}", file=sys.stderr)
+        logger.error("Not a file: %s", path)
         return 2
 
-    text = path.read_text(encoding="utf-8")
-    fm, body = split_frontmatter(text)
-    dirname = path.resolve().parent.name
-
-    results = []
-    check_frontmatter(fm, results)
-    check_headings(body, results)
-    check_block_order(body, results)
-    check_tag_balance(body, results)
-    check_body_length(body, results)
-    check_em_dash_and_emoji(body, results)
-    check_rule_numbering(body, results)
-    check_step_failure_paths(body, results)
-    check_workflow_tools(fm, body, results)
-    check_input_placeholders(fm, body, results)
-    check_workflow_attributes(body, results)
-    check_preferred_fields(fm, results)
-    check_rule_crossrefs(body, results)
-    check_name_matches_directory(fm, dirname, results)
-    check_choice_options(fm, results)
-    check_date_order(fm, results)
-
-    passed = sum(1 for ok, _ in results if ok)
-    failed = [msg for ok, msg in results if not ok]
-
-    for ok, msg in results:
-        print(f"  {'PASS' if ok else 'FAIL'}  {msg}")
-    print(f"\n{passed}/{len(results)} checks passed.")
-    if failed:
-        print("\nMechanical failures to fix:")
-        for msg in failed:
-            print(f"  - {msg}")
-        print(
-            "\nNote: these are mechanical checks only. Qualitative review (workflow logic, voice, claim verifiability) must be done by reading."
-        )
-        return 1
-    print("All mechanical checks passed. Qualitative review still required by reading.")
-    return 0
+    report = SkillChecker(path, build_checks()).check()
+    for result in report.results:
+        logger.info("%s  %s", result.status_code.value, result.status_reason)
+    logger.info(
+        "%d checks, %d failures, %d warnings",
+        len(report.results),
+        len(report.failures),
+        len(report.warnings),
+    )
+    return report.exit_code
 
 
 if __name__ == "__main__":

@@ -39,6 +39,7 @@ inputs:
     type: number
     required: false
     default: 10
+checksum: "sha256:0c0b8b029723006bcb37b5ec2b0276afa9ff17433108408ccf36ca4943ac3db1"
 ---
 
 ## Overview

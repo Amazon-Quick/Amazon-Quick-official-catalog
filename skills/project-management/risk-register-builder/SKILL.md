@@ -31,6 +31,7 @@ inputs:
     default: "both"
 tools: [file_read, file_read_pdf, file_read_docx, run_python, file_write, open_in_session_tab]
 depends-on: [canvas_xlsx, html_design]
+checksum: "sha256:78f02d0f57a76fb24c9f68dadf888a36e8bbe7a6421f6e7370306a4e72b13763"
 ---
 
 ## Overview

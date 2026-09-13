@@ -12,6 +12,7 @@ inputs:
     description: "What the user is looking for: a question to search, a topic to learn about, or a type of resource to discover"
     type: string
     required: false
+checksum: "sha256:d147b0b683af6599e209702084e493353fd6e2539664235eb3e0e9d70c80c737"
 ---
 
 ## Overview

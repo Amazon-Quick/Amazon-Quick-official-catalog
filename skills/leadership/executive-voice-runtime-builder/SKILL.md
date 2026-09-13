@@ -8,6 +8,7 @@ last_updated: "2026-07-17"
 license: MIT-0
 tools: [get_current_time, file_read, file_write, folder_list, folder_create, kg_search, search_all, file_rag_search, open_in_session_tab]
 depends-on: [gmail, outlook, slack, microsoft-teams]
+checksum: "sha256:bc192f03360a3a1e5bef57d1b7d7dc38f433996fb8d64a23f2ec16b8d306526a"
 ---
 
 ## Overview

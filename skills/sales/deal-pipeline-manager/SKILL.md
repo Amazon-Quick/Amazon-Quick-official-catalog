@@ -24,7 +24,7 @@ inputs:
   type: string
   required: false
   default: "full"
-
+checksum: "sha256:01d80737ff9508c3aa24e48fa152ac5dbc6ae7d43c354b8dfe31d5fb5f76b691"
 ---
 
 ## Overview

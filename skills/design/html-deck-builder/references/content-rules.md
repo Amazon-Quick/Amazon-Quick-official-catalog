@@ -163,3 +163,51 @@ Single-file HTML presentations should stay under 2MB total. If embedded images p
 - Compress PNGs (use run_python with Pillow, quality reduction)
 - Consider linking images from a URL instead of base64 embedding
 - SVG diagrams are almost always smaller than raster screenshots
+
+## Editing Safety Protocol
+
+Large single-file decks (with base64 images the file runs to over 1MB) are fragile to edit. Fuzzy or diff-based edits against a giant file have repeatedly stranded CSS above `<html>` and dropped the `<!DOCTYPE>` line, which silently blanks slides (the browser mis-parses the document). Follow this protocol for every edit to an existing deck.
+
+### Edit with exact strings, not fuzzy context
+
+- Prefer exact-string replacement: read the precise current substring, then replace it. Guard every replacement with an assertion that the anchor appears exactly once before you write.
+- Never append a large CSS block by loosely targeting "the end of the style tag." Anchor on a specific, unique existing rule and insert relative to it.
+- Make one logical change per write, then verify, rather than batching many blind edits.
+
+### Run an integrity sweep after every edit
+
+After any structural edit, verify all of the following before showing the deck. If any fails, stop and fix it before proceeding:
+
+1. `<!DOCTYPE` count is exactly 1, and nothing appears before `<html>` except that doctype line.
+2. Exactly one `<style>` and one `</style>`.
+3. Exactly one `<html>`/`</html>` and one `<body>`/`</body>`.
+4. Per-slide `<div>` balance: within each slide section, the count of `<div` equals the count of `</div>`. An imbalance means one slide has swallowed the slides after it (they will render blank).
+5. Slide count matches the expected total, and the JS slide total matches it.
+6. JavaScript brace `{ }` and paren `( )` counts are balanced.
+
+A quick way to catch the swallowed-slide case is to split the deck on the slide delimiter and check `<div` vs `</div>` counts per section; the first section with a nonzero balance is where the break is.
+
+### If the structure is already broken
+
+Symptom: later slides render blank, or the whole page is unstyled white. Causes seen in practice:
+
+- CSS stranded above `<html>` with the doctype dropped. Fix: re-prepend `<!DOCTYPE html>`, move the stray CSS back inside `<style>`.
+- A slide missing its closing `</div>`s, so following slides are nested inside it. Fix: find the slide whose div balance is positive and restore its closing tags (the orphaned content is often relocated elsewhere in the file).
+
+## CSS and JS Gotchas
+
+These bite specifically when adding motion, backgrounds, or per-slide behavior. See `motion-and-animation.md` for the patterns these support.
+
+### Cascade: broad descendant rules override positioned children
+
+A rule like `.slide > *:not(.slide-bg) { position: relative; }` has higher specificity (0,2,0) than a single-class rule like `.hero-orbit { position: absolute; }` (0,1,0). It will silently force absolutely-positioned children (an animated hero background, a bottom-center source link, a title footer) into normal flow, which pushes content down or misplaces it. When you add a background-layering rule, exclude the positioned decorations explicitly:
+
+```css
+.slide > *:not(.slide-bg):not(.hero-orbit):not(.source):not(.title-footer) { position: relative; z-index: 1; }
+```
+
+Reason from specificity, not intuition: if a layout shifts after adding a broad rule, check what that rule outranks.
+
+### JavaScript init order: define DOM refs before the first render
+
+Call your initial `showSlide(0)` (or equivalent first render) only after every DOM reference and helper it touches is defined. If `showSlide` hides a bar or reads an element that is declared later in the script, the first render silently no-ops and the behavior only starts working after the user navigates once. Put all `getElementById` lookups and the tips/marquee setup above the initial render call.

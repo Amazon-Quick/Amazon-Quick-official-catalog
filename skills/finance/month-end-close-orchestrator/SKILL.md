@@ -26,7 +26,7 @@ inputs:
   description: "Prior month actuals for variance comparison. Accepts: a file path (CSV or Excel export from your ERP/accounting system), pasted summary data, or a Quick dataset containing period financials. Required for variance analysis workflow."
   type: string
   required: false
-
+checksum: "sha256:5040f9fcb4448f14b6bc19d799813782a2f41531d0c044445b40485bceb29de1"
 ---
 
 ## Overview

@@ -6,6 +6,7 @@
 <title>Presentation Title</title>
 <style>
 /* ===== DESIGN TOKENS ===== */
+/* Override --primary (and its derived light/gradient/accent/shadow) to rebrand the whole deck. */
 :root {
   --primary: #6B2FA0;
   --primary-light: #F5F0FA;
@@ -33,12 +34,7 @@ a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ===== DECK CONTAINER ===== */
-.deck {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
+.deck { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
 
 /* ===== SLIDE BASE ===== */
 .slide {
@@ -48,43 +44,25 @@ a:hover { text-decoration: underline; }
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 64px 80px 60px;
+  padding: 64px 80px 72px;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
 }
-.slide.visible {
-  opacity: 1;
-  visibility: visible;
-}
-.slide.hero {
-  justify-content: center;
-  text-align: center;
-  padding: 40px;
-}
-.slide-content {
-  width: 100%;
-  max-width: var(--content-width);
-}
+.slide.visible { opacity: 1; visibility: visible; }
+.slide.hero { justify-content: center; text-align: center; padding: 40px; position: relative; overflow: hidden; }
+.slide-content { width: 100%; max-width: var(--content-width); position: relative; z-index: 1; }
+
+/* Keep positioned decorations (background image, orbit, source link) out of normal flow.
+   The :not() exclusions matter: a bare `.slide > *` rule would override their position and break layout. */
+.slide > *:not(.slide-bg):not(.hero-orbit):not(.source) { position: relative; z-index: 1; }
 
 /* ===== TYPOGRAPHY ===== */
-.slide h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--dark);
-  margin-bottom: 24px;
-}
-.slide.hero h2 {
-  font-size: 2.4rem;
-  color: var(--primary);
-}
-.slide h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--primary);
-  margin: 20px 0 12px;
-}
+.slide h2 { font-size: 1.8rem; font-weight: 700; color: var(--dark); margin-bottom: 24px; }
+.slide.hero h2 { font-size: 2.4rem; color: var(--primary); }
+.slide h3 { font-size: 1.1rem; font-weight: 600; color: var(--primary); margin: 20px 0 12px; }
+.subtitle { font-size: 1.1rem; color: var(--text-muted); margin-top: 8px; }
 
 /* ===== COMPONENTS ===== */
 
@@ -101,282 +79,159 @@ a:hover { text-decoration: underline; }
 .definition p { margin: 0; }
 
 /* Data table */
-.frontmatter-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 0.8rem;
-  margin: 16px 0;
-}
+.frontmatter-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.8rem; margin: 16px 0; }
 .frontmatter-table th {
-  text-align: left;
-  padding: 8px 16px;
-  background: var(--primary-light);
-  font-weight: 600;
-  color: var(--primary);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-align: left; padding: 8px 16px; background: var(--primary-light);
+  font-weight: 600; color: var(--primary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
 }
 .frontmatter-table th:first-child { border-radius: var(--radius-sm) 0 0 0; }
 .frontmatter-table th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
-.frontmatter-table td {
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
-}
-.field {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--dark);
-}
-.badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 0.72rem;
-  font-weight: 600;
-}
+.frontmatter-table td { padding: 8px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.field { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--dark); }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; }
 .badge.green { background: #e8f5e9; color: #2e7d32; }
 .badge.blue { background: #e3f2fd; color: #1565c0; }
 .badge.orange { background: #fff3e0; color: #e65100; }
 
 /* Card grid */
-.card-grid {
-  display: grid;
-  gap: 16px;
-  margin: 24px 0;
-}
+.card-grid { display: grid; gap: 16px; margin: 24px 0; }
 .card {
-  background: var(--white);
-  border: 2px solid var(--border-accent);
-  border-radius: var(--radius);
-  padding: 24px 16px;
-  box-shadow: var(--shadow);
-  text-align: center;
+  background: var(--white); border: 2px solid var(--border-accent); border-radius: var(--radius);
+  padding: 24px 16px; box-shadow: var(--shadow); text-align: center;
 }
 .card-num {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--primary-gradient);
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.8rem;
-  margin: 0 auto 8px;
+  width: 32px; height: 32px; border-radius: 50%; background: var(--primary-gradient); color: var(--white);
+  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; margin: 0 auto 8px;
 }
-.card-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-/* Flow row */
-.flow-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 24px 0;
-}
-.flow-card {
-  flex: 1;
-  background: var(--white);
-  border: 2px solid var(--border-accent);
-  border-radius: var(--radius);
-  padding: 16px;
-  text-align: center;
-  box-shadow: var(--shadow);
-}
-.flow-card h4 {
-  margin: 8px 0 4px;
-  font-size: 0.9rem;
-  color: var(--primary);
-}
-.flow-card p {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-.flow-num {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--primary-gradient);
-  color: var(--white);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 700;
-}
-.flow-arrow { color: var(--primary); flex-shrink: 0; }
+.card-label { font-size: 0.9rem; font-weight: 600; color: var(--text); }
 
 /* Contrast pair */
-.contrast-box {
-  display: flex;
-  gap: 24px;
-  margin: 24px 0;
-}
+.contrast-box { display: flex; gap: 24px; margin: 24px 0; }
 .contrast-item {
-  flex: 1;
-  background: var(--white);
-  border: 2px solid var(--border-accent);
-  border-radius: var(--radius);
-  padding: 24px;
-  box-shadow: var(--shadow);
+  flex: 1; background: var(--white); border: 2px solid var(--border-accent);
+  border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow);
 }
 .contrast-item h3 { margin: 0 0 8px; }
 .contrast-item p { margin: 4px 0; font-size: 0.9rem; }
+.small-text { font-size: 0.8rem; color: var(--text-muted); }
 
 /* Callout */
 .callout {
-  background: var(--primary-light);
-  border-radius: var(--radius-sm);
-  padding: 8px 16px;
-  font-size: 0.8rem;
-  color: var(--text);
-  margin: 16px 0;
-  border: 1px solid var(--border-accent);
+  background: var(--primary-light); border-radius: var(--radius-sm); padding: 8px 16px;
+  font-size: 0.8rem; color: var(--text); margin: 16px 0; border: 1px solid var(--border-accent);
 }
 .callout strong { color: var(--primary); }
 
 /* QR group */
-.qr-group {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin: 24px 0;
+.qr-group { display: flex; justify-content: center; gap: 32px; margin: 24px 0; }
+.qr-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.qr-img { width: 120px; height: 120px; border: 2px solid var(--border-accent); border-radius: var(--radius-sm); padding: 8px; background: var(--white); }
+.qr-label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+
+/* ===== MOTION (optional). Each pattern has a prefers-reduced-motion fallback below. ===== */
+/* See references/motion-and-animation.md for full documentation of each pattern. */
+
+/* Animated hero background (orbit) */
+.hero-orbit {
+  position: absolute; top: 50%; left: 50%; width: 620px; height: 620px;
+  transform: translate(-50%, -50%); z-index: 0; pointer-events: none; opacity: 0.5;
 }
-.qr-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+.hero-orbit .ring { fill: none; stroke: var(--primary); opacity: 0.12; }
+.hero-orbit .surface { fill: var(--primary); opacity: 0.55; }
+.hero-orbit .spin { transform-origin: 310px 310px; animation: heroSpin 26s linear infinite; }
+.hero-orbit .spin-rev { transform-origin: 310px 310px; animation: heroSpin 34s linear infinite reverse; }
+.hero-orbit .core { fill: var(--primary); animation: heroPulse 3.2s ease-in-out infinite; }
+@keyframes heroSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes heroPulse { 0%, 100% { r: 8; opacity: 0.9; } 50% { r: 11; opacity: 0.5; } }
+
+/* Faded full-bleed background image on a content slide */
+.slide-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0.06; pointer-events: none; z-index: 0;
 }
-.qr-img {
-  width: 120px;
-  height: 120px;
-  border: 2px solid var(--border-accent);
-  border-radius: var(--radius-sm);
-  padding: 8px;
-  background: var(--white);
+
+/* Vertical auto-scroll ticker */
+.ticker-wrap { width: 100%; max-width: 820px; }
+.ticker-viewport {
+  height: 58vh; overflow: hidden; position: relative;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
 }
-.qr-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text);
+.ticker-track { display: flex; flex-direction: column; gap: 0.8rem; animation: tickerRoll 48s linear 3s infinite; }
+.ticker-viewport:hover .ticker-track { animation-play-state: paused; }
+@keyframes tickerRoll { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+.ticker-item {
+  display: flex; gap: 1.1rem; align-items: flex-start; background: var(--off-white);
+  border: 1px solid var(--border); border-left: 4px solid var(--primary); border-radius: var(--radius); padding: 16px 24px;
+}
+.ticker-item .t-num {
+  font-size: 1.5rem; font-weight: 700; color: var(--primary); min-width: 2.2rem; line-height: 1.15;
+}
+.ticker-item .t-body strong { display: block; font-size: 1.1rem; color: var(--dark); margin-bottom: 2px; }
+.ticker-item .t-body span { font-size: 0.9rem; color: var(--text-muted); }
+
+/* Animated SVG diagram (traveling dots) */
+.diagram-stage { width: 100%; max-width: 800px; display: flex; align-items: center; justify-content: center; }
+.diagram-stage svg { width: 100%; height: auto; max-height: 56vh; }
+.dg-spoke { stroke: var(--border-accent); stroke-width: 2; fill: none; }
+.dg-hub { fill: var(--white); stroke: var(--primary); stroke-width: 2.5; }
+.dg-node { fill: var(--white); stroke: var(--border-accent); stroke-width: 2; }
+.dg-text { fill: var(--dark); font-weight: 700; font-family: var(--font); font-size: 13px; }
+.dg-hub-text { fill: var(--primary); font-weight: 700; font-family: var(--font); font-size: 14px; }
+
+/* Horizontal marquee tip bar */
+.tips-bar {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  width: min(560px, calc(100vw - 340px));
+  background: var(--primary-light); border: 1px solid var(--border-accent); border-radius: 20px;
+  padding: 5px 14px; z-index: 700; display: flex; align-items: center; gap: 9px;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.tips-bar .tips-label {
+  flex-shrink: 0; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--primary); background: var(--white); border: 1px solid var(--border-accent); border-radius: 20px; padding: 2px 9px;
+}
+.tips-bar .tips-viewport { flex: 1; overflow: hidden; position: relative; height: 1.4rem; }
+.tips-bar .tips-text { position: absolute; left: 0; top: 0; font-size: 0.8rem; color: var(--text); line-height: 1.4; white-space: nowrap; will-change: transform; }
+.tips-bar .tips-text strong { color: var(--primary); font-weight: 600; }
+.tips-bar.hidden { display: none; }
+
+/* Reduced-motion fallbacks for every animated pattern */
+@media (prefers-reduced-motion: reduce) {
+  .hero-orbit .spin, .hero-orbit .spin-rev, .hero-orbit .core { animation: none; }
+  .ticker-track { animation: none; }
+  .ticker-viewport { height: auto; -webkit-mask-image: none; mask-image: none; }
+  .dg-dot { display: none; }
 }
 
 /* Source link */
-.source {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  z-index: 5;
-}
+.source { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--text-muted); z-index: 5; }
 .source a { color: var(--text-muted); }
 .source a:hover { color: var(--primary); }
 
 /* ===== NAVIGATION CHROME ===== */
-.progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background: var(--primary-gradient);
-  transition: width 0.3s ease;
-  z-index: 100;
-}
-.slide-num {
-  position: fixed;
-  bottom: 20px;
-  left: 24px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  z-index: 100;
-}
-.nav-controls {
-  position: fixed;
-  bottom: 20px;
-  right: 24px;
-  display: flex;
-  gap: 8px;
-  z-index: 100;
-}
+.progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--primary-gradient); transition: width 0.3s ease; z-index: 900; }
+.slide-num { position: fixed; bottom: 20px; left: 24px; font-size: 0.8rem; color: var(--text-muted); z-index: 900; }
+.nav-controls { position: fixed; bottom: 20px; right: 24px; display: flex; gap: 8px; z-index: 900; }
 .nav-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--border-accent);
-  background: var(--white);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s, transform 0.2s;
+  width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border-accent);
+  background: var(--white); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.2s;
 }
-.nav-btn:hover {
-  background: var(--primary-light);
-  transform: scale(1.05);
-}
-.nav-btn svg {
-  width: 16px;
-  height: 16px;
-  stroke: var(--primary);
-  fill: none;
-  stroke-width: 2;
-}
+.nav-btn:hover { background: var(--primary-light); transform: scale(1.05); }
+.nav-btn svg { width: 16px; height: 16px; stroke: var(--primary); fill: none; stroke-width: 2; }
 
-/* ===== SPEAKER NOTES PANEL ===== */
+/* ===== SPEAKER NOTES PANEL (on by default; strip only if the user asks for no notes) ===== */
 .notes-panel {
-  position: fixed;
-  top: 0;
-  right: -350px;
-  width: 350px;
-  height: 100vh;
-  background: var(--dark);
-  color: #ddd;
-  padding: 32px 24px;
-  overflow-y: auto;
-  transition: right 0.3s ease;
-  z-index: 1000;
-  box-shadow: -4px 0 20px rgba(0,0,0,0.3);
-  font-size: 0.85rem;
-  line-height: 1.6;
+  position: fixed; top: 0; right: -350px; width: 350px; height: 100vh; background: var(--dark); color: #ddd;
+  padding: 32px 24px; overflow-y: auto; transition: right 0.3s ease; z-index: 1000; box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+  font-size: 0.85rem; line-height: 1.6;
 }
 .notes-panel.open { right: 0; }
-.notes-panel h3 {
-  color: var(--white);
-  font-size: 0.9rem;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-}
+.notes-panel h3 { color: var(--white); font-size: 0.9rem; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.15); }
 .notes-toggle {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 2px solid var(--border-accent);
-  background: var(--white);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1001;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--primary);
-  transition: background 0.2s;
+  position: fixed; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-accent);
+  background: var(--white); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1001;
+  font-size: 0.8rem; font-weight: 700; color: var(--primary); transition: background 0.2s;
 }
 .notes-toggle:hover { background: var(--primary-light); }
 </style>
@@ -384,17 +239,25 @@ a:hover { text-decoration: underline; }
 <body>
 <div class="deck">
 
-  <!-- ===== SLIDE 1: HERO (TITLE) ===== -->
-  <section class="slide hero visible" data-slide="1" data-notes="Welcome the audience. Introduce yourself and the session topic. Set expectations for the session length and format.">
+  <!-- ===== SLIDE 1: HERO (TITLE) with animated orbit background. .no-tips hides the marquee here. ===== -->
+  <section class="slide hero visible no-tips" data-slide="1" data-notes="Welcome the audience. Introduce yourself and the session topic. Set expectations for length and format.">
+    <svg class="hero-orbit" viewBox="0 0 620 620" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle class="ring" cx="310" cy="310" r="150"/>
+      <circle class="ring" cx="310" cy="310" r="220"/>
+      <circle class="ring" cx="310" cy="310" r="290"/>
+      <g class="spin"><circle class="surface" cx="310" cy="160" r="9"/><circle class="surface" cx="530" cy="310" r="7"/></g>
+      <g class="spin-rev"><circle class="surface" cx="310" cy="530" r="8"/><circle class="surface" cx="90" cy="310" r="6"/></g>
+      <circle class="core" cx="310" cy="310" r="8"/>
+    </svg>
     <div class="slide-content">
       <h2>Your Presentation Title</h2>
-      <p class="subtitle" style="font-size:1.1rem; color:var(--text-muted); margin-top:8px;">Subtitle or tagline goes here</p>
+      <p class="subtitle">Subtitle or tagline goes here</p>
       <p style="margin-top:24px; font-size:0.9rem; color:var(--text-muted);">Presenter Name</p>
     </div>
   </section>
 
-  <!-- ===== SLIDE 2: CONTENT (CARD GRID) ===== -->
-  <section class="slide" data-slide="2" data-notes="Walk through the agenda. Each item maps to one slide. Let the audience know questions are welcome throughout.">
+  <!-- ===== SLIDE 2: CONTENT (CARD GRID). Has a source link, so the marquee is hidden here. ===== -->
+  <section class="slide" data-slide="2" data-notes="Walk through the agenda. Each item maps to a section. Let the audience know questions are welcome.">
     <div class="slide-content">
       <h2>Agenda</h2>
       <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
@@ -406,13 +269,13 @@ a:hover { text-decoration: underline; }
     <div class="source"><a href="https://example.com" target="_blank">example.com</a></div>
   </section>
 
-  <!-- ===== SLIDE 3: CONTENT (DEFINITION + TABLE) ===== -->
-  <section class="slide" data-slide="3" data-notes="Start with the formal definition. Then break down the anatomy in the table. The key insight is progressive disclosure.">
+  <!-- ===== SLIDE 3: CONTENT (DEFINITION + TABLE). Faded full-bleed background demo. ===== -->
+  <!-- Replace the .slide-bg placeholder below with your own base64-encoded image: <img class="slide-bg" src="data:image/png;base64,..." alt=""> -->
+  <section class="slide" data-slide="3" data-notes="Start with the formal definition, then the anatomy table. The faded background reinforces the topic without competing with text.">
+    <img class="slide-bg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'%3E%3Ccircle cx='650' cy='110' r='170' fill='%23999'/%3E%3Ccircle cx='150' cy='380' r='130' fill='%23555'/%3E%3C/svg%3E" alt="">
     <div class="slide-content">
       <h2>Key Concept</h2>
-      <div class="definition">
-        <p>A formal definition of the concept goes here. Keep it to one or two sentences maximum.</p>
-      </div>
+      <div class="definition"><p>A one or two sentence definition of the concept goes here.</p></div>
       <h3>Anatomy</h3>
       <table class="frontmatter-table">
         <thead><tr><th>Field</th><th>Purpose</th><th>Status</th></tr></thead>
@@ -425,63 +288,84 @@ a:hover { text-decoration: underline; }
     <div class="source"><a href="https://example.com" target="_blank">example.com</a></div>
   </section>
 
-  <!-- ===== SLIDE 4: CONTENT (FLOW ROW) ===== -->
-  <section class="slide" data-slide="4" data-notes="Walk through each step in sequence. Emphasize that each stage gates the next.">
-    <div class="slide-content">
-      <h2>Process Flow</h2>
-      <div class="flow-row">
-        <div class="flow-card">
-          <div class="flow-num">1</div>
-          <h4>Step One</h4>
-          <p>Brief description</p>
-        </div>
-        <div class="flow-arrow">
-          <svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-        </div>
-        <div class="flow-card">
-          <div class="flow-num">2</div>
-          <h4>Step Two</h4>
-          <p>Brief description</p>
-        </div>
-        <div class="flow-arrow">
-          <svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-        </div>
-        <div class="flow-card">
-          <div class="flow-num">3</div>
-          <h4>Step Three</h4>
-          <p>Brief description</p>
+  <!-- ===== SLIDE 4: TICKER (no source link, so the marquee tip bar shows here) ===== -->
+  <section class="slide" data-slide="4" data-notes="Read items aloud as they roll by. The window shows only a few at a time so the audience listens rather than reading ahead. Hover to pause.">
+    <div class="slide-content" style="display:flex; flex-direction:column; align-items:center;">
+      <h2>Rolling Highlights</h2>
+      <div class="ticker-wrap">
+        <div class="ticker-viewport">
+          <div class="ticker-track">
+            <div class="ticker-item"><div class="t-num">01</div><div class="t-body"><strong>First highlight</strong><span>Supporting line of context</span></div></div>
+            <div class="ticker-item"><div class="t-num">02</div><div class="t-body"><strong>Second highlight</strong><span>Supporting line of context</span></div></div>
+            <div class="ticker-item"><div class="t-num">03</div><div class="t-body"><strong>Third highlight</strong><span>Supporting line of context</span></div></div>
+            <div class="ticker-item"><div class="t-num">04</div><div class="t-body"><strong>Fourth highlight</strong><span>Supporting line of context</span></div></div>
+            <!-- Duplicate the full set for a seamless loop (keyframe ends at -50%). Mark copies aria-hidden. -->
+            <div class="ticker-item" aria-hidden="true"><div class="t-num">01</div><div class="t-body"><strong>First highlight</strong><span>Supporting line of context</span></div></div>
+            <div class="ticker-item" aria-hidden="true"><div class="t-num">02</div><div class="t-body"><strong>Second highlight</strong><span>Supporting line of context</span></div></div>
+            <div class="ticker-item" aria-hidden="true"><div class="t-num">03</div><div class="t-body"><strong>Third highlight</strong><span>Supporting line of context</span></div></div>
+            <div class="ticker-item" aria-hidden="true"><div class="t-num">04</div><div class="t-body"><strong>Fourth highlight</strong><span>Supporting line of context</span></div></div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="source"><a href="https://example.com" target="_blank">example.com</a></div>
   </section>
 
-  <!-- ===== SLIDE 5: CONTENT (CONTRAST PAIR) ===== -->
-  <section class="slide" data-slide="5" data-notes="Draw the contrast clearly. Left side is X, right side is Y. The audience should understand when to use each.">
+  <!-- ===== SLIDE 5: ANIMATED SVG DIAGRAM (no source link, so the marquee shows here) ===== -->
+  <section class="slide" data-slide="5" data-notes="Point at the diagram. Dots travel out from the hub to each node along the spokes, showing flow. Add a return dot in a second color for two-way flow.">
+    <div class="slide-content" style="display:flex; flex-direction:column; align-items:center;">
+      <h2>How It Connects</h2>
+      <div class="diagram-stage">
+        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Central hub connected to four nodes">
+          <path class="dg-spoke" d="M400,200 L150,90"/>
+          <path class="dg-spoke" d="M400,200 L650,90"/>
+          <path class="dg-spoke" d="M400,200 L150,310"/>
+          <path class="dg-spoke" d="M400,200 L650,310"/>
+          <!-- Traveling dots ride the SAME path 'd' as their spoke. Purple = outbound. -->
+          <circle class="dg-dot" r="5" fill="#7c3aed"><animateMotion dur="2.6s" begin="0s" repeatCount="indefinite" path="M400,200 L150,90"/></circle>
+          <circle class="dg-dot" r="5" fill="#7c3aed"><animateMotion dur="2.6s" begin="0.6s" repeatCount="indefinite" path="M400,200 L650,90"/></circle>
+          <circle class="dg-dot" r="5" fill="#7c3aed"><animateMotion dur="2.6s" begin="1.2s" repeatCount="indefinite" path="M400,200 L150,310"/></circle>
+          <!-- Blue return dot on one spoke to show two-way flow. -->
+          <circle class="dg-dot" r="5" fill="#2f6fed"><animateMotion dur="2.6s" begin="0.9s" repeatCount="indefinite" path="M650,310 L400,200"/></circle>
+          <!-- Nodes drawn after dots so they render on top. -->
+          <circle class="dg-node" cx="150" cy="90" r="34"/><text class="dg-text" x="150" y="94" text-anchor="middle">Node A</text>
+          <circle class="dg-node" cx="650" cy="90" r="34"/><text class="dg-text" x="650" y="94" text-anchor="middle">Node B</text>
+          <circle class="dg-node" cx="150" cy="310" r="34"/><text class="dg-text" x="150" y="314" text-anchor="middle">Node C</text>
+          <circle class="dg-node" cx="650" cy="310" r="34"/><text class="dg-text" x="650" y="314" text-anchor="middle">Node D</text>
+          <circle class="dg-hub" cx="400" cy="200" r="46"/><text class="dg-hub-text" x="400" y="205" text-anchor="middle">Hub</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 6: CONTENT (CONTRAST PAIR). Has a source link. ===== -->
+  <section class="slide" data-slide="6" data-notes="Draw the contrast clearly. Left is X, right is Y. The callout summarizes when to use which.">
     <div class="slide-content">
       <h2>Comparison</h2>
       <div class="contrast-box">
-        <div class="contrast-item">
-          <h3>Option A</h3>
-          <p>Key characteristic</p>
-          <p class="small-text" style="font-size:0.8rem; color:var(--text-muted);">Supporting detail</p>
-        </div>
-        <div class="contrast-item">
-          <h3>Option B</h3>
-          <p>Key characteristic</p>
-          <p class="small-text" style="font-size:0.8rem; color:var(--text-muted);">Supporting detail</p>
-        </div>
+        <div class="contrast-item"><h3>Option A</h3><p>Key characteristic</p><p class="small-text">Supporting detail</p></div>
+        <div class="contrast-item"><h3>Option B</h3><p>Key characteristic</p><p class="small-text">Supporting detail</p></div>
       </div>
       <div class="callout"><strong>Key insight:</strong> A brief summary of when to use which option.</div>
     </div>
     <div class="source"><a href="https://example.com" target="_blank">example.com</a></div>
   </section>
 
-  <!-- ===== SLIDE 6: HERO (CLOSING) ===== -->
-  <section class="slide hero" data-slide="6" data-notes="Thank the audience. Open for questions. Share any follow-up resources or next steps.">
+  <!-- ===== SLIDE 7: CONTENT (QR GROUP). .no-tips so the marquee does not crowd the codes. ===== -->
+  <section class="slide no-tips" data-slide="7" data-notes="Close with resources. Point people to the QR codes for links they can scan.">
+    <div class="slide-content">
+      <h2>Resources</h2>
+      <div class="qr-group">
+        <div class="qr-item"><img class="qr-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fff'/%3E%3Crect x='10' y='10' width='30' height='30' fill='%236B2FA0'/%3E%3Crect x='60' y='10' width='30' height='30' fill='%236B2FA0'/%3E%3Crect x='10' y='60' width='30' height='30' fill='%236B2FA0'/%3E%3C/svg%3E" alt="QR code placeholder"/><span class="qr-label">Visit the site</span></div>
+        <div class="qr-item"><img class="qr-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fff'/%3E%3Crect x='10' y='10' width='30' height='30' fill='%236B2FA0'/%3E%3Crect x='60' y='10' width='30' height='30' fill='%236B2FA0'/%3E%3Crect x='10' y='60' width='30' height='30' fill='%236B2FA0'/%3E%3C/svg%3E" alt="QR code placeholder"/><span class="qr-label">Join the channel</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 8: HERO (CLOSING). .no-tips hides the marquee. ===== -->
+  <section class="slide hero no-tips" data-slide="8" data-notes="Thank the audience. Open for questions. Share follow-up resources or next steps.">
     <div class="slide-content">
       <h2>Thank You</h2>
-      <p style="font-size:1rem; color:var(--text-muted); margin-top:12px;">Questions?</p>
+      <p class="subtitle">Questions?</p>
     </div>
   </section>
 
@@ -489,19 +373,21 @@ a:hover { text-decoration: underline; }
 
 <!-- ===== NAVIGATION CHROME ===== -->
 <div class="progress-bar" id="progressBar"></div>
-<div class="slide-num" id="slideNum">1 / 6</div>
+<div class="slide-num" id="slideNum">1 / 8</div>
 <div class="nav-controls">
-  <button class="nav-btn" id="prevBtn">
-    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-  </button>
-  <button class="nav-btn" id="nextBtn">
-    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-  </button>
+  <button class="nav-btn" id="prevBtn"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+  <button class="nav-btn" id="nextBtn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
 </div>
 <button class="notes-toggle" id="notesToggle" title="Toggle speaker notes (N)">N</button>
 <div class="notes-panel" id="notesPanel">
   <h3>Speaker Notes</h3>
   <div id="notesContent"></div>
+</div>
+
+<!-- ===== OPTIONAL: horizontal marquee tip bar. Remove this block if you do not want rotating tips. ===== -->
+<div class="tips-bar" id="tipsBar">
+  <span class="tips-label">Did you know?</span>
+  <div class="tips-viewport"><span class="tips-text" id="tipsText"></span></div>
 </div>
 
 <!-- ===== NAVIGATION SCRIPT ===== -->
@@ -519,14 +405,19 @@ a:hover { text-decoration: underline; }
     var notesToggle = document.getElementById('notesToggle');
     var prevBtn = document.getElementById('prevBtn');
     var nextBtn = document.getElementById('nextBtn');
+    var tipsBar = document.getElementById('tipsBar');
+    var tipsText = document.getElementById('tipsText');
+    var tipsViewport = tipsText ? tipsText.parentElement : null;
 
     function showSlide(n) {
       if (n < 1) n = 1;
       if (n > total) n = total;
       current = n;
+      var activeSlide = null;
       for (var i = 0; i < slides.length; i++) {
         if (parseInt(slides[i].getAttribute('data-slide')) === n) {
           slides[i].classList.add('visible');
+          activeSlide = slides[i];
         } else {
           slides[i].classList.remove('visible');
         }
@@ -534,9 +425,17 @@ a:hover { text-decoration: underline; }
       if (progressBar) progressBar.style.width = ((n / total) * 100) + '%';
       if (slideNum) slideNum.textContent = n + ' / ' + total;
       if (notesContent) {
-        var activeSlide = document.querySelector('[data-slide="' + n + '"]');
         var notes = activeSlide ? activeSlide.getAttribute('data-notes') : '';
         notesContent.textContent = notes || '(No notes for this slide)';
+      }
+      // Hide the marquee on hero slides, slides marked .no-tips, and any slide with a bottom-center source link.
+      if (tipsBar) {
+        var hideTips = !activeSlide
+          || activeSlide.classList.contains('no-tips')
+          || activeSlide.classList.contains('hero')
+          || activeSlide.querySelector('.source');
+        if (hideTips) { tipsBar.classList.add('hidden'); }
+        else { tipsBar.classList.remove('hidden'); }
       }
     }
 
@@ -554,6 +453,58 @@ a:hover { text-decoration: underline; }
     if (nextBtn) nextBtn.addEventListener('click', function() { showSlide(current + 1); });
     if (notesToggle) notesToggle.addEventListener('click', toggleNotes);
 
+    // Marquee tip bar: scrolls one tip right to left at a fixed pixels-per-second pace, then advances.
+    var tips = [
+      'Replace these tips with your own. The bar scrolls the full line so longer text stays readable.',
+      'Press N to open speaker notes. Use the arrow keys or the buttons to navigate.',
+      'This bar is optional. Remove the tips-bar markup and this block if you do not want it.'
+    ];
+    var tipIdx = 0;
+    var tipRAF = null;
+    var SPEED = 55;
+    var END_PAUSE = 1400;
+
+    function runMarquee() {
+      if (!tipsText || !tipsViewport) return;
+      tipsText.innerHTML = tips[tipIdx];
+      var vpWidth = tipsViewport.offsetWidth;
+      var textWidth = tipsText.scrollWidth;
+      var startX = vpWidth;
+      var endX = -textWidth;
+      var distance = startX - endX;
+      var duration = (distance / SPEED) * 1000;
+      var startTime = null;
+      function step(ts) {
+        if (startTime === null) startTime = ts;
+        var frac = Math.min((ts - startTime) / duration, 1);
+        tipsText.style.transform = 'translateX(' + (startX - distance * frac) + 'px)';
+        if (frac < 1) {
+          tipRAF = requestAnimationFrame(step);
+        } else {
+          tipIdx = (tipIdx + 1) % tips.length;
+          setTimeout(runMarquee, END_PAUSE);
+        }
+      }
+      tipRAF = requestAnimationFrame(step);
+    }
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      var staticIdx = 0;
+      function showStatic() {
+        if (!tipsText) return;
+        tipsText.style.transform = 'none';
+        tipsText.style.whiteSpace = 'normal';
+        tipsText.innerHTML = tips[staticIdx];
+        staticIdx = (staticIdx + 1) % tips.length;
+      }
+      showStatic();
+      setInterval(showStatic, 8000);
+    } else {
+      runMarquee();
+    }
+
+    // Initial render LAST, after every DOM ref and the tips setup are defined.
     showSlide(1);
   } catch(err) {
     console.error('Deck navigation error:', err);

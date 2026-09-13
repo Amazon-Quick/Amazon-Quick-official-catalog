@@ -23,6 +23,7 @@ inputs:
     description: "Disease area or therapeutic focus (e.g., oncology, cardiology). Inferred from source if not provided."
     type: string
     required: false
+checksum: "sha256:302c4fbe1b97be49d461f3848263c2dbff2239822efb2c4c61c4f649d27ef0c0"
 ---
 
 ## Overview

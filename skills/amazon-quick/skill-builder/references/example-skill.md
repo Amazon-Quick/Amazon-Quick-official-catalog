@@ -1,3 +1,9 @@
+---
+description: "A minimal complete skill that follows the standard, used as a structural template."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Example Skill
 
 A minimal skill that follows the standard. Read this when you need a concrete, end-to-end example of the structure the SKILL.md definitions describe.

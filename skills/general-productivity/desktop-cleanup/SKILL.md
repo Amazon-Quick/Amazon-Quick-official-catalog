@@ -9,6 +9,7 @@ last_updated: "2026-07-24"
 tools: [folder_list, folder_create, file_move, file_delete, run_python, create_scheduled_agent]
 preferred_model: fast
 preferred_thinking: off
+checksum: "sha256:b90b7add071d6161977999cdaec9e70cf7db7e6daa659166920a71074e892b80"
 ---
 
 <Identity>

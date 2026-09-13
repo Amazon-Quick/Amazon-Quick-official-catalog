@@ -26,7 +26,7 @@ inputs:
   options: [usage, engagement, support, relationship, commercial]
   required: false
   default: [usage, engagement, support, relationship, commercial]
-
+checksum: "sha256:c3dfe7c620809c016e453ba98ab6744925f147d880e27ce654590cdca9656316"
 ---
 
 ## Overview

@@ -23,7 +23,7 @@ inputs:
   description: "Type: post-meeting, post-proposal, post-event, re-engagement, post-purchase, referral-request"
   type: string
   required: false
-
+checksum: "sha256:70a188109661cc27c12d6e497fd0b71182e1738ce90038a4f13eacbf52fe6e51"
 ---
 
 ## Overview

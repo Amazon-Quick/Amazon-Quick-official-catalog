@@ -25,6 +25,7 @@ inputs:
     options: [executive, technical, regulatory, investor]
     required: false
     default: executive
+checksum: "sha256:d11f67b5591698dcf5aa88328a9f4ecbd13576b0ab79c0bff08263584e98e6ca"
 ---
 
 ## Overview

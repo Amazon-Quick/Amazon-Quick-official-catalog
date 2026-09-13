@@ -1,3 +1,9 @@
+---
+description: "How to author a skill that survives long conversations, a weaker model tier, and execution limits."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Resilient Skills
 
 <purpose>

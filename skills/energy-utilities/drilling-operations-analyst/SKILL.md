@@ -8,6 +8,7 @@ last_updated: "2026-07-15"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, file_read_pdf, file_read_docx, file_read_image, run_python, open_in_session_tab, start_task, get_task_result]
 depends-on: [canvas_xlsx, highcharts, html_design]
+checksum: "sha256:5f13abf12ad46884a16fb1e147f88c67d87f0a145b54710c7dd2ea7e6e2e6a20"
 ---
 
 ## Overview

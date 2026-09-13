@@ -25,6 +25,7 @@ inputs:
     options: [kebab-case, snake_case, PascalCase, camelCase, date-prefix, original, other]
     required: false
     default: "kebab-case"
+checksum: "sha256:a4139696a2672f16ecf1e1280d1a8d6e73c781cef07281a225af1448813dee02"
 ---
 
 ## Overview

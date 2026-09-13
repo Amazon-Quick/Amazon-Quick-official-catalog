@@ -42,6 +42,7 @@ inputs:
     options: [text, dashboard, both]
     required: false
     default: "dashboard"
+checksum: "sha256:38e2b6afb4d623c6eb6c7bb18f14c61e7d30dd3dcf513bd24734ce78cc2ad120"
 ---
 
 ## Overview

@@ -32,6 +32,7 @@ inputs:
     options: [request, confirm, final]
     required: false
     default: request
+checksum: "sha256:2093096bd5c9017865e62c0774d5577758db57e632426a49a83dad69608a536b"
 ---
 
 ## Overview

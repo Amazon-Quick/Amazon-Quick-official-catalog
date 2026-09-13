@@ -18,6 +18,7 @@ inputs:
     type: path
     required: true
 id: 4c03f816a50a4340a901ee0268f7254c
+checksum: "sha256:6b0a7ce856b45cfe56b3bbd440f72e789dcb3650d9fd8d8d18e7e4506b237d16"
 ---
 
 ## Overview

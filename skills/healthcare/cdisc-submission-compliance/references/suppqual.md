@@ -1,3 +1,9 @@
+---
+description: "Checklist for deciding whether a collected field belongs in a SUPPQUAL dataset, the parent domain, or a custom domain."
+last_updated: 2026-09-13
+origin: original
+---
+
 # SUPPQUAL Anti-Pattern Checklist
 
 Use when deciding whether a collected field belongs in a Supplemental Qualifiers

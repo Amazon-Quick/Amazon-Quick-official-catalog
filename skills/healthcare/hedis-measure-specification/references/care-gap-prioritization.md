@@ -1,3 +1,9 @@
+---
+description: "A prioritization decision tree the skill uses to rank HEDIS care gaps by Star Ratings weight, member risk, and social determinants of health."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Care Gap Prioritization
 
 ## Prioritization decision tree

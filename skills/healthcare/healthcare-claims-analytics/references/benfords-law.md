@@ -1,3 +1,9 @@
+---
+description: "Python code that tests whether the first-digit distribution of charge amounts follows Benford's Law using a manually computed chi-square statistic."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Benford's Law Analysis
 
 Test whether the first-digit distribution of charge amounts follows Benford's Law, using a

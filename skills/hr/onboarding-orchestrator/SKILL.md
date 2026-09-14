@@ -6,7 +6,7 @@ description: "Designs and manages end-to-end employee onboarding programs with s
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_write, file_read, run_python, open_in_session_tab]
 inputs:
 
@@ -34,7 +34,7 @@ inputs:
   description: "Name of the assigned onboarding buddy. If not provided, the skill will suggest one based on team composition."
   type: string
   required: false
-checksum: "sha256:1e55d80264f237295736ada7ba75d251a6b7bd9e5e3c59d3838902ad938d271d"
+checksum: "sha256:dd779e94379e9bd7f4753e99875ce607c0a1a32199dc3fafbee95f9931c5db47"
 ---
 
 ## Overview
@@ -109,13 +109,16 @@ Workflow steps use these prefixes:
 
 <Workflow - Onboarding Plan
 description="End-to-end onboarding program creation for a new hire."
+tools=[file_write, run_python, open_in_session_tab]
 triggers=["set up onboarding", "create onboarding plan", "new hire checklist", "30-60-90 plan", "onboard new team member", "prepare for new joiner"]
 
 >
 
 1. [Agent] Determine today's date. Calculate the number of days until start_date. If start_date is in the past, alert the user and ask whether to proceed with a compressed plan starting today.
+   If fails: If the date calculation fails, ask the user to confirm today's date and the start_date in an explicit format (YYYY-MM-DD) before continuing.
 
 2. [Ask user] Confirm all inputs: new_hire_name, role, start_date, team, manager_name, and buddy. If buddy is not provided, ask the user to suggest one or confirm you should leave it as TBD. Clarify seniority level (entry, mid, senior, staff+, director+) and whether the hire is remote or in-office.
+   If fails: Re-ask for any inputs still missing; if seniority or work location cannot be confirmed, note the assumption used and ask the user to correct it.
 
 3. [Decide] Per Rule 10, if start_date is more than 30 days away, flag the plan as preliminary and recommend revisiting. Otherwise proceed to full plan generation.
 
@@ -127,8 +130,10 @@ triggers=["set up onboarding", "create onboarding plan", "new hire checklist", "
    Adjust milestone difficulty and autonomy expectations by seniority.
 
 5. [Agent] Build the tool access checklist based on role type. Include standard items (email, calendar, chat, HR system, wiki) plus role-specific items (code repositories and CI/CD for engineering, analytics dashboards for product, design tools for design). Present as a checklist with owner (IT, manager, or self-service) and target completion date (all within first 3 days).
+   If fails: If role-specific tools cannot be determined, present the standard checklist and ask the user which additional systems apply.
 
 6. [Agent] Draft the full 30/60/90 day plan using the Plan Template. Structure into three phases with weekly breakdowns for month 1 and bi-weekly breakdowns for months 2-3. Include milestones, success criteria, and responsible parties for each item.
+   If fails: If the plan cannot be drafted from the template, report the error and retry once before asking the user to simplify scope.
 
 7. [Agent] Draft the recurring meeting schedule:
    - Manager 1:1: weekly, 30 minutes, starting day 2
@@ -137,14 +142,18 @@ triggers=["set up onboarding", "create onboarding plan", "new hire checklist", "
    - 30-day checkpoint: manager + new hire, 45 minutes
    - 60-day checkpoint: manager + new hire, 45 minutes
    - 90-day review: manager + new hire + skip-level optional, 60 minutes
+   If fails: If the schedule cannot be generated, present the meeting list in plain text so the user can adjust it manually.
 
 8. [Ask user] Present the complete draft plan and meeting schedule. Invite edits. Highlight any assumptions made about tool access or team norms. Do not proceed until the user approves.
    Validate: Explicit approval received, or edits incorporated and re-presented.
+   If fails: If the user does not approve, capture their requested edits, revise the draft, and re-present before proceeding.
 
 9. [Agent] Save the finalized onboarding plan as a Markdown document using file_write. Open it in the session tab for the user.
+   If fails: If the file cannot be saved or opened, report the error and provide the full plan content inline so it is not lost.
 
 10. [Ask user] Ask whether to schedule the recurring calendar events now. Per Rule 1, show the full list of events with dates, times, attendees, and frequency. Wait for explicit approval.
     Validate: User approves the calendar event list.
+    If fails: If the user does not approve the event list, skip calendar creation and note the events as manual follow-up items.
 
 11. [Agent] Create calendar events via the connected calendar provider for each approved item. Use the manager as the organizer for events that include the new hire (per Gotchas). Set appropriate reminders (15 minutes for check-ins, 1 day for milestone reviews).
     If fails: List which events could not be created and provide manual instructions.
@@ -152,6 +161,7 @@ triggers=["set up onboarding", "create onboarding plan", "new hire checklist", "
 12. [Decide] If buddy was confirmed, generate the buddy briefing using the Check-in Agenda Template and save as a separate document. If buddy is TBD, note this as an open action item.
 
 13. [Agent] Present a summary of completed actions: plan document saved, calendar events created (with count), and any open items requiring follow-up.
+    If fails: If the summary cannot be generated, list the completed and outstanding actions in plain text.
 
 </Workflow - Onboarding Plan>
 

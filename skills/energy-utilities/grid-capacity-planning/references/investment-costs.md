@@ -1,3 +1,9 @@
+---
+description: "Planning-level capital investment cost math, including present worth of revenue requirements and capital recovery factor formulas, used by the grid capacity investment planning workflow."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Capital Investment Cost Reference
 
 Reference math and planning-level cost data for <Workflow - Investment Planning>.

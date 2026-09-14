@@ -1,3 +1,8 @@
+---
+description: "Component modeling reference giving solar PV, battery, and diesel genset production and cost formulas implemented in run_python for microgrid design."
+last_updated: 2026-09-13
+origin: original
+---
 # Component Models: Solar PV, Battery, Diesel Genset
 
 Implement these in `run_python` with numpy and pandas. The formulas below are

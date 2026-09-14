@@ -1,3 +1,9 @@
+---
+description: "Checklist of common HEDIS calculation mistakes such as enrollment gap off-by-one and unclipped segments that the skill reviews code against before delivery."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Common Pitfalls
 
 The calculation mistakes that most often produce wrong HEDIS rates. Check each against the code before delivering it.

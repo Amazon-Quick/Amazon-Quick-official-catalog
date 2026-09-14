@@ -1,3 +1,8 @@
+---
+description: "Resilience and financial metrics reference defining hours of autonomy and the financial model formulas used to evaluate microgrid configurations."
+last_updated: 2026-09-13
+origin: original
+---
 # Resilience and Financial Metrics
 
 Implement in `run_python`. Physics and accounting formulas below are stable.

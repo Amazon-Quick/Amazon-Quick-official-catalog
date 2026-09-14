@@ -1,3 +1,9 @@
+---
+description: "A catalog of common e-commerce conversion blockers organized by funnel stage, with typical impact, detection signals, and recommended tests."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Common Conversion Blockers by Funnel Stage
 
 ## Stage 1: Session Start → Product View

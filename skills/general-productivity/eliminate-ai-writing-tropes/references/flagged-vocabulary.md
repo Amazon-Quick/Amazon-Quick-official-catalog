@@ -1,3 +1,9 @@
+---
+description: "Lookup table of AI-tell words and phrases with preferred alternatives the skill uses to flag and replace reflexive vocabulary."
+last_updated: 2026-09-13
+origin: original
+---
+
 # AI-Tell Vocabulary
 
 Words and phrases that signal AI-generated text when used reflexively. Strongly avoid them. Treat each entry as a yellow flag, not a hard ban. Default to the alternative unless the original word genuinely fits the context better. If you have consciously chosen one of these words because no alternative captures the meaning as precisely, that is fine. The problem is reaching for them by default. When no alternative fits and the flagged word still feels wrong, restructure the sentence so the word is unnecessary. Words inside verbatim quotes from source material are exempt.

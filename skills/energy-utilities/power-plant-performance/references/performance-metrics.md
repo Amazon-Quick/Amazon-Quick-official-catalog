@@ -1,3 +1,8 @@
+---
+description: "Performance metric reference defining the NERC GADS IEEE 762 availability formulas such as EFOR and the heat rate calculations used by the plant performance workflows."
+last_updated: 2026-09-13
+origin: original
+---
 # Performance Metrics: NERC GADS and Heat Rate
 
 Formula reference for the availability and heat rate workflows. All NERC GADS

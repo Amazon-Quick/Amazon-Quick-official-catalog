@@ -1,3 +1,9 @@
+---
+description: "SQL example that reports a HEDIS measure rate stratified by health plan and assigned provider with the lowest-performing cells surfaced first."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Measure Stratification by Plan / Provider
 
 Report a measure rate broken out by health plan and assigned primary care provider, ordered so the lowest-performing cells surface first. Assumes denominator, exclusion, and numerator member sets are already materialized.

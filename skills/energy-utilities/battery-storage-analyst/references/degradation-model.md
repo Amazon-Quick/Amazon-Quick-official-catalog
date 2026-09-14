@@ -1,3 +1,9 @@
+---
+description: "Lithium-ion capacity fade equations and literature parameter ranges, combining calendar and cycle aging, used when configuring battery degradation projections."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Lithium-Ion Degradation Model
 
 Equations and parameters for projecting capacity fade. Read this when configuring

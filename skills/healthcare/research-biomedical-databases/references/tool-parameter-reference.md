@@ -1,3 +1,9 @@
+---
+description: "Complete parameter schemas for the 28 Biomni Gateway tools that the skill calls to query biomedical databases."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Tool Parameter Reference
 
 Complete parameter schemas for all 28 Biomni Gateway tools. Most tools accept a natural language `prompt` (required) plus optional parameters for direct API access.

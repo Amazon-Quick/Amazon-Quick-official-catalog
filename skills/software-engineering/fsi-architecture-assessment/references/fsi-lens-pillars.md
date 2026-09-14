@@ -1,3 +1,9 @@
+---
+description: "Assessment checklists of best-practice questions across the six pillars of the AWS Well-Architected Financial Services Industry Lens."
+last_updated: 2026-09-13
+origin: original
+---
+
 # FSI Lens Pillar Assessment Checklists
 
 Best-practice questions for assessing an architecture against the AWS Well-Architected

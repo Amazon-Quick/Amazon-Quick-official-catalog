@@ -3,12 +3,12 @@ name: grid-capacity-planning
 display_name: Grid Capacity Planning
 icon: "⚡"
 description: "Perform long-range transmission and distribution capacity planning: load growth forecasting, distributed energy resource hosting capacity, N-1 contingency screening, transfer capability, substation loading, and capital investment plans. Use when asked to 'forecast load growth', 'run a hosting capacity analysis', 'screen N-1 contingencies', 'calculate ATC or transfer capability', 'assess substation loading', or 'build a capital investment plan' for a power grid"
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 license: MIT-0
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 tools: [get_current_time, run_python, file_read, file_write, web_search, url_fetch, open_in_session_tab, start_task, get_task_result]
-depends-on: [canvas_xlsx, highcharts, html_design]
-checksum: "sha256:3fda474b152788fb18df9a4921026c54f4537d5c841247a496dd94cf1638ad00"
+checksum: "sha256:15fc06225b52674bbcada7190580b28e4ba8174de6ad33e69a4002668effc514"
 ---
 
 ## Overview
@@ -64,13 +64,13 @@ Key terms:
 </Definitions>
 
 <Rules>
-0. Security and data handling supersede all other rules. Keep all input data and
+1. Security and data handling supersede all other rules. Keep all input data and
    results inside the user's session and files. Never write analysis data,
    network models, or results to long-term memory or the knowledge graph. Never
    call external endpoints except `web_search` and `url_fetch` for reference-value
    lookups. In `run_python`, use only pre-installed sandbox packages; never
    attempt `pip install` or dynamic module loading.
-1. Never guess or fabricate numeric values. Before using any emission factor,
+2. Never guess or fabricate numeric values. Before using any emission factor,
    threshold, coefficient, benchmark, price, cost, or regulatory limit, verify it
    against an authoritative source with `web_search` or `url_fetch`, or use a
    value the user supplied. Values that change over time (costs, prices, rates,
@@ -79,31 +79,31 @@ Key terms:
    state: "I cannot verify [value] from [expected source]. Please provide or
    confirm before I proceed." Only stable physical constants and mathematical
    formulas may be used without a lookup.
-2. Outputs are informational planning estimates, not a substitute for a licensed
+3. Outputs are informational planning estimates, not a substitute for a licensed
    professional engineer's stamped analysis or regulatory and legal counsel.
    State this on any deliverable used for capital decisions or regulatory filings,
    and direct the user to a qualified professional engineer and their regulatory
    counsel before relying on results.
-3. Load forecasts must state their methodology (econometric, end-use, trending, or
+4. Load forecasts must state their methodology (econometric, end-use, trending, or
    hybrid) and key assumptions (GDP growth, electrification rates, weather
    normalization).
-4. Never present a single-point forecast without uncertainty bands. Provide
+5. Never present a single-point forecast without uncertainty bands. Provide
    low/base/high scenarios at minimum.
-5. Hosting capacity is limited by the most restrictive of thermal limits, voltage
+6. Hosting capacity is limited by the most restrictive of thermal limits, voltage
    limits (ANSI C84.1: plus/minus 5 percent on a 120 V base), protection
    coordination, and power quality (flicker, harmonics).
-6. Do not conflate N-1, N-1-1, and N-2. Use the definitions in <Definitions>.
-7. PTDF and LODF use DC power flow assumptions (flat voltage, lossless,
+7. Do not conflate N-1, N-1-1, and N-2. Use the definitions in <Definitions>.
+8. PTDF and LODF use DC power flow assumptions (flat voltage, lossless,
    linearized). Validate critical results with full AC power flow when a solver or
    user-supplied AC results are available; otherwise state that results are
    DC-only and approximate.
-8. ATC = TTC - TRM - ETC - CBM. Never omit the Transmission Reliability Margin
+9. ATC = TTC - TRM - ETC - CBM. Never omit the Transmission Reliability Margin
    (TRM) or Capacity Benefit Margin (CBM).
-9. Thermal ratings have normal and emergency limits. N-0 (intact system) uses the
+10. Thermal ratings have normal and emergency limits. N-0 (intact system) uses the
    normal rating; N-1 (post-contingency) uses the emergency rating.
-10. Report all loading as a percentage of the thermal limit:
+11. Report all loading as a percentage of the thermal limit:
     Loading% = Flow_MW / Rating_MW * 100.
-11. Capital cost estimates must specify the year-dollar basis and include a
+12. Capital cost estimates must specify the year-dollar basis and include a
     contingency factor (typically 15 to 25 percent for planning-level estimates).
 </Rules>
 
@@ -157,7 +157,7 @@ triggers=["Load forecast", "load growth", "demand projection", "how much will lo
 0. [Agent] Verify reference data before any calculation. Identify which
    time-sensitive values are needed (elasticities, prices, costs, regulatory
    limits) and fetch each from an authoritative source with `web_search` or
-   `url_fetch`, per Rule 1. Get the current date with `get_current_time` so
+   `url_fetch`, per Rule 2. Get the current date with `get_current_time` so
    planning years (5/10/20) are anchored correctly.
    Validate: Every time-sensitive value has a verified source or a user-provided value.
    If fails: Stop and ask the user to confirm or provide the value.
@@ -189,7 +189,7 @@ triggers=["Load forecast", "load growth", "demand projection", "how much will lo
    annual energy (GWh) by zone/substation, CAGR per scenario, and uncertainty band
    width. Write tables to an Excel workbook (canvas_xlsx) and growth curves
    (highcharts with html_design), then open with `open_in_session_tab`. Include
-   the Rule 2 disclaimer on the deliverable.
+   the Rule 3 disclaimer on the deliverable.
    Validate: Workbook and chart created and opened in a session tab.
    If fails: Fall back to a text or Markdown table.
 
@@ -228,7 +228,7 @@ triggers=["Hosting capacity", "DER interconnection", "how much solar can connect
 5. [Agent] Produce a hosting capacity map/table: bus ID, HC (MW), limiting factor,
    limiting element, per-feeder totals, and mitigation recommendations (voltage
    regulators, reconductoring, storage). Write results and open in a session tab
-   with the Rule 2 disclaimer.
+   with the Rule 3 disclaimer.
    Validate: Results file created and opened.
    If fails: Summarize the top constraints in text.
 
@@ -272,7 +272,7 @@ triggers=["N-1 contingency", "contingency analysis", "what overloads under outag
 
 6. [Agent] Produce a contingency screening report: summary table (contingency,
    monitored element, pre- and post-contingency flow, rating, loading%), a thermal
-   violation view, and mitigation options. Open in a session tab with the Rule 2
+   violation view, and mitigation options. Open in a session tab with the Rule 3
    disclaimer.
    Validate: Report created and opened.
    If fails: Provide a text-based violation summary.
@@ -298,7 +298,7 @@ triggers=["ATC", "transfer capability", "how much can transfer", "path rating", 
 3. [Agent] Determine margins: TRM (utility methodology or default 3 percent of
    TTC), CBM (from a generation reliability study or default 0), and ETC (sum of
    existing firm commitments on the path). Verify any assumed percentages per
-   Rule 1.
+   Rule 2.
    Validate: TRM, CBM, and ETC each have a stated source or documented default.
    If fails: Ask the user for the margin methodology.
 
@@ -309,7 +309,7 @@ triggers=["ATC", "transfer capability", "how much can transfer", "path rating", 
 
 5. [Agent] Produce a transfer capability summary: limiting element, limiting
    contingency (if N-1 limited), sensitivity to relief, and available ATC for new
-   service. State the study conditions. Open in a session tab with the Rule 2
+   service. State the study conditions. Open in a session tab with the Rule 3
    disclaimer.
    Validate: Summary created and opened.
    If fails: Provide a text summary of the ATC components.
@@ -336,7 +336,7 @@ triggers=["Investment plan", "capital plan", "what do we need to build", "how to
    If fails: Flag needs with no viable alternative for user input.
 
 3. [Agent] Estimate costs for each alternative. Verify current unit costs per
-   Rule 1 (do not treat the reference table as current without a lookup), add a
+   Rule 2 (do not treat the reference table as current without a lookup), add a
    contingency factor (default 20 percent), apply regional multipliers, and
    compute PWRR over a 30-year period using the utility WACC (default 7 percent,
    labeled as an assumption). For a large candidate set, run the cost and PWRR
@@ -355,7 +355,7 @@ triggers=["Investment plan", "capital plan", "what do we need to build", "how to
    specific projects and costs, a 10-year plan with plus/minus 30 percent ranges, a
    20-year programmatic view, capex by category, and an annual spending profile.
    Write to a multi-tab Excel workbook (canvas_xlsx) and open in a session tab
-   with the Rule 2 disclaimer.
+   with the Rule 3 disclaimer.
    Validate: Workbook created and opened.
    If fails: Provide a Markdown summary with key projects and costs.
 

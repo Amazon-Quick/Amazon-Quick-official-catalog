@@ -1,3 +1,9 @@
+---
+description: "Optional motion patterns for HTML decks, such as auto-scroll tickers and animated backgrounds, each paired with a prefers-reduced-motion fallback."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Motion and Animation
 
 Optional motion patterns for decks that need movement: a rolling ticker, a scrolling tip bar, animated SVG diagrams, and an animated hero background. Every pattern ships with a `prefers-reduced-motion` fallback. Motion is a garnish, not a requirement. Use it when it earns its place (a long list you want to pace, a diagram that shows flow) and skip it otherwise.

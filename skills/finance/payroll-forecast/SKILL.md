@@ -6,13 +6,8 @@ description: "Project whether you can cover payroll on an upcoming payday using 
 created_date: "2026-06-02"
 last_updated: "2026-07-03"
 license: "MIT-0"
-depends-on: [quickbooks, agent_management, memory_management]
-tools:
-  - quickbooks__QueryAccount
-  - quickbooks__QueryEntities
-  - list_scheduled_agents
-  - create_scheduled_agent
-  - recall_memories
+tools: [quickbooks, agent_management, memory_management, quickbooks__QueryAccount, quickbooks__QueryEntities, list_scheduled_agents, create_scheduled_agent, recall_memories]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: payday_date
     description: "The upcoming payday date to project toward (e.g., '2026-06-15'). If not provided, defaults to the next Friday or the user's known pay schedule."
@@ -28,7 +23,7 @@ inputs:
     type: number
     required: false
     default: 5
-checksum: "sha256:04ed158b439deedcb40adb9aa76e01ff37e83cb9e4c4fd7d9098bd5d5f7d10f9"
+checksum: "sha256:6bb95f26dbaea4096b118431da272c2d8fe2bfab332a15f2e5d3a33cbeaca3d8"
 ---
 
 ## Overview
@@ -175,6 +170,7 @@ triggers=["will I make payroll", "can I make payroll this week", "payday cash ch
 <Templates>
 
 <Template - Projection Card>
+```markdown
 # Payday Cash Projection: {{payday_date}}
 
 {{staleness_warning_if_any}}
@@ -187,6 +183,7 @@ CASH FLOOR (the verdict): {{floor}} ({{covered_or_short}}). {{days_until_payday}
 If you collect expected invoices: +{{upside_amount}} to {{upside_total}} (uncertain; not counted in the verdict)
 
 {{options_if_short}}
+```
 </Template - Projection Card>
 
 </Templates>

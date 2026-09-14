@@ -6,7 +6,7 @@ description: "Generates draft compliance policies for SOC 2 Type I/II, ISO 27001
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_write, file_read, file_read_pdf, file_rag_search, run_python, web_search, open_in_session_tab, search_relevant_content, read_quick_suite_file]
 inputs:
 
@@ -23,7 +23,7 @@ inputs:
   description: "Description of the systems, services, or organizational boundaries in scope for the compliance effort (e.g., 'SaaS platform hosted on AWS serving enterprise customers')."
   type: string
   required: true
-checksum: "sha256:a0e77adef5f022f5326a31124f9f1c573d1a10dce6a3f2dbb3b7297e973223d3"
+checksum: "sha256:5b73900a7bca649f08c85e4c84e1eb34abe14342957fbd39656373b78933630f"
 ---
 
 ## Overview
@@ -78,19 +78,19 @@ A complete set of draft compliance artifacts (policies, control mapping matrix, 
 </Goal>
 
 <Rules>
-0. This skill provides compliance tracking and documentation assistance for informational purposes only and does not constitute legal, regulatory, or professional compliance advice. Outputs are recommendations and starting points, not authoritative compliance determinations. Organizations must validate all compliance assessments with qualified compliance officers, legal counsel, or auditors before acting on them or representing compliance status to regulators.
-1. Never declare, certify, or imply that an organization is compliant with any framework. All outputs are drafts for professional review.
-2. Every generated document must include a header stating: "DRAFT - Requires review by qualified compliance/legal professionals before use."
-3. Always cite the specific framework section, clause, or criterion number when mapping controls (e.g., "ISO 27001:2022 Annex A 5.1" or "SOC 2 CC6.1").
-4. Distinguish clearly between gaps (controls not yet addressed) and implemented controls (evidence of design or operation exists). Never conflate the two.
-5. Never fabricate evidence or claim that controls exist without documentation supporting them. If existing_docs are not provided, generate templates with placeholder content only.
-6. When frameworks overlap (e.g., SOC 2 CC6.1 and ISO 27001 A.8.1 both address asset management), explicitly note the overlap in the control mapping matrix.
-7. Always state the framework version being referenced. If the user's documentation references a different version, flag the discrepancy and confirm which version to target.
-8. Never generate HIPAA-related artifacts without reminding the user that covered entities and business associates have distinct obligations. Ask which applies.
-9. Mark all timeline estimates and effort ratings as approximations. Actual timelines depend on organizational complexity, existing maturity, and auditor expectations.
-10. Do not store, process, or request actual protected health information (PHI), personally identifiable information (PII), or production security configurations. Work only with policy-level and procedural documentation.
-11. If the user provides existing documentation, analyze it for coverage only. Never modify or overwrite source documents.
-12. Present the gap analysis summary to the user before generating detailed remediation recommendations. Confirm priorities before proceeding.
+1. This skill provides compliance tracking and documentation assistance for informational purposes only and does not constitute legal, regulatory, or professional compliance advice. Outputs are recommendations and starting points, not authoritative compliance determinations. Organizations must validate all compliance assessments with qualified compliance officers, legal counsel, or auditors before acting on them or representing compliance status to regulators.
+2. Never declare, certify, or imply that an organization is compliant with any framework. All outputs are drafts for professional review.
+3. Every generated document must include a header stating: "DRAFT - Requires review by qualified compliance/legal professionals before use."
+4. Always cite the specific framework section, clause, or criterion number when mapping controls (e.g., "ISO 27001:2022 Annex A 5.1" or "SOC 2 CC6.1").
+5. Distinguish clearly between gaps (controls not yet addressed) and implemented controls (evidence of design or operation exists). Never conflate the two.
+6. Never fabricate evidence or claim that controls exist without documentation supporting them. If existing_docs are not provided, generate templates with placeholder content only.
+7. When frameworks overlap (e.g., SOC 2 CC6.1 and ISO 27001 A.8.1 both address asset management), explicitly note the overlap in the control mapping matrix.
+8. Always state the framework version being referenced. If the user's documentation references a different version, flag the discrepancy and confirm which version to target.
+9. Never generate HIPAA-related artifacts without reminding the user that covered entities and business associates have distinct obligations. Ask which applies.
+10. Mark all timeline estimates and effort ratings as approximations. Actual timelines depend on organizational complexity, existing maturity, and auditor expectations.
+11. Do not store, process, or request actual protected health information (PHI), personally identifiable information (PII), or production security configurations. Work only with policy-level and procedural documentation.
+12. If the user provides existing documentation, analyze it for coverage only. Never modify or overwrite source documents.
+13. Present the gap analysis summary to the user before generating detailed remediation recommendations. Confirm priorities before proceeding.
 
 </Rules>
 
@@ -117,17 +117,20 @@ Workflow steps use these prefixes:
 
 <Workflow - Compliance Artifact Generation
 description="End-to-end compliance documentation generation flow."
+tools=[file_write, file_read, file_read_pdf, file_rag_search, open_in_session_tab]
 triggers=["prepare for SOC 2 audit", "generate compliance policies", "map controls to framework", "audit prep", "compliance gap analysis", "ISO 27001 readiness", "HIPAA compliance check"]
 
 >
 
-1. [Ask user] Confirm the target framework, scope, and whether existing documentation is available. If framework is "custom", request the control catalog or reference document. If framework is "hipaa", ask whether the organization is a covered entity or business associate per Rule 8.
+1. [Ask user] Confirm the target framework, scope, and whether existing documentation is available. If framework is "custom", request the control catalog or reference document. If framework is "hipaa", ask whether the organization is a covered entity or business associate per Rule 9.
+   If fails: If the framework or scope is missing, re-ask the user for the missing input and do not proceed until both are provided.
 
 2. [Agent] Determine the framework version per the Framework Versions definition. Load the relevant control catalog:
    - SOC 2 Type I/II: Trust Service Criteria with points of focus
    - ISO 27001: Annex A control set (2022 edition, 93 controls across 4 themes)
    - HIPAA: Security Rule standards and implementation specifications
    If the user specified a version that differs from the default, confirm before proceeding.
+   If fails: If the control catalog cannot be loaded, report which framework failed and ask the user to confirm the version or supply the catalog.
 
 3. [Decide] If existing_docs path is provided, proceed to Step 4. If not, skip to Step 5 and generate templates with placeholder content only.
 
@@ -136,25 +139,30 @@ triggers=["prepare for SOC 2 audit", "generate compliance policies", "map contro
    - Referenced controls and security measures
    - Mentioned tools, platforms, and processes
    - Any existing compliance mappings or audit reports
-   Organize findings by control domain. Do not modify source documents per Rule 11.
+   Organize findings by control domain. Do not modify source documents per Rule 12.
+   If fails: If a source document cannot be read, report the specific file and continue with the documents that parsed, noting the unread source in the gap report.
 
-5. [Think] Map extracted findings (or empty placeholders if no docs provided) against the target framework's control catalog. For each control objective, classify coverage using the Gap Classification definition. Note overlapping controls across frameworks per Rule 6.
+5. [Think] Map extracted findings (or empty placeholders if no docs provided) against the target framework's control catalog. For each control objective, classify coverage using the Gap Classification definition. Note overlapping controls across frameworks per Rule 7.
 
 6. [Agent] Generate the Control Mapping Matrix using the Control Mapping Matrix template. Save to the workspace using file_write. Include:
    - Every control objective in the target framework
    - Current coverage status (Fully Addressed, Partially Addressed, Not Addressed, Not Applicable)
    - Source reference from existing documentation (if applicable)
    - Cross-framework overlaps where relevant
+   If fails: If the matrix cannot be written, report the write error, retry once, and present the matrix inline if the retry fails.
 
 7. [Agent] Generate the Gap Analysis Report using the Gap Analysis Report template. Save to workspace. Include:
    - Executive summary with counts by gap classification
    - Detailed findings per control domain
    - Prioritized remediation recommendations (Critical, High, Medium, Low)
    - Estimated effort indicators (hours/days, not calendar dates)
+   If fails: If the report cannot be saved, report the write error, retry once, and present the report inline if the retry fails.
 
 8. [Ask user] Present the gap analysis summary: total controls assessed, breakdown by classification, and top-priority gaps. Confirm the user wants to proceed with policy generation and evidence checklist creation. Allow them to adjust scope or priorities.
+   If fails: If the user does not confirm priorities, re-present the summary and ask which gaps to prioritize before continuing.
 
-9. [Agent] Generate draft policy documents for each control domain where gaps were identified (or for all domains if no existing docs). Each policy follows a consistent structure: Purpose, Scope, Roles and Responsibilities, Policy Statements, Related Controls, Review Cadence. Mark as DRAFT per Rule 2.
+9. [Agent] Generate draft policy documents for each control domain where gaps were identified (or for all domains if no existing docs). Each policy follows a consistent structure: Purpose, Scope, Roles and Responsibilities, Policy Statements, Related Controls, Review Cadence. Mark as DRAFT per Rule 3.
+   If fails: If a policy document cannot be generated or saved, report which control domain failed and continue with the remaining domains.
 
 10. [Agent] Generate the Evidence Collection Checklist using the Evidence Collection Checklist template. For each control, specify:
     - Required evidence type (per Evidence Types definition)
@@ -162,8 +170,10 @@ triggers=["prepare for SOC 2 audit", "generate compliance policies", "map contro
     - Responsible role
     - Retention period per framework requirements
     - Storage location placeholder
+    If fails: If the checklist cannot be written, report the write error, retry once, and present the checklist inline if the retry fails.
 
 11. [Agent] Compile all artifacts into a summary document listing what was generated, where each file is saved, and recommended next steps. Open the summary in the session tab using open_in_session_tab for user review.
+    If fails: If the summary cannot be opened in the session tab, report the error and provide the file path so the user can open it manually.
 
 </Workflow - Compliance Artifact Generation>
 
@@ -172,6 +182,7 @@ triggers=["prepare for SOC 2 audit", "generate compliance policies", "map contro
 <Templates>
 
 <Template - Control Mapping Matrix>
+```markdown
 # Control Mapping Matrix
 ## DRAFT - Requires review by qualified compliance/legal professionals before use.
 
@@ -184,9 +195,11 @@ triggers=["prepare for SOC 2 audit", "generate compliance policies", "map contro
 | {{control_id}} | {{objective_text}} | {{Fully Addressed / Partially Addressed / Not Addressed / Not Applicable}} | {{evidence_reference}} | {{doc_name, section}} | {{overlapping_framework_control_ids}} | {{notes}} |
 
 Repeat for all controls in the target framework catalog.
+```
 </Template - Control Mapping Matrix>
 
 <Template - Gap Analysis Report>
+```markdown
 # Gap Analysis Report
 ## DRAFT - Requires review by qualified compliance/legal professionals before use.
 
@@ -229,9 +242,11 @@ Repeat for all controls in the target framework catalog.
 1. {{step}}
 2. {{step}}
 ...
+```
 </Template - Gap Analysis Report>
 
 <Template - Evidence Collection Checklist>
+```markdown
 # Evidence Collection Checklist
 ## DRAFT - Requires review by qualified compliance/legal professionals before use.
 
@@ -248,6 +263,7 @@ Repeat for all controls in the target framework catalog.
 - Screenshots must include visible date/time and system identification.
 - Logs must cover the complete review period without gaps.
 - Attestations must be signed by personnel with appropriate authority.
+```
 </Template - Evidence Collection Checklist>
 
 </Templates>

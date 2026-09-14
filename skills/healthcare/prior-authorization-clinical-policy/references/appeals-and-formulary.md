@@ -1,3 +1,9 @@
+---
+description: "Reference data on appeal levels, formulary exception processes, peer-to-peer review, and appeal documentation that the skill uses to recommend prior authorization strategy."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Appeals and Formulary Exceptions
 
 Reference data for appeal levels, formulary exception processes, peer-to-peer review,

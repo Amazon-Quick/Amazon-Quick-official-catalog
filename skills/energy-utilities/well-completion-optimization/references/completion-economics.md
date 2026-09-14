@@ -1,3 +1,8 @@
+---
+description: "Reference detail for the completion economics, spacing optimization, and fleet workflows, defining EUR-per-dollar and NPV metrics and the total completion cost breakdown."
+last_updated: 2026-09-13
+origin: original
+---
 # Completion Economics and Spacing
 
 Reference detail for the completion economics, spacing optimization, and fleet

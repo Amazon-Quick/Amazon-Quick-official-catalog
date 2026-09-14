@@ -1,3 +1,9 @@
+---
+description: "Prompt banks used by the Bootstrap workflow to elicit clean native writing samples when discoverable samples are sparse or AI-contaminated."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Bootstrap Elicitation Reference
 
 Used by the Bootstrap workflow and by the Native Voice Calibration Prompts procedure (see references/authorship-confidence-gate.md) to generate clean H5-C1 material when discoverable samples are sparse or AI-contaminated.

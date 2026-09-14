@@ -1,3 +1,9 @@
+---
+description: "Reference on HEDIS continuous enrollment rules, allowable gaps, and the enrollment evaluation decision tree that the skill uses to determine denominator eligibility."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Continuous Enrollment Rules
 
 | Rule | Definition |

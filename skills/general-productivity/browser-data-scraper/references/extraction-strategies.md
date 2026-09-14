@@ -1,3 +1,9 @@
+---
+description: "Prioritized fetch-based extraction strategies for pulling paginated content with url_fetch when no headless browser is available."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Extraction Strategies (fetch-based)
 
 These strategies work on content retrieved with url_fetch. Quick provides no

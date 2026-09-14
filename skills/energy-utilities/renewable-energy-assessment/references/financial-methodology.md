@@ -1,3 +1,8 @@
+---
+description: "Financial methodology for renewable projects defining the capital recovery factor and LCOE net present value formulas along with plausible ranges for sanity-checking results."
+last_updated: 2026-09-13
+origin: original
+---
 # Financial Methodology (LCOE and project economics)
 
 Levelized cost of energy (LCOE) is the discounted lifetime cost per unit of

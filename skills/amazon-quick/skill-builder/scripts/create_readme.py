@@ -3,9 +3,6 @@ description: Scaffold a skill's README.md with a standard-conforming frontmatter
 last_updated: 2026-09-13
 origin: original
 
-Single self-contained file. ReadmeRenderer turns an injected spec into the file
-text (pure, unit-tested); ReadmeGenerator writes it to the skill root (I/O
-facade); main() builds the spec from CLI arguments.
 """
 
 from __future__ import annotations

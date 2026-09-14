@@ -1,3 +1,8 @@
+---
+description: "NERC GADS cause code reference describing the three-level system, component, and cause hierarchy used to classify equipment events."
+last_updated: 2026-09-13
+origin: original
+---
 # NERC GADS Cause Code System
 
 Cause codes are organized in a three-level hierarchy. Confirm exact numeric

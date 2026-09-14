@@ -6,7 +6,7 @@ description: "Query biomedical databases via the Biomni AgentCore Gateway MCP se
 created_date: "2026-07-20"
 last_updated: "2026-07-20"
 license: "MIT-0"
-depends-on: [biomni-research]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 - name: query
   description: "The biomedical research question or entity to investigate (gene name, variant ID, protein, disease, drug target)"
@@ -18,7 +18,7 @@ inputs:
   options: [variant-interpretation, drug-target-analysis, gene-expression, protein-analysis, discovery]
   required: false
   default: discovery
-checksum: "sha256:281c3becdc60ac4a6b173436cc5ad0a15c7c90d9cec28562c251c5cd15015be7"
+checksum: "sha256:b791e24323549b4f19871c15277ff9295252d44ede40dd17cde0270452b17759"
 ---
 
 ## Overview
@@ -137,10 +137,12 @@ Workflow steps use these prefixes:
 
 <Workflow - Discovery
 description="Route the user's question to the right tool(s) using semantic search when the workflow is unknown."
+tools=[]
 triggers=["find information about", "tell me about", "what do we know about", "look up", "search for"]
 >
 
 1. [Agent] Call `x_amz_bedrock_agentcore_search` with the user's query to discover which tools are most relevant.
+   If fails: If semantic search is unavailable, select tools manually from the Tool Categories definition and continue.
 
 2. [Decide] Based on the returned tools and the nature of the question:
    - If variant/pathogenicity related → switch to Workflow - Variant Interpretation
@@ -150,92 +152,121 @@ triggers=["find information about", "tell me about", "what do we know about", "l
    - If unclear or spans multiple domains → call the top 3-5 returned tools in sequence
 
 3. [Agent] Execute the selected tools. For each tool call, extract key identifiers from the response that can feed into subsequent calls.
+   If fails: If a tool call errors, try alternative identifiers per Rule 9; if it still fails, note the source as unavailable and continue with the remaining tools.
 
 4. [Agent] Synthesize findings into a structured answer with numbered citations for each database source.
+   If fails: If synthesis cannot complete, present the raw findings gathered from each tool with their citations so no data is lost.
 
 </Workflow - Discovery>
 
 <Workflow - Variant Interpretation
 description="Assess variant pathogenicity by chaining ClinVar, gnomAD, UniProt, AlphaFold, and Reactome."
+tools=[]
 triggers=["variant pathogenicity", "is this variant pathogenic", "clinical significance of", "population frequency"]
 >
 
 1. [Agent] Call `query_clinvar` with the variant or gene. Extract: variant name, RS ID, clinical significance, review status.
    If empty: try alternative identifiers (RS ID, HGVS notation, official HGNC symbol).
+   If fails: If the tool call errors, wait briefly and retry once; if it still fails, note ClinVar as unavailable and continue with the remaining steps.
 
 2. [Agent] Call `query_gnomad` with `gene_symbol` parameter set to the gene name. Extract: allele frequency, homozygote count, population-specific frequencies.
+   If fails: If the call errors, retry once with a reduced max_results; if it still fails, note gnomAD frequency data as unavailable and continue.
 
 3. [Agent] Call `query_uniprot` for the gene's protein. Extract: UniProt accession ID, functional domains, disease associations.
+   If fails: If no UniProt accession is returned, try alternative gene identifiers; if it still fails, note the protein data as unavailable and skip the dependent AlphaFold step.
 
 4. [Agent] Call `query_alphafold` with the `uniprot_id` from step 3. Extract: pLDDT confidence scores, structural features near variant position.
    If step 3 failed to return a UniProt ID, skip this step.
+   If fails: If the structure call errors, note the AlphaFold data as unavailable and continue with the pathway step.
 
 5. [Agent] Call `query_reactome` for the gene's pathway membership. Extract: pathway names, Reactome stable IDs, biological context.
+   If fails: If the pathway call errors, note Reactome data as unavailable and continue to synthesis.
 
 6. [Decide] If variant is non-coding or intronic, also call `query_regulomedb` for regulatory impact assessment.
 
 7. [Agent] Synthesize findings into a variant interpretation report. Read `references/workflow-variant-interpretation.md` for the output format template.
+   If fails: If the report cannot be assembled from the template, present the collected ClinVar, gnomAD, UniProt, and pathway findings with citations.
 
 </Workflow - Variant Interpretation>
 
 <Workflow - Drug Target Analysis
 description="Assess drug target viability by chaining Open Targets, UniProt, STRING, GtoPdb, and ClinicalTrials."
+tools=[]
 triggers=["drug target", "druggable", "existing drugs for", "target validation", "clinical trials for"]
 >
 
 1. [Agent] Call `query_ensembl` to convert the gene symbol to an Ensembl ID (required for Open Targets).
+   If fails: If the Ensembl ID cannot be resolved, ask the user for the gene's Ensembl ID before calling Open Targets.
 
 2. [Agent] Call `query_opentarget` with the Ensembl ID. Extract: association score, evidence types, tractability assessment.
+   If fails: If the call errors, ensure a prompt was included per the Gotchas, retry once, then note Open Targets data as unavailable and continue.
 
 3. [Agent] Call `query_uniprot` for protein function and biology. Extract: catalytic activity, subcellular location, tissue expression.
+   If fails: If no protein record is returned, try alternative gene identifiers; if it still fails, note the protein biology as unavailable and continue.
 
 4. [Agent] Call `query_stringdb` for protein interaction network. Extract: top interacting proteins with confidence scores.
+   If fails: If the interaction call errors, note the STRING network as unavailable and continue.
 
 5. [Agent] Call `query_gtopdb` for existing pharmacology. Extract: known ligands, approved drugs, mechanism of action.
    If empty: call `query_openfda` as fallback for approved drug information.
+   If fails: If both GtoPdb and the OpenFDA fallback error, note pharmacology data as unavailable and continue.
 
 6. [Agent] Call `query_clinicaltrials` for active trials. Extract: trial phase, status, intervention, primary outcomes.
+   If fails: If the trials call errors, note ClinicalTrials data as unavailable and continue to synthesis.
 
 7. [Agent] Synthesize into a drug target assessment report. Read `references/workflow-drug-target-analysis.md` for the output format template.
+   If fails: If the report cannot be assembled, present the collected Open Targets, UniProt, interaction, pharmacology, and trials findings with citations.
 
 </Workflow - Drug Target Analysis>
 
 <Workflow - Gene Expression
 description="Analyze gene expression patterns, phenotypes, and cancer mutations."
+tools=[]
 triggers=["gene expression", "phenotype", "cancer mutations", "tumor profile", "expression datasets"]
 >
 
 1. [Agent] Call `query_geo` for expression datasets. Extract: GEO series IDs, platforms, sample counts.
+   If fails: If the call errors, retry once; if it still fails, note GEO expression datasets as unavailable and continue.
 
 2. [Agent] Call `query_monarch` for phenotype associations. Extract: HPO terms, disease associations, model organism phenotypes.
+   If fails: If the phenotype call errors, note Monarch associations as unavailable and continue.
 
 3. [Agent] Call `query_cbioportal` for cancer mutation landscape. Extract: mutation frequency, types, hotspots, co-occurring mutations.
+   If fails: If the call errors, note cBioPortal mutation data as unavailable and continue.
 
 4. [Decide] If investigating non-coding regulation, call `query_regulomedb`. If investigating GWAS associations, call `query_gwas_catalog`.
 
 5. [Agent] Call `query_ensembl` for gene model and genomic context. Extract: Ensembl ID, transcript variants, coordinates.
+   If fails: If the gene model cannot be retrieved, try alternative gene identifiers; if it still fails, note the genomic context as unavailable and continue.
 
 6. [Agent] Synthesize into a gene expression report. Read `references/workflow-gene-expression.md` for the output format template.
+   If fails: If the report cannot be assembled, present the collected GEO, phenotype, cancer mutation, and gene model findings with citations.
 
 </Workflow - Gene Expression>
 
 <Workflow - Protein Analysis
 description="Investigate protein function, structure, domains, and interactions."
+tools=[]
 triggers=["protein function", "protein structure", "protein domains", "protein interactions", "UniProt"]
 >
 
 1. [Agent] Call `query_uniprot` for the protein. Extract: UniProt accession ID, function, GO annotations, subcellular location, disease associations.
+   If fails: If no protein record is returned, try alternative identifiers; if it still fails, report that the protein could not be found and stop.
 
 2. [Agent] Call `query_alphafold` with the `uniprot_id` from step 1. Extract: predicted structure, pLDDT confidence regions.
    Also call `query_pdb` for experimental structures. If PDB IDs are returned, call `query_pdb_identifiers` for details.
+   If fails: If the structure calls error, note the structural data as unavailable and continue with domain analysis.
 
 3. [Agent] Call `query_interpro` for domain architecture. Extract: Pfam/SMART domains, family membership, functional sites.
+   If fails: If the domain call errors, note InterPro domain data as unavailable and continue.
 
 4. [Agent] Call `query_stringdb` for interaction network. Extract: interaction partners with confidence scores and evidence channels.
+   If fails: If the interaction call errors, note the STRING network as unavailable and continue.
 
 5. [Decide] If user wants proteomics data, call `query_pride`. If user wants EM structures of complexes, call `query_emdb`.
 
 6. [Agent] Synthesize into a protein analysis report. Read `references/workflow-protein-analysis.md` for the output format template.
+   If fails: If the report cannot be assembled, present the collected UniProt, structure, domain, and interaction findings with citations.
 
 </Workflow - Protein Analysis>
 

@@ -1,3 +1,9 @@
+---
+description: "Lookup data mapping FSI use cases to their typical regulatory regimes and architecture requirements, plus recurring gaps to check for."
+last_updated: 2026-09-13
+origin: original
+---
+
 # FSI Use Case Regulatory Map and Common Gaps
 
 Reference data for contextualizing an assessment. Use it to map a stated use case to its

@@ -1,3 +1,9 @@
+---
+description: "Lookup tables and tuning guidance, including XGBoost hyperparameters and common mistakes, that the skill uses when configuring prior authorization automation models."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Reference Tables and Common Mistakes
 
 Lookup tables and hard-won guidance for tuning PA automation. Read alongside

@@ -3,12 +3,20 @@ name: retail-analytics-concierge
 display_name: Self-Service Analytics Concierge
 icon: "🔍"
 description: "Translates natural language questions into SQL queries, executes against the connected data warehouse, and presents results with visualizations. Enables non-technical retail users to self-serve analytics without writing SQL. Use when asked to 'how many units did we sell', 'show me returns by category', 'what is our revenue trend', 'top selling products', 'compare regions', 'query the data', or any analytical question about retail metrics."
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-10"
 last_updated: "2026-07-03"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, open_in_session_tab]
-depends-on: [highcharts, html_design]
 inputs:
+
+  - name: config_directory
+
+    description: "Directory where the skill stores and reads its persisted config/schema context (e.g., discovered schema JSON). Defaults to the skill working directory."
+
+    type: path
+
+    required: false
   - name: data_source
     description: "Data warehouse connection name, or path to a local database/CSV/Excel file to query"
     type: string
@@ -26,7 +34,7 @@ inputs:
     description: "Comma-separated list of schema/table names the user is allowed to query. If set, queries against other tables are blocked."
     type: string
     required: false
-checksum: "sha256:19b198003b9d26a69a6ab6ba66ffa0415ae003af175d25ef26f09dab86a19b9d"
+checksum: "sha256:9402f8228820e60ccc8861150fe88c6cdd0c39115b13f8fd317f539f90135394"
 ---
 
 ## Overview
@@ -248,11 +256,13 @@ triggers=["how many", "show me", "what is", "compare", "top selling", "total rev
 <Templates>
 
 <Template - Three Part Result>
+```markdown
 1. **Direct answer:** {{direct_answer_sentence}}
 2. **Visualization:** I have opened an interactive chart in your session tab. See the {{chart_type}} chart showing {{chart_description}}.
 3. **Supporting data:**
 
 {{top_10_rows_table}}
+```
 </Template - Three Part Result>
 
 </Templates>

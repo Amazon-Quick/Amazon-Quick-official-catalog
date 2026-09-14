@@ -1,4 +1,8 @@
 """
+description: Defines the TranslationState class and _STATE singleton that persists translation data across run_python calls for the full translation lifecycle.
+last_updated: 2026-09-13
+origin: original
+
 Shared translation state singleton for the translate-ms skill.
 
 This module defines the TranslationState class and the _STATE singleton instance
@@ -18,6 +22,34 @@ SINGLETON GUARANTEE:
   Either way, the singleton is safe.
 """
 
+from __future__ import annotations
+
+import logging
+import sys
+from typing import Any
+
+
+class _PrintStream:
+    """Stdout adapter so logging records reach the real stdout via print()."""
+
+    def write(self, message: str) -> int:
+        if message:
+            print(message, end="", file=sys.__stdout__)
+        return len(message)
+
+    def flush(self) -> None:
+        return None
+
+
+logging.basicConfig(
+    stream=_PrintStream(),
+    level=logging.INFO,
+    format="%(asctime)s %(message)s",
+    force=True,
+)
+
+_LOGGER = logging.getLogger(__name__)
+
 
 class TranslationState:
     """Singleton holding all translation workflow state.
@@ -31,18 +63,18 @@ class TranslationState:
         stats: dict of extraction statistics (total_paragraphs, body, tables, etc.)
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.reset(None, None)
 
-    def reset(self, doc_format, file_path):
+    def reset(self, doc_format: str | None, file_path: str | None) -> None:
         """Clear all state for a new translation run."""
-        self.doc_format = doc_format
-        self.file_path = file_path
-        self.translations = {}
-        self.run_map = {}
-        self.batches = []
-        self.stats = {}
-        self._batch_results_received = 0
+        self.doc_format: str | None = doc_format
+        self.file_path: str | None = file_path
+        self.translations: dict[int, Any] = {}
+        self.run_map: dict[int, Any] = {}
+        self.batches: list[Any] = []
+        self.stats: dict[str, Any] = {}
+        self._batch_results_received: int = 0
 
 
 # Singleton guard, prevents re-creation in Quick's script concatenation mode.

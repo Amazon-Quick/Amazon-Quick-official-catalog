@@ -42,7 +42,7 @@ inputs:
     options: [text, dashboard, both]
     required: false
     default: "dashboard"
-checksum: "sha256:38e2b6afb4d623c6eb6c7bb18f14c61e7d30dd3dcf513bd24734ce78cc2ad120"
+checksum: "sha256:43c5086f255c67e338e32947951906c7a30467216da6274684240b5c1533bb4f"
 ---
 
 ## Overview
@@ -114,16 +114,16 @@ The term "outlook" in this skill means a heuristic estimate based on known input
 </Definitions>
 
 <Rules>
-- Always state the current date and day of week at the top of the briefing.
-- Weather data must come from a web search; never fabricate weather conditions.
-- Local events must be sourced from web search; never invent events.
-- Labor recommendations must be expressed as percentage adjustments from baseline (e.g., "+15% staff" or "-10% staff").
-- Inventory recommendations must be specific to food categories (proteins, produce, beverages, dry goods).
-- Always include a "Key Risks" callout for days with high uncertainty.
-- If weather or event data is unavailable for certain days, say so; do not guess.
-- Format the briefing for quick scanning: use tables, bullet points, and bold highlights.
-- The briefing must cover exactly 7 days starting from today.
-- All dashboard tabs, section headers, and template headings MUST use these EXACT titles every time, no variations, no abbreviations:
+1. Always state the current date and day of week at the top of the briefing.
+2. Weather data must come from a web search; never fabricate weather conditions.
+3. Local events must be sourced from web search; never invent events.
+4. Labor recommendations must be expressed as percentage adjustments from baseline (e.g., "+15% staff" or "-10% staff").
+5. Inventory recommendations must be specific to food categories (proteins, produce, beverages, dry goods).
+6. Always include a "Key Risks" callout for days with high uncertainty.
+7. If weather or event data is unavailable for certain days, say so; do not guess.
+8. Format the briefing for quick scanning: use tables, bullet points, and bold highlights.
+9. The briefing must cover exactly 7 days starting from today.
+10. All dashboard tabs, section headers, and template headings MUST use these EXACT titles every time, no variations, no abbreviations:
   - Dashboard Tabs (in order): "Overview" (icon: fa-chart-line), "Labor Plan" (icon: fa-people-group), "Prep Checklist" (icon: fa-clipboard-list), "Menu & Promos" (icon: fa-utensils), "Customer Pulse" (icon: fa-comments), "Monitor Content" (icon: fa-tv), "Risks & Alerts" (icon: fa-triangle-exclamation)
   - Key Section Headers: "7-Day Demand & Weather Outlook", "Key Events & Demand Drivers", "Labor Plan (Next 7 Days)", "Prep Checklist: [Day Name] ([covers] covers)", "Menu & Promo Recommendations", "Customer Pulse: Sentiment & Reviews", "In-Store Monitor Content: Today's Display Plan", "Key Risks & Watch Items", "Implement Today"
 </Rules>

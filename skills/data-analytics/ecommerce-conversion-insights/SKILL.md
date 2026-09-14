@@ -25,7 +25,7 @@ inputs:
 scripts:
   - funnel_analyzer.py
   - revenue_impact_calculator.py
-checksum: "sha256:92aa8048a8aa06b3ee049d742ffcba54f3827a5a820791f9af62afdb229f6c9b"
+checksum: "sha256:2d1bfe23b6f99ec3f3a0d0992e7f6cfe8a15ef797a398ae525869ccb8e4d0d2d"
 ---
 
 ## Overview
@@ -83,14 +83,14 @@ CSV or Excel with columns: stage_name, visitors (required). Optional columns: de
 </Definitions>
 
 <Rules>
-- Always use real data from the uploaded file. Never fabricate metrics or invent conversion numbers.
-- If the file is malformed or missing required columns, clearly report the error and show the expected format.
-- Revenue impact estimates must show the calculation methodology (e.g., "X visitors × Y% drop × $Z AOV = $W lost").
-- All recommendations must be specific and testable. Never give generic advice like "improve UX."
-- Segment breakdowns must include at least device type and geography unless the data lacks those columns.
-- When the file carries an avg_order_value column, derive the AOV from it and state the value used. Only ask the user or fall back to a default when the column is absent.
-- Never expose file paths or system information in output.
-- Revenue and significance figures are informational estimates, not audited financials. State that they are baseline-relative estimates and that the user should validate against their own analytics before acting on them.
+1. Always use real data from the uploaded file. Never fabricate metrics or invent conversion numbers.
+2. If the file is malformed or missing required columns, clearly report the error and show the expected format.
+3. Revenue impact estimates must show the calculation methodology (e.g., "X visitors × Y% drop × $Z AOV = $W lost").
+4. All recommendations must be specific and testable. Never give generic advice like "improve UX."
+5. Segment breakdowns must include at least device type and geography unless the data lacks those columns.
+6. When the file carries an avg_order_value column, derive the AOV from it and state the value used. Only ask the user or fall back to a default when the column is absent.
+7. Never expose file paths or system information in output.
+8. Revenue and significance figures are informational estimates, not audited financials. State that they are baseline-relative estimates and that the user should validate against their own analytics before acting on them.
 </Rules>
 
 <Agent Annotations>
@@ -195,6 +195,7 @@ triggers=["Analysis complete"]
 <Templates>
 
 <Template - Executive Summary>
+```markdown
 ## Conversion Insight Report: {{date_range}}
 
 **Top Finding:** {{top_friction_point_description}}
@@ -204,9 +205,11 @@ triggers=["Analysis complete"]
 **Biggest Segment Impact:** {{segment_with_highest_concentration}} accounts for {{segment_percentage}}% of the total drop-off at {{worst_stage}}.
 
 **Immediate Action:** {{top_recommendation_one_liner}}
+```
 </Template - Executive Summary>
 
 <Template - Friction Point Card>
+```markdown
 ### {{rank}}. {{stage_from}} → {{stage_to}} Drop-off
 
 | Metric | Value |
@@ -229,6 +232,7 @@ triggers=["Analysis complete"]
 - Change: {{recommended_change}}
 - Expected Impact: {{expected_impact}}
 - Complexity: {{complexity}}
+```
 </Template - Friction Point Card>
 
 </Templates>
@@ -237,4 +241,6 @@ triggers=["Analysis complete"]
 - `references/industry-benchmarks.md`: Baseline conversion rates by industry vertical and funnel stage
 - `references/common-blockers.md`: Catalog of common conversion blockers mapped to funnel stages
 - `assets/report-template.md`: Full report output structure
+- Unit tests (scripts/tests/unit/test_funnel_analyzer.py, scripts/tests/unit/test_revenue_impact_calculator.py) provide filesystem-free coverage of the scripts. Run them with `PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"`.
+
 </Resources>

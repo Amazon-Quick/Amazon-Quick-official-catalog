@@ -1,3 +1,8 @@
+---
+description: "List of authoritative external sources and the time-sensitive cost, resource, and incentive values that must be verified live per Rule 0 during a renewable energy assessment."
+last_updated: 2026-09-13
+origin: original
+---
 # Authoritative sources for time-sensitive values
 
 Rule 0 requires that any value which changes over time be verified live with

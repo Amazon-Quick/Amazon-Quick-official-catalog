@@ -1,3 +1,9 @@
+---
+description: "Step-by-step workflow the skill follows to answer gene expression, disease phenotype, cancer mutation, and regulatory element questions using GEO and related biomedical data sources."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Workflow: Gene Expression & Phenotype Analysis
 
 Use this workflow when a user asks about gene expression patterns, disease phenotypes, cancer mutations, or regulatory elements for a gene.

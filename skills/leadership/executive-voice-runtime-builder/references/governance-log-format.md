@@ -1,3 +1,9 @@
+---
+description: "The entry template and valid event types for the Governance Log the skill maintains during a voice-runtime build."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Governance Log Format Reference
 
 ## Entry Template

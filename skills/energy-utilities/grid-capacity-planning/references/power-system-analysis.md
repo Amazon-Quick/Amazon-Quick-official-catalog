@@ -1,3 +1,9 @@
+---
+description: "Reference numpy-based math for hosting capacity, N-1 contingency, and transfer capability analysis used by the grid capacity power system workflows."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Power System Analysis: Sensitivity Factors, Contingencies, Hosting Capacity
 
 Reference math for the hosting capacity, N-1 contingency, and transfer

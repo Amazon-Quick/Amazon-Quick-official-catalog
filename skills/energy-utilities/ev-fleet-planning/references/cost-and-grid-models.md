@@ -1,3 +1,9 @@
+---
+description: "Reference formulas and placeholder figures for EV fleet total cost of ownership, managed charging scheduling, and distribution grid impact modeling."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Cost, Managed Charging, and Grid Impact Models
 
 Reference for total cost of ownership (TCO) comparison, managed charging scheduling,

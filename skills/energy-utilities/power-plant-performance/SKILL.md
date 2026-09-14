@@ -3,12 +3,12 @@ name: power-plant-performance
 display_name: Power Plant Performance
 icon: "⚡"
 description: "Analyze thermal power plant performance: heat rate, NERC GADS availability metrics, thermodynamic cycle modeling, ambient corrections, degradation trending, and fleet benchmarking. Use when asked to 'calculate heat rate', 'compute EFOR or availability', 'model a Rankine or Brayton cycle', 'apply ambient corrections', 'trend plant degradation', 'benchmark against the NERC fleet', or analyze thermal generation efficiency"
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [get_current_time, file_read, file_write, run_python, web_search, url_fetch, open_in_session_tab]
-depends-on: [canvas_pdf, canvas_xlsx]
-checksum: "sha256:ae778d08cb8a9171c569a034e645c4393c9db9ee8013b0f97224e564cb4ee445"
+checksum: "sha256:19d4dfee7a28fba7da9e15ad909f0c6e5d196a9bd459f399eecd0ef67f60fde0"
 ---
 
 ## Overview
@@ -59,7 +59,7 @@ recommendations name the physical action and whether it is recoverable.
 </Definitions>
 
 <Rules>
-0. NEVER GUESS OR FABRICATE VALUES. This rule supersedes all others.
+1. NEVER GUESS OR FABRICATE VALUES. This rule supersedes all others.
    - Before using any numeric value (emission factor, threshold, coefficient,
      benchmark, price, standard limit, fleet average), verify it against an
      authoritative source using web_search or url_fetch, or use a value the user
@@ -74,25 +74,25 @@ recommendations name the physical action and whether it is recoverable.
    - If a value cannot be verified and the user has not provided it, state:
      "I cannot verify [value] from [expected source]. Please provide or confirm
      before I proceed." A slower correct answer beats a fast wrong one.
-1. Always distinguish gross versus net output. Heat rate comparisons must use a
+2. Always distinguish gross versus net output. Heat rate comparisons must use a
    consistent basis, and you must state which basis you used.
-2. Always distinguish HHV versus LHV for fuel and confirm the basis matches the
+3. Always distinguish HHV versus LHV for fuel and confirm the basis matches the
    design specification before comparing.
-3. Apply ambient condition corrections before comparing current performance to
+4. Apply ambient condition corrections before comparing current performance to
    design or to another period.
-4. Follow IEEE Standard 762 definitions exactly for EFOR, EFORd, EAF, and CF. Do
+5. Follow IEEE Standard 762 definitions exactly for EFOR, EFORd, EAF, and CF. Do
    not improvise alternative definitions.
-5. Forced outage hours include only unplanned events. Planned maintenance is not
+6. Forced outage hours include only unplanned events. Planned maintenance is not
    a forced outage.
-6. When reporting capacity factor, always state the denominator (maximum
+7. When reporting capacity factor, always state the denominator (maximum
    capacity times period hours) and whether it is gross or net.
-7. Degradation trending requires a minimum of 6 months of corrected data. Do not
+8. Degradation trending requires a minimum of 6 months of corrected data. Do not
    draw conclusions from uncorrected short-term fluctuations.
-8. Combined cycle analysis must track gas turbine and steam turbine performance
+9. Combined cycle analysis must track gas turbine and steam turbine performance
    separately; their degradation modes have different signatures and fixes.
-9. Use actual measured pressures and temperatures when available. Fall back to
+10. Use actual measured pressures and temperatures when available. Fall back to
    ideal cycle analysis only for conceptual design or what-if scenarios.
-10. This skill produces engineering and financial analysis for informational
+11. This skill produces engineering and financial analysis for informational
     purposes only. It is not a substitute for a licensed professional engineer,
     an ASME PTC certified test, or NERC compliance review. Recommend that the
     user have maintenance, capital, and regulatory-reporting decisions reviewed
@@ -151,7 +151,7 @@ triggers=["Heat rate", "efficiency", "how efficient is the plant", "BTU per kWh"
    or url_fetch, or ask the user. Physical constants and formulas do not need
    fetching.
    Validate: Every time-sensitive value has a verified source or user-provided value.
-   If fails: Stop and ask the user to confirm or provide the value (Rule 0).
+   If fails: Stop and ask the user to confirm or provide the value (Rule 1).
 
 2. [Agent] Read plant operational data (generation MWh, fuel MMBTU, ambient
    conditions) and configuration (technology type, design heat rate, design
@@ -249,7 +249,7 @@ triggers=["Rankine cycle", "Brayton cycle", "combined cycle", "thermodynamic mod
    in the sandbox (see Gotchas). Then compute cycle efficiency and heat rate with
    the equations in references/thermodynamic-models.md.
    Validate: Every enthalpy and entropy used traces to verified input, not a guess.
-   If fails: Ask the user for the missing state-point data (Rule 0).
+   If fails: Ask the user for the missing state-point data (Rule 1).
 
 3. [Agent] For a Brayton cycle, compute state points and efficiency in
    run_python using the ideal-gas code in references/thermodynamic-models.md with
@@ -286,7 +286,7 @@ triggers=["Degradation", "trending", "performance over time", "is the plant gett
 1. [Agent] Read the time-series operational data (generation, fuel, ambient
    conditions per period). Call get_current_time to anchor "recent" and interval
    calculations.
-   Validate: At least 6 months of data are present (Rule 7).
+   Validate: At least 6 months of data are present (Rule 8).
    If fails: Tell the user that meaningful trending needs at least 6 months of corrected data.
 
 2. [Agent] Filter and correct per references/degradation-and-benchmarking.md:
@@ -313,7 +313,7 @@ triggers=["Degradation", "trending", "performance over time", "is the plant gett
    If fails: Report the trend without classification.
 
 6. [Agent] Project future performance and cost impact. Verify the fuel price
-   from a live source or user input before computing cost (Rule 0).
+   from a live source or user input before computing cost (Rule 1).
    Validate: Cost uses a verified fuel price.
    If fails: Report degradation in BTU/kWh only and ask for the fuel price.
 
@@ -353,7 +353,7 @@ triggers=["Benchmark", "how do we compare", "fleet average", "plant report card"
 
 5. [Agent] Rank improvement opportunities by the annual dollar value of closing
    the gap to the fleet median, mapping each to a physical action. Verify fuel
-   and cost inputs before use (Rule 0).
+   and cost inputs before use (Rule 1).
    Validate: Opportunities are ranked with verified cost inputs.
    If fails: Present the gaps without dollar ranking and ask for cost inputs.
 

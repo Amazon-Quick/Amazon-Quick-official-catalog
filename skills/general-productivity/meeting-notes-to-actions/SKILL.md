@@ -6,7 +6,7 @@ description: "Transforms meeting transcripts, raw notes, or audio transcriptions
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_read, file_write, run_python, open_in_session_tab]
 inputs:
 
@@ -28,7 +28,7 @@ inputs:
   options: [markdown, email_summary, chat_post]
   required: false
   default: "markdown"
-checksum: "sha256:d0c8d4d5c973a1b4ee9efb1a9e38e3d3ad83f5f8ccfdae5134ca295394a87c23"
+checksum: "sha256:e6822ceb47b11ea5ee6a7e174bb7ff01f1dfd8afa4d6fe6a0504c35fc52e05fe"
 ---
 
 ## Overview
@@ -95,22 +95,28 @@ Workflow steps use these prefixes:
 
 <Workflow - Meeting Notes to Actions
 description="End-to-end meeting content processing flow."
+tools=[file_read, file_write, open_in_session_tab]
 triggers=["summarize this meeting", "extract action items", "what were the decisions", "meeting recap", "process these meeting notes", "turn transcript into actions"]
 >
 
 1. [Agent] Determine the source type. If meeting_source is a file path, read the file using file_read. If it is pasted text, accept it directly. Validate that the content is non-empty and contains recognizable meeting dialogue or notes.
+   If fails: If the file cannot be read or the content is empty or not recognizable as meeting material, report the specific problem and ask the user for a valid source.
 
 2. [Decide] Check whether meeting_title and attendees were provided. If not, scan the source content for a subject line, header, or introductory statement that names the meeting. Extract attendee names from speaker labels, roll call, or explicit mentions. If neither can be determined, ask the user.
 
 3. [Think] Parse the full source content. Identify segments that correspond to: discussion topics, proposed actions, confirmed decisions, unresolved questions, and side conversations. Discard filler but do not discard any substantive content. Flag unintelligible sections.
 
 4. [Agent] Extract decisions. For each decision, record: the decision statement (exact or near-exact wording from source), who made or confirmed it, and the context or topic it relates to.
+   If fails: If no decisions can be identified, record an empty Decisions section noting none were found rather than inventing any.
 
 5. [Agent] Extract action items. For each action item, record: the task description, the owner (explicit name or "TBD"), the deadline (if stated, otherwise "Not specified"), and any dependencies or blockers mentioned.
+   If fails: If ownership or tasks cannot be parsed, mark unclear owners as TBD and flag the affected items in Open Questions rather than guessing.
 
 6. [Agent] Extract open questions. For each open question, record: the question or unresolved topic, who raised it (if identifiable), and any proposed next step (e.g., "revisit next week," "waiting on legal review").
+   If fails: If no open questions are found, record an empty Open Questions section and note that all topics appeared resolved.
 
 7. [Agent] Compose the executive recap. Summarize the meeting in under 150 words covering: purpose of the meeting, key outcomes, and any critical blockers. Write in plain language without jargon.
+   If fails: If the content is too sparse to summarize, state that the source lacked enough detail for a recap and list what was extracted.
 
 8. [Decide] Format the output based on output_format:
    - markdown: Use the Structured Recap template. Save to a file and open in the session tab.
@@ -124,6 +130,7 @@ triggers=["summarize this meeting", "extract action items", "what were the decis
 <Templates>
 
 <Template - Structured Recap>
+```markdown
 # {{meeting_title}}
 
 **Date:** {{meeting_date}}
@@ -153,9 +160,11 @@ triggers=["summarize this meeting", "extract action items", "what were the decis
 
 ---
 *Generated from meeting source. Review for transcription errors flagged with [name unclear].*
+```
 </Template - Structured Recap>
 
 <Template - Chat Post>
+```markdown
 *{{meeting_title}} - Recap*
 
 *Decisions:*
@@ -168,6 +177,7 @@ triggers=["summarize this meeting", "extract action items", "what were the decis
 {{open_questions_bullet_list}}
 
 _Full notes available on request._
+```
 </Template - Chat Post>
 
 </Templates>

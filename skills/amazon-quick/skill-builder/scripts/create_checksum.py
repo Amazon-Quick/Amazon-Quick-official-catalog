@@ -3,22 +3,6 @@ description: Compute a skill's deterministic SHA-256 content digest and write it
 last_updated: 2026-09-13
 origin: original
 
-Owns the checksum end to end so no other script recomputes it: check_skill.py
-only verifies that the frontmatter carries a well-formed checksum field. This is
-a single self-contained file (the sandbox runs it alone); every class lives here
-and it imports only the standard library.
-
-The digest is deterministic and order-independent: files are sorted by POSIX
-relative path and each contributes a tab-separated "relpath<TAB>sha256(bytes)"
-line to a manifest, which is then hashed. SKILL.md contributes its content with
-the checksum line removed, so writing the digest back is idempotent. evals/,
-caches, and test files are excluded: they change independently of the shipped
-skill. Runs identically on Windows and macOS (pathlib, POSIX keys, LF newlines).
-
-Design: SkillManifest reads files (I/O); ManifestDigest hashes a supplied
-manifest (pure); ChecksumRenderer inserts the digest into frontmatter text
-(pure); ChecksumWriter is the facade that wires them and writes the file. The two
-pure classes are unit-tested by test_create_checksum.py without touching disk.
 """
 
 from __future__ import annotations

@@ -8,8 +8,8 @@ last_updated: "2026-07-27"
 license: MIT-0
 preferred_model: smart
 preferred_thinking: medium
-tools: [file_read, file_read_pdf, file_read_docx, file_write, open_in_session_tab, run_python]
-depends-on: [fda-ecfr, awslabs.bedrock-kb-retrieval-mcp-server]
+tools: [file_read, file_read_pdf, file_read_docx, file_write, open_in_session_tab, run_python, awslabs.bedrock-kb-retrieval-mcp-server, fda-ecfr]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: source_document
     description: "Grant document or study synopsis to extract protocol content from. Can be a file path or uploaded document."
@@ -23,7 +23,7 @@ inputs:
     description: "Disease area or therapeutic focus (e.g., oncology, cardiology). Inferred from source if not provided."
     type: string
     required: false
-checksum: "sha256:302c4fbe1b97be49d461f3848263c2dbff2239822efb2c4c61c4f649d27ef0c0"
+checksum: "sha256:1142517aa2195cbff239fc0c9b29424e30a7fc19b7ca79a9a34415098fada2f3"
 ---
 
 ## Overview
@@ -37,8 +37,8 @@ The final deliverable is an assembled protocol document ready for PI and IRB rev
 
 ### Prerequisites
 
-This skill requires two MCP servers configured in Amazon Quick (Settings > Capabilities > MCP)
-before use:
+This skill requires two MCP servers connected to Amazon Quick as remotely hosted
+MCP servers before use:
 
 1. **fda-ecfr** - Retrieves 21 CFR regulatory text from the public FDA eCFR API.
    Source: https://github.com/aws-samples/amazon-bedrock-agents-healthcare-lifesciences/tree/main/mcp-servers/agentcore-gateway/fda-ecfr

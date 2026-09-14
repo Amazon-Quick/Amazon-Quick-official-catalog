@@ -1,3 +1,9 @@
+---
+description: "Before-and-after rewrite examples for each AI-writing pattern category, consulted when a rule's application to a specific sentence is unclear."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Pattern Examples
 
 Before-and-after examples for each pattern category in the ruleset. Consult these when a rule's application to a specific sentence is unclear.

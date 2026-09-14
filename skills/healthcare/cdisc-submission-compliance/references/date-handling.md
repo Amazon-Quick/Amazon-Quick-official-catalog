@@ -1,3 +1,9 @@
+---
+description: "Reference on study day (--DY) calculation and ADaM date imputation rules, including the no-Day-0 off-by-one pitfall."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Date Handling Gotchas
 
 Use for study day calculation and ADaM date imputation questions.

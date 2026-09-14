@@ -1,3 +1,9 @@
+---
+description: "Eight reusable HTML and CSS presentation components with the markup and styles required to render each one."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Component Library
 
 Eight reusable presentation components. Each section shows the HTML pattern and required CSS. All components assume the design tokens from `design-tokens.md` are loaded.

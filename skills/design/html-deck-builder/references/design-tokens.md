@@ -1,3 +1,9 @@
+---
+description: "The complete CSS custom property system for HTML presentations, defining the color palette, spacing, and other tunable design tokens."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Design Tokens
 
 Complete CSS custom property system for HTML presentations. All values are tunable; override `--primary` to rebrand the entire deck.

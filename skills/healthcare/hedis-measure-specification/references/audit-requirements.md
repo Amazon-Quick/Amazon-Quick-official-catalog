@@ -1,3 +1,9 @@
+---
+description: "Reference data on NCQA HEDIS audit requirements, including the data source hierarchy and common audit findings, that the skill applies when validating measure reporting."
+last_updated: 2026-09-13
+origin: original
+---
+
 # National Committee for Quality Assurance (NCQA) Audit Requirements
 
 ## Data source hierarchy

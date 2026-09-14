@@ -1,3 +1,8 @@
+---
+description: "Reference for gas turbine degradation signatures and benchmarking used by the degradation trending and benchmarking workflows."
+last_updated: 2026-09-13
+origin: original
+---
 # Degradation Trending and Benchmarking
 
 Reference for the degradation trending and benchmarking workflows.

@@ -6,7 +6,7 @@ description: "Generates structured performance review drafts using Situation-Tas
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_write, file_read, run_python, open_in_session_tab]
 inputs:
 
@@ -29,9 +29,9 @@ inputs:
 - name: review_type
   description: "The type of review to generate"
   type: choice
-  choices: [self_assessment, manager_review, peer_feedback]
+  options: [self_assessment, manager_review, peer_feedback]
   required: true
-checksum: "sha256:9969f2937880d72d8b9ce31c2fde2e64066e491c7bab308a846932c8912630a2"
+checksum: "sha256:c9d5c7ec9155b04e7d5a1236a999c8d2a05dcbb24623116dcdc9dc85839879c4"
 ---
 
 ## Overview
@@ -93,19 +93,19 @@ A complete, well-structured performance review draft that the user can refine an
 </Goal>
 
 <Rules>
-0. This skill produces draft review content for informational purposes only and does not constitute human resources or legal advice. All outputs require thorough human review before delivery. Performance assessments can carry legal implications (employment decisions, discrimination claims). Organizations must ensure reviews are validated by managers and HR professionals and comply with their own employment policies and applicable labor laws.
-1. Never fabricate accomplishments, metrics, or outcomes. Every claim must trace to a provided source. If evidence is insufficient, flag the gap explicitly and ask the user to supply it.
-2. Use specific, concrete evidence in every section. Replace vague statements like "did a great job" with STAR-format descriptions of what was accomplished.
-3. Maintain a balanced tone throughout. Neither inflate achievements nor overweight shortcomings. The review should read as fair and constructive.
-4. Guard against recency bias. Distribute attention across the full review period. If sources cluster around recent months, flag this to the user and ask for earlier-period evidence.
-5. Protect confidentiality of peer feedback. Never attribute specific feedback to a named peer unless the user explicitly confirms attribution is appropriate. Use phrasing like "peers noted that..." or "cross-functional partners observed..."
-6. Never compare the employee to specific other individuals. Measure performance against role-level expectations, not against named colleagues.
-7. Calibrate all assessments to the employee's current role and level. Praise that would be appropriate for a junior contributor may be insufficient evidence of impact at a senior level.
-8. Frame growth areas as forward-looking development opportunities, not character flaws. Use language that points toward specific, actionable next steps.
-9. Never include protected-class information (age, gender, ethnicity, disability, family status) in the review draft. If source materials contain such references, omit them silently.
-10. Never present the draft as final or ready to submit without the user's review. Always frame the output as a draft requiring their judgment and edits.
-11. If the review_type is self_assessment, write in first person. If manager_review, write in third person about the employee. If peer_feedback, write in third person with an observational tone.
-12. Do not use superlatives ("best engineer on the team", "unmatched performance") unless directly quoting a source with attribution.
+1. This skill produces draft review content for informational purposes only and does not constitute human resources or legal advice. All outputs require thorough human review before delivery. Performance assessments can carry legal implications (employment decisions, discrimination claims). Organizations must ensure reviews are validated by managers and HR professionals and comply with their own employment policies and applicable labor laws.
+2. Never fabricate accomplishments, metrics, or outcomes. Every claim must trace to a provided source. If evidence is insufficient, flag the gap explicitly and ask the user to supply it.
+3. Use specific, concrete evidence in every section. Replace vague statements like "did a great job" with STAR-format descriptions of what was accomplished.
+4. Maintain a balanced tone throughout. Neither inflate achievements nor overweight shortcomings. The review should read as fair and constructive.
+5. Guard against recency bias. Distribute attention across the full review period. If sources cluster around recent months, flag this to the user and ask for earlier-period evidence.
+6. Protect confidentiality of peer feedback. Never attribute specific feedback to a named peer unless the user explicitly confirms attribution is appropriate. Use phrasing like "peers noted that..." or "cross-functional partners observed..."
+7. Never compare the employee to specific other individuals. Measure performance against role-level expectations, not against named colleagues.
+8. Calibrate all assessments to the employee's current role and level. Praise that would be appropriate for a junior contributor may be insufficient evidence of impact at a senior level.
+9. Frame growth areas as forward-looking development opportunities, not character flaws. Use language that points toward specific, actionable next steps.
+10. Never include protected-class information (age, gender, ethnicity, disability, family status) in the review draft. If source materials contain such references, omit them silently.
+11. Never present the draft as final or ready to submit without the user's review. Always frame the output as a draft requiring their judgment and edits.
+12. If the review_type is self_assessment, write in first person. If manager_review, write in third person about the employee. If peer_feedback, write in third person with an observational tone.
+13. Do not use superlatives ("best engineer on the team", "unmatched performance") unless directly quoting a source with attribution.
 
 </Rules>
 
@@ -132,37 +132,45 @@ Workflow steps use these prefixes:
 
 <Workflow - Performance Review Draft
 description="End-to-end performance review drafting flow."
+tools=[file_read]
 triggers=["write a performance review", "draft my self-assessment", "prepare review for direct report", "perf review", "annual review draft", "write peer feedback"]
 >
 
 1. [Ask user] Gather any missing required inputs: employee_name, review_period, role_level, review_type. If evidence_sources were not provided, ask what materials are available (project docs, 1:1 notes, peer feedback, prior reviews, metrics dashboards). Ask about any length constraints or organizational frameworks (leadership principles, competency models) that should structure the review.
+   If fails: Re-ask for the specific missing inputs; if the user cannot provide the required fields, stop and explain the draft cannot proceed without them.
 
 2. [Agent] If evidence_sources were provided as file paths, read each file. Extract key information: accomplishments, metrics, feedback quotes, project outcomes, behavioral observations. Tag each extracted item with its source file and approximate date within the review period.
+   If fails: Report which files could not be read, and ask the user to re-share the correct paths or paste the content directly.
 
 3. [Think] Assess evidence coverage across the review period. Check for temporal distribution (early, mid, late period). Check for breadth across different competency areas (technical delivery, collaboration, leadership, communication). Identify gaps where evidence is thin or absent.
 
 4. [Ask user] If evidence gaps exist, present them clearly. For example: "I have strong evidence for technical delivery but limited material on cross-team collaboration. Do you have additional sources, or should I note this as an area where more evidence is needed?" If recency bias is detected (per Gotchas), flag it explicitly.
+   If fails: If the user does not respond or cannot supply more sources, note the gaps in the draft and proceed with the evidence available.
 
 5. [Agent] Organize extracted evidence into STAR-format accomplishments. Group by theme or competency area. Rate each item using the Evidence Quality Tiers definition. Discard Tier 3 evidence that lacks Tier 1 or 2 corroboration.
+   If fails: If evidence cannot be mapped to STAR structure, flag the incomplete items for the user to complete rather than filling them with assumptions.
 
 6. [Think] Calibrate each accomplishment against Level-Calibrated Expectations. Determine which items represent strong performance at the employee's level, which represent baseline expectations, and which demonstrate above-level impact. Identify patterns that suggest growth areas.
 
 7. [Think] Draft growth areas using the Growth Areas definition. Ensure each growth area is (a) supported by observable evidence or absence of evidence, (b) framed constructively, (c) paired with a specific development recommendation. Verify no growth area violates Rules 5, 6, or 9.
 
 8. [Agent] Compose the full review draft using the Review Draft template. Adapt voice and person based on review_type (first person for self_assessment, third person for manager_review, observational third person for peer_feedback). Ensure every evaluative statement has at least one specific example.
+   If fails: Report the composition error to the user and retry once; if it persists, present the structured evidence gathered so far so no work is lost.
 
 9. [Agent] Run a quality check on the draft:
-   - Verify no fabricated metrics or outcomes (Rule 1)
-   - Confirm balanced tone (Rule 3)
-   - Check temporal distribution of examples (Rule 4)
-   - Confirm no named peer attribution without approval (Rule 5)
-   - Confirm no comparisons to named individuals (Rule 6)
-   - Verify level-appropriate calibration (Rule 7)
-   - Scan for protected-class information (Rule 9)
-   - Confirm no superlatives without sourced quotes (Rule 12)
+   - Verify no fabricated metrics or outcomes (Rule 2)
+   - Confirm balanced tone (Rule 4)
+   - Check temporal distribution of examples (Rule 5)
+   - Confirm no named peer attribution without approval (Rule 6)
+   - Confirm no comparisons to named individuals (Rule 7)
+   - Verify level-appropriate calibration (Rule 8)
+   - Scan for protected-class information (Rule 10)
+   - Confirm no superlatives without sourced quotes (Rule 13)
    Flag any issues found and revise before presenting.
+   If fails: If the quality check cannot complete, present the draft with an explicit note listing which checks were not verified.
 
 10. [Ask user] Present the complete draft. Highlight any sections where evidence was thin and your confidence is lower. Ask the user to review for accuracy, add missing context, adjust tone, or approve. Offer to iterate on specific sections.
+    If fails: If the draft cannot be presented, provide the draft text directly and ask the user to confirm they received it before closing.
 
 </Workflow - Performance Review Draft>
 

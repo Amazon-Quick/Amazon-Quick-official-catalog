@@ -1,3 +1,9 @@
+---
+description: "The sets of analysis dimensions each workflow applies to writing samples, plus the Voice Fidelity scoring rubric used in validation."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Analysis Dimensions Reference
 
 The dimension sets each workflow analyzes samples across, plus the Voice Fidelity scoring rubric used in Voice Validation.

@@ -64,12 +64,10 @@ EXCLUDE_SUFFIXES = frozenset({".pyc"})
 EXCLUDE_NAMES = frozenset({".DS_Store"})
 TEST_FILE_RE = re.compile(r"^test_.*\.py$")
 
-# The checksum line is stripped from SKILL.md before hashing so writing the
-# digest back never changes the digest (idempotent). The strip consumes the
-# trailing newline too, so a freshly-checksummed file hashes identically to a
-# clean one -- stripping is the exact inverse of insertion.
-CHECKSUM_STRIP_RE = re.compile(r"^checksum\s*:.*\n?", re.M)
-# Line-only form (newline preserved) for detecting and replacing in place.
+# The checksum line's content is stripped from SKILL.md before hashing so writing
+# the digest back never changes it (idempotent). The line's newline is preserved,
+# matching skill-builder's create_checksum.py exactly, so the catalog and the
+# validator compute the identical digest.
 CHECKSUM_LINE_RE = re.compile(r"^checksum\s*:\s*.*$", re.M)
 CHECKSUM_VALUE_RE = re.compile(r'^checksum\s*:\s*"?(sha256:[0-9a-f]{64})"?\s*$', re.M)
 
@@ -100,7 +98,7 @@ class SkillManifest:
 
     def _content_for(self, relpath: str, path: Path) -> bytes:
         if relpath == SKILL_FILE:
-            stripped = CHECKSUM_STRIP_RE.sub(
+            stripped = CHECKSUM_LINE_RE.sub(
                 "", path.read_text(encoding="utf-8"), count=1
             )
             return stripped.encode("utf-8")

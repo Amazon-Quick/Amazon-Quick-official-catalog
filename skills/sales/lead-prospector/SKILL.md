@@ -5,10 +5,10 @@ display_name: Lead Prospector
 icon: "🎯"
 description: "Researches and identifies ideal prospects for small business sales. Builds targeted lead lists with company intel, decision-maker contacts, and personalized talking points. Use when user says 'find me leads', 'build a prospect list', 'who should I sell to', 'research companies in [industry]', 'find decision makers', 'identify potential customers', or 'prospect list for [product/service]'."
 created_date: "2026-05-15"
-last_updated: "2026-06-04"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [web_search, url_fetch, run_python, file_write, open_in_session_tab]
-depends-on: [outlook, gmail, google_sheets]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 
 - name: industry
@@ -24,7 +24,7 @@ inputs:
   type: number
   required: false
   default: 15
-checksum: "sha256:3901415e3b4692c21e5b1ec606aa0b2fae7edc58e62217c1fa06dea6ba3eef3a"
+checksum: "sha256:b3128f54968e64b60df1a511031273534dfdf62c0016e8a6e648eaba9c2ac96b"
 ---
 
 ## Overview

@@ -5,10 +5,10 @@ display_name: SEO Content Writer
 icon: "✍️"
 description: "Creates SEO-optimized blog posts, landing pages, and website content that ranks on Google while converting readers into customers. Conducts keyword research, competitive analysis, and writes in-depth content. Use when user says 'write a blog post', 'SEO content', 'help me rank for [keyword]', 'website copy', 'landing page', 'optimize my content', 'keyword research', 'write for Google', 'blog article about [topic]', 'content that ranks', or 'article for [audience]'."
 created_date: "2026-05-15"
-last_updated: "2026-06-04"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [web_search, url_fetch, file_rag_search, file_read, file_write, run_python, open_in_session_tab]
-depends-on: [outlook, slack]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 
 - name: topic_or_keyword
@@ -23,7 +23,7 @@ inputs:
   description: "Geographic focus for local SEO (city, state, region)"
   type: string
   required: false
-checksum: "sha256:a4de8bfdb16f120a9cb500f9470c03ccd96bc17b249d39eb186c21907f4a14c5"
+checksum: "sha256:4f2c1a5d7aca80a780e65f498f44a84d520c1600a1ba790aacee2dd15d0a3308"
 ---
 
 ## Overview

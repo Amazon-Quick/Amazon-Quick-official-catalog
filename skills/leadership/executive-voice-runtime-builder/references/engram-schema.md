@@ -1,3 +1,9 @@
+---
+description: "The canonical engram object schema, documenting every field of the portable voice-runtime artifact the skill produces."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Engram Schema Reference
 
 The canonical engram object. The engram is a portable artifact: a structured file the user owns, plus a `portable_prompt` that can be pasted into any AI tool. Amazon Quick has no auto-load hook for a custom drafting runtime, so the engram is delivered as a file (YAML or JSON) at the user's chosen output location, not registered as a background model. Never persist the engram to memory, the knowledge graph, or any external endpoint. Every field is required unless marked optional.

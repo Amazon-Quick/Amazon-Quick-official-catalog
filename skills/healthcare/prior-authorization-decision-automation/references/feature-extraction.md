@@ -1,3 +1,9 @@
+---
+description: "A pandas-based feature extraction reference the skill uses to turn parsed prior authorization requests, claims, formulary, and lab data into a feature vector for adjudication."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Clinical Feature Extraction
 
 Feature extraction turns a parsed PA request plus claims, formulary, and lab data into

@@ -3,12 +3,20 @@ name: retail-supply-chain-pulse
 display_name: Supply Chain Morning Pulse
 icon: "🚨"
 description: "Daily supply chain exception digest with severity scoring, root cause analysis, and recommended resolutions. Surfaces inbound delays, stockout risks, demand spikes, and carrier issues before they impact customers. Use when asked to 'what is on fire today', 'supply chain pulse', 'morning exceptions', 'logistics issues', 'inventory alerts', 'carrier problems', 'stockout risk', or 'supply chain briefing'."
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-10"
-last_updated: "2026-06-10"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, open_in_session_tab, web_search]
-depends-on: [highcharts, html_design]
 inputs:
+
+  - name: config_directory
+
+    description: "Directory where the skill stores and reads its persisted config/schema context (e.g., discovered schema JSON). Defaults to the skill working directory."
+
+    type: path
+
+    required: false
   - name: data_source
     description: "Path to supply chain data file (CSV/Excel with orders, inventory, shipments) or MCP connector name"
     type: string
@@ -32,7 +40,7 @@ inputs:
     type: number
     required: false
     default: 10000
-checksum: "sha256:df2d0fdb54e4e04b074fb50b89a87eb75c6a0f85be52b481d36a077b5e1e588f"
+checksum: "sha256:f5f3be74d2d3665c27a4a1eccc60bdc8e9dbace88fdbc02b3cb1740ed6253397"
 ---
 
 ## Overview
@@ -250,6 +258,7 @@ triggers=["what is on fire today", "supply chain pulse", "morning exceptions", "
 <Templates>
 
 <Template - Action Summary>
+```markdown
 SUPPLY CHAIN PULSE - {{date}}
 Critical: {{critical_count}} | Warning: {{warning_count}} | Watch: {{watch_count}}
 Top 3 requiring immediate action:
@@ -257,6 +266,7 @@ Top 3 requiring immediate action:
 2. {{exception_2_summary}} + {{exception_2_owner}} + {{exception_2_deadline}}
 3. {{exception_3_summary}} + {{exception_3_owner}} + {{exception_3_deadline}}
 Full dashboard open in tab.
+```
 </Template - Action Summary>
 
 </Templates>

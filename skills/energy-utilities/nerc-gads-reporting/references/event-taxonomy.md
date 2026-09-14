@@ -1,3 +1,8 @@
+---
+description: "NERC GADS event type taxonomy classifying outage and derate event codes and their urgency per the Data Reporting Instructions."
+last_updated: 2026-09-13
+origin: original
+---
 # NERC GADS Event Type Taxonomy
 
 Classify every event record against the codes below, following the NERC GADS

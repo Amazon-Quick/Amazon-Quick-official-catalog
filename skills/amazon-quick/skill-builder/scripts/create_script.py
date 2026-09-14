@@ -3,9 +3,6 @@ description: Scaffold a new scripts/*.py file with a standard-conforming header 
 last_updated: 2026-09-13
 origin: original
 
-Single self-contained file. ScriptRenderer turns an injected spec into the file
-text (pure, unit-tested); ScriptGenerator writes it (I/O facade); main() builds
-the spec from CLI arguments.
 """
 
 from __future__ import annotations

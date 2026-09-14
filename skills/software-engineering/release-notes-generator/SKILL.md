@@ -6,7 +6,7 @@ description: "Generates human-readable release notes from merged pull requests, 
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [web_search, url_fetch, file_write, file_read, run_python, open_in_session_tab]
 inputs:
 
@@ -29,7 +29,7 @@ inputs:
   required: false
   default: "markdown"
   enum: ["platform_release", "chat_post", "wiki", "markdown"]
-checksum: "sha256:33dca578454430fde9a57ff1aa2b092a5bb1c644a95dd1cb74f1dadd5778023c"
+checksum: "sha256:83501d34b55c706673a2f4b3438d7ee5f62173e6082419ed3e5c1fa13b47366b"
 ---
 
 ## Overview
@@ -125,6 +125,7 @@ triggers=["generate release notes", "write changelog", "summarize what shipped",
 >
 
 1. [Ask user] Gather any missing inputs: source, from_ref, to_ref, and format. If the user provided a vague range like "since last release," ask them to confirm the specific tag or offer to look up the most recent tag from the repository.
+   If fails: If source, from_ref, or format is still missing, re-ask the user for the specific missing input before continuing.
 
 2. [Decide] What type of source was provided?
    - Repository URL: Proceed to step 3.
@@ -138,6 +139,7 @@ triggers=["generate release notes", "write changelog", "summarize what shipped",
    - dev.azure.com: Use the Azure DevOps Pull Requests API
    - Unrecognized: Inform the user the platform is not auto-detectable and ask them to export data to a file or paste it.
    For each change, collect: ID/number, title, labels/tags, author, merged date, and URL. Follow pagination to get all results in the range.
+   If fails: If the API returns an authentication or access error, inform the user immediately and offer to accept a token, a file export, or pasted data per Rule 5.
 
 4. [Decide] Is the source a file or pasted content?
    - File: Read the file. Detect format (CSV, JSON, Markdown, plain text git log). Parse into structured change entries.
@@ -150,14 +152,18 @@ triggers=["generate release notes", "write changelog", "summarize what shipped",
    - 1 to 100 changes: Proceed to classification.
 
 6. [Agent] Filter out excluded items: remove any with labels "skip-changelog", "no-release-notes", or "wontfix" per Rule 7. Remove bot-authored entries per Rule 10. Log how many were filtered.
+   If fails: If filtering cannot complete, report the error and proceed with the unfiltered list, noting that excluded items may remain.
 
 7. [Think] Classify each remaining change into exactly one Change Category. Check labels first (higher confidence), then fall back to title prefix conventions. If neither matches, assign to "Internal/Chores". Apply priority ordering per Rule 3 to resolve conflicts.
 
 8. [Agent] Render the release notes in the requested format using run_python. Apply the appropriate template. Include: version/range header, date generated, breaking changes section (if any), then remaining categories in priority order, then a contributors list. Save the output to a file.
+   If fails: If rendering or saving fails, report the error, retry once, and present the release notes inline if the retry fails.
 
 9. [Ask user] Present the rendered release notes. Ask if they want adjustments: different grouping, exclude a category, add a summary paragraph at the top, or change the output format.
+   If fails: If the user does not respond with a clear decision, re-present the notes and ask whether any adjustments are needed.
 
 10. [Agent] Apply any requested edits, re-render, and save the final version. Open in the session tab for review.
+    If fails: If the final version cannot be saved or opened, report the error, retry once, and present the release notes inline if the retry fails.
 
 </Workflow - Generate Release Notes>
 
@@ -166,6 +172,7 @@ triggers=["generate release notes", "write changelog", "summarize what shipped",
 <Templates>
 
 <Template - Markdown Release Notes>
+```markdown
 # Release Notes: {{from_ref}} to {{to_ref}}
 
 **Repository:** {{source}}
@@ -203,9 +210,11 @@ triggers=["generate release notes", "write changelog", "summarize what shipped",
 {{contributors_list}}
 
 Adapt per format: for chat_post, replace headers with bold+emoji; for platform_release, add compare URL and full changelog link; for wiki, wrap breaking changes in a warning panel.
+```
 </Template - Markdown Release Notes>
 
 <Template - Chat Post Release Notes>
+```markdown
 :rocket: *Release: {{from_ref}} to {{to_ref}}*
 _{{repo_name}} | {{current_date}}_
 
@@ -229,6 +238,7 @@ _{{repo_name}} | {{current_date}}_
 :busts_in_silhouette: *Contributors:* {{contributors_inline}}
 
 Adjust emoji and section visibility based on which categories have entries. Omit empty sections entirely.
+```
 </Template - Chat Post Release Notes>
 
 </Templates>

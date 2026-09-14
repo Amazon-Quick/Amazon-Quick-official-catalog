@@ -4,11 +4,11 @@ display_name: Carbon Footprint Calculator
 icon: "🌍"
 license: MIT-0
 description: "Calculate an organization's greenhouse gas emissions across Scopes 1, 2, and 3 following the GHG Protocol Corporate Standard, then produce an interactive dashboard and an audit-ready workbook. Use when asked to 'calculate our carbon footprint', 'build a GHG inventory', 'measure Scope 1 2 3 emissions', 'create an emissions report', 'run corporate carbon accounting', or model 'emissions reduction scenarios', or any organizational greenhouse gas accounting request"
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
 last_updated: "2026-07-16"
 tools: [get_current_time, web_search, url_fetch, file_read, file_write, run_python, open_in_session_tab]
-depends-on: [html_design, highcharts, canvas_xlsx]
-checksum: "sha256:96f3244102fdfb645c4a8306fe725237032f702485c8d775ec806dc0ab380abb"
+checksum: "sha256:d8942e858ebe9b67aad4fa775cf3b1729784c8f6177278db4638084936c5ed1c"
 ---
 
 ## Overview
@@ -35,21 +35,21 @@ An organization's greenhouse gas emissions calculated across all applicable scop
 </Definitions>
 
 <Rules>
-0. NEVER GUESS OR FABRICATE NUMERIC VALUES. This rule overrides all others.
+1. NEVER GUESS OR FABRICATE NUMERIC VALUES. This rule overrides all others.
    - Before using any numeric value (emission factor, grid rate, GWP, threshold, price, regulatory limit), verify it against an authoritative source with web_search or url_fetch, or use a value the user provided.
    - If a value changes over time (grid factors, annually updated hub factors, market prices, regulatory limits), fetch it at runtime from the source named in references/emission-factors.md. Do not treat an embedded value as current without verification.
    - Valid sources are only: data the user uploaded, values fetched from authoritative URLs this session, or stable physical constants and unit conversions. Model training knowledge is NOT a valid source for a numeric value.
    - If a value cannot be verified from a live source and the user has not provided it, state plainly: "I cannot verify [value] from [source]. Please provide or confirm before I proceed." A slower correct answer beats a fast wrong one.
-1. Follow the five GHG Protocol principles: relevance, completeness, consistency, transparency, accuracy.
-2. Report in tCO2e using IPCC AR5 100-year GWP values unless the user specifies otherwise. Report CO2, CH4, and N2O separately in addition to the CO2e total.
-3. Use EPA factors as default for US organizations and DEFRA factors for UK organizations. Ask the user for their preference otherwise.
-4. Separate biogenic CO2 from fossil CO2. Report biogenic emissions separately, not in scope totals.
-5. For Scope 2, calculate and report both location-based and market-based results.
-6. For Scope 3, assess all 15 categories for relevance, calculate those with data, and document exclusions and their reasons.
-7. Every emission factor used must reference its source, year, and geographic applicability. Never use a factor without documenting its provenance.
-8. The dashboard must be self-contained HTML that renders when opened locally, using the vendored Highcharts provided by the highcharts built-in skill (not an external dependency).
-9. Never hardcode an output location. Ask the user where to save deliverables, or use this skill's assets directory, and confirm before writing.
-10. This skill produces informational estimates, not assured or verified disclosures. For regulatory filings, financial reporting, or third-party assurance, advise the user to consult a qualified carbon accounting professional or accredited GHG verification body. State that outputs are for informational purposes only.
+2. Follow the five GHG Protocol principles: relevance, completeness, consistency, transparency, accuracy.
+3. Report in tCO2e using IPCC AR5 100-year GWP values unless the user specifies otherwise. Report CO2, CH4, and N2O separately in addition to the CO2e total.
+4. Use EPA factors as default for US organizations and DEFRA factors for UK organizations. Ask the user for their preference otherwise.
+5. Separate biogenic CO2 from fossil CO2. Report biogenic emissions separately, not in scope totals.
+6. For Scope 2, calculate and report both location-based and market-based results.
+7. For Scope 3, assess all 15 categories for relevance, calculate those with data, and document exclusions and their reasons.
+8. Every emission factor used must reference its source, year, and geographic applicability. Never use a factor without documenting its provenance.
+9. The dashboard must be self-contained HTML that renders when opened locally, using the vendored Highcharts provided by the highcharts built-in skill (not an external dependency).
+10. Never hardcode an output location. Ask the user where to save deliverables, or use this skill's assets directory, and confirm before writing.
+11. This skill produces informational estimates, not assured or verified disclosures. For regulatory filings, financial reporting, or third-party assurance, advise the user to consult a qualified carbon accounting professional or accredited GHG verification body. State that outputs are for informational purposes only.
 </Rules>
 
 <Agent Annotations>
@@ -79,7 +79,7 @@ triggers=["User requests a carbon footprint calculation or uploads activity data
 
 1. [Agent] Read references/emission-factors.md and references/scopes-and-categories.md. Identify which time-sensitive values the requested calculation needs. At minimum, fetch the current eGRID subregional emission rates from `url_fetch("https://www.epa.gov/egrid/summary-data")` and confirm the EPA GHG Emission Factors Hub edition year from `url_fetch("https://www.epa.gov/climateleadership/ghg-emission-factors-hub")`. Follow the full runtime verification procedure in references/emission-factors.md.
    Validate: Every time-sensitive value to be used has a verified source (URL fetched this session or user-provided).
-   If fails: Per Rule 0, stop and ask the user to confirm or provide the value.
+   If fails: Per Rule 1, stop and ask the user to confirm or provide the value.
 
 2. [Agent] Call get_current_time to determine the reporting year.
    Validate: Reporting year identified.

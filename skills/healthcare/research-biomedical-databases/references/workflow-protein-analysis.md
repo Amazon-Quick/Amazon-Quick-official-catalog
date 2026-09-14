@@ -1,3 +1,9 @@
+---
+description: "Step-by-step workflow the skill follows to answer protein function, structure, domain, and interaction questions using UniProt and related sources."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Workflow: Protein Analysis
 
 Use this workflow when a user asks about protein function, structure, domains, interactions, or proteomics data.

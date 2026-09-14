@@ -1,3 +1,9 @@
+---
+description: "Step-by-step workflow the skill follows to assess drug target druggability, existing therapies, target validation evidence, and clinical trials using Open Targets and related sources."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Workflow: Drug Target Analysis
 
 Use this workflow when a user asks about drug targets, target tractability, pharmacology, existing therapies, or clinical trials for a target-disease pair.

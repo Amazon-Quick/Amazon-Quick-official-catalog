@@ -1,3 +1,9 @@
+---
+description: "Reference data on the FHIR Da Vinci Prior Authorization Support Implementation Guide workflow that the skill uses to submit and track prior authorization requests."
+last_updated: 2026-09-13
+origin: original
+---
+
 # FHIR Da Vinci PAS Implementation
 
 Reference data for the Da Vinci Prior Authorization Support (PAS) Implementation Guide,

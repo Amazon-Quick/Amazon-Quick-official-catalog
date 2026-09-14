@@ -6,7 +6,7 @@ description: "Drafts blameless incident postmortems from communication channel t
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_write, file_read, run_python, open_in_session_tab]
 inputs:
 
@@ -27,7 +27,7 @@ inputs:
   description: "Date the incident occurred (e.g., '2026-06-20' or 'last Friday')"
   type: string
   required: true
-checksum: "sha256:0eaed334fa7139c20f5239fb5979bbbe39d13bf553eb06184924f7d9493e2bf0"
+checksum: "sha256:68a014dc17fbe026749baa9db7b3794fcf9dda8a024db7a79d6eb502d0618a03"
 ---
 
 ## Overview
@@ -108,28 +108,36 @@ triggers=["write a postmortem", "draft incident report", "document this outage",
 >
 
 1. [Agent] Determine today's date. Validate the provided incident_date and severity. Calculate the postmortem due date based on severity level definitions.
+   If fails: If the incident_date or severity is invalid, report the problem and ask the user to provide a valid value before continuing.
 
 2. [Ask user] Confirm the incident summary and gather additional context: What services were affected? Was there a deploy or change preceding the incident? What was the customer-visible impact? Who was the incident commander or on-call responder (role, not for blame, but for sourcing information)?
+   If fails: If the incident context is not provided, re-ask for the affected services and customer-visible impact before proceeding.
 
 3. [Decide] Is a communication channel or data source provided?
    - Yes: Proceed to step 4.
    - No: Ask the user if there is a relevant channel, alert log, or other timeline source. If none, proceed to step 5 using only the verbal debrief.
 
 4. [Agent] Retrieve messages from the incident communication channel for the incident date. Extract messages that contain: alerts firing, status changes, actions taken, hypotheses discussed, and resolution confirmation. Process in chronological order. If the channel has more messages than a single retrieval allows, paginate and stitch together.
+   If fails: If the channel messages cannot be retrieved, note the gap in the timeline source and proceed with the user-provided context and any other available data.
 
 5. [Think] From all available data (channel messages, user-provided context, alert data), construct a draft timeline. For each entry, record: timestamp (normalized to a single timezone), what happened, and the source of that information. Identify gaps where no data exists between known events.
 
 6. [Ask user] Present the draft timeline. Ask: Are there missing events? Are any timestamps wrong? Were there other channels or data sources with relevant information? Is the timezone correct?
+   If fails: If the user does not respond, re-present the draft timeline and ask specifically about missing events, timestamps, and timezone.
 
 7. [Think] Analyze the timeline to identify root cause and contributing factors. Apply the Five Whys technique starting from the customer-visible symptom. Separate the trigger (what initiated the failure) from contributing factors (what made it worse or prevented faster detection/resolution). Label anything uncertain as a hypothesis.
 
 8. [Ask user] Present the root cause analysis and contributing factors. Ask: Does this match the team's understanding? Are there additional contributing factors? Should any hypothesis be promoted to confirmed or removed?
+   If fails: If the user does not confirm the analysis, re-present it and ask which factors to add, remove, or promote from hypothesis.
 
 9. [Agent] Draft the full postmortem document using the Postmortem Template. Populate all sections from gathered data. Ensure blameless language throughout. Generate action items based on: gaps in detection (monitoring), gaps in prevention (testing, validation), gaps in response (runbooks, tooling), and gaps in communication (status pages, stakeholder notification).
+   If fails: If the document cannot be drafted, report the error and present the gathered sections inline so no data is lost.
 
 10. [Ask user] Present the complete draft. Ask for revisions: Are action items correct and assigned to the right teams? Is the impact assessment accurate? Should any section be expanded or reduced? Iterate until the user approves.
+    If fails: If the user does not approve or request specific revisions, re-present the draft and ask what needs to change before finalizing.
 
-11. [Agent] Save the final postmortem to the workspace as a Markdown file. Name it: postmortem-{{incident_date}}-{{short_slug}}.md where short_slug is derived from the incident summary. Open it in the session tab for review.
+11. [Agent] Save the final postmortem to the workspace as a Markdown file. Name it: postmortem-{{incident_date}}-<slug>.md where <slug> is a short slug derived from the incident summary. Open it in the session tab for review.
+    If fails: If the postmortem cannot be saved or opened, report the error, retry once, and present the document inline if the retry fails.
 
 </Workflow - Incident Postmortem>
 
@@ -138,6 +146,7 @@ triggers=["write a postmortem", "draft incident report", "document this outage",
 <Templates>
 
 <Template - Postmortem>
+```markdown
 # Incident Postmortem: {{incident_summary}}
 
 **Date:** {{incident_date}}
@@ -233,6 +242,7 @@ What went well in the response? What was difficult or slow? Were runbooks availa
 
 ### Where we got lucky
 - Item
+```
 </Template - Postmortem>
 
 </Templates>

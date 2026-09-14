@@ -3,12 +3,12 @@ name: drilling-operations-analyst
 display_name: Drilling Operations Analyst
 icon: "🛢️"
 description: "Quantitative drilling performance analysis across the well lifecycle covering wellbore positioning, drilling efficiency, and economics. Use when asked to 'calculate a wellbore survey', 'run minimum curvature', 'compute MSE', 'analyze drilling efficiency', 'parse a daily drilling report', 'plot a mud weight window', 'track cost per foot', 'classify NPT', or 'benchmark wells against offsets', or any drilling optimization, trajectory, or well-planning analysis request"
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, file_read_pdf, file_read_docx, file_read_image, run_python, open_in_session_tab, start_task, get_task_result]
-depends-on: [canvas_xlsx, highcharts, html_design]
-checksum: "sha256:5f13abf12ad46884a16fb1e147f88c67d87f0a145b54710c7dd2ea7e6e2e6a20"
+checksum: "sha256:23ecfa3bf3d11cb6ce6315d6c06d2a80ae7c95d5334d2ee15e2a372dc8a5d166"
 ---
 
 ## Overview
@@ -54,18 +54,18 @@ Time that does not advance well construction, classified by IADC standard catego
 </Definitions>
 
 <Rules>
-0. Never guess or fabricate values. This rule overrides all others. Before using any time-varying numeric value (formation strength, offset or fleet benchmark, rig rate, service price, regulatory limit, casing or DLS limit), verify it against an authoritative source using web_search or url_fetch, or use a value the user supplied or uploaded. If a value cannot be verified and the user has not provided it, stop and say: "I cannot verify [value] from [expected source]. Please provide or confirm before I proceed." Model training knowledge is not a valid source for a numeric value. Only stable physical constants and the standard formulas in `references/petroleum-engineering-methods.md` may be used without live verification.
-1. This skill produces informational engineering analysis only, not certified well designs or operational directives. State this when giving results, and direct the user to a licensed petroleum or drilling engineer and to the operator's well control, casing design, and regulatory requirements before any field decision. Well control, casing setting, and mud weight decisions carry safety and regulatory consequences.
-2. Before acting, re-read this skill and the referenced methods file. Do not begin a calculation until every constraint is internalized.
-3. Use field units (ft, psi, ppg, bbl, scf, lbf, ft-lbf) unless the user specifies metric. Convert explicitly and show the conversion when the input units differ.
-4. Never approximate where an exact formula exists. Use the minimum curvature ratio factor, not simplified tangential methods.
-5. Validate survey data for physical plausibility before use: inclination 0 to 180 degrees, azimuth 0 to 360 degrees, MD strictly increasing. Confirm the azimuth reference (true, grid, or magnetic north) with the user if it is not stated.
-6. When parsing daily drilling reports, flag any free-text entry that could not be parsed with confidence below 0.8 rather than inferring a value.
-7. Classify NPT by IADC code or a user-specified taxonomy. Do not invent a category; use "Other" when no category fits.
-8. Separate tangible costs (bits, casing, cement) from intangible costs (rig rate, services, fuel) in every cost-per-foot calculation.
-9. Flag potential drilling dysfunction when MSE exceeds 2 to 3 times the confined compressive strength of the interval, and name the probable mode from the signatures in the methods file.
-10. Use normalized metrics for every benchmark comparison (days-vs-depth normalized by hole section, not raw elapsed time; cost and ROP normalized for lateral length and formation).
-11. Never use em dashes; use commas, colons, or periods. Never describe anything with the adjective beginning "compr" that means all-covering. Use "interval", "zone", or "section" rather than the word for a horizontal rock stratum.
+1. Never guess or fabricate values. This rule overrides all others. Before using any time-varying numeric value (formation strength, offset or fleet benchmark, rig rate, service price, regulatory limit, casing or DLS limit), verify it against an authoritative source using web_search or url_fetch, or use a value the user supplied or uploaded. If a value cannot be verified and the user has not provided it, stop and say: "I cannot verify [value] from [expected source]. Please provide or confirm before I proceed." Model training knowledge is not a valid source for a numeric value. Only stable physical constants and the standard formulas in `references/petroleum-engineering-methods.md` may be used without live verification.
+2. This skill produces informational engineering analysis only, not certified well designs or operational directives. State this when giving results, and direct the user to a licensed petroleum or drilling engineer and to the operator's well control, casing design, and regulatory requirements before any field decision. Well control, casing setting, and mud weight decisions carry safety and regulatory consequences.
+3. Before acting, re-read this skill and the referenced methods file. Do not begin a calculation until every constraint is internalized.
+4. Use field units (ft, psi, ppg, bbl, scf, lbf, ft-lbf) unless the user specifies metric. Convert explicitly and show the conversion when the input units differ.
+5. Never approximate where an exact formula exists. Use the minimum curvature ratio factor, not simplified tangential methods.
+6. Validate survey data for physical plausibility before use: inclination 0 to 180 degrees, azimuth 0 to 360 degrees, MD strictly increasing. Confirm the azimuth reference (true, grid, or magnetic north) with the user if it is not stated.
+7. When parsing daily drilling reports, flag any free-text entry that could not be parsed with confidence below 0.8 rather than inferring a value.
+8. Classify NPT by IADC code or a user-specified taxonomy. Do not invent a category; use "Other" when no category fits.
+9. Separate tangible costs (bits, casing, cement) from intangible costs (rig rate, services, fuel) in every cost-per-foot calculation.
+10. Flag potential drilling dysfunction when MSE exceeds 2 to 3 times the confined compressive strength of the interval, and name the probable mode from the signatures in the methods file.
+11. Use normalized metrics for every benchmark comparison (days-vs-depth normalized by hole section, not raw elapsed time; cost and ROP normalized for lateral length and formation).
+12. Never use em dashes; use commas, colons, or periods. Never describe anything with the adjective beginning "compr" that means all-covering. Use "interval", "zone", or "section" rather than the word for a horizontal rock stratum.
 </Rules>
 
 <Agent Annotations>
@@ -104,7 +104,7 @@ triggers=["Before any calculation in any workflow", "When a formation strength, 
 
 3. [Agent] For each unverified time-varying value, get the current date with get_current_time, then verify the value with web_search or url_fetch against an authoritative source.
    Validate: Each value has a verified source (a URL fetched this session or a user-provided figure).
-   If fails: Per Rule 0, stop and ask the user to provide or confirm the value before continuing.
+   If fails: Per Rule 1, stop and ask the user to provide or confirm the value before continuing.
 
 </Workflow - Verify Reference Values>
 
@@ -116,9 +116,9 @@ triggers=["calculate survey", "wellbore position", "minimum curvature", "plot tr
 
 1. [Agent] Run <Workflow - Verify Reference Values> for any planned-trajectory or DLS-limit values this analysis will compare against.
    Validate: All time-varying comparison values are verified or user-provided.
-   If fails: Stop per Rule 0 and ask the user.
+   If fails: Stop per Rule 1 and ask the user.
 
-2. [Agent] Load the survey file with file_read. Identify the MD, inclination (INC or I), and azimuth (AZ or A) columns and their units (degrees vs radians). Confirm MD is strictly increasing and values are physically plausible per Rule 5.
+2. [Agent] Load the survey file with file_read. Identify the MD, inclination (INC or I), and azimuth (AZ or A) columns and their units (degrees vs radians). Confirm MD is strictly increasing and values are physically plausible per Rule 6.
    Validate: Columns identified, units known, MD monotonic, inclination 0 to 180, azimuth 0 to 360.
    If fails: Report the specific invalid rows and ask the user to correct or confirm the azimuth reference.
 
@@ -140,7 +140,7 @@ triggers=["MSE", "mechanical specific energy", "drilling efficiency", "dysfuncti
 
 1. [Agent] Run <Workflow - Verify Reference Values> for the formation confined compressive strength (CCS) used as the efficiency baseline.
    Validate: CCS values are verified or user-provided per interval.
-   If fails: Stop per Rule 0 and ask the user for the CCS profile.
+   If fails: Stop per Rule 1 and ask the user for the CCS profile.
 
 2. [Agent] Load drilling data with file_read (depth or time, WOB, RPM, torque, ROP, bit diameter) and identify units. Note whether the torque is surface or downhole (see Gotchas).
    Validate: All required columns present with known units.
@@ -174,7 +174,7 @@ triggers=["parse DDR", "daily drilling report", "extract drilling data", "mornin
    Validate: Each field is either populated or explicitly marked as not present.
    If fails: Mark the field as missing rather than inferring.
 
-3. [Agent] Structure the extracted data into a standard schema, one row per day. Flag any field parsed with confidence below 0.8 per Rule 6.
+3. [Agent] Structure the extracted data into a standard schema, one row per day. Flag any field parsed with confidence below 0.8 per Rule 7.
    Validate: Low-confidence extractions are flagged, not silently accepted.
    If fails: Re-scan the source text for the flagged field.
 
@@ -192,7 +192,7 @@ triggers=["mud weight window", "pore pressure", "fracture gradient", "kick toler
 
 1. [Agent] Run <Workflow - Verify Reference Values> for pore pressure, fracture gradient, overburden, and any trip or surge margin that differs from the 0.5 ppg defaults.
    Validate: All gradient inputs and margins are verified or user-provided.
-   If fails: Stop per Rule 0 and ask the user for the drilling program values.
+   If fails: Stop per Rule 1 and ask the user for the drilling program values.
 
 2. [Agent] Load formation data with file_read (TVD, pore pressure, fracture gradient, overburden). Accept gradients or absolute pressures, converting pressures using 0.052 times TVD.
    Validate: Inputs loaded with consistent units and TVD increasing.
@@ -216,13 +216,13 @@ triggers=["benchmark", "compare wells", "offset analysis", "days vs depth", "per
 
 1. [Agent] Run <Workflow - Verify Reference Values> for any external benchmark, price, or fleet reference used in the comparison.
    Validate: External reference values are verified or user-provided.
-   If fails: Stop per Rule 0 and ask the user.
+   If fails: Stop per Rule 1 and ask the user.
 
 2. [Agent] Load the multi-well dataset with file_read (well names, spud dates, section depths, time stamps, costs, NPT events).
    Validate: Dataset loaded with at least two wells and the required columns.
    If fails: Report missing wells or columns and ask the user.
 
-3. [Agent] Build normalized days-vs-depth curves per Rule 10 (spud-date aligned, section by section, NPT excluded for the clean curve) in run_python. For large datasets, spawn per-well computation as background tasks with start_task and collect them with get_task_result.
+3. [Agent] Build normalized days-vs-depth curves per Rule 11 (spud-date aligned, section by section, NPT excluded for the clean curve) in run_python. For large datasets, spawn per-well computation as background tasks with start_task and collect them with get_task_result.
    Validate: A normalized curve exists for every well.
    If fails: Re-run the missing wells, reading any errored task result first.
 

@@ -1,3 +1,9 @@
+---
+description: "Cross-task overview of tuning parameters and false-signal traps for the skill's claims fraud detection functions."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Parameter Reference and Domain Pitfalls
 
 Consolidated tuning guidance and false-signal traps across all tasks. Each task's own

@@ -1,3 +1,8 @@
+---
+description: "GADS classification rules and non-obvious traps for parsing, classifying, and validating events to satisfy NERC DRI requirements and avoid eGADS rejections."
+last_updated: 2026-09-13
+origin: original
+---
 # GADS Classification Rules and Non-Obvious Traps
 
 Apply these when parsing, classifying, and validating events. Each rule reflects

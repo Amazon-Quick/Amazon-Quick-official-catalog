@@ -6,7 +6,7 @@ description: "Generates structured Architecture Decision Records (ADRs) from des
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_write, file_read, run_python, open_in_session_tab]
 inputs:
 
@@ -24,7 +24,7 @@ inputs:
   required: false
   default: "madr"
   choices: ["madr", "nygard", "custom"]
-checksum: "sha256:b139574a81d26aab555c81b03a1fbd20187d6aa227726be8eb3c8dece4497386"
+checksum: "sha256:b7285a3c8e155339b0f30c8cf7288bea61cb0cf2a5fd2f31176d05ae4316bbd8"
 ---
 
 ## Overview
@@ -105,6 +105,7 @@ triggers=["create an ADR", "document this architecture decision", "record why we
 >
 
 1. [Ask user] Gather the decision title if not already provided. Confirm the template choice (madr, nygard, or custom). If context was supplied (transcript, notes, or description), acknowledge it. If no context was given, ask the user to describe the decision background in a few sentences.
+   If fails: If the decision title or template choice is missing, re-ask the user for the missing item before continuing.
 
 2. [Decide] If the user selected "custom" template, ask them to describe or paste their preferred format. Store the structure for use in the drafting step. Otherwise, proceed with the selected standard template.
 
@@ -118,14 +119,19 @@ triggers=["create an ADR", "document this architecture decision", "record why we
    - Key Rationale: (why this over the others)
 
    Ask the user to confirm, correct, or add missing items. Per Rule 1, if options are unclear, explicitly ask "Were there other alternatives discussed?"
+   If fails: If the user does not confirm or correct the elements, re-present the summary and ask specifically which items to add or fix.
 
 5. [Ask user] Ask about consequences. Per Rule 6, prompt the user: "What positive outcomes do you expect from this decision? What are the downsides or risks?" If the user provides at least one of each, proceed. If not, suggest plausible consequences based on the context and ask for confirmation.
+   If fails: If no consequences are provided or confirmed, propose at least one positive and one negative consequence from the context and ask the user to confirm.
 
 6. [Ask user] Confirm the status for this ADR. Default is "Proposed." Ask: "Is this decision already accepted by the team, or should it remain as Proposed for review?"
+   If fails: If the user does not specify a status, default to Proposed and note that the status can be updated later.
 
 7. [Ask user] Ask where the ADR file should be saved. Offer to scan the workspace for existing ADR directories. If the user names a path, use it directly.
+   If fails: If no save location is given, offer to scan the workspace for ADR directories and ask the user to pick one.
 
 8. [Agent] Scan the target directory for existing ADR files matching the pattern NNNN-*.md. Determine the next sequential number. If the directory does not exist, create it and start at 0001.
+   If fails: If the directory cannot be scanned or created, report the path error to the user and ask for a valid location.
 
 9. [Decide] Does this ADR supersede an existing one? If the user indicated it replaces a prior decision, identify the old ADR file. Read its current status. Prepare to update the old file's status to "Superseded" with a forward link per Rule 7.
 
@@ -133,12 +139,16 @@ triggers=["create an ADR", "document this architecture decision", "record why we
 
 11. [Ask user] Present the complete draft ADR in a code block. Ask: "Does this look correct? Any changes before I write the file?" Wait for explicit approval.
     Validate: User approves or requests edits. If edits requested, incorporate and re-present.
+    If fails: If the user does not approve or request edits, re-present the draft and ask for explicit approval before writing.
 
 12. [Agent] Write the ADR file to the target directory with the computed file name. If this ADR supersedes another, update the old file's status line and append the "Superseded by" link.
+    If fails: If the ADR file cannot be written, report the write error, retry once, and present the draft inline if the retry fails.
 
 13. [Agent] Open the newly created ADR in the session tab for the user to review in rendered markdown.
+    If fails: If the ADR cannot be opened in the session tab, report the error and provide the file path so the user can open it manually.
 
 14. [Agent] Present a summary: file path, ADR number, status, and a reminder to check for numbering collisions before merging (per Gotchas).
+    If fails: If the summary cannot be presented, report the error and restate the file path and ADR number directly.
 
 </Workflow - Generate ADR>
 
@@ -147,6 +157,7 @@ triggers=["create an ADR", "document this architecture decision", "record why we
 <Templates>
 
 <Template - MADR>
+```markdown
 # {{number}}. {{decision_title}}
 
 Date: {{date}}
@@ -182,9 +193,11 @@ Chosen option: "{{chosen_option}}", because {{rationale}}.
 ## Links
 
 {{links_to_related_adrs}}
+```
 </Template - MADR>
 
 <Template - Nygard>
+```markdown
 # {{number}}. {{decision_title}}
 
 Date: {{date}}
@@ -204,6 +217,7 @@ Date: {{date}}
 ## Consequences
 
 {{consequences_paragraph}}
+```
 </Template - Nygard>
 
 </Templates>

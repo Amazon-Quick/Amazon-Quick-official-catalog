@@ -3,11 +3,11 @@ name: renewable-energy-assessment
 display_name: Renewable Energy Assessment
 icon: "☀️"
 description: "Assess solar and wind project potential with resource characterization, energy yield estimation, and financial analysis including levelized cost of energy (LCOE). Use when asked to 'assess a solar project', 'estimate wind energy yield', 'calculate LCOE', 'run a renewable feasibility study', 'model PV production', 'size a wind farm', or to evaluate any solar or wind project economics"
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 license: MIT-0
 tools: [get_current_time, file_read, web_search, url_fetch, run_python, run_python_with_write, file_write, open_in_session_tab]
-depends-on: [html_design, highcharts]
 inputs:
   - name: technology
     description: "Renewable technology to assess"
@@ -18,7 +18,7 @@ inputs:
     description: "Directory where the report and dashboard files should be written"
     type: path
     required: false
-checksum: "sha256:bfba2f89710edb9c61dc3ff306ed1d8982e61331e3662967364c59917158320f"
+checksum: "sha256:e9c2308c3adcc508c0b86bb3bfa08e985e880ab5fc501d560f05d58b9f76b87a"
 ---
 
 ## Overview
@@ -63,7 +63,7 @@ data is limited, provide conservative estimates with uncertainty bounds.
 </Definitions>
 
 <Rules>
-0. **NEVER GUESS OR FABRICATE VALUES.** This is Rule Zero and overrides all other rules.
+1. **NEVER GUESS OR FABRICATE VALUES.** This is Rule 1 and overrides all other rules.
    - Before using ANY value that changes over time (technology cost, emission factor,
      incentive level, PPA price, grid or regulatory limit, market benchmark), verify
      it against an authoritative source in references/authoritative-sources.md using
@@ -77,20 +77,20 @@ data is limited, provide conservative estimates with uncertainty bounds.
      references (transposition geometry, temperature coefficients, air density,
      Weibull and power-curve math). Those constants do not change.
    - When in doubt, look it up. A slower correct answer beats a fast wrong one.
-1. State all system losses explicitly and cite whether each is a default or a
+2. State all system losses explicitly and cite whether each is a default or a
    site-measured value. Loss stacks and defaults are in the methodology references.
-2. Report capacity factor as AC (net) unless the user specifically asks for DC.
-3. LCOE must include capital cost with financing, fixed O&M, variable O&M,
+3. Report capacity factor as AC (net) unless the user specifically asks for DC.
+4. LCOE must include capital cost with financing, fixed O&M, variable O&M,
    degradation, and all system losses. Report in $/MWh or the local currency.
-4. For solar, always specify tilt, azimuth, and tracking type. For wind, always
+5. For solar, always specify tilt, azimuth, and tracking type. For wind, always
    specify hub height, roughness class, and whether raw data is at measurement or
    hub height, applying wind shear correction when heights differ.
-5. Never present a generation estimate without stating its P-value confidence level
+6. Never present a generation estimate without stating its P-value confidence level
    (P50, P75, or P90). Present LCOE as a P25-P75 range unless site-measured data
    supports high confidence.
-6. State every financial assumption: discount rate (WACC), project life, debt/equity
+7. State every financial assumption: discount rate (WACC), project life, debt/equity
    split, and tax treatment (investment tax credit, production tax credit, or none).
-7. This skill provides informational engineering and financial estimates only, not
+8. This skill provides informational engineering and financial estimates only, not
    investment, tax, or legal advice. Recommend the user engage a licensed
    professional engineer and a qualified financial or tax advisor before making
    investment, financing, or interconnection commitments. State this in every report.
@@ -140,7 +140,7 @@ triggers=["User requests a renewable energy assessment or uploads resource data"
    source in references/authoritative-sources.md using web_search or url_fetch.
    Validate: Every time-sensitive value has a verified source (fetched this session
    or user-provided). Physical constants come from the methodology references.
-   If fails: Stop and ask the user to confirm or provide the value (Rule 0).
+   If fails: Stop and ask the user to confirm or provide the value (Rule 1).
 
 2. [Agent] Call get_current_time. Determine the technology type from the request or
    the {{technology}} input.
@@ -211,7 +211,7 @@ triggers=["After energy yield estimation completes"]
 
 1. [Ask user] Confirm or provide financial parameters: CAPEX ($/kW), fixed O&M
    ($/kW-yr), discount rate (WACC), project life, tax credits, and any debt terms.
-   Offer technology-appropriate defaults only after verifying them live per Rule 0.
+   Offer technology-appropriate defaults only after verifying them live per Rule 1.
    Validate: At least CAPEX and discount rate are confirmed.
    If fails: Use verified technology defaults and flag them as assumed.
 
@@ -255,7 +255,7 @@ triggers=["After financial analysis completes"]
 4. [Agent] Write the assessment report as markdown to the confirmed output directory:
    Project Summary, Resource Assessment, Energy Yield (P50/P75/P90 and loss
    breakdown), Financial Analysis (LCOE, payback, NPV, IRR, sensitivity), Assumptions
-   and Limitations, and the Rule 7 professional-advice disclaimer.
+   and Limitations, and the Rule 8 professional-advice disclaimer.
    Validate: The report contains every section, populated.
    If fails: Generate a partial report with the available results and note the gaps.
 

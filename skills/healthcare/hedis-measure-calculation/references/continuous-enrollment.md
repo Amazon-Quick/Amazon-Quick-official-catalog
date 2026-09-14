@@ -1,3 +1,9 @@
+---
+description: "Python code that determines whether a member is continuously enrolled through the measurement period within an allowable enrollment gap."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Continuous Enrollment Check
 
 Determine whether a member is continuously enrolled through the measurement period, allowing a total gap up to `max_gap_days` (HEDIS default 45).

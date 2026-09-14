@@ -1,3 +1,9 @@
+---
+description: "Python implementations of the Charlson Comorbidity Index and LACE 30-day readmission risk scores the skill uses to stratify member populations."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Risk Stratification Scoring
 
 Two independent scores: the Charlson Comorbidity Index from diagnosis codes, and the LACE index for 30-day readmission risk.

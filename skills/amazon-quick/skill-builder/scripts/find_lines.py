@@ -3,11 +3,6 @@ description: Locate lines, XML blocks, Markdown headings, numbered rules, or an 
 last_updated: 2026-09-13
 origin: original
 
-An editing aid, standard library plus pydantic, single self-contained file.
-FileLines reads the file (I/O); one locator class per mode turns injected lines
-into a result model (pure, unit-tested); each result renders itself through its
-report/found properties; the LineFinder facade dispatches on the Mode enum and
-main() logs the report.
 """
 
 from __future__ import annotations

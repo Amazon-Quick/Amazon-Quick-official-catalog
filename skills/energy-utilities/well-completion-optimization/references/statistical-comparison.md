@@ -1,3 +1,8 @@
+---
+description: "Reference detail for the completion design comparison workflow, defining matching criteria, test and response variables, and the pure-numpy statistical approach used to control confounders."
+last_updated: 2026-09-13
+origin: original
+---
 # Statistical Design Comparison
 
 Reference detail for the completion design comparison workflow. Method for

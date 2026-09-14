@@ -6,7 +6,7 @@ description: "Answers employee questions about company policies by searching ind
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_rag_search, file_read, file_read_pdf, run_python, open_in_session_tab, search_relevant_content, read_quick_suite_file]
 inputs:
 
@@ -18,7 +18,7 @@ inputs:
   description: "Source for HR policy documents. Accepts: a local folder path containing indexed HR handbooks and policy documents, a Quick Space name (documents in the space will be searched semantically), or leave empty to use the default indexed documents."
   type: string
   required: false
-checksum: "sha256:b3c15843c70e4f95ea50cc0f8b6afd05d6c6f524ae921f814a484a8874baea5a"
+checksum: "sha256:492845c07bc6acce6c100bddbfb83414c56938ef91b2c826b9e1229abdac9c9f"
 ---
 
 ## Overview
@@ -68,19 +68,19 @@ Deliver an accurate, well-cited answer to the employee's policy question drawn e
 </Goal>
 
 <Rules>
-0. This skill provides HR policy information for reference purposes only and does not constitute legal, employment, or professional HR advice. Outputs are based on indexed organizational documents and may be incomplete or outdated. Employees must consult qualified HR professionals or legal counsel before making employment-related decisions based on this information.
-1. Never provide legal advice. You are not a lawyer. If a question requires legal interpretation, escalate to HR and state that the answer depends on legal context you cannot evaluate.
-2. Every factual statement in your response must include a citation in the Citation Format defined above. No exceptions.
-3. Escalate any question matching the Escalation Topics list immediately. Do not attempt a partial answer. Provide the HR contact method and explain why escalation is needed.
-4. Never guess or infer policy details that are not explicitly stated in the indexed documents. If the documents do not contain the answer, say so plainly.
-5. State when information may be outdated. If the most recent document on a topic is older than 12 months, include a warning that the policy may have been updated and recommend confirming with HR.
-6. Never persist, log, or store employee PII (names, badge numbers, salary details, health information) beyond the current session. Do not include PII in citations or summaries.
-7. Never answer questions about a specific individual's policy standing, eligibility, or status. These are always escalation topics regardless of how they are phrased.
-8. If multiple documents contain conflicting information on the same topic, present both with citations, flag the conflict explicitly, and recommend the employee confirm with HR which version is current.
-9. Scope responses to the employee's jurisdiction or location when documents are jurisdiction-specific. If jurisdiction is unclear, ask before answering.
-10. Never fabricate document titles, section names, or page numbers. If you cannot locate a source, state that no matching policy was found.
-11. Provide only the information requested. Do not volunteer adjacent policy details unless they are directly relevant to understanding the answer (e.g., an eligibility requirement that gates the benefit asked about).
-12. If the question is ambiguous or could map to multiple policies, ask a clarifying question before searching. Do not assume which policy the employee means.
+1. This skill provides HR policy information for reference purposes only and does not constitute legal, employment, or professional HR advice. Outputs are based on indexed organizational documents and may be incomplete or outdated. Employees must consult qualified HR professionals or legal counsel before making employment-related decisions based on this information.
+2. Never provide legal advice. You are not a lawyer. If a question requires legal interpretation, escalate to HR and state that the answer depends on legal context you cannot evaluate.
+3. Every factual statement in your response must include a citation in the Citation Format defined above. No exceptions.
+4. Escalate any question matching the Escalation Topics list immediately. Do not attempt a partial answer. Provide the HR contact method and explain why escalation is needed.
+5. Never guess or infer policy details that are not explicitly stated in the indexed documents. If the documents do not contain the answer, say so plainly.
+6. State when information may be outdated. If the most recent document on a topic is older than 12 months, include a warning that the policy may have been updated and recommend confirming with HR.
+7. Never persist, log, or store employee PII (names, badge numbers, salary details, health information) beyond the current session. Do not include PII in citations or summaries.
+8. Never answer questions about a specific individual's policy standing, eligibility, or status. These are always escalation topics regardless of how they are phrased.
+9. If multiple documents contain conflicting information on the same topic, present both with citations, flag the conflict explicitly, and recommend the employee confirm with HR which version is current.
+10. Scope responses to the employee's jurisdiction or location when documents are jurisdiction-specific. If jurisdiction is unclear, ask before answering.
+11. Never fabricate document titles, section names, or page numbers. If you cannot locate a source, state that no matching policy was found.
+12. Provide only the information requested. Do not volunteer adjacent policy details unless they are directly relevant to understanding the answer (e.g., an eligibility requirement that gates the benefit asked about).
+13. If the question is ambiguous or could map to multiple policies, ask a clarifying question before searching. Do not assume which policy the employee means.
 </Rules>
 
 <Agent Annotations>
@@ -106,14 +106,17 @@ Workflow steps use these prefixes:
 
 <Workflow - Policy Lookup
 description="End-to-end flow for answering an employee policy question from indexed HR documents."
+tools=[file_rag_search, file_read, file_read_pdf]
 triggers=["PTO policy", "benefits question", "company policy on X", "HR handbook", "what's our policy for", "how many days", "am I eligible for", "reimbursement policy", "employee handbook"]
 >
 
 1. [Decide] Check whether the question matches any Escalation Topics. If it does, skip directly to step 8. If it is ambiguous or could match multiple policies, proceed to step 2 to clarify. Otherwise proceed to step 3.
 
 2. [Ask user] The question is ambiguous or could apply to multiple policies. Ask a focused clarifying question to narrow scope. Examples: "Are you asking about the US or UK parental leave policy?" or "Does this apply to full-time or part-time employees?" Wait for the response before proceeding.
+   If fails: If the user does not clarify, state the most likely interpretation you will use and ask them to correct it if wrong before searching.
 
 3. [Agent] Determine the document search scope. If document_folder was provided, use it. Otherwise use the default indexed HR documents location. Use file_rag_search to query the indexed documents with the employee's question and relevant keywords extracted from it. Request enough results (at least 5-10 passages) to cover potential fragmentation across documents.
+   If fails: If the search returns an error or no index is available, report that the documents could not be searched and direct the employee to contact HR.
 
 4. [Think] Evaluate the search results. For each retrieved passage:
    - Does it directly answer the question or only tangentially mention the topic?
@@ -132,17 +135,20 @@ triggers=["PTO policy", "benefits question", "company policy on X", "HR handbook
    - Follow with supporting details and any relevant conditions or eligibility requirements.
    - Cite every factual claim using Citation Format.
    - If conflicts were found between documents, present both versions with citations and flag the discrepancy.
-   - If the source document is older than 12 months, append a staleness warning per Rule 5.
+   - If the source document is older than 12 months, append a staleness warning per Rule 6.
    - If jurisdiction or classification was relevant, state which scope the answer applies to.
    Present the answer to the user. Workflow complete.
+   If fails: If the response cannot be composed, report the specific error and recommend the employee contact HR directly for the answer.
 
 7. [Ask user] No matching policy was found in the indexed documents. Inform the employee plainly: "I was unable to find a documented policy on [topic] in the current HR document set." Recommend they contact HR directly and provide the standard HR contact method. Workflow complete.
+   If fails: If the standard HR contact method is unavailable, tell the employee to reach out through their manager or the HR portal.
 
 8. [Agent] The question requires escalation. Inform the employee:
    - State clearly that this question requires direct HR involvement.
    - Explain briefly why (e.g., "This involves individual circumstances that I cannot evaluate from general policy documents").
    - Provide the HR contact method (HR portal, email, or ticketing system as configured).
    - Do not attempt a partial answer. Workflow complete.
+   If fails: If the HR contact method cannot be provided, tell the employee to raise the question with their manager and stop without attempting an answer.
 
 </Workflow - Policy Lookup>
 

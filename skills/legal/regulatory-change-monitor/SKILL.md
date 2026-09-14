@@ -6,7 +6,7 @@ description: "Monitors regulatory feeds (SEC, GDPR enforcement, EU AI Act, NIST,
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [web_search, url_fetch, file_write, file_read, run_python, open_in_session_tab]
 inputs:
 
@@ -21,13 +21,14 @@ inputs:
 - name: industry
   description: "The user's primary industry. One of: technology, healthcare, financial_services, retail, manufacturing, other."
   type: choice
+  options: [technology, healthcare, financial_services, retail, manufacturing, other]
   required: true
 - name: lookback_period
   description: "How far back to check for regulatory changes (e.g., '7 days', '30 days', '2 weeks')."
   type: string
   required: false
   default: "7 days"
-checksum: "sha256:135d8f373848dbf9a60ca4eb0f500293325d963fa5a4315fa7151d1302b1f995"
+checksum: "sha256:528de7b17989b4bfc61299abdcb74b35dae4244fdf71532c040f519c6a31d77b"
 ---
 
 ## Overview
@@ -119,20 +120,27 @@ triggers=["check for regulatory changes", "what's new in GDPR", "regulatory upda
 >
 
 1. [Ask user] Gather any missing inputs: scope, jurisdiction, industry, and lookback period. If the user's request implies specific values (e.g., "what's new in GDPR" implies scope=data_privacy, jurisdiction=eu), confirm the inferred selection rather than presenting the full menu.
+   If fails: if a required input (scope, jurisdiction, or industry) is still missing after asking, re-ask for that specific input and do not start the scan until it is provided.
 
 2. [Agent] Build a search plan based on the confirmed inputs. Map each scope-jurisdiction pair to the relevant regulatory bodies (per the Common Regulatory Bodies definition). For each body, construct targeted search queries combining the body name, the industry context, and a date range matching the lookback period. Example queries: "SEC final rule financial services site:sec.gov", "EDPB enforcement decision 2026", "Federal Register AI governance".
+   If fails: if a scope-jurisdiction pair maps to no known regulatory body, note the gap to the user and continue with the pairs that do map.
 
 3. [Agent] Execute web searches for each regulatory body in the plan. For each search, collect the title, URL, publication date, and snippet. Run searches in batches grouped by jurisdiction to maintain organization. Store raw results in a working list.
+   If fails: if a search returns no results or errors, record that body as 'no results' and continue with the remaining searches rather than stopping.
 
 4. [Agent] For each result that appears relevant based on title and snippet, fetch the source page to confirm: (a) it is an official publication from the regulatory body, not a third-party summary, (b) it falls within the lookback period, (c) it relates to the user's scope and industry. Discard results that fail any of these checks. Trace third-party mentions back to the official source URL when possible.
+   If fails: if a source page cannot be fetched, discard that result and note the unverified item rather than including an unconfirmed finding.
 
 5. [Think] Deduplicate the confirmed findings. Group by underlying regulatory action (same rule number, docket, or enforcement case). Merge entries that reference the same action from different sources into a single finding, preserving all source URLs. Classify each finding by lifecycle stage (Proposed, Final, Effective, Enforced) and impact level (Informational, Action Required, Urgent). Calculate days remaining until effective dates or comment deadlines. Flag jurisdiction overlaps per Rule 8.
 
 6. [Agent] Using run_python, sort findings by impact level (Urgent first), then by effective date proximity. Format the digest using the Regulatory Alert Digest template. Include all required fields for each finding.
+   If fails: if sorting or formatting errors, fall back to presenting the findings unsorted and report the formatting error to the user.
 
 7. [Agent] Write the formatted digest to a file and open it in the session tab for the user to review. File name format: regulatory_digest_YYYY-MM-DD.md.
+   If fails: report the specific write or open error and present the digest inline instead.
 
 8. [Ask user] Present a summary count (e.g., "Found 3 Urgent, 5 Action Required, and 8 Informational changes"). Ask if the user wants to drill into any specific finding, adjust the scope for future scans, or export the digest in a different format.
+   If fails: if the user does not respond, leave the saved digest available and end without further changes.
 
 </Workflow - Regulatory Change Scan>
 
@@ -141,6 +149,7 @@ triggers=["check for regulatory changes", "what's new in GDPR", "regulatory upda
 <Templates>
 
 <Template - Regulatory Alert Digest>
+```markdown
 # Regulatory Change Digest
 
 **Scope:** {{scope}}
@@ -187,6 +196,7 @@ triggers=["check for regulatory changes", "what's new in GDPR", "regulatory upda
 - Findings are sourced exclusively from official regulatory body publications.
 - This digest does not constitute legal advice. Consult qualified legal counsel for interpretation and applicability determinations.
 - "Proposed" rules are not yet binding and may change before finalization.
+```
 </Template - Regulatory Alert Digest>
 
 </Templates>

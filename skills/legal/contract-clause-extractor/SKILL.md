@@ -6,7 +6,7 @@ description: "Extracts, classifies, and risk-scores key clauses from contracts a
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_read, file_read_pdf, file_write, run_python, open_in_session_tab, search_relevant_content, read_quick_suite_file]
 inputs:
 
@@ -25,7 +25,7 @@ inputs:
   options: [liability, termination, ip, payment, confidentiality, indemnification, all]
   required: false
   default: "all"
-checksum: "sha256:0d2b71b7e9239d9681a4335ede133d6cd5a66cd517d773591b0b3929c5119b9a"
+checksum: "sha256:21bb1bc8ebdf774f678e311391e8f3c3f2caffce2f47f6280e646ec6cad3607a"
 ---
 
 ## Overview
@@ -127,6 +127,7 @@ triggers=["review this contract", "extract key clauses", "flag risky terms", "co
 >
 
 1. [Agent] Read the contract document using the appropriate file reader based on format (file_read_pdf for PDFs, file_read for text/DOCX). If the document exceeds 10,000 characters, read in chunks using offset pagination until the full text is captured. Validate that the content is readable and appears to be a legal agreement.
+   If fails: if the file cannot be opened or read in any supported format, report the specific error to the user and ask for a valid document before continuing.
 
 2. [Decide] Assess document quality:
    - If the text is garbled, heavily redacted, or clearly incomplete, stop and inform the user per Rule 12.
@@ -135,6 +136,7 @@ triggers=["review this contract", "extract key clauses", "flag risky terms", "co
 3. [Think] Identify the contract structure: parties involved, effective date, defined terms section, and overall organization (numbered sections, articles, exhibits). Build a mental map of how sections cross-reference each other. Note the governing law provision if present.
 
 4. [Agent] Extract all defined terms from the definitions section (or inline definitions throughout). Build a lookup table mapping each term to its definition. Flag any definitions that are unusually broad or that incorporate external references (e.g., "as defined in Provider's Acceptable Use Policy, available at...").
+   If fails: if no definitions section is found, note that terms are defined inline or absent and proceed, flagging that scope resolution may be incomplete.
 
 5. [Think] Scan the full document and identify each material clause. For each clause:
    - Classify it using the Common Clause Types taxonomy
@@ -151,12 +153,16 @@ triggers=["review this contract", "extract key clauses", "flag risky terms", "co
    Also identify missing standard protections (e.g., no liability cap, no termination for convenience, no data breach notification requirement) and score those gaps.
 
 7. [Agent] Generate the clause inventory report using the Clause Inventory Report template. Populate all sections. Sort findings within each risk level by clause type for readability.
+   If fails: report which section could not be populated and stop rather than delivering a partial report without disclosure.
 
 8. [Ask user] Present a summary of findings: total clauses extracted, count by risk level, and the top 3-5 highest-risk items with their plain-language summaries. Ask if the user wants the full report, wants to drill into specific clauses, or wants to adjust focus areas.
+   If fails: if the user does not respond or the request is unclear, default to offering the full report and ask them to confirm.
 
 9. [Agent] Based on user response, either deliver the full report (save via file_write and open with open_in_session_tab), provide detailed analysis of requested clauses, or re-run with adjusted focus areas.
+   If fails: if saving or opening the report fails, present the report inline in the session and report the error.
 
 10. [Agent] Append the closing disclaimer per Rule 1. Confirm that the analysis is complete and recommend next steps (legal review for high-risk items, negotiation points for notable items).
+   If fails: if the disclaimer cannot be appended to the saved file, state the disclaimer directly to the user so it is not omitted.
 
 </Workflow - Contract Clause Extraction>
 
@@ -165,6 +171,7 @@ triggers=["review this contract", "extract key clauses", "flag risky terms", "co
 <Templates>
 
 <Template - Clause Inventory Report>
+```markdown
 # Contract Clause Analysis Report
 
 **DISCLAIMER: This analysis is for informational purposes only and does not constitute legal advice. Consult qualified legal counsel before making decisions based on these findings.**
@@ -270,6 +277,7 @@ triggers=["review this contract", "extract key clauses", "flag risky terms", "co
 3. Confirm that missing protections are acceptable or request their inclusion.
 
 **This report does not represent a complete legal review. Additional provisions, implications, or risks may exist that are not captured here.**
+```
 </Template - Clause Inventory Report>
 
 </Templates>

@@ -3,12 +3,20 @@ name: retail-merchant-briefing
 display_name: Merchant Monday Briefing
 icon: "📊"
 description: "Automated weekly performance intelligence that replaces dashboard reviews with synthesized insights and recommended actions for retail merchandising leaders. Use when asked to 'give me my Monday briefing', 'weekly performance summary', 'what needs attention this week', 'category performance review', 'merchandising dashboard', or 'what happened last week in [category]'."
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-10"
-last_updated: "2026-06-10"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, open_in_session_tab, web_search]
-depends-on: [highcharts, html_design]
 inputs:
+
+  - name: config_directory
+
+    description: "Directory where the skill stores and reads its persisted config/schema context (e.g., discovered schema JSON). Defaults to the skill working directory."
+
+    type: path
+
+    required: false
   - name: data_source
     description: "Path to sales/performance data file (CSV, Excel) or connection name for data warehouse"
     type: string
@@ -32,7 +40,7 @@ inputs:
     type: number
     required: false
     default: 5
-checksum: "sha256:ad4dbca755cf77b4cd3e14a3cf5f612be7d78bc72176526c6a56206593dc7b6b"
+checksum: "sha256:3d5353d546bfe8200cc5598154272ec42ee9ceb62644a5ac13d645ad800a9797"
 ---
 
 ## Overview
@@ -231,11 +239,13 @@ triggers=["give me my Monday briefing", "weekly performance summary", "what need
 <Templates>
 
 <Template - Briefing Summary>
+```markdown
 Your briefing for {{period}} is ready. Top issues:
 {{#each top_issues}}
 - {{this.summary}}
 {{/each}}
 Full dashboard is open in the tab.
+```
 </Template - Briefing Summary>
 
 </Templates>

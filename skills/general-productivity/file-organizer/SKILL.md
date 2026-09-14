@@ -4,10 +4,10 @@ display_name: File Organizer
 icon: "📁"
 description: "Scan a folder, analyze file contents and naming patterns, then propose renaming, categorization, and folder structure improvements. All changes require explicit user confirmation before execution. Use when asked to 'organize this folder', 'clean up my files', 'sort these documents', 'rename my files', 'folder structure suggestions', 'tidy up this directory', or any request to restructure a messy directory."
 created_date: "2026-06-05"
-last_updated: "2026-06-05"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [get_current_time, recall_memories, save_to_memory, folder_list, file_read, file_read_pdf, file_read_docx, file_read_pptx, file_move, file_copy, file_write, folder_create, open_in_session_tab, run_python]
-depends-on: []
+
 inputs:
   - name: folder_path
     description: "Absolute path to the folder to organize"
@@ -25,7 +25,7 @@ inputs:
     options: [kebab-case, snake_case, PascalCase, camelCase, date-prefix, original, other]
     required: false
     default: "kebab-case"
-checksum: "sha256:a4139696a2672f16ecf1e1280d1a8d6e73c781cef07281a225af1448813dee02"
+checksum: "sha256:28d41944e2d24a41b9951bc4bbb573637e61d4321dc3f2208987987488069184"
 ---
 
 ## Overview

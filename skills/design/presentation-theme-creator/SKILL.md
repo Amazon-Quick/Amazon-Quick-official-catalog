@@ -3,11 +3,11 @@ name: presentation-theme-creator
 display_name: Presentation Theme Creator
 icon: "🎭"
 description: "Create a custom PowerPoint theme with consistent colors, fonts, and slide layouts from style preferences. Use when the user says 'create a presentation theme', 'design my slide template', 'build a deck theme', 'custom PowerPoint template', 'presentation style', 'branded slide deck', or any request to generate a reusable slide template with custom visual identity."
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-16"
 last_updated: "2026-06-16"
 license: "MIT-0"
 tools: [run_python, file_write, open_in_session_tab]
-depends-on: [canvas_pptx]
 inputs:
   - name: style_preferences
     description: "Visual style: colors, fonts, mood (e.g., 'minimalist with dark blue and gold, modern sans-serif')"
@@ -27,7 +27,7 @@ inputs:
     type: integer
     required: false
     default: 15
-checksum: "sha256:070ac6e40f45a0355353c0baf17864351888a5a3225953f69fdf348229dc4847"
+checksum: "sha256:77eef6cea2908b09b1130705b2f6b03d63a2b502f711bb4174e5714f1189bfe3"
 ---
 
 ## Overview

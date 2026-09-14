@@ -1,3 +1,9 @@
+---
+description: "Python parsers the skill uses to convert inbound X12 278 and FHIR Da Vinci PAS Bundle prior authorization requests into structured data."
+last_updated: 2026-09-13
+origin: original
+---
+
 # PA Request Parsing
 
 Two inbound formats carry prior authorization (PA) requests: X12 278 (pipe-delimited

@@ -5,10 +5,10 @@ display_name: Proposal Generator
 icon: "📄"
 description: "Creates professional, customized sales proposals and quotes for small business deals. Auto-brands with the sender's identity from session context or memory. Use when user says 'write a proposal', 'create a quote', 'draft a bid', 'put together a proposal for [client]', 'help me price this deal', 'generate an SOW', 'send a proposal', 'write a quote', 'respond to this RFP', 'draft a statement of work', or 'proposal for [project type]'."
 created_date: "2026-05-15"
-last_updated: "2026-06-04"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [web_search, url_fetch, recall_memories, file_rag_search, fdfind, file_read, file_read_docx, file_write, file_edit, run_javascript, open_in_session_tab]
-depends-on: [outlook]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 
 - name: prospect_company
@@ -31,7 +31,7 @@ inputs:
   description: "Your company or agency name. Auto-resolved from user identity if not provided."
   type: string
   required: false
-checksum: "sha256:ee80fdad3a0a1fc6b5c6ee34f31a3baf6e632ea8615ca26ed018699693b8d866"
+checksum: "sha256:f5e3366afbe7d388f50c5c9a60b4b85033b9ef9d299d478575ff5790198b9cb7"
 ---
 
 ## Overview

@@ -1,6 +1,6 @@
 # Amazon Quick Official Catalog
 
-This is the official catalog repository for Amazon Quick. It contains curated, agent skills, plugins, agents, and integration configs that can be installed into Amazon Quick to extend its capabilities. Every asset here has been reviewed by the Amazon Quick specialist team.
+This is the official catalog repository for Amazon Quick. It contains curated agent skills, plugins, agents, and integration configs that can be installed into Amazon Quick to extend its capabilities. Every asset here has been reviewed by the Amazon Quick specialist team for accuracy, reliabilility, and completeness.
 
 [![License](https://img.shields.io/badge/license-MIT--0-blue.svg)](LICENSE)
 

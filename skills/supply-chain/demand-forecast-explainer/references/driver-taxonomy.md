@@ -1,3 +1,9 @@
+---
+description: "A taxonomy of demand forecast drivers such as seasonality and promotions, with plain-language descriptions and typical magnitude ranges for retail and grocery leadership."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Demand Forecast Driver Taxonomy
 
 Use this reference to identify and describe forecast drivers in plain English for retail/grocery leadership.

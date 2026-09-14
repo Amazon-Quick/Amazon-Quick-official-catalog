@@ -1,3 +1,8 @@
+---
+description: "Reference for NERC GADS reporting thresholds, effective dates, and submission deadlines, all flagged as time-sensitive values to verify against authoritative sources before use."
+last_updated: 2026-09-13
+origin: original
+---
 # Reporting Thresholds, Deadlines, and Authoritative Sources
 
 ## Rule Zero applies to this file

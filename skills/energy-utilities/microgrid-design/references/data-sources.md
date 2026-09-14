@@ -1,3 +1,8 @@
+---
+description: "List of authoritative data sources and time-sensitive fuel, tariff, and incentive values to fetch at runtime for microgrid design."
+last_updated: 2026-09-13
+origin: original
+---
 # Authoritative Data Sources
 
 Fetch time-sensitive values from these sources at runtime with `web_search` and

@@ -6,7 +6,7 @@ description: "Classifies data assets by sensitivity level (Public, Internal, Con
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_read, file_read_pdf, file_write, file_rag_search, run_python, open_in_session_tab]
 inputs:
 
@@ -22,7 +22,7 @@ inputs:
   description: "The existing classification label on the data asset, if any. Used for reclassification reviews."
   type: string
   required: false
-checksum: "sha256:1899b4f1c2515d832859dfbb24b051f8bc63d3ff65350c30034d54f1cf30e4ab"
+checksum: "sha256:65dc43cee8d4a0f8ff8611a608d52b990c3159a56175aa4f366fd547dcaa8b10"
 ---
 
 ## Overview
@@ -62,17 +62,17 @@ A complete classification decision record delivered to the user, containing the 
 </Goal>
 
 <Rules>
-0. This skill provides classification guidance for informational purposes only and does not constitute legal, regulatory, or compliance advice. Classifications are recommendations, not authoritative determinations. Organizations must validate outputs against their own data governance policies and consult qualified legal or compliance professionals before making decisions that carry regulatory consequences (e.g., GDPR, HIPAA, CCPA, PCI-DSS).
-1. Always classify UP when uncertain. If the data could reasonably fall into two adjacent levels, assign the higher sensitivity level and note the ambiguity in the decision record.
-2. Never access, open, or read actual data contents. Work only from the user-provided description, metadata, file names, and policy documents. If more detail is needed to classify, ask the user to describe the data further.
-3. Cite the specific policy basis for every classification decision. Reference the section, clause, or principle that supports the assigned level. If no organizational policy is provided, cite the general definition and state that organizational policy was not available for validation.
-4. Flag any existing label that conflicts with your assessment. Provide the rationale for the discrepancy and recommend whether to escalate or reclassify.
-5. Never downgrade a classification without explicit user confirmation and documented justification. Downgrades require a reason that is traceable to policy.
-6. Treat mixed-sensitivity assets at the level of their most sensitive component. A dataset containing both Internal and Confidential fields is Confidential overall.
-7. Account for jurisdiction-specific regulatory requirements (GDPR, HIPAA, PCI-DSS, SOX, CCPA) when they apply. Regulatory obligations can only raise a classification level, never lower it.
-8. Produce the classification decision record as a structured document every time. Do not provide informal or partial classifications.
-9. If the data description is too vague to classify with confidence, ask clarifying questions before assigning a level. Do not guess.
-10. Never store or cache the data description beyond the current session. Classification metadata is itself Internal at minimum.
+1. This skill provides classification guidance for informational purposes only and does not constitute legal, regulatory, or compliance advice. Classifications are recommendations, not authoritative determinations. Organizations must validate outputs against their own data governance policies and consult qualified legal or compliance professionals before making decisions that carry regulatory consequences (e.g., GDPR, HIPAA, CCPA, PCI-DSS).
+2. Always classify UP when uncertain. If the data could reasonably fall into two adjacent levels, assign the higher sensitivity level and note the ambiguity in the decision record.
+3. Never access, open, or read actual data contents. Work only from the user-provided description, metadata, file names, and policy documents. If more detail is needed to classify, ask the user to describe the data further.
+4. Cite the specific policy basis for every classification decision. Reference the section, clause, or principle that supports the assigned level. If no organizational policy is provided, cite the general definition and state that organizational policy was not available for validation.
+5. Flag any existing label that conflicts with your assessment. Provide the rationale for the discrepancy and recommend whether to escalate or reclassify.
+6. Never downgrade a classification without explicit user confirmation and documented justification. Downgrades require a reason that is traceable to policy.
+7. Treat mixed-sensitivity assets at the level of their most sensitive component. A dataset containing both Internal and Confidential fields is Confidential overall.
+8. Account for jurisdiction-specific regulatory requirements (GDPR, HIPAA, PCI-DSS, SOX, CCPA) when they apply. Regulatory obligations can only raise a classification level, never lower it.
+9. Produce the classification decision record as a structured document every time. Do not provide informal or partial classifications.
+10. If the data description is too vague to classify with confidence, ask clarifying questions before assigning a level. Do not guess.
+11. Never store or cache the data description beyond the current session. Classification metadata is itself Internal at minimum.
 
 </Rules>
 
@@ -97,27 +97,33 @@ Workflow steps use these prefixes:
 
 <Workflow - Classification
 description="End-to-end data classification flow from intake through decision record delivery."
+tools=[file_read, file_read_pdf, file_write, open_in_session_tab]
 triggers=["classify this data", "what sensitivity level", "data handling requirements", "classification review", "label this dataset"]
 >
 
 1. [Ask user] Gather the data description. If the user has not provided sufficient detail, ask about: data contents (field types, not actual values), source system, intended audience, geographic scope, regulatory context, and whether the data is derived from other classified assets. If a current_label was provided, note it for validation in step 5.
+   If fails: If the description lacks the detail needed to classify, re-ask the user for the specific missing attributes before proceeding.
 
 2. [Agent] If policy_docs were provided, read them using file_read or file_read_pdf. Extract the relevant classification criteria, level definitions, and any domain-specific rules. Index key sections for citation in the decision record.
+   If fails: If a policy document cannot be read, report the specific file and proceed using the built-in level definitions, noting that organizational policy was not available for validation.
 
-3. [Think] Evaluate the data description against the sensitivity level definitions. Consider each level from Public upward. Identify the lowest level whose handling requirements would adequately protect the asset. Apply Rule 1 (classify UP) if the assessment is ambiguous. Check for regulatory triggers (PII, PHI, PCI, financial data, trade secrets) that mandate a minimum level.
+3. [Think] Evaluate the data description against the sensitivity level definitions. Consider each level from Public upward. Identify the lowest level whose handling requirements would adequately protect the asset. Apply Rule 2 (classify UP) if the assessment is ambiguous. Check for regulatory triggers (PII, PHI, PCI, financial data, trade secrets) that mandate a minimum level.
 
 4. [Think] Determine handling requirements, retention policy, and access control recommendations appropriate to the assigned level. Cross-reference with organizational policy if available. Note any requirements that exceed the standard level definition due to regulatory or contractual obligations.
 
 5. [Decide] If current_label was provided, compare it to the assessed level.
    - If they match: Note agreement in the decision record. No flag needed.
    - If current label is LOWER than assessed level: Flag as potential misclassification. Recommend immediate reclassification and escalation to the data owner.
-   - If current label is HIGHER than assessed level: Note the discrepancy but do not recommend downgrade without user confirmation per Rule 5. Present the case for review.
+   - If current label is HIGHER than assessed level: Note the discrepancy but do not recommend downgrade without user confirmation per Rule 6. Present the case for review.
 
 6. [Agent] Generate the classification decision record using the template below. Write it to a Markdown file using file_write, then present it to the user using open_in_session_tab.
+   If fails: If the record cannot be written or opened, report the error, retry once, and present the record inline if the retry fails.
 
 7. [Ask user] Present the classification decision for review. Ask if the user wants to adjust scope, request clarification on any flags, or finalize the record.
+   If fails: If the user does not respond with a clear decision, re-present the record and ask whether to adjust, clarify, or finalize.
 
 8. [Agent] If the user confirms, finalize the record. If adjustments were requested, return to the relevant step and regenerate. Save the final version.
+   If fails: If the final version cannot be saved, report the write error and retry once, then present the record inline if the retry fails.
 
 </Workflow - Classification>
 
@@ -126,6 +132,7 @@ triggers=["classify this data", "what sensitivity level", "data handling require
 <Templates>
 
 <Template - Classification Decision Record>
+```markdown
 # Data Classification Decision Record
 
 ## Asset Information
@@ -168,6 +175,7 @@ triggers=["classify this data", "what sensitivity level", "data handling require
 - **Status:** Pending data owner review
 - **Approved by:** _______________
 - **Approval date:** _______________
+```
 </Template - Classification Decision Record>
 
 </Templates>

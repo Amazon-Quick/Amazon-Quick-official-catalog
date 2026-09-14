@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:db4656795f3586d6c172013dc7c311c51a4a6517ce7c53f9e98ac6b8ff7be414",
+  "skillsChecksum": "sha256:26ba20a82285b849ea54d2d6c6cffb320600c0083fcbc393bb82bd56e67f2444",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -9,12 +9,12 @@
         {
           "path": "skills/amazon-quick/amazon-quick-community",
           "type": "skill",
-          "checksum": "sha256:d147b0b683af6599e209702084e493353fd6e2539664235eb3e0e9d70c80c737"
+          "checksum": "sha256:09218d11568f414dc9fdae944f2129275cbfbb9d9c3e41ffbfc1d341d5df735e"
         },
         {
           "path": "skills/amazon-quick/skill-builder",
           "type": "skill",
-          "checksum": "sha256:db491d89a8b10cb2fdea0d99c39d34d8b6834af658bb9ecbb69a9a762f77d65f"
+          "checksum": "sha256:0f52d4f1d467957316893279be06b8512a75c74ea0f84f2bf0f00ee828094012"
         }
       ]
     },
@@ -26,12 +26,12 @@
         {
           "path": "skills/customer-success/customer-health-scorer",
           "type": "skill",
-          "checksum": "sha256:c3dfe7c620809c016e453ba98ab6744925f147d880e27ce654590cdca9656316"
+          "checksum": "sha256:ba7d689cd2c008ff28568f9ac75a5f3819bd28f85a2420e3af44b0d999fdaba0"
         },
         {
           "path": "skills/customer-success/support-ticket-triager",
           "type": "skill",
-          "checksum": "sha256:ac5aa46dcb90522a641c21c9b55682e079790a4e07162b150f09fce4d6b998a2"
+          "checksum": "sha256:6499367af5b7908a5333003a304d8668ab34efa26172f128d8b6d33644233d24"
         }
       ]
     },
@@ -43,17 +43,17 @@
         {
           "path": "skills/data-analytics/ecommerce-conversion-insights",
           "type": "skill",
-          "checksum": "sha256:92aa8048a8aa06b3ee049d742ffcba54f3827a5a820791f9af62afdb229f6c9b"
+          "checksum": "sha256:2d1bfe23b6f99ec3f3a0d0992e7f6cfe8a15ef797a398ae525869ccb8e4d0d2d"
         },
         {
           "path": "skills/data-analytics/retail-analytics-concierge",
           "type": "skill",
-          "checksum": "sha256:19b198003b9d26a69a6ab6ba66ffa0415ae003af175d25ef26f09dab86a19b9d"
+          "checksum": "sha256:9402f8228820e60ccc8861150fe88c6cdd0c39115b13f8fd317f539f90135394"
         },
         {
           "path": "skills/data-analytics/retail-merchant-briefing",
           "type": "skill",
-          "checksum": "sha256:ad4dbca755cf77b4cd3e14a3cf5f612be7d78bc72176526c6a56206593dc7b6b"
+          "checksum": "sha256:3d5353d546bfe8200cc5598154272ec42ee9ceb62644a5ac13d645ad800a9797"
         }
       ]
     },
@@ -65,22 +65,22 @@
         {
           "path": "skills/design/html-deck-builder",
           "type": "skill",
-          "checksum": "sha256:01014f8e6f32f1b45b99b4665d32a3b007d4b97702172f54afa4f6b96f19560f"
+          "checksum": "sha256:f22e76fd2e02df98be80dc08c354b22ec1ffb2c4078a221ca1c9cabc55bfda65"
         },
         {
           "path": "skills/design/presentation-theme-creator",
           "type": "skill",
-          "checksum": "sha256:070ac6e40f45a0355353c0baf17864351888a5a3225953f69fdf348229dc4847"
+          "checksum": "sha256:77eef6cea2908b09b1130705b2f6b03d63a2b502f711bb4174e5714f1189bfe3"
         },
         {
           "path": "skills/design/slide-deck-from-doc",
           "type": "skill",
-          "checksum": "sha256:64dc203236b6d18148b41ad1e0d2b72de0f757b02997ca287f45ce93a161283b"
+          "checksum": "sha256:cfb2810571b972729edbd001244b473283a996c06841a61d9214aa1df109bd00"
         },
         {
           "path": "skills/design/template-enforcer",
           "type": "skill",
-          "checksum": "sha256:b3ba3936d6fa99f85d5dad2153309777def0d4c5254f4ee6e82e0ce5e7189352"
+          "checksum": "sha256:f7daed3f5afaa5361770983359fd780e4cac4c5cd829ed88d5c781e0432ab264"
         }
       ]
     },
@@ -92,57 +92,57 @@
         {
           "path": "skills/energy-utilities/battery-storage-analyst",
           "type": "skill",
-          "checksum": "sha256:102b12ad53e472d226eab0eb07b1356b47e929bc86b22ebea1398eddfdd2aaa9"
+          "checksum": "sha256:268e8fe458ce36dbe15b2e08652b62e5d8b0d955a13b7d92e9e71da60ba7acd8"
         },
         {
           "path": "skills/energy-utilities/carbon-footprint-calculator",
           "type": "skill",
-          "checksum": "sha256:96f3244102fdfb645c4a8306fe725237032f702485c8d775ec806dc0ab380abb"
+          "checksum": "sha256:d8942e858ebe9b67aad4fa775cf3b1729784c8f6177278db4638084936c5ed1c"
         },
         {
           "path": "skills/energy-utilities/drilling-operations-analyst",
           "type": "skill",
-          "checksum": "sha256:5f13abf12ad46884a16fb1e147f88c67d87f0a145b54710c7dd2ea7e6e2e6a20"
+          "checksum": "sha256:23ecfa3bf3d11cb6ce6315d6c06d2a80ae7c95d5334d2ee15e2a372dc8a5d166"
         },
         {
           "path": "skills/energy-utilities/energy-market-intelligence",
           "type": "skill",
-          "checksum": "sha256:d11f67b5591698dcf5aa88328a9f4ecbd13576b0ab79c0bff08263584e98e6ca"
+          "checksum": "sha256:ed87da5b85bc34e304143329829f4121aeaab9574ee8e957e49f73231293d2a2"
         },
         {
           "path": "skills/energy-utilities/ev-fleet-planning",
           "type": "skill",
-          "checksum": "sha256:27f9e47701cc26566e54cbcaacb22362db639c35128291cd75d35584b4a88bed"
+          "checksum": "sha256:2013e7ed0a290b09dad7d8ec61bfbdbb34dec18a80a8db48b7be70c2bf4c86cd"
         },
         {
           "path": "skills/energy-utilities/grid-capacity-planning",
           "type": "skill",
-          "checksum": "sha256:3fda474b152788fb18df9a4921026c54f4537d5c841247a496dd94cf1638ad00"
+          "checksum": "sha256:15fc06225b52674bbcada7190580b28e4ba8174de6ad33e69a4002668effc514"
         },
         {
           "path": "skills/energy-utilities/microgrid-design",
           "type": "skill",
-          "checksum": "sha256:b4f65ec50bed5c763c6e178778914369d80ff20e92bceeff219f3a975cc57496"
+          "checksum": "sha256:bc0038ebbd26f79b35655638500241a2f8faeda553f00d7d56f4076a06768d67"
         },
         {
           "path": "skills/energy-utilities/nerc-gads-reporting",
           "type": "skill",
-          "checksum": "sha256:6de971df2550f16b88ee53758ae9c102d08b383b4fbe732feff0788ad9982d6c"
+          "checksum": "sha256:2be87737ae137406211fede07ed062c8261b53c3c636fc72169627a9e7a55bd6"
         },
         {
           "path": "skills/energy-utilities/power-plant-performance",
           "type": "skill",
-          "checksum": "sha256:ae778d08cb8a9171c569a034e645c4393c9db9ee8013b0f97224e564cb4ee445"
+          "checksum": "sha256:19d4dfee7a28fba7da9e15ad909f0c6e5d196a9bd459f399eecd0ef67f60fde0"
         },
         {
           "path": "skills/energy-utilities/renewable-energy-assessment",
           "type": "skill",
-          "checksum": "sha256:bfba2f89710edb9c61dc3ff306ed1d8982e61331e3662967364c59917158320f"
+          "checksum": "sha256:e9c2308c3adcc508c0b86bb3bfa08e985e880ab5fc501d560f05d58b9f76b87a"
         },
         {
           "path": "skills/energy-utilities/well-completion-optimization",
           "type": "skill",
-          "checksum": "sha256:c398fde7e2446d0aac6080dd43145d7b2f67e654f07aad44e8df34b0cc63736e"
+          "checksum": "sha256:3587ee307268d3119b5be075527f75a84a25c5a9b321bd09b0d168aa83576dfc"
         }
       ]
     },
@@ -154,42 +154,42 @@
         {
           "path": "skills/finance/bill-pay-optimizer",
           "type": "skill",
-          "checksum": "sha256:ebec757b43356741be908f522b42af8967e74cae305754ea3492312e436dd36e"
+          "checksum": "sha256:dc36306864ca7dd84b7e56359470dee6c5b036f081dd0ac7ed45dd1101cefbda"
         },
         {
           "path": "skills/finance/business-pulse",
           "type": "skill",
-          "checksum": "sha256:3814a3f0e29f48161d5153137661e6ac2ccb0a2f3decf296c629b377a4458196"
+          "checksum": "sha256:e55d88e6f6704f983dfddfe071044ece5752bab09aef198e8c5ebb28b4823c93"
         },
         {
           "path": "skills/finance/deposit-collection",
           "type": "skill",
-          "checksum": "sha256:2093096bd5c9017865e62c0774d5577758db57e632426a49a83dad69608a536b"
+          "checksum": "sha256:9930207bdb47e1dbb6b941a4442caf436406f62bdb1ea95993c7173ce3128a0e"
         },
         {
           "path": "skills/finance/invoice-chaser",
           "type": "skill",
-          "checksum": "sha256:84eeef8b4300d013e7b82ef32d91b94e4813dc3a3488b17d98c8b731c35d53be"
+          "checksum": "sha256:c6754d81fa65792a5ade945585306235bac022a73c5357f4fa27d4b6e3bedca6"
         },
         {
           "path": "skills/finance/job-to-invoice",
           "type": "skill",
-          "checksum": "sha256:d664c83d5cf69d09e02a4a640fd774539658c7a8e03c0a3b39730c2c604e204a"
+          "checksum": "sha256:e12d4e8832da1e346eca938a88dd95f903749d1cad720d950ebe30eca7ae05db"
         },
         {
           "path": "skills/finance/month-end-close-orchestrator",
           "type": "skill",
-          "checksum": "sha256:5040f9fcb4448f14b6bc19d799813782a2f41531d0c044445b40485bceb29de1"
+          "checksum": "sha256:c6e74cef93f63898162f7da1b71bca8a60d81c520749c45e552912547dc1b91b"
         },
         {
           "path": "skills/finance/payroll-forecast",
           "type": "skill",
-          "checksum": "sha256:04ed158b439deedcb40adb9aa76e01ff37e83cb9e4c4fd7d9098bd5d5f7d10f9"
+          "checksum": "sha256:6bb95f26dbaea4096b118431da272c2d8fe2bfab332a15f2e5d3a33cbeaca3d8"
         },
         {
           "path": "skills/finance/fsi-product-management",
           "type": "skill",
-          "checksum": "sha256:143aaeecdb3824a3d5d7857d52e9f79dc1f9961428168168bfd237c3e3832662"
+          "checksum": "sha256:3da0fd0f8ec4ac0fda962d4d5c916415f706a5f879bcf6f4d9797e5593f36aca"
         }
       ]
     },
@@ -201,67 +201,67 @@
         {
           "path": "skills/general-productivity/browser-data-scraper",
           "type": "skill",
-          "checksum": "sha256:43188aa9a4d609675177500d01ae89aea40e8fda9acc1cd8fc4856cf24ae8ce6"
+          "checksum": "sha256:ed8dea49b9811f8e3dafa5174ffdc5ddce23cc240cd6753c1e145b37df525c4f"
         },
         {
           "path": "skills/general-productivity/document-comparison",
           "type": "skill",
-          "checksum": "sha256:5fa1c6346e342edf17805a7dea1a26e42acec42b7b3268649093324366831aa6"
+          "checksum": "sha256:c0f93c74728b41d94dbf0c99285ddf4bee290a6881f18ac8da91797025801a3d"
         },
         {
           "path": "skills/general-productivity/eliminate-ai-writing-tropes",
           "type": "skill",
-          "checksum": "sha256:9fddc0288406471faa3cc1520c1e0d040a21b082395b0be037dbc01b2dedd634"
+          "checksum": "sha256:cd91e3e8701760ee79871a4eec4cd22864527c9e83696c5754531553107947fb"
         },
         {
           "path": "skills/general-productivity/file-organizer",
           "type": "skill",
-          "checksum": "sha256:a4139696a2672f16ecf1e1280d1a8d6e73c781cef07281a225af1448813dee02"
+          "checksum": "sha256:28d41944e2d24a41b9951bc4bbb573637e61d4321dc3f2208987987488069184"
         },
         {
           "path": "skills/general-productivity/meeting-notes-to-actions",
           "type": "skill",
-          "checksum": "sha256:d0c8d4d5c973a1b4ee9efb1a9e38e3d3ad83f5f8ccfdae5134ca295394a87c23"
+          "checksum": "sha256:e6822ceb47b11ea5ee6a7e174bb7ff01f1dfd8afa4d6fe6a0504c35fc52e05fe"
         },
         {
           "path": "skills/general-productivity/ooo-setup",
           "type": "skill",
-          "checksum": "sha256:ba142f15dd1572d351882fa654ab3b01f18108a3ee6a9e1d2d8e83e6a84ada4b"
+          "checksum": "sha256:f949ace9f4c6dac392c214f977ff5657ec04ed14024cf7c5fbe691480611f001"
         },
         {
           "path": "skills/general-productivity/research-paper-digest",
           "type": "skill",
-          "checksum": "sha256:26af72ccacacf03d9951dfe91afe98ec51d78865d8e238a1ae171a0d0b5ded76"
+          "checksum": "sha256:7461fa11b14b89cfd4e1af13fc6c247cd72d1059dd4ae92d8fa0e1d553e700a0"
         },
         {
           "path": "skills/general-productivity/second-opinion",
           "type": "skill",
-          "checksum": "sha256:52b48712275a3ec25748cbbd740969f4ef65f1b3939fc0e35bed8e4c3348578d"
+          "checksum": "sha256:c2577c6db513628ab22dcffcaf4eeb8551369da13aa6aad3655daa58d5ca06c6"
         },
         {
           "path": "skills/general-productivity/teach-me",
           "type": "skill",
-          "checksum": "sha256:f49e7b70d40f83334c4c3aa054a403146e4d6f0ba3d84beb6bcd15e27a894143"
+          "checksum": "sha256:157911fa0ab618ed77c41078b5c9f96d1099536c94260bc559021e1908dd878e"
         },
         {
           "path": "skills/general-productivity/translate-ms",
           "type": "skill",
-          "checksum": "sha256:7b31228439370918c76d4e37f4a844da76802dc75936fcef634bb14d472be53b"
+          "checksum": "sha256:9955e48da804e90cde83ffcd06df5da85f007e5d62166022f56a90cb9ce49144"
         },
         {
           "path": "skills/general-productivity/desktop-cleanup",
           "type": "skill",
-          "checksum": "sha256:b90b7add071d6161977999cdaec9e70cf7db7e6daa659166920a71074e892b80"
+          "checksum": "sha256:c0b8e5fffc6c756270c3c5ac9bd44a201b3ecfbf07277ee695051e1e44618e42"
         },
         {
           "path": "skills/general-productivity/conversation-manager",
           "type": "skill",
-          "checksum": "sha256:6b0a7ce856b45cfe56b3bbd440f72e789dcb3650d9fd8d8d18e7e4506b237d16"
+          "checksum": "sha256:d966a37761b332d545e810f8b618f7ec21eca5341cb73bdbd25011636f543340"
         },
         {
           "path": "skills/general-productivity/markdown-to-docx",
           "type": "skill",
-          "checksum": "sha256:99c3efa12a1d892c0015d0f8f47c97db417a2cd2ab744c8e428efb24ca28eb7a"
+          "checksum": "sha256:ad5f7af5a34fdb2eda58a1d5d0a9f126d698f280c75d7f0969255ef706a91fce"
         }
       ]
     },
@@ -273,42 +273,42 @@
         {
           "path": "skills/healthcare/cdisc-submission-compliance",
           "type": "skill",
-          "checksum": "sha256:ecc0b932e9e914f98a999cfe18997012ceb0a9a677c2d69fcc895af2102bc89d"
+          "checksum": "sha256:e5be4b1a9c555a110108eb00ffabe27cbd2d4f456e1892e681cd4feaad99d259"
         },
         {
           "path": "skills/healthcare/healthcare-claims-analytics",
           "type": "skill",
-          "checksum": "sha256:b56b3a1e1fb4f2fa2fd21e297e10af5054d57ec5a38ae8b2f7c94f3c92a1fee0"
+          "checksum": "sha256:37d0a4b50499bcc6501ec40fb54e868df7c50e978eadb86a8a631d1cb9ddaff5"
         },
         {
           "path": "skills/healthcare/hedis-measure-calculation",
           "type": "skill",
-          "checksum": "sha256:3e889a27a911dc5d2a40d984b4be8db0cc43a3293ef7e72f00b8c1074efe8a58"
+          "checksum": "sha256:d13d9a53beb7af02a00895fc33cb536bd20a9867d94c27ad6acc8dbf14fbde01"
         },
         {
           "path": "skills/healthcare/hedis-measure-specification",
           "type": "skill",
-          "checksum": "sha256:4836c40d0065a00c1e741bce4b9d57f4f71e76cc05e080b3ee11b25ab334382c"
+          "checksum": "sha256:d5c429e950630644f8ec4b19240eaf51c052733ab7f9be9dc9c984d40c00d804"
         },
         {
           "path": "skills/healthcare/prior-authorization-clinical-policy",
           "type": "skill",
-          "checksum": "sha256:cf1b83017f43089ff50680df0150a92630df00dcbf960c5a8796662006b1f32d"
+          "checksum": "sha256:29961be3ca776e59c881c30ee953aa5127f93fab53efcbdb04d39ef440e83b9e"
         },
         {
           "path": "skills/healthcare/prior-authorization-decision-automation",
           "type": "skill",
-          "checksum": "sha256:68cc886a318ed1ec37dcb2c756e25b2412b491ece71ac1fac2e979f1057d858b"
+          "checksum": "sha256:df67e29d699d210e586e242ad6ee044e1adfb2aa78f451afa62a7a88ded0ee15"
         },
         {
           "path": "skills/healthcare/protocol-drafting",
           "type": "skill",
-          "checksum": "sha256:302c4fbe1b97be49d461f3848263c2dbff2239822efb2c4c61c4f649d27ef0c0"
+          "checksum": "sha256:1142517aa2195cbff239fc0c9b29424e30a7fc19b7ca79a9a34415098fada2f3"
         },
         {
           "path": "skills/healthcare/research-biomedical-databases",
           "type": "skill",
-          "checksum": "sha256:281c3becdc60ac4a6b173436cc5ad0a15c7c90d9cec28562c251c5cd15015be7"
+          "checksum": "sha256:b791e24323549b4f19871c15277ff9295252d44ede40dd17cde0270452b17759"
         }
       ]
     },
@@ -320,7 +320,7 @@
         {
           "path": "skills/hospitality/restaurant-morning-briefing",
           "type": "skill",
-          "checksum": "sha256:38e2b6afb4d623c6eb6c7bb18f14c61e7d30dd3dcf513bd24734ce78cc2ad120"
+          "checksum": "sha256:43c5086f255c67e338e32947951906c7a30467216da6274684240b5c1533bb4f"
         }
       ]
     },
@@ -332,17 +332,17 @@
         {
           "path": "skills/hr/hr-policy-agent",
           "type": "skill",
-          "checksum": "sha256:b3c15843c70e4f95ea50cc0f8b6afd05d6c6f524ae921f814a484a8874baea5a"
+          "checksum": "sha256:492845c07bc6acce6c100bddbfb83414c56938ef91b2c826b9e1229abdac9c9f"
         },
         {
           "path": "skills/hr/onboarding-orchestrator",
           "type": "skill",
-          "checksum": "sha256:1e55d80264f237295736ada7ba75d251a6b7bd9e5e3c59d3838902ad938d271d"
+          "checksum": "sha256:dd779e94379e9bd7f4753e99875ce607c0a1a32199dc3fafbee95f9931c5db47"
         },
         {
           "path": "skills/hr/performance-review-drafter",
           "type": "skill",
-          "checksum": "sha256:9969f2937880d72d8b9ce31c2fde2e64066e491c7bab308a846932c8912630a2"
+          "checksum": "sha256:c9d5c7ec9155b04e7d5a1236a999c8d2a05dcbb24623116dcdc9dc85839879c4"
         }
       ]
     },
@@ -354,22 +354,22 @@
         {
           "path": "skills/leadership/business-case-builder",
           "type": "skill",
-          "checksum": "sha256:9db89ddf95970ebece97d2d10a310b6677bf95f12d53a843a225ebf6bd39aceb"
+          "checksum": "sha256:098a6e210d913a9804d1eac96ae1b2230a741f41e2c1ad81755dabdb3e350fb2"
         },
         {
           "path": "skills/leadership/executive-voice-runtime-builder",
           "type": "skill",
-          "checksum": "sha256:bc192f03360a3a1e5bef57d1b7d7dc38f433996fb8d64a23f2ec16b8d306526a"
+          "checksum": "sha256:06e39dcda0b43841649eb6026ae0c81cedb10c7e08e3daf0b368a2623e97b36f"
         },
         {
           "path": "skills/leadership/goal-tracker-reporter",
           "type": "skill",
-          "checksum": "sha256:2179895aa0dfbc90f1f949491697a16ab3b576310a459782dae7378ed11fe67a"
+          "checksum": "sha256:c0216144760a3f09a2b2cadac321756b8bd4f5b6893cfbd86386e6e3e10d9db8"
         },
         {
           "path": "skills/leadership/swot-analysis-generator",
           "type": "skill",
-          "checksum": "sha256:0a060d4eb82856ca0b2cd6908253b067ff1b3c396420d2e1134904e283015cef"
+          "checksum": "sha256:2dab83b55ee01aabf0b1be40d573fc5140bc1bff5f8c0aecfe02f5149bbe18bb"
         }
       ]
     },
@@ -381,12 +381,12 @@
         {
           "path": "skills/legal/contract-clause-extractor",
           "type": "skill",
-          "checksum": "sha256:0d2b71b7e9239d9681a4335ede133d6cd5a66cd517d773591b0b3929c5119b9a"
+          "checksum": "sha256:21bb1bc8ebdf774f678e311391e8f3c3f2caffce2f47f6280e646ec6cad3607a"
         },
         {
           "path": "skills/legal/regulatory-change-monitor",
           "type": "skill",
-          "checksum": "sha256:135d8f373848dbf9a60ca4eb0f500293325d963fa5a4315fa7151d1302b1f995"
+          "checksum": "sha256:528de7b17989b4bfc61299abdcb74b35dae4244fdf71532c040f519c6a31d77b"
         }
       ]
     },
@@ -398,32 +398,32 @@
         {
           "path": "skills/marketing/content-calendar-planner",
           "type": "skill",
-          "checksum": "sha256:116a77f8414692f284df961f1c59ef96a907ab0cdf0024bd1895f3472eb3491a"
+          "checksum": "sha256:001b47fceeb587dd876ae1741d67bbb51f13542c8523e7e53916f3cf04b83015"
         },
         {
           "path": "skills/marketing/content-recycler",
           "type": "skill",
-          "checksum": "sha256:d2c3787afcdd7a5a56476822db99bcfdcb6f4e9393129e37b774c126e2d7b196"
+          "checksum": "sha256:969727e372ac9abfe1b0e2242dba5a580d185a26a3164b3a6c45bb6c6ae808bb"
         },
         {
           "path": "skills/marketing/email-campaign-builder",
           "type": "skill",
-          "checksum": "sha256:40acc44de64636cd0f1adaf005a2f44c1b0cca0cfb030f4c6b0aeb8ec5be6ca9"
+          "checksum": "sha256:b58b2d0ac59780bc8a569b2ebe2c1de6e72ac3ac636a56d2a74978231081f93d"
         },
         {
           "path": "skills/marketing/retail-content-generator",
           "type": "skill",
-          "checksum": "sha256:0c0b8b029723006bcb37b5ec2b0276afa9ff17433108408ccf36ca4943ac3db1"
+          "checksum": "sha256:d38c5817be83964f1a088623bce2d4f16797b766a27db3a95de371a898942089"
         },
         {
           "path": "skills/marketing/seo-content-writer",
           "type": "skill",
-          "checksum": "sha256:a4de8bfdb16f120a9cb500f9470c03ccd96bc17b249d39eb186c21907f4a14c5"
+          "checksum": "sha256:4f2c1a5d7aca80a780e65f498f44a84d520c1600a1ba790aacee2dd15d0a3308"
         },
         {
           "path": "skills/marketing/social-post-creator",
           "type": "skill",
-          "checksum": "sha256:485ab08dc42c8d2dcc0fc7a6d6018670c88f981cd6655d8d8c9df6ac87787641"
+          "checksum": "sha256:8aab888ee3c3b419ca24466e47b40d9fc59b1e6c4533f76d050dc3c62c4ea14a"
         }
       ]
     },
@@ -435,22 +435,22 @@
         {
           "path": "skills/software-engineering/architecture-decision-record",
           "type": "skill",
-          "checksum": "sha256:b139574a81d26aab555c81b03a1fbd20187d6aa227726be8eb3c8dece4497386"
+          "checksum": "sha256:b7285a3c8e155339b0f30c8cf7288bea61cb0cf2a5fd2f31176d05ae4316bbd8"
         },
         {
           "path": "skills/software-engineering/fsi-architecture-assessment",
           "type": "skill",
-          "checksum": "sha256:36973ba0fcde1a456798bf9a4e0b025a4b06cffa39042bac8825355e78a80942"
+          "checksum": "sha256:63ccd7d78000a46bd8bf53f48a949595cbab32c3152d4721101c4bea630f7008"
         },
         {
           "path": "skills/software-engineering/incident-postmortem-writer",
           "type": "skill",
-          "checksum": "sha256:0eaed334fa7139c20f5239fb5979bbbe39d13bf553eb06184924f7d9493e2bf0"
+          "checksum": "sha256:68a014dc17fbe026749baa9db7b3794fcf9dda8a024db7a79d6eb502d0618a03"
         },
         {
           "path": "skills/software-engineering/release-notes-generator",
           "type": "skill",
-          "checksum": "sha256:33dca578454430fde9a57ff1aa2b092a5bb1c644a95dd1cb74f1dadd5778023c"
+          "checksum": "sha256:83501d34b55c706673a2f4b3438d7ee5f62173e6082419ed3e5c1fa13b47366b"
         }
       ]
     },
@@ -462,17 +462,17 @@
         {
           "path": "skills/project-management/dependency-critical-path-analyzer",
           "type": "skill",
-          "checksum": "sha256:96d1af64cd897593305399a5d564c43b9c804913c6d0c320e20c9b1e6e37da4b"
+          "checksum": "sha256:0376d734e185ed90f2799231b862c467489633d6beb3b482a7a7746e00bb6106"
         },
         {
           "path": "skills/project-management/risk-register-builder",
           "type": "skill",
-          "checksum": "sha256:78f02d0f57a76fb24c9f68dadf888a36e8bbe7a6421f6e7370306a4e72b13763"
+          "checksum": "sha256:882d1cf7ce9423865f3be959327c93d011f522cbdd590af4d2e1542b6e640aee"
         },
         {
           "path": "skills/project-management/standup-summarizer",
           "type": "skill",
-          "checksum": "sha256:e578f598dfb29f2f1f7efaafa21133f5df4ae8661251c6230bb575622d80a7ae"
+          "checksum": "sha256:ba8c9c8b6c2df7446546484caff93215d39d38c394a1852107560997ac4cf799"
         }
       ]
     },
@@ -484,32 +484,32 @@
         {
           "path": "skills/sales/competitor-intel",
           "type": "skill",
-          "checksum": "sha256:469cb456afd4dc70b1335b14b7bf7a7072c07ad728d62d6e53ed5b95eaae7e14"
+          "checksum": "sha256:d79e9618adae5060adbbcdc8f1763e135a707aa8a2903c7dc470736714f1056c"
         },
         {
           "path": "skills/sales/deal-pipeline-manager",
           "type": "skill",
-          "checksum": "sha256:01d80737ff9508c3aa24e48fa152ac5dbc6ae7d43c354b8dfe31d5fb5f76b691"
+          "checksum": "sha256:b950b7b6f3b51a07305c5cf713b732acec78954b5da16cb5729d276387eee0de"
         },
         {
           "path": "skills/sales/follow-up-cadence",
           "type": "skill",
-          "checksum": "sha256:70a188109661cc27c12d6e497fd0b71182e1738ce90038a4f13eacbf52fe6e51"
+          "checksum": "sha256:e6957910e088af57dd05e9b1ac9b86b81e49f85bca727471882386e5c44fa618"
         },
         {
           "path": "skills/sales/lead-prospector",
           "type": "skill",
-          "checksum": "sha256:3901415e3b4692c21e5b1ec606aa0b2fae7edc58e62217c1fa06dea6ba3eef3a"
+          "checksum": "sha256:b3128f54968e64b60df1a511031273534dfdf62c0016e8a6e648eaba9c2ac96b"
         },
         {
           "path": "skills/sales/outreach-sequence-builder",
           "type": "skill",
-          "checksum": "sha256:7dea0669a2eeca82c536773bd573a6854cdb16af996adfb598eec52c54f1f334"
+          "checksum": "sha256:225db52e31aff187eceb00982c5916d58aed80a2cf2b33602b7cee7b65657332"
         },
         {
           "path": "skills/sales/proposal-generator",
           "type": "skill",
-          "checksum": "sha256:ee80fdad3a0a1fc6b5c6ee34f31a3baf6e632ea8615ca26ed018699693b8d866"
+          "checksum": "sha256:f5e3366afbe7d388f50c5c9a60b4b85033b9ef9d299d478575ff5790198b9cb7"
         }
       ]
     },
@@ -521,17 +521,17 @@
         {
           "path": "skills/security-compliance/compliance-automation",
           "type": "skill",
-          "checksum": "sha256:a0e77adef5f022f5326a31124f9f1c573d1a10dce6a3f2dbb3b7297e973223d3"
+          "checksum": "sha256:5b73900a7bca649f08c85e4c84e1eb34abe14342957fbd39656373b78933630f"
         },
         {
           "path": "skills/security-compliance/data-classification-assistant",
           "type": "skill",
-          "checksum": "sha256:1899b4f1c2515d832859dfbb24b051f8bc63d3ff65350c30034d54f1cf30e4ab"
+          "checksum": "sha256:65dc43cee8d4a0f8ff8611a608d52b990c3159a56175aa4f366fd547dcaa8b10"
         },
         {
           "path": "skills/security-compliance/vulnerability-report-summarizer",
           "type": "skill",
-          "checksum": "sha256:c3ae422fe5d4d3a99925bc4bdbd3a616278a090fbd07ecdcf8258828b1ad534f"
+          "checksum": "sha256:2b2a51d7f20fb33c9ce7c6977e04ef5519f92dbf4928900e089c02ece6423835"
         }
       ]
     },
@@ -543,12 +543,12 @@
         {
           "path": "skills/supply-chain/demand-forecast-explainer",
           "type": "skill",
-          "checksum": "sha256:39b8fb82c2a677584632d7dc0cce783a629cfe4820e616c9d943e350f1d5c9e7"
+          "checksum": "sha256:b1fb7a8274bebf8f591ba2d4a4da1660b770927e8540e49a182da675c10c5a3a"
         },
         {
           "path": "skills/supply-chain/retail-supply-chain-pulse",
           "type": "skill",
-          "checksum": "sha256:df2d0fdb54e4e04b074fb50b89a87eb75c6a0f85be52b481d36a077b5e1e588f"
+          "checksum": "sha256:f5f3be74d2d3665c27a4a1eccc60bdc8e9dbace88fdbc02b3cb1740ed6253397"
         }
       ]
     }

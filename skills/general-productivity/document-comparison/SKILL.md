@@ -3,11 +3,11 @@ name: document-comparison
 display_name: Document Comparison
 icon: "🔄"
 description: "Compare two documents side-by-side, highlighting differences and generating a structured change summary. Use when the user says 'compare these docs', 'what changed between versions', 'diff these files', 'document comparison', or 'show differences between [file A] and [file B]'."
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-05"
-last_updated: "2026-06-05"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [file_read_docx, file_read_pdf, file_read, run_python, file_write, open_in_session_tab]
-depends-on: [html_design]
 inputs:
   - name: file_a
     description: "Path to the first document (baseline/original)"
@@ -23,7 +23,7 @@ inputs:
     options: [html, markdown, both]
     required: false
     default: "both"
-checksum: "sha256:5fa1c6346e342edf17805a7dea1a26e42acec42b7b3268649093324366831aa6"
+checksum: "sha256:c0f93c74728b41d94dbf0c99285ddf4bee290a6881f18ac8da91797025801a3d"
 ---
 
 ## Overview

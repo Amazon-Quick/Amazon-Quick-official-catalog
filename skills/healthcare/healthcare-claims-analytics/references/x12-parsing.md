@@ -1,3 +1,9 @@
+---
+description: "Python parser that reads an X12 837 Professional claim file, detecting segment and element separators from the interchange header."
+last_updated: 2026-09-13
+origin: original
+---
+
 # X12 837 Professional Claim Parsing
 
 ## Inputs

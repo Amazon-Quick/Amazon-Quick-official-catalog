@@ -3,13 +3,12 @@ name: desktop-cleanup
 display_name: Desktop Cleanup
 description: "Activate when the user says 'clean up my desktop', 'organise my desktop', 'tidy desktop', 'declutter desktop', 'sort my desktop', or asks to reorganise/clean files on their Desktop. Scans the Desktop folder, categorises loose files, proposes a folder architecture for approval, and moves files with user sign-off."
 icon: "\U0001F9F9"
-trigger: clean desktop organise tidy declutter sort desktop
 created_date: "2025-12-01"
 last_updated: "2026-07-24"
 tools: [folder_list, folder_create, file_move, file_delete, run_python, create_scheduled_agent]
 preferred_model: fast
 preferred_thinking: off
-checksum: "sha256:b90b7add071d6161977999cdaec9e70cf7db7e6daa659166920a71074e892b80"
+checksum: "sha256:c0b8e5fffc6c756270c3c5ac9bd44a201b3ecfbf07277ee695051e1e44618e42"
 ---
 
 <Identity>
@@ -53,6 +52,7 @@ A tidy Desktop with loose files grouped into approved folders. Recently-accessed
   triggers=["when user asks to clean/organise/tidy/declutter their desktop"]>
 
 1. [Agent] Detect the Desktop path using run_python (Path.home() / "Desktop") and call folder_list on it. Capture the full listing of files and subfolders. If the path is inaccessible, inform the user and stop.
+   If fails: If the Desktop cannot be located or listed, ask the user to provide the Desktop path, and stop if none is given.
 
 2. [Agent] Using run_python, check the last access time (os.stat st_atime) of every loose file. Classify each file as:
    - "Recent" (accessed within last 14 days) - these will NOT be moved
@@ -63,6 +63,7 @@ A tidy Desktop with loose files grouped into approved folders. Recently-accessed
    - Temp lock files (~$ prefix) - deletion candidates
 
    If fewer than 5 stale loose files exist, tell the user "Desktop looks tidy, nothing to do!" and stop.
+   If fails: If access times cannot be read, retry using modification time (st_mtime) and note this to the user; if that also fails, report the error and stop.
 
 3. [Ask user] Present a REVIEW of the current Desktop state:
    - Total loose files count
@@ -78,6 +79,7 @@ A tidy Desktop with loose files grouped into approved folders. Recently-accessed
    - Existing subfolders already on the Desktop
 
    Ask the user to confirm the categorisation is correct, or adjust categories.
+   If fails: If the user does not respond or the categorisation is unclear, re-present the review and ask them to confirm or adjust before continuing.
 
 4. [Ask user] Based on the confirmed categories and existing subfolders, propose a FOLDER ARCHITECTURE:
    - Which existing folders will receive files (and which files go where)
@@ -90,6 +92,7 @@ A tidy Desktop with loose files grouped into approved folders. Recently-accessed
    - "Suggest changes"
 
    If the user suggests changes, revise and re-present until approved.
+   If fails: If no clear decision is given, re-ask the user to approve the architecture or specify changes before proceeding.
 
 5. [Ask user] With the architecture approved, present the specific file moves for sign-off:
    - List each file and its destination
@@ -101,12 +104,14 @@ A tidy Desktop with loose files grouped into approved folders. Recently-accessed
    - "Let me pick which ones"
 
    If "Let me pick", present each group individually for approve/skip.
+   If fails: If the user does not sign off, re-present the move list and ask them to approve all or pick specific moves before executing.
 
 6. [Agent] Execute the approved plan:
    - Create any new folders first (folder_create)
    - Move approved files in batch (file_move for each)
    - Delete approved ~$ temp files (file_delete)
    - If any move fails (locked file, conflict), skip it and log the failure
+   If fails: If folder creation or a move fails, skip the affected file, record the reason (locked, conflict, or error), and continue with the remaining approved actions.
 
 7. [Agent] Present a final summary:
    - Files moved (count and destinations)
@@ -114,12 +119,14 @@ A tidy Desktop with loose files grouped into approved folders. Recently-accessed
    - Files skipped (with reason: locked, conflict, or user-skipped)
    - Files left as current work (with note they were recently accessed)
    - Remaining loose file count on Desktop
+   If fails: If any action's result cannot be determined, report the actions whose outcome is unknown and ask the user to verify the Desktop state.
 
 8. [Ask user] If this is the first run (no existing weekly schedule detected), offer to set up a recurring weekly cleanup:
    - "Want me to run this automatically once a week?"
    - Decision card: "Yes, schedule weekly" / "No thanks"
    - If yes, use create_scheduled_agent to set up a weekly schedule (suggest Monday morning). The scheduled run should use the same skill and present findings via the activity feed for review rather than auto-moving files.
    - If no, skip silently.
+   If fails: If scheduling cannot be set up or the user does not respond, skip the schedule and report that the cleanup completed without a recurring run.
 
 </Workflow - Desktop Cleanup>
 

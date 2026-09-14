@@ -1,3 +1,9 @@
+---
+description: "Reference conversion-rate benchmarks for e-commerce funnels broken down by vertical, device, and geographic market."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Industry Conversion Rate Benchmarks
 
 ## E-commerce Funnel Baselines (by vertical)

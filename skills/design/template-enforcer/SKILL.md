@@ -3,11 +3,11 @@ name: template-enforcer
 display_name: Template Enforcer
 icon: "🎨"
 description: "Apply a brand guide or style template to any document, presentation, or generated output, enforcing colors, fonts, tone of voice, logo placement, and formatting rules. Use when the user says 'apply brand guide', 'enforce template', 'match this style', 'make it consistent with our brand', 'apply our formatting', 'style this document', or any request to align a document with a visual/brand standard."
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-15"
-last_updated: "2026-06-15"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [file_read, file_read_pdf, file_read_docx, file_read_pptx, run_python, file_write, open_in_session_tab]
-depends-on: [canvas_docx, canvas_pptx, html_design]
 inputs:
   - name: source_document
     description: "Path to the document or content to be styled"
@@ -29,7 +29,7 @@ inputs:
     options: [strict, moderate, advisory]
     required: false
     default: "moderate"
-checksum: "sha256:b3ba3936d6fa99f85d5dad2153309777def0d4c5254f4ee6e82e0ce5e7189352"
+checksum: "sha256:f7daed3f5afaa5361770983359fd780e4cac4c5cd829ed88d5c781e0432ab264"
 ---
 
 ## Overview

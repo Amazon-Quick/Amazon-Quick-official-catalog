@@ -3,12 +3,12 @@ name: nerc-gads-reporting
 display_name: NERC GADS Reporting
 icon: "⚡"
 description: "Convert raw generator operational data into validated North American Electric Reliability Corporation (NERC) Generating Availability Data System (GADS) event reports and IEEE 762 performance indexes. Use when asked to 'prepare a GADS report', 'calculate EFOR/EAF', 'classify generating unit events', 'validate GADS data for eGADS submission', 'check GADS submission readiness', 'run generator availability metrics', 'analyze outage cause codes', or benchmark fleet reliability against NERC averages."
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 license: MIT-0
 tools: [get_current_time, file_read, file_read_pdf, run_python, web_search, url_fetch, open_in_session_tab]
-depends-on: [canvas_xlsx, canvas_pdf, canvas_md, html_design, highcharts]
-checksum: "sha256:6de971df2550f16b88ee53758ae9c102d08b383b4fbe732feff0788ad9982d6c"
+checksum: "sha256:2be87737ae137406211fede07ed062c8261b53c3c636fc72169627a9e7a55bd6"
 ---
 
 ## Overview
@@ -53,7 +53,7 @@ the user chose and flagged clearly if any validation item fails.
 </Goal>
 
 <Rules>
-0. NEVER GUESS OR FABRICATE VALUES. This rule overrides all others. Before using
+1. NEVER GUESS OR FABRICATE VALUES. This rule overrides all others. Before using
    any time-sensitive or regulatory value (reporting threshold, effective date,
    submission deadline, fleet benchmark, industry-average or top-quartile EFOR,
    cause code range), verify it against the authoritative source in
@@ -65,20 +65,20 @@ the user chose and flagged clearly if any validation item fails.
    formulas and constants that do not change (the IEEE 762 formulas in
    references/performance-indexes.md, unit conversions, calendar arithmetic).
    Model training knowledge is NOT a valid source for a numeric regulatory value.
-1. Classify every event per the NERC GADS DRI exactly, following
+2. Classify every event per the NERC GADS DRI exactly, following
    references/event-taxonomy.md and references/classification-rules.md. When a
    record is ambiguous, flag it for user review rather than guessing.
-2. Compute performance indexes only with the exact formulas in
+3. Compute performance indexes only with the exact formulas in
    references/performance-indexes.md. Never approximate or use simplified forms.
    Round every index to one decimal place; do not truncate.
-3. Compute Period Hours from actual calendar hours for the reporting period,
+4. Compute Period Hours from actual calendar hours for the reporting period,
    including leap-year February. Do not adjust for Daylight Saving Time.
-4. Do all numeric work in run_python from the user's data. Do not compute indexes
+5. Do all numeric work in run_python from the user's data. Do not compute indexes
    by hand or from memory, and do not invent input values that the data lacks.
-5. Never store, log, or expose credentials, and never write skill outputs to any
+6. Never store, log, or expose credentials, and never write skill outputs to any
    location the user did not choose. Ask the user where deliverables should be
    saved; do not hardcode an output path.
-6. This skill produces informational compliance analysis, not certified
+7. This skill produces informational compliance analysis, not certified
    regulatory advice. Include a disclaimer in every final deliverable stating
    that outputs are for informational purposes only and that the user should have
    a qualified NERC GADS coordinator or compliance professional review any data
@@ -132,7 +132,7 @@ preferred_model=smart
    references/thresholds-and-deadlines.md via web_search or url_fetch.
    Validate: Every time-sensitive value needed downstream has a verified source
    fetched this session or supplied by the user.
-   If fails: Per Rule 0, stop and ask the user to confirm or provide the value
+   If fails: Per Rule 1, stop and ask the user to confirm or provide the value
    before continuing.
 
 3. [Agent] Parse the input data with run_python (pandas/openpyxl for CSV/Excel,
@@ -200,7 +200,7 @@ preferred_model=smart
      readiness item (mandatory fields populated, cause codes valid for unit type,
      time accounting balanced, no overlapping primary events, design data record
      present per unit).
-   Each deliverable must carry the Rule 6 disclaimer.
+   Each deliverable must carry the Rule 7 disclaimer.
    Validate: Every deliverable is written to the chosen location, opened in a
    session tab, and includes the disclaimer.
    If fails: Report which deliverable could not be produced and why; retry that
@@ -228,5 +228,5 @@ preferred_model=smart
   derate handling, SF and U1 rules, seasonal derating, net vs. gross, Period
   Hours, and time-accounting balance.
 - references/thresholds-and-deadlines.md: mandatory reporting thresholds,
-  submission deadlines, and the authoritative sources to verify them (Rule 0).
+  submission deadlines, and the authoritative sources to verify them (Rule 1).
 </Resources>

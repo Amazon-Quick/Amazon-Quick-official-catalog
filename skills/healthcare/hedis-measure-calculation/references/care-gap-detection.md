@@ -1,3 +1,9 @@
+---
+description: "Python code that detects open care gaps across a population and ranks them by a priority score blending star weight and member risk."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Care Gap Detection
 
 Detect open care gaps across a population and rank them by a priority score that blends star weight and member risk.

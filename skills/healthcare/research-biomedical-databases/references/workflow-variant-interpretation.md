@@ -1,3 +1,9 @@
+---
+description: "Step-by-step workflow the skill follows to interpret genetic variant pathogenicity, clinical significance, and population frequency using ClinVar and related sources."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Workflow: Variant Interpretation
 
 Use this workflow when a user asks about variant pathogenicity, clinical significance, population frequencies, or functional impact of genetic variants.

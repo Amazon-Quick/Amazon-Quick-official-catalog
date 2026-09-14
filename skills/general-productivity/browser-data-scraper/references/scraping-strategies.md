@@ -1,3 +1,9 @@
+---
+description: "Prioritized HTML traversal strategies the skill uses to page through static content fetched with url_fetch, including fallback ordering."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Traversal Strategies
 
 This skill reads static HTML through the url_fetch tool. It cannot run a browser or

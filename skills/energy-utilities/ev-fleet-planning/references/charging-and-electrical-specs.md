@@ -1,3 +1,9 @@
+---
+description: "Engineering reference for EV charger sizing, coincident demand modeling, distribution transformer capacity, and SAE J1772/CCS charging specifications."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Charging and Electrical Specifications
 
 Engineering reference for sizing chargers, modeling coincident demand, and assessing

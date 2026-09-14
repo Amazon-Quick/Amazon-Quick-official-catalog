@@ -4,7 +4,7 @@ display_name: Research Paper Digest
 icon: "📄"
 description: "Read and condense academic research papers into layered, audience-adaptive summaries. Handles local PDFs, preprint repository URLs, and DOIs. Produces structured output calibrated to reader expertise (expert, adjacent, executive) at configurable depth (tldr, executive, full). Use when asked to 'read this paper', 'summarize this paper', 'condense this paper', 'digest this paper', 'what does this paper say', 'break down this paper', 'explain this paper', 'paper summary', 'TLDR this paper', 'analyze this paper', 'review this paper', or 'parse this paper'."
 created_date: "2026-06-11"
-last_updated: "2026-06-11"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [file_read_pdf, run_python, url_fetch, download_file, web_search, file_write, open_in_session_tab]
 inputs:
@@ -22,7 +22,7 @@ inputs:
     type: choice
     options: [tldr, executive, full]
     default: full
-checksum: "sha256:26af72ccacacf03d9951dfe91afe98ec51d78865d8e238a1ae171a0d0b5ded76"
+checksum: "sha256:7461fa11b14b89cfd4e1af13fc6c247cd72d1059dd4ae92d8fa0e1d553e700a0"
 ---
 
 ## Overview

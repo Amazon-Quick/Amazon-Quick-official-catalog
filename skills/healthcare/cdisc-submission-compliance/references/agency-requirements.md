@@ -1,3 +1,9 @@
+---
+description: "Reference on agency-specific submission format differences and controlled terminology version policy for FDA, PMDA, and other agencies."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Agency Submission Differences and Controlled Terminology Rules
 
 Use for agency-specific submission format questions and controlled terminology (CT)

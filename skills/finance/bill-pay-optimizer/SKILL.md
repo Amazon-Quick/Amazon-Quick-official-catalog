@@ -4,9 +4,10 @@ display_name: Bill Pay Optimizer
 icon: "💳"
 description: "Shows all upcoming bills from QuickBooks, optimizes payment timing against cash position, flags early-pay discounts, and prepares a prioritized, ready-to-pay plan for the owner to action. Read-only: it never moves money or changes anything in QuickBooks. Use when asked 'what bills do I need to pay', 'what's due this week', 'which bills can wait', 'can I afford my bills', 'optimize my payments', 'what's my cash position after bills', 'bill pay', 'vendor payments', or any request to plan accounts payable."
 created_date: "2026-06-04"
-last_updated: "2026-06-07"
+last_updated: "2026-09-13"
 license: "MIT-0"
-depends-on: [quickbooks, gmail, outlook, google-calendar, slack, agent_management, memory_management]
+tools: [gmail, google-calendar, outlook, quickbooks, slack]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: cash_buffer
     description: "Minimum bank balance the owner never wants to drop below when scheduling payments (e.g., '5000')"
@@ -24,7 +25,7 @@ inputs:
     type: string
     required: false
     default: "08:00"
-checksum: "sha256:ebec757b43356741be908f522b42af8967e74cae305754ea3492312e436dd36e"
+checksum: "sha256:dc36306864ca7dd84b7e56359470dee6c5b036f081dd0ac7ed45dd1101cefbda"
 ---
 
 ## Overview
@@ -186,7 +187,7 @@ triggers=["what bills do I need to pay", "what's due this week", "which bills ca
     - Otherwise (no watch AND no recorded decision): continue to step 16.
 
 16. [Ask user] Offer once, before ending: "Want me to watch your bills and alert you 3 days before anything is due, every morning at {{alert_time}}?"
-    - If the owner declines: acknowledge and record the decision plainly so future runs do not re-ask (e.g. "Noted: the owner declined automatic bill-due alerts on {{date}}.").
+    - If the owner declines: acknowledge and record the decision plainly so future runs do not re-ask (e.g. "Noted: the owner declined automatic bill-due alerts on the current date.").
     - If the owner accepts: create the watch with agent_management `create_scheduled_agent` - schedule_type "time_of_day", schedule_time {{alert_time}} (owner-local), no condition, tool_policy = read-only QuickBooks plus `update_feed` at importance "important"; prompt = check open bills and alert on any due within the next 3 days that are not yet scheduled for payment. Then confirm in plain language when and where it runs and how to cancel it (Settings, Scheduled tasks). The created schedule is the durable record of acceptance; step 15 detects it next time.
     Validate: either the decline was recorded, or a scheduled watch was created and confirmed.
     If fails: Report that the alert could not be set up, and leave the on-demand plan in place.
@@ -198,6 +199,7 @@ triggers=["what bills do I need to pay", "what's due this week", "which bills ca
 <Templates>
 
 <Template - Bill Plan>
+```markdown
 # Bill Pay Plan - {{date}}
 
 {{staleness_warning_if_any}}
@@ -229,6 +231,7 @@ triggers=["what bills do I need to pay", "what's due this week", "which bills ca
 {{email_scan_status_and_new_invoices}}
 
 <small>Scope: QuickBooks Bills only. Payroll, owner draws, and auto-debits not entered as bills are NOT included, so this is a bills-only check, not a full cash forecast. This tool does not pay anyone and changes nothing in QuickBooks - you pay through your bank or each vendor's portal.</small>
+```
 </Template - Bill Plan>
 
 </Templates>

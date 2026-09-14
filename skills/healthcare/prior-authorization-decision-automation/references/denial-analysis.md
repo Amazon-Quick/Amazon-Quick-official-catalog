@@ -1,3 +1,9 @@
+---
+description: "A pandas-based script the skill uses to analyze prior authorization denial patterns and identify systemic documentation or policy gaps across a book of decisions."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Denial Reason Analysis
 
 Denial pattern analysis identifies systemic documentation or policy gaps across a book

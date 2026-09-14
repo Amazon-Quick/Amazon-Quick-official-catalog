@@ -1,3 +1,9 @@
+---
+description: "On-demand reference detailing the Second Opinion Council workflow, including the post-Stage 1 pairwise diversity measurement algorithm."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Workflow Details
 
 Reference material for the Second Opinion Council skill. Loaded on demand during execution, not at activation.

@@ -4,7 +4,7 @@ display_name: Teach Me
 icon: "🧠"
 description: "Generate interactive click-through quizzes from documents, web pages, or web research. Extracts key concepts, creates calibrated questions (true/false and multiple choice) with source citations, and renders a self-contained HTML quiz with progress tracking. Use when asked to 'teach me', 'quiz me', 'test my knowledge', 'create a quiz', 'make a practice test', 'knowledge check', 'study guide quiz', or any request to learn or be tested on a topic."
 created_date: "2026-06-08"
-last_updated: "2026-06-08"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [get_current_time, file_read, file_read_pdf, file_read_docx, file_read_pptx, file_write, open_in_session_tab, run_javascript, run_python, web_search, url_fetch, deep_analysis_execute, generate_image]
 inputs:
@@ -43,7 +43,7 @@ inputs:
   type: choice
   options: [soft-pastel, ocean-breeze, warm-earth, minimal-clean, amazon-quick]
   required: false
-checksum: "sha256:f49e7b70d40f83334c4c3aa054a403146e4d6f0ba3d84beb6bcd15e27a894143"
+checksum: "sha256:157911fa0ab618ed77c41078b5c9f96d1099536c94260bc559021e1908dd878e"
 ---
 
 ## Overview
@@ -120,7 +120,7 @@ Workflow steps use these prefixes:
 - The HTML artifact must use inline styles and scripts only. External CDN links will not load in the session tab viewer.
 - file_read_pdf and file_read_docx may truncate large documents. Use the offset/next_offset pattern to read the full content. Do not generate questions from only the first page.
 - deep_analysis_execute returns structured research but the source URLs must be extracted from its output and re-fetched via url_fetch for verbatim citation snippets.
-- The session tab HTML viewer has a white background by default. Design the quiz with sufficient contrast.
+- Important, the session tab HTML viewer has a white background by default. Design the quiz with sufficient contrast.
 - run_javascript has access to the 'fs' module for writing files. Use WORKSPACE_DIR for paths.
 - True/false questions where the statement is true are easier to write but create a bias. Aim for roughly 50/50 true vs. false correct answers.
 - Blob URLs (URL.createObjectURL) do not work in the session tab iframe sandbox. However, window.print() works when the user opens the HTML file directly in a browser. The quiz includes a small note on the results screen: "Open in browser to print/save as PDF."

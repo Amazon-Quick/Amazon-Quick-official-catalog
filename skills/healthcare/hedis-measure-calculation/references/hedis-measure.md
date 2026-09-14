@@ -1,3 +1,9 @@
+---
+description: "Generic Python HEDIS measure rate calculator plus a SQL example for Comprehensive Diabetes Care HbA1c testing the skill uses to compute rates."
+last_updated: 2026-09-13
+origin: original
+---
+
 # HEDIS Measure Rate Calculation
 
 Compute a measure rate as numerator over eligible denominator, after removing exclusions. The Python calculator is generic across measures; the SQL example shows a full measure (Comprehensive Diabetes Care HbA1c testing).

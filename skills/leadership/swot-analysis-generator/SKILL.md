@@ -6,7 +6,7 @@ description: "Generates structured SWOT (Strengths, Weaknesses, Opportunities, T
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_write, file_read, run_python, web_search, url_fetch, open_in_session_tab]
 inputs:
 
@@ -28,7 +28,7 @@ inputs:
   type: boolean
   required: false
   default: true
-checksum: "sha256:0a060d4eb82856ca0b2cd6908253b067ff1b3c396420d2e1134904e283015cef"
+checksum: "sha256:2dab83b55ee01aabf0b1be40d573fc5140bc1bff5f8c0aecfe02f5149bbe18bb"
 ---
 
 ## Overview
@@ -105,11 +105,13 @@ Workflow steps use these prefixes:
 
 <Workflow - SWOT Analysis
 description="End-to-end SWOT analysis generation flow."
+tools=[file_write, file_read, web_search, url_fetch, open_in_session_tab]
 triggers=["do a SWOT analysis", "SWOT for this project", "strategic assessment", "strengths and weaknesses of", "competitive positioning analysis"]
 
 >
 
 1. [Ask user] Confirm the subject, analysis type, and scope. If the subject is ambiguous (e.g., "our product" without specifying which one), ask for clarification. Confirm whether the user wants a full deliverable (quadrants + TOWS + action plan) or a focused quadrant-only output.
+   If fails: if the subject remains ambiguous after asking, request a specific name or description and do not proceed until the scope is confirmed.
 
 2. [Decide] Check whether context documents were provided.
    - If yes: Read and extract relevant strategic data, metrics, and positioning statements.
@@ -122,12 +124,15 @@ triggers=["do a SWOT analysis", "SWOT for this project", "strategic assessment",
 4. [Think] Synthesize all gathered information. For each potential SWOT item, determine: (a) which quadrant it belongs to based on internal/external and positive/negative classification, (b) what evidence supports it, (c) whether it is a fact or an inference. Discard items that lack any supporting evidence. Ensure each quadrant has 3-8 items. If a quadrant has fewer than 3, note the gap and ask the user for additional context on that dimension.
 
 5. [Agent] Construct the numbered SWOT quadrants. Each item follows the format: "S1. [Item statement] (Evidence: [source or basis])". Mark inferences with "[Inferred]". Validate that all S/W items are internal and all O/T items are external per Rule 4.
+   If fails: if any item cannot be classified as clearly internal or external, present it to the user and ask which quadrant it belongs to before continuing.
 
 6. [Think] Generate combination strategies by systematically pairing internal items with external items across all four strategy types (SO, WO, ST, WT). Each strategy must reference at least one specific item from each paired quadrant. Evaluate each candidate strategy for strategic coherence and discard any that are logically weak or redundant. Aim for 2-4 strategies per combination type.
 
 7. [Agent] Build the TOWS Matrix and prioritized action plan. Rank each action by strategic impact (high/medium/low) and feasibility (high/medium/low). Suggest ownership category (executive, team lead, individual contributor) and timeframe (immediate: 0-30 days, short-term: 1-3 months, medium-term: 3-12 months).
+   If fails: if a strategy cannot be traced to specific numbered items, drop it and note the gap rather than including an ungrounded strategy.
 
 8. [Agent] Assemble the full deliverable using the SWOT Deliverable template. Save to file and present in the session tab for review.
+   If fails: report the specific write or display error to the user and offer the deliverable inline instead.
 
 </Workflow - SWOT Analysis>
 
@@ -136,6 +141,7 @@ triggers=["do a SWOT analysis", "SWOT for this project", "strategic assessment",
 <Templates>
 
 <Template - SWOT Deliverable>
+```markdown
 # SWOT Analysis: {{subject}}
 
 **Analysis Type:** {{analysis_type}}
@@ -209,6 +215,7 @@ T3. [Statement] (Evidence: [source])
 - [List key assumptions made during analysis]
 - [Note any data gaps or areas where user validation is needed]
 - [Flag stale sources if applicable]
+```
 </Template - SWOT Deliverable>
 
 </Templates>

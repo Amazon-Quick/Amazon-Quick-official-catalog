@@ -1,3 +1,9 @@
+---
+description: "Reference data on Medicare National and Local Coverage Determinations and the master coverage decision tree that the skill applies to CMS prior authorization questions."
+last_updated: 2026-09-13
+origin: original
+---
+
 # CMS Coverage Determinations
 
 Reference data for Medicare National Coverage Determinations (NCD) and Local Coverage

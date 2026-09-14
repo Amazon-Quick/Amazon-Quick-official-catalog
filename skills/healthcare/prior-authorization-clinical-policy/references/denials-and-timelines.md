@@ -1,3 +1,9 @@
+---
+description: "Reference data on denial reason categories, turnaround times, quantity limits, site-of-care logic, and PA reform milestones that the skill applies to prior authorization decisions."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Denial Codes, Turnaround Times, and PA Reform
 
 Reference data for denial reason categories, turnaround requirements, quantity limits,

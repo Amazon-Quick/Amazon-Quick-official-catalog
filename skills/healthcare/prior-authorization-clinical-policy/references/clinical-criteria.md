@@ -1,3 +1,9 @@
+---
+description: "Reference data on medical necessity assessment and step therapy evaluation criteria that the skill applies to prior authorization determinations."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Clinical Criteria and Step Therapy
 
 Reference data for medical necessity assessment and step therapy evaluation. Apply

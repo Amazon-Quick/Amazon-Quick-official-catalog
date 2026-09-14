@@ -4,9 +4,10 @@ display_name: OOO Setup
 icon: "🏖️"
 description: "Automates full out-of-office setup: meeting conflict resolution, calendar invites with smart recipient discovery, messaging status, email auto-reply drafts, and signature updates. Use when asked to 'set up out of office', 'going on PTO', 'set OOO', 'taking time off', 'going on leave', 'block my calendar for vacation', 'notify team about time off', or any request to prepare for upcoming leave."
 created_date: "2026-06-02"
-last_updated: "2026-06-02"
+last_updated: "2026-09-13"
 license: "MIT-0"
-depends-on: [outlook, gmail, slack, teams]
+tools: [outlook, slack, teams]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 
 - name: start_date
@@ -30,7 +31,7 @@ inputs:
   description: "Name(s) of the person(s) covering while you're out. Supports multiple contacts, e.g., 'Alex for urgent, Sam for project X'"
   type: string
   required: false
-checksum: "sha256:ba142f15dd1572d351882fa654ab3b01f18108a3ee6a9e1d2d8e83e6a84ada4b"
+checksum: "sha256:f949ace9f4c6dac392c214f977ff5657ec04ed14024cf7c5fbe691480611f001"
 ---
 
 ## Overview
@@ -105,13 +106,16 @@ Workflow steps use these prefixes:
 
 <Workflow - OOO
 description="End-to-end OOO setup flow."
+tools=[outlook, slack, teams]
 triggers=["set up out of office", "going on PTO", "set OOO", "taking time off", "going on leave", "block my calendar for vacation"]
 
 >
 
 1. [Agent] Determine today's date and the user's identity (name, email, timezone) from the connected messaging platform or knowledge graph. If lookup fails, ask the user directly.
+   If fails: If automatic lookup returns nothing, ask the user to supply their name, work email, and timezone before continuing.
 
 1. [Ask user] Gather any missing inputs: dates, backup contact, leave type. If no custom OOO message was provided, draft one using the OOO Message template. Present the full summary (dates, type, backup, message draft) for confirmation.
+   If fails: If the user does not confirm or leaves required dates missing, re-ask for the missing details and do not proceed until dates are provided.
 
 1. [Decide] Per Rule 10, either confirm the inferred action selection or present the core actions:
 
@@ -121,17 +125,22 @@ triggers=["set up out of office", "going on PTO", "set OOO", "taking time off", 
      Only offer email auto-reply and signature update if the user asks for them or if the conversation naturally reaches that point.
 
 1. [Agent] Look at the user's calendar history from the past 3 weeks. Count how frequently each person appears as an attendee, excluding the user themselves and room/resource addresses. Group into tiers per the Recipient Tiers definition. Flag external domains as Tier 4.
+   If fails: If calendar history cannot be read, tell the user and ask them to name the people to notify manually.
 
 1. [Agent] Search the knowledge graph for the user's frequent collaborators, including relationship edges, to surface people they communicate with often via messaging who may not appear on the calendar.
+   If fails: If the knowledge graph is unavailable, skip this enrichment and continue with the calendar-derived list only.
 
 1. [Think] Evaluate the combined list. Merge duplicates, verify external vs. internal classification. If total exceeds 20, prepare the volume warning per Rule 8.
 
 1. [Ask user] Present the tiered list with counts. Separate internal from external. Ask which tiers to include or let them pick individuals. Do not proceed without explicit approval.
+   If fails: If the user does not make a selection, re-present the tiered list and ask them to choose tiers or individuals before continuing.
 
 1. [Agent] Look at the user's calendar during the leave period. Pull all meetings where they are an attendee or organizer. Categorize each: meetings they organized vs. meetings they're invited to, recurring vs. one-time.
+   If fails: If the leave-period calendar cannot be retrieved, report the error and ask the user to list the meetings to handle manually.
 
 1. [Ask user] Present meetings grouped by category with counts. Propose batch actions: "Decline all meetings you're invited to?" and "Cancel or delegate the N meetings you organized?" Let the user approve the batch or switch to per-meeting decisions for finer control.
    Validate: User approves a batch decision or provides per-meeting choices.
+   If fails: If no clear choice is given, re-present the grouped meetings and ask the user to approve a batch action or decide per meeting.
 
 1. [Agent] Execute per Rule 11:
 
@@ -142,6 +151,7 @@ triggers=["set up out of office", "going on PTO", "set OOO", "taking time off", 
 
 1. [Ask user] Show the final invite: subject, date span, full recipient list, and confirm it will show the user as available (not blocking anyone's calendar). Warn about the notification count. Wait for explicit go-ahead.
    Validate: Explicit approval received.
+   If fails: If approval is not given, revise the invite details per the user's feedback and re-present before sending anything.
 
 1. [Agent] Create the OOO calendar event:
 
@@ -156,6 +166,7 @@ triggers=["set up out of office", "going on PTO", "set OOO", "taking time off", 
 1. [Decide] Per Rule 3, if leave is more than 1 day away, ask whether to set status now or get a reminder on the start date.
 
 1. [Ask user] Confirm the messaging status details: text, emoji, and when it should auto-clear (9:00 AM on the return date in the user's timezone).
+   If fails: If the user does not confirm the status details, re-ask for the status text, emoji, and clear time before setting anything.
 
 1. [Decide] Which messaging platform is connected?
 
@@ -164,18 +175,23 @@ triggers=["set up out of office", "going on PTO", "set OOO", "taking time off", 
      If fails: Provide text to paste manually.
 
 1. [Ask user] Confirm: date-bounded period, message content, whether to include external senders.
+   If fails: If confirmation is not received, re-ask the user to confirm the dates, message, and external-sender choice before drafting the auto-reply.
 
 1. [Agent] Email auto-reply cannot be automated. Provide:
 
    - The formatted message
    - Instructions: Outlook (Settings > Mail > Automatic replies) or Gmail (Settings > Vacation responder)
      If user wants a reference copy, save as email_draft.
+     If fails: If the reference copy cannot be saved, present the auto-reply text and setup instructions inline for the user to apply manually.
 
 1. [Agent] Draft: "Upcoming OOO: Out of office {{start_date}} - {{end_date}}. For urgent matters, contact {{backup_contact}}."
+   If fails: If drafting fails, provide the signature text directly to the user to copy manually.
 
 1. [Ask user] Present the signature text and instruct to append temporarily. Remind to remove on return.
+   If fails: If the user has questions or does not acknowledge, restate the signature text and the reminder to remove it on return.
 
 1. [Agent] Present status of each action: completed, skipped, or manual fallback provided.
+   If fails: If any action's status is unknown, list those actions explicitly and ask the user to verify them.
 
 </Workflow - OOO>
 

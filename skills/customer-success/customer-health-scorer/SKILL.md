@@ -6,7 +6,7 @@ description: "Computes multi-dimensional customer health scores across usage, en
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_read, file_write, run_python, open_in_session_tab, query_dataset, list_qa_resources, search_relevant_content, read_quick_suite_file]
 inputs:
 
@@ -26,7 +26,7 @@ inputs:
   options: [usage, engagement, support, relationship, commercial]
   required: false
   default: [usage, engagement, support, relationship, commercial]
-checksum: "sha256:c3dfe7c620809c016e453ba98ab6744925f147d880e27ce654590cdca9656316"
+checksum: "sha256:ba7d689cd2c008ff28568f9ac75a5f3819bd28f85a2420e3af44b0d999fdaba0"
 ---
 
 ## Overview
@@ -151,6 +151,7 @@ triggers=["score customer health", "account health check", "which customers are 
 <Templates>
 
 <Template - Health Scorecard>
+```markdown
 # Customer Health Scorecard
 
 **Generated:** {{date}}
@@ -197,6 +198,7 @@ For each account, show individual dimension scores:
 - Dimension weights ({{segment}}): Usage {{usage_wt}}%, Engagement {{engagement_wt}}%, Support {{support_wt}}%, Relationship {{relationship_wt}}%, Commercial {{commercial_wt}}%
 - Classification thresholds: Healthy above 75, At-Risk 40-75, Critical below 40
 - Trend calculation: Period-over-period comparison where historical data exists
+```
 </Template - Health Scorecard>
 
 </Templates>

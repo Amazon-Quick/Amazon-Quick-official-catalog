@@ -1,3 +1,9 @@
+---
+description: "Guidance for assembling the battery storage pro-forma and computing NPV, IRR, payback, and LCOS returns implemented in scripts/financial.py."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Financial Model
 
 How to assemble the pro-forma and compute returns. Read this during the financial

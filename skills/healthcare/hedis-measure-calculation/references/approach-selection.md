@@ -1,3 +1,9 @@
+---
+description: "Decision table mapping HEDIS calculation scenarios to the recommended language and code shape before implementation."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Approach Selection
 
 Scenario-to-approach guidance. Use it to pick the language and shape of the code before reading the task reference.

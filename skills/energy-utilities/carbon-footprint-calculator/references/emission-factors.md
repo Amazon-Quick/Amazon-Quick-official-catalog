@@ -1,3 +1,9 @@
+---
+description: "Reference emission factors, IPCC global warming potential values, and calculation formulas with cited provenance for the carbon footprint calculator."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Emission Factors, GWP Values, and Calculation Formulas
 
 Rule 0 governs this file: **do not treat any numeric value below as current without

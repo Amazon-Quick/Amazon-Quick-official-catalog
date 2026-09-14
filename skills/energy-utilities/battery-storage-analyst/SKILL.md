@@ -3,11 +3,11 @@ name: battery-storage-analyst
 display_name: Battery Storage Analyst
 icon: "🔋"
 description: "Size battery energy storage systems, model lithium-ion degradation, co-optimize revenue streams, and build degradation-adjusted financial pro-formas. Use when asked to 'size a battery', 'model BESS degradation', 'optimize battery dispatch', 'run a storage pro-forma', 'evaluate peak shaving', 'analyze energy arbitrage', 'model solar plus storage', or any battery energy storage sizing, dispatch, or investment analysis."
+readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, run_python, run_python_with_write, open_in_session_tab]
-depends-on: [canvas_xlsx, canvas_pdf, highcharts, html_design]
 scripts: [rainflow.py, degradation.py, financial.py]
 inputs:
   - name: load_data_path
@@ -28,7 +28,7 @@ inputs:
     description: "Directory where deliverables (pro-forma, charts, summary) are written."
     type: path
     required: false
-checksum: "sha256:102b12ad53e472d226eab0eb07b1356b47e929bc86b22ebea1398eddfdd2aaa9"
+checksum: "sha256:268e8fe458ce36dbe15b2e08652b62e5d8b0d955a13b7d92e9e71da60ba7acd8"
 ---
 
 ## Overview
@@ -55,23 +55,23 @@ Deliver a sized, dispatch-optimized, and financially validated storage recommend
 </Definitions>
 
 <Rules>
-0. NEVER GUESS OR FABRICATE VALUES. This is Rule Zero and overrides all other rules.
+1. NEVER GUESS OR FABRICATE VALUES. This is Rule 1 and overrides all other rules.
    - Before using any numeric value (emission factor, price, rate, tax parameter, coefficient, benchmark, regulatory limit), verify it against an authoritative source with web_search or url_fetch. Sources are listed in references/data-sources.md.
    - If a value changes over time (grid rates, market prices, technology costs, incentive percentages, fleet benchmarks), fetch it at runtime. Do not treat any value written in this skill as current without verification; the parameter ranges in the reference files are for orientation, not for use as-is.
    - If a value cannot be verified from a live source and the user has not provided it, state plainly: "I cannot verify [value] from [expected source]. Please provide or confirm before I proceed."
    - Only these count as valid sources: data the user supplied, values fetched from an authoritative source this session, or stable physical constants and mathematical formulas (gas constant, Arrhenius and Arps forms, unit conversions). Model training knowledge is never a valid source for a numeric value.
-1. This skill produces informational engineering and financial estimates, not professional advice. Recommend the user have outputs reviewed by a licensed professional engineer for system design and by a qualified financial or investment advisor before any investment, interconnection, or procurement decision. State this in every deliverable.
-2. Never size a battery for demand-charge applications without at least 12 months of load data at the true metering interval. For arbitrage-only work, hourly locational marginal price (LMP) data is acceptable.
-3. Always model degradation. A pro-forma without capacity fade is fiction.
-4. Apply round-trip efficiency to every charge cycle; use the chemistry default from Definitions unless the user provides a measured value.
-5. Demand charges use the single highest true-interval reading in the billing period. Never average demand.
-6. State of charge must respect min and max bounds. Defaults: 10 to 90 percent for NMC, 5 to 95 percent for LFP, unless the user specifies otherwise.
-7. Calendar aging accumulates whether or not the battery cycles. It does not pause when idle.
-8. Revenue stacking requires co-optimization. Sequential per-stream optimization overstates total revenue by roughly 15 to 40 percent.
-9. Model augmentation for any project beyond 10 years.
-10. All financial outputs use nominal dollars unless explicitly stated otherwise. Discount at the weighted average cost of capital (WACC), not cost of equity alone.
-11. Cite degradation parameters with their source (datasheet, published literature, or test data) in the deliverable.
-12. Do not claim to run a linear or mixed-integer program. The sandbox has no solver; use the numpy-based methods in references/sizing-and-dispatch.md and say so.
+2. This skill produces informational engineering and financial estimates, not professional advice. Recommend the user have outputs reviewed by a licensed professional engineer for system design and by a qualified financial or investment advisor before any investment, interconnection, or procurement decision. State this in every deliverable.
+3. Never size a battery for demand-charge applications without at least 12 months of load data at the true metering interval. For arbitrage-only work, hourly locational marginal price (LMP) data is acceptable.
+4. Always model degradation. A pro-forma without capacity fade is fiction.
+5. Apply round-trip efficiency to every charge cycle; use the chemistry default from Definitions unless the user provides a measured value.
+6. Demand charges use the single highest true-interval reading in the billing period. Never average demand.
+7. State of charge must respect min and max bounds. Defaults: 10 to 90 percent for NMC, 5 to 95 percent for LFP, unless the user specifies otherwise.
+8. Calendar aging accumulates whether or not the battery cycles. It does not pause when idle.
+9. Revenue stacking requires co-optimization. Sequential per-stream optimization overstates total revenue by roughly 15 to 40 percent.
+10. Model augmentation for any project beyond 10 years.
+11. All financial outputs use nominal dollars unless explicitly stated otherwise. Discount at the weighted average cost of capital (WACC), not cost of equity alone.
+12. Cite degradation parameters with their source (datasheet, published literature, or test data) in the deliverable.
+13. Do not claim to run a linear or mixed-integer program. The sandbox has no solver; use the numpy-based methods in references/sizing-and-dispatch.md and say so.
 </Rules>
 
 <Agent Annotations>
@@ -105,7 +105,7 @@ preferred_model=smart
 
 0. [Agent] Call get_current_time, then identify every time-sensitive value the analysis will need (tariff and demand charges, market prices, technology costs, incentive percentages, LCOS benchmark, cell parameters). For each, fetch the current value from the source in references/data-sources.md using web_search or url_fetch.
    Validate: Every time-sensitive value has a verified source fetched this session or supplied by the user.
-   If fails: Stop and ask the user to provide or confirm the value. Do not proceed with an unverified value (Rule 0).
+   If fails: Stop and ask the user to provide or confirm the value. Do not proceed with an unverified value (Rule 1).
 
 1. [Agent] Ingest and validate the load profile. Read {{load_data_path}} (CSV or XLSX, timestamp plus kW) with pandas via run_python. Compute peak demand, load factor, and daily and monthly patterns. Flag gaps over one hour.
    Validate: At least 12 months at the true metering interval for demand-charge work, or hourly LMP data for arbitrage-only; gaps identified and either interpolated or excluded.
@@ -131,7 +131,7 @@ preferred_model=smart
    Validate: NPV, IRR, simple and discounted payback, and LCOS are computed, and the sensitivity table is present. LCOS is compared against the current Lazard benchmark.
    If fails: Report partial results and name the missing verified input.
 
-7. [Agent] Produce deliverables in {{output_dir}} (ask the user for the location if not set): an executive summary (canvas_pdf) with the recommended size, revenue, NPV, IRR, and payback; a year-by-year pro-forma (canvas_xlsx); and charts (highcharts with html_design) for the degradation curve with augmentation trigger, the revenue waterfall by stream, and a sample dispatch week. Include the Rule 1 disclaimer and cited sources in each deliverable. Open each with open_in_session_tab.
+7. [Agent] Produce deliverables in {{output_dir}} (ask the user for the location if not set): an executive summary (canvas_pdf) with the recommended size, revenue, NPV, IRR, and payback; a year-by-year pro-forma (canvas_xlsx); and charts (highcharts with html_design) for the degradation curve with augmentation trigger, the revenue waterfall by stream, and a sample dispatch week. Include the Rule 2 disclaimer and cited sources in each deliverable. Open each with open_in_session_tab.
    Validate: Every deliverable exists at its path, carries the disclaimer and source citations, and is opened for the user.
    If fails: Deliver whatever is complete, list what is missing and why, and open the completed files.
 
@@ -143,8 +143,10 @@ preferred_model=smart
 - references/sizing-and-dispatch.md: peak-shaving sizing, revenue-stacking dispatch, and solar plus storage, with the sandbox no-solver method.
 - references/degradation-model.md: calendar and cycle aging equations, parameter ranges, validation checks, and augmentation.
 - references/financial-model.md: cash-flow assembly, revenue-stream formulas, incentives, sensitivity, and benchmarking.
-- references/data-sources.md: authoritative sources to verify every time-sensitive value under Rule 0.
+- references/data-sources.md: authoritative sources to verify every time-sensitive value under Rule 1.
 - scripts/rainflow.py: ASTM E1049-85 four-point rainflow cycle counting on an SOC series.
 - scripts/degradation.py: calendar (Arrhenius) plus cycle (Palmgren-Miner) capacity-fade functions.
 - scripts/financial.py: NPV, IRR, payback, and LCOS without numpy_financial.
+- Unit tests (scripts/tests/unit/test_rainflow.py, scripts/tests/unit/test_degradation.py, scripts/tests/unit/test_financial.py) provide filesystem-free coverage of the scripts. Run them with `PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"`.
+
 </Resources>

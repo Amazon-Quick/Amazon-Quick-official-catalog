@@ -1,3 +1,8 @@
+---
+description: "Reference detail for the Nolte-Smith pressure and G-function fracture diagnostics workflows, defining net fracturing pressure equations and log-log propagation mode interpretation."
+last_updated: 2026-09-13
+origin: original
+---
 # Fracture Treatment Diagnostics
 
 Reference detail for the Nolte-Smith and G-function workflows. Read the relevant

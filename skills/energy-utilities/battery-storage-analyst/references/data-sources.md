@@ -1,3 +1,9 @@
+---
+description: "Authoritative live data sources for verifying time-sensitive battery storage inputs such as utility tariffs and demand-charge rates before use."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Authoritative Data Sources
 
 Per Rule 0, every time-sensitive value must be verified against a live source in

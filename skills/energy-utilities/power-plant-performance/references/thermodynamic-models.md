@@ -1,3 +1,8 @@
+---
+description: "Thermodynamic model and ambient correction reference for cycle modeling and heat rate workflows, including the sandbox constraint on sourcing steam-table properties."
+last_updated: 2026-09-13
+origin: original
+---
 # Thermodynamic Models and Ambient Corrections
 
 Formula and code reference for the cycle modeling and heat rate workflows.

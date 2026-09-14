@@ -1,3 +1,9 @@
+---
+description: "SQL example computing utilization per 1000 members for emergency department visits, inpatient admissions, and 30-day readmissions."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Utilization Rate Computation
 
 Compute utilization per 1000 members for emergency department visits, inpatient admissions, and 30-day readmissions.

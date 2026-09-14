@@ -6,7 +6,7 @@ description: "Creates, tracks, and reports on team and organizational goals acro
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_write, file_read, run_python, open_in_session_tab]
 inputs:
 
@@ -33,7 +33,7 @@ inputs:
   description: "Team or org name the goals belong to (e.g., 'Platform Engineering', 'Customer Success'). Defaults to the user's team if detectable."
   type: string
   required: false
-checksum: "sha256:2179895aa0dfbc90f1f949491697a16ab3b576310a459782dae7378ed11fe67a"
+checksum: "sha256:c0216144760a3f09a2b2cadac321756b8bd4f5b6893cfbd86386e6e3e10d9db8"
 ---
 
 ## Overview
@@ -136,6 +136,7 @@ triggers=["create goals", "create OKRs", "set up KPIs", "goal check-in", "score 
 >
 
 1. [Agent] Determine today's date and the current period. If the user provided a period input, validate it. If not, infer the current or upcoming quarter/half/year based on the date and confirm with the user.
+   If fails: ask the user to state the target period explicitly (for example '2026-Q3') and do not proceed until it is confirmed.
 
 2. [Decide] Is a framework specified?
    - Yes: Proceed with that framework's structure and terminology.
@@ -147,14 +148,18 @@ triggers=["create goals", "create OKRs", "set up KPIs", "goal check-in", "score 
    - report: proceed to step 8.
 
 4. [Ask user] Gather context for goal creation. If a goals_file was provided (strategy doc, prior goals, planning notes), read it and extract themes. Ask the user to confirm the team name, the number of top-level goals they want, and whether they distinguish committed from aspirational (if the framework supports it).
+   If fails: re-ask for the missing details one at a time (team name, number of top-level goals, committed versus aspirational) until each is provided.
 
 5. [Think] Draft the goal set using the appropriate framework structure. Validate each goal against the Goal Quality Criteria. For OKRs: ensure Objectives are qualitative and Key Results are quantitative. For KPIs: ensure each has a baseline, target, and threshold. Assign stable IDs. Present the draft to the user for review. Iterate until approved, then save using the appropriate template.
 
 6. [Ask user] For scoring, load the existing goals document from goals_file. Present each measurable goal one at a time and ask the user for the current metric value or qualitative evidence of progress.
+   If fails: if goals_file is missing or unreadable, report the specific error and ask the user for a valid goals document path before scoring.
 
 7. [Agent] For each goal, calculate the score using the framework's scoring model and the evidence provided. Write a one-sentence justification per Rule 2. Compute rollup scores where applicable. Flag any goal that crosses the at-risk threshold per Rule 4. Save the updated scorecard with the check-in date appended. Do not overwrite prior check-ins per Rule 3.
+   If fails: report which goal could not be scored or saved and stop before overwriting any existing check-in data.
 
 8. [Agent] For reporting, load the goals document (must contain at least one scored check-in). Compute current scores, trends since last check-in, and at-risk items using the framework's scoring model.
+   If fails: if no scored check-in exists, tell the user that reporting requires at least one completed scoring check-in and stop.
 
 9. [Think] Generate the executive scorecard using the appropriate template. Include: period header, overall health summary, per-goal breakdown with scores and trends, at-risk section with recommended actions, and a brief narrative summary. Present to the user for review before finalizing.
 
@@ -165,6 +170,7 @@ triggers=["create goals", "create OKRs", "set up KPIs", "goal check-in", "score 
 <Templates>
 
 <Template - OKR Document>
+```markdown
 # Goals: {{team}} - {{period}}
 ## Framework: Objectives and Key Results (OKRs)
 
@@ -188,9 +194,11 @@ triggers=["create goals", "create OKRs", "set up KPIs", "goal check-in", "score 
 ---
 
 Repeat for each Objective. Replace "TBD" with values during scoring check-ins.
+```
 </Template - OKR Document>
 
 <Template - KPI Dashboard>
+```markdown
 # KPI Tracking: {{team}} - {{period}}
 ## Framework: Key Performance Indicators
 
@@ -209,9 +217,11 @@ Repeat for each Objective. Replace "TBD" with values during scoring check-ins.
 
 Status: Green (on/above target), Amber (between target and red threshold), Red (below red threshold)
 Trend: Improving, Stable, Declining (based on last two check-ins)
+```
 </Template - KPI Dashboard>
 
 <Template - V2MOM Document>
+```markdown
 # V2MOM: {{team}} - {{period}}
 
 **Status:** Active
@@ -242,9 +252,11 @@ Trend: Improving, Stable, Declining (based on last two check-ins)
 |----|---------|----------|--------|---------|----------|
 | M1 | [How we know we succeeded] | [Starting value] | [Target value] | TBD | TBD |
 | M2 | [Measure 2] | [Starting value] | [Target value] | TBD | TBD |
+```
 </Template - V2MOM Document>
 
 <Template - Executive Scorecard>
+```markdown
 # Goal Scorecard: {{team}} - {{period}}
 ## Framework: {{framework_name}}
 
@@ -275,6 +287,7 @@ Trend: Improving, Stable, Declining (based on last two check-ins)
 ## Narrative Summary
 
 [One paragraph synthesizing overall progress, key wins, primary risks, and recommended focus areas for the remainder of the period.]
+```
 </Template - Executive Scorecard>
 
 </Templates>

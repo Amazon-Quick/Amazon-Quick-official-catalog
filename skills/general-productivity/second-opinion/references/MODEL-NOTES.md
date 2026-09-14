@@ -1,3 +1,9 @@
+---
+description: "Evolving operating notes on how to drive each council reviewer tier and model, read before council selection and updated after each run."
+last_updated: 2026-09-13
+origin: original
+---
+
 # MODEL-NOTES: Operating Lessons for Council Reviewers
 
 This file is the second-opinion skill's evolving memory of how to drive each

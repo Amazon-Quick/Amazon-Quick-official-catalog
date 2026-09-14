@@ -6,7 +6,6 @@ description: "Analyzes task and project dependency graphs to identify the critic
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
 tools: [file_read, file_write, run_python, open_in_session_tab]
 inputs:
 
@@ -22,7 +21,7 @@ inputs:
   description: "Project deadline (e.g., '2026-08-15'). Used for schedule risk calculations."
   type: string
   required: false
-checksum: "sha256:96d1af64cd897593305399a5d564c43b9c804913c6d0c320e20c9b1e6e37da4b"
+checksum: "sha256:0376d734e185ed90f2799231b862c467489633d6beb3b482a7a7746e00bb6106"
 ---
 
 ## Overview
@@ -152,6 +151,7 @@ triggers=["find the critical path", "what's blocking this project", "dependency 
 <Templates>
 
 <Template - Critical Path Report>
+```markdown
 # {{project_name}} - Critical Path Analysis
 
 **Source:** {{task_source}}
@@ -176,13 +176,13 @@ triggers=["find the critical path", "what's blocking this project", "dependency 
 
 The following task sequence determines the minimum project duration. Any delay to these tasks delays the project.
 
-```
+~~~
 {{critical_path_ascii}}
 
 Example format:
 [Task A (5d)] > [Task D (3d)] > [Task F (7d)] > [Task H (4d)]
                                                       Total: 19 days
-```
+~~~
 
 | # | Task ID | Task Name | Duration | Early Start | Early Finish |
 |---|---------|-----------|----------|-------------|--------------|
@@ -235,6 +235,7 @@ Status key: CRITICAL = 0 float, AT RISK = float < 10% of project duration, FLEXI
 ---
 
 *Computation script saved to: {{script_path}}*
+```
 </Template - Critical Path Report>
 
 </Templates>

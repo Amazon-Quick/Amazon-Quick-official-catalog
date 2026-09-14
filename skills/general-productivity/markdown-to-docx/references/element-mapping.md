@@ -1,3 +1,9 @@
+---
+description: "Maps every supported markdown element to its Word equivalent with the python-docx code that implements each transformation."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Element Mapping: Markdown to Word
 
 This document maps every supported markdown element to its Word equivalent, including the python-docx code that implements each transformation.

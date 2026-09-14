@@ -1,3 +1,9 @@
+---
+description: "Reference table of default parameter values such as measurement year, gap days, lookback, and percentile used across the skill's HEDIS calculation examples."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Parameter Reference
 
 Default parameter values used across the calculation examples and what they mean.

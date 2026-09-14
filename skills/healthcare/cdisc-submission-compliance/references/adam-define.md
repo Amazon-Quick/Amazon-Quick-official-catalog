@@ -1,3 +1,9 @@
+---
+description: "Reference on ADaM compliance rules, define.xml value-level metadata, and minimum SDTM version requirements by regulatory agency."
+last_updated: 2026-09-13
+origin: original
+---
+
 # ADaM Rules, define.xml Value-Level Metadata, and SDTM Versions
 
 Use for Analysis Data Model (ADaM) compliance, define.xml content planning, and

@@ -1,3 +1,8 @@
+---
+description: "Reference for producing the microgrid single-line diagram, equipment schedule, and islanding transition procedure."
+last_updated: 2026-09-13
+origin: original
+---
 # System Architecture and Islanding
 
 Use this when producing the single-line diagram, the equipment schedule, and

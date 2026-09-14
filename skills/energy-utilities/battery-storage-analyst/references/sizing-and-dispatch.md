@@ -1,3 +1,9 @@
+---
+description: "Guidance for sizing a battery energy storage system and scheduling its charge and discharge using numpy-based deterministic methods in the Quick sandbox."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Capacity Sizing and Dispatch
 
 Guidance for sizing a battery energy storage system (BESS) and scheduling its

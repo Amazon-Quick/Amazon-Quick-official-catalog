@@ -1,3 +1,9 @@
+---
+description: "Decision tree for the non-obvious SDTM domain mappings where teams commonly make mistakes, such as oncology tumor and medication data."
+last_updated: 2026-09-13
+origin: original
+---
+
 # SDTM Domain Mapping Decision Tree
 
 Use for the non-obvious mappings where teams make mistakes. Apply the branch that

@@ -1,3 +1,9 @@
+---
+description: "Python code that validates claims against National Correct Coding Initiative code-pair edits while honoring modifier indicators and edit active date ranges."
+last_updated: 2026-09-13
+origin: original
+---
+
 # NCCI Edit Validation
 
 Validate claims against National Correct Coding Initiative (NCCI) code-pair edits and return

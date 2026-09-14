@@ -6,7 +6,6 @@ description: "Classifies incoming support tickets by category, urgency, and comp
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
 tools: [file_read, file_write, run_python, open_in_session_tab, query_dataset, list_qa_resources, search_relevant_content, read_quick_suite_file]
 inputs:
 
@@ -22,7 +21,7 @@ inputs:
   description: "File path to SLA definitions (JSON or YAML). Maps priority levels to response and resolution time targets. If not provided, the agent uses standard defaults from the Priority Levels definition."
   type: string
   required: false
-checksum: "sha256:ac5aa46dcb90522a641c21c9b55682e079790a4e07162b150f09fce4d6b998a2"
+checksum: "sha256:6499367af5b7908a5333003a304d8668ab34efa26172f128d8b6d33644233d24"
 ---
 
 ## Overview
@@ -119,8 +118,10 @@ triggers=["triage these tickets", "classify support requests", "route this ticke
 >
 
 1. [Agent] Load the tickets source. If tickets_source is a file path, read it using file_read. Detect format (CSV, JSON, or plain text) and parse into a structured list. Each ticket should have at minimum: an ID (or generate a sequential one), submission timestamp, subject or title, body text, and submitter identifier. If the source is pasted text, parse each ticket boundary (look for separators, ticket IDs, or treat the entire block as a single ticket).
+   If fails: If the source cannot be read or parsed (unreadable file, unrecognized format, or empty input), report the specific error to the user and ask them to re-provide the ticket data in a supported format.
 
 2. [Agent] If routing_rules or sla_config files are provided, load and validate them. Confirm required fields are present and parseable. If validation fails, log the specific parsing error and notify the user that defaults will be used. Load default Priority Levels and Escalation Triggers from the Definitions section as fallback.
+   If fails: If a provided file cannot be read at all, report the read error to the user and fall back to the default Priority Levels and Escalation Triggers rather than stopping.
 
 3. [Think] For each ticket, perform classification:
    - Read the full ticket text. Identify the primary issue and any secondary issues.
@@ -134,14 +135,19 @@ triggers=["triage these tickets", "classify support requests", "route this ticke
    - If routing_rules are loaded, match the ticket's category and priority against the rules. Record which rule matched (per Rule 5).
    - If no routing_rules are available, apply default logic: Security tickets go to Security team, Billing to Finance Operations, Bug Reports and Performance to Engineering, Account Access to Identity team, all others to General Support.
    - If no rule matches, mark as "Unrouted" with explanation.
+   If fails: If routing cannot be resolved for a ticket, mark it "Unrouted" with the reason and continue routing the remaining tickets.
 
 5. [Agent] For each ticket, generate an initial response draft using the Initial Response Draft template. Tailor the draft to the ticket category and priority. For P1/P2, the tone is direct and action-oriented. For P3/P4, the tone is helpful and informational. Do not include PII in drafts. Do not promise resolution timelines beyond the SLA targets.
+   If fails: If a draft cannot be generated for a ticket, flag that ticket as "draft pending" with the reason and continue drafting the remaining tickets.
 
 6. [Agent] Compile the full triage summary using the Triage Summary template. Group tickets by priority (P1 first, then P2, P3, P4). Within each priority group, list escalation candidates first. Include routing assignments, SLA status, and links to drafted responses.
+   If fails: If the summary cannot be compiled from the template, present the per-ticket classification and routing results in plain text so no triage output is lost.
 
 7. [Ask user] Present the triage summary and all response drafts in a single structured view (per Rule 10). Highlight escalation candidates and any tickets that were split. Ask the user to review, approve, modify, or reject each routing decision and response draft. Wait for explicit confirmation before proceeding.
+   If fails: If the user does not respond or the view cannot be displayed, save the triage report with file_write, tell the user where to find it for later review, and take no send or routing action.
 
 8. [Agent] Apply the user's feedback. Update any routing assignments or response drafts as directed. Save the final triage report to a file using file_write and open it in the session tab for reference. If the user approved response drafts, note them as "ready to send" but do not send (per Rule 1).
+   If fails: If the feedback cannot be applied or the report cannot be saved with file_write, report the specific error to the user and preserve the current triage state so no approved changes are lost.
 
 </Workflow - Triage>
 
@@ -150,6 +156,7 @@ triggers=["triage these tickets", "classify support requests", "route this ticke
 <Templates>
 
 <Template - Triage Summary>
+```markdown
 # Ticket Triage Summary
 
 **Date:** {{triage_date}}
@@ -197,9 +204,11 @@ triggers=["triage these tickets", "classify support requests", "route this ticke
 
 ---
 {{/each}}
+```
 </Template - Triage Summary>
 
 <Template - Initial Response Draft>
+```markdown
 Hi {{customer_first_name}},
 
 Thank you for reaching out. I've received your report regarding {{issue_summary}}.
@@ -220,6 +229,7 @@ If you have additional details that might help us resolve this faster, please re
 
 Best regards,
 {{agent_name}}
+```
 </Template - Initial Response Draft>
 
 </Templates>

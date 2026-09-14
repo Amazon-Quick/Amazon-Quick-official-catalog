@@ -7,7 +7,7 @@ license: MIT-0
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 tools: [file_read, file_write, run_python]
-checksum: "sha256:68cc886a318ed1ec37dcb2c756e25b2412b491ece71ac1fac2e979f1057d858b"
+checksum: "sha256:df67e29d699d210e586e242ad6ee044e1adfb2aa78f451afa62a7a88ded0ee15"
 ---
 
 ## Overview
@@ -37,31 +37,31 @@ production.
 </Goal>
 
 <Rules>
-0. Security supersedes every other rule. Never emit code that exfiltrates protected
+1. Security supersedes every other rule. Never emit code that exfiltrates protected
    health information (PHI), calls undeclared network endpoints, or writes patient data
    outside the user's trusted, configured tools. The code recipes in this skill operate
    on data the user supplies locally and must stay that way.
-1. This skill provides engineering tooling, not clinical, legal, or regulatory advice.
+2. This skill provides engineering tooling, not clinical, legal, or regulatory advice.
    Its outputs are for informational and development purposes only. Automated PA
    decisions carry clinical, regulatory, and employment-law consequences (for example
    CMS interoperability and prior authorization rules and state utilization-review law),
    so tell the user to have a qualified healthcare compliance professional and licensed
    clinical staff review any adjudication logic before it touches a live decision, and
    to keep a human clinician in the loop on denials.
-2. Never fabricate a coverage or medical-necessity determination. This skill builds the
+3. Never fabricate a coverage or medical-necessity determination. This skill builds the
    machinery that scores a request; it does not decide real cases or stand in for a
    payer's published policy.
-3. Lead with the command or code the user needs, then explain. Structure every response
+4. Lead with the command or code the user needs, then explain. Structure every response
    as: confirm inputs, then working code, then key parameters explained, then gotchas.
-4. Deliver one complete working example per task. Do not enumerate every alternative.
+5. Deliver one complete working example per task. Do not enumerate every alternative.
    Target 50 to 100 lines of code with brief surrounding explanation, and keep code
    comments minimal and functional.
-5. Never present the ML training or SHAP code as runnable inside the Amazon Quick
+6. Never present the ML training or SHAP code as runnable inside the Amazon Quick
    sandbox. It depends on packages the sandbox does not provide (see <Gotchas>). Label
    it as code for the user's own training environment.
-6. Recommend the rules engine as the auditable core and position the ML classifier only
+7. Recommend the rules engine as the auditable core and position the ML classifier only
    as an augmentation for ambiguous cases, never as a full replacement.
-7. Use standardized reason-code enums (mapped to CARC/RARC) for denials, never
+8. Use standardized reason-code enums (mapped to CARC/RARC) for denials, never
    free-text string matching.
 </Rules>
 
@@ -125,7 +125,7 @@ triggers=["parse a prior authorization request", "build a PA adjudication engine
 5. [Agent] Produce one complete working code artifact adapted to the confirmed inputs,
    following the response structure in <Rules> (confirm inputs, code, key parameters,
    gotchas). If the user asked to save it, write it with file_write to the path they gave
-   per Rule 0 and <Rules> on output destinations.
+   per Rule 1 and <Rules> on output destinations.
    Validate: The artifact is a single self-contained example within the size target and
    uses only the confirmed inputs.
    If fails: Trim to one example and re-present.
@@ -136,10 +136,10 @@ triggers=["parse a prior authorization request", "build a PA adjudication engine
      it executes, then report the result. Validate: execution completes without error.
      If fails: Fix the error and re-run once, or report the blocker.
    - No (ML training or SHAP) -> state that it must run in the user's own environment per
-     Rule 5 and skip execution.
+     Rule 6 and skip execution.
 
 7. [Agent] Close with the applicable gotchas from <Gotchas> and the liability reminder
-   from Rule 1.
+   from Rule 2.
    Validate: The response ends with the relevant caveats.
    If fails: Add the missing caveats.
 

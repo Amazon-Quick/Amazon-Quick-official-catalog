@@ -1,3 +1,9 @@
+---
+description: "A two-axis scoring system rating writing samples on human authorship and attribution confidence before they enter voice analysis."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Authorship Confidence Gate Reference
 
 A two-axis scoring system applied to every writing sample before inclusion in voice analysis.

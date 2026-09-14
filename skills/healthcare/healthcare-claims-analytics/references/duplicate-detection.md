@@ -1,3 +1,9 @@
+---
+description: "Python and SQL code that detects exact and near-duplicate claim submissions for the same member, provider, procedure, and date window."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Duplicate Claim Detection
 
 Detect exact and near-duplicate claim submissions for the same member, provider, procedure,

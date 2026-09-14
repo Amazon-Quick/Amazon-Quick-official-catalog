@@ -1,3 +1,9 @@
+---
+description: "Reference math for load growth forecasting, including econometric log-linear regression and curve fits computed with numpy, used by the grid capacity load forecasting workflow."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Load Growth Forecasting Methods
 
 Reference math for <Workflow - Load Growth Forecasting>. All models are fit with

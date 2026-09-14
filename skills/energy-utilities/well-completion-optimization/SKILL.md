@@ -7,7 +7,7 @@ license: MIT-0
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, web_search, url_fetch, get_current_time]
-checksum: "sha256:c398fde7e2446d0aac6080dd43145d7b2f67e654f07aad44e8df34b0cc63736e"
+checksum: "sha256:3587ee307268d3119b5be075527f75a84a25c5a9b321bd09b0d168aa83576dfc"
 ---
 
 ## Overview
@@ -80,7 +80,7 @@ requires this correction.
 </Definitions>
 
 <Rules>
-0. NEVER GUESS OR FABRICATE A NUMERIC VALUE. This is Rule Zero and overrides all
+1. NEVER GUESS OR FABRICATE A NUMERIC VALUE. This is Rule 1 and overrides all
    other rules.
    - Before using any value that changes over time (oil or gas price, proppant or
      service cost, regional stress gradient, fleet benchmark, regulatory or
@@ -95,34 +95,34 @@ requires this correction.
      change (Arps equations, unit conversions, the formulas in the reference
      files).
    - When in doubt, look it up. A slower correct answer beats a fast wrong one.
-1. Before acting, re-read this skill and the reference files relevant to the
+2. Before acting, re-read this skill and the reference files relevant to the
    requested workflow. Do not begin until every constraint is internalized.
-2. Treatment pressure analysis requires surface-to-bottomhole conversion per
+3. Treatment pressure analysis requires surface-to-bottomhole conversion per
    <Definition - Bottomhole net pressure>. Account for hydrostatic head, pipe
    friction, perforation friction, and near-wellbore tortuosity.
-3. G-function analysis assumes constant fracture pressure during early shut-in.
+4. G-function analysis assumes constant fracture pressure during early shut-in.
    Flag when this is violated (pressure decline greater than 500 psi from ISIP).
-4. Nolte-Smith analysis requires net pressure. If closure stress is uncertain,
+5. Nolte-Smith analysis requires net pressure. If closure stress is uncertain,
    show sensitivity to the closure-stress assumption.
-5. Statistical design comparisons must control for confounders (formation quality,
+6. Statistical design comparisons must control for confounders (formation quality,
    lateral length, vintage, landing zone). Match pairs on these variables.
-6. EUR calculations for comparisons must use the same decline model and economic
+7. EUR calculations for comparisons must use the same decline model and economic
    limit across all wells. Report a p-value for every comparison and flag any
    result with p greater than 0.05 as inconclusive.
-7. Proppant intensity must be normalized as lbs per lateral foot and fluid as bbl
+8. Proppant intensity must be normalized as lbs per lateral foot and fluid as bbl
    per lateral foot for cross-field comparison, never per stage.
-8. Cost comparisons must account for both capital (completion cost) and production
+9. Cost comparisons must account for both capital (completion cost) and production
    value (EUR times price). NPV at the specified discount rate is the primary
    economic metric.
-9. Cluster efficiency is typically 40 to 70 percent. Do not assume 100 percent
+10. Cluster efficiency is typically 40 to 70 percent. Do not assume 100 percent
    cluster contribution in spacing calculations.
-10. Never claim scipy, statsmodels, or any package outside the sandbox inventory
+11. Never claim scipy, statsmodels, or any package outside the sandbox inventory
     is available. Statistical tests run only through `scripts/completion_stats.py`.
-11. This skill informs engineering and financial decisions but is not a substitute
+12. This skill informs engineering and financial decisions but is not a substitute
     for a licensed petroleum or completion engineer. State that outputs are for
     informational purposes only and that field execution, well control, and
     economic commitments must be reviewed by a qualified professional.
-12. Never use em dashes. Never describe anything as all-encompassing or use the
+13. Never use em dashes. Never describe anything as all-encompassing or use the
     adjective beginning with "compr" for thoroughness. Do not use the word for a
     horizontal geologic stratum; use "interval", "zone", or "section" instead.
 </Rules>
@@ -174,7 +174,7 @@ triggers=["Before any calculation that uses a price, cost, benchmark, gradient, 
    record the source and date.
    Validate: Each time-sensitive value has a fetched source from this session or
    an explicit user-provided value.
-   If fails: Per Rule Zero, stop and ask the user to confirm or provide the value.
+   If fails: Per Rule 1, stop and ask the user to confirm or provide the value.
 
 </Workflow - Verify Reference Values>
 
@@ -219,7 +219,7 @@ triggers=["Nolte-Smith", "treatment pressure", "net pressure", "fracture propaga
 
 6. [Agent] Summarize observed modes, screen-out risk, and recommendations for
    future treatments, noting the closure-stress sensitivity if closure was
-   uncertain (Rule 4).
+   uncertain (Rule 5).
    Validate: The summary names each mode observed and ties recommendations to it.
    If fails: Re-derive the summary from the mode classification.
 
@@ -257,7 +257,7 @@ triggers=["DFIT", "G-function", "closure pressure", "minifrac", "diagnostic inje
 
 5. [Agent] Flag non-ideal behaviors (pressure-dependent leak-off hump, tip
    extension, multiple closures) and check whether the constant-pressure assumption
-   holds (Rule 3).
+   holds (Rule 4).
    Validate: Each flagged signature references the diagnostic curve feature that
    supports it.
    If fails: Re-examine the derivative curves before reporting.
@@ -306,7 +306,7 @@ triggers=["compare completions", "design comparison", "A/B test", "matched pair"
    If fails: Re-derive the claims from the script output.
 
 6. [Agent] State the recommendation with a confidence qualifier. Flag results with
-   p greater than 0.05 as inconclusive (Rule 6).
+   p greater than 0.05 as inconclusive (Rule 7).
    Validate: The recommendation matches the significance findings.
    If fails: Reconcile the wording with the p-values.
 
@@ -326,7 +326,7 @@ triggers=["completion economics", "EUR per dollar", "NPV", "cost optimization", 
 2. [Agent] Verify all time-sensitive prices and costs per
    <Workflow - Verify Reference Values>.
    Validate: Every price and cost has a fetched or user-provided source.
-   If fails: Stop and request the values (Rule Zero).
+   If fails: Stop and request the values (Rule 1).
 
 3. [Agent] Compute unit economics (EUR per dollar, NPV, NPV per dollar, payout)
    using verified prices, royalty, opex, and discount rate.
@@ -335,7 +335,7 @@ triggers=["completion economics", "EUR per dollar", "NPV", "cost optimization", 
 
 4. [Agent] Compute the marginal economics of intensification: incremental EUR per
    added proppant lb per ft against incremental cost, and the loading where
-   marginal value equals marginal cost. Do not extrapolate beyond the data (Rule 7
+   marginal value equals marginal cost. Do not extrapolate beyond the data (Rule 8
    and the logarithmic caution in the reference).
    Validate: The optimum sits inside the observed data range.
    If fails: State that the optimum is outside the data and cannot be resolved.
@@ -398,4 +398,6 @@ Reference material read on demand during the workflows:
 Key sources: Nolte and Smith (1981) SPE-8297; Nolte (1979) SPE-8341; Castillo
 (1987) SPE-16417; Barree et al. (2009) SPE-169539; Economides and Nolte,
 "Reservoir Stimulation" 3rd Ed.; King (2012) SPE-152596.
+- Unit tests (scripts/tests/unit/test_completion_stats.py) provide filesystem-free coverage of the scripts. Run them with `PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"`.
+
 </Resources>

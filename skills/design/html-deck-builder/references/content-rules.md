@@ -1,3 +1,9 @@
+---
+description: "Content principles for HTML presentation slides, including the 5/5/5 rule, one-message-per-slide guidance, and standard slide layouts."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Content Rules
 
 Principles for slide content that prevent the common failure modes of AI-generated presentations.

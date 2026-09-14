@@ -1,3 +1,8 @@
+---
+description: "Wind resource methodology defining the Weibull speed distribution, wind shear correction, air density, and power curve formulas used for wind energy assessment."
+last_updated: 2026-09-13
+origin: original
+---
 # Wind Methodology (Weibull + power curve)
 
 All coefficients here are physical model constants. Market and cost values must be

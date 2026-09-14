@@ -6,7 +6,7 @@ description: "Guides finance teams through the month-end close process with stru
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_read, file_write, run_python, open_in_session_tab, query_dataset, list_qa_resources, search_relevant_content, read_quick_suite_file]
 inputs:
 
@@ -26,7 +26,7 @@ inputs:
   description: "Prior month actuals for variance comparison. Accepts: a file path (CSV or Excel export from your ERP/accounting system), pasted summary data, or a Quick dataset containing period financials. Required for variance analysis workflow."
   type: string
   required: false
-checksum: "sha256:5040f9fcb4448f14b6bc19d799813782a2f41531d0c044445b40485bceb29de1"
+checksum: "sha256:c6e74cef93f63898162f7da1b71bca8a60d81c520749c45e552912547dc1b91b"
 ---
 
 ## Overview
@@ -121,24 +121,33 @@ triggers=["start month-end close", "close checklist", "reconciliation status", "
 >
 
 1. [Ask user] Confirm the close period and gather inputs. Request: close_period (required), chart_of_accounts path (optional), close_calendar path (optional), prior_period_file path (optional). If the user provides a close calendar file, read it. If not, present the default T+5 schedule and confirm acceptance per Rule 10.
+   If fails: If the required close_period is not provided, re-ask the user for it before continuing; if an optional file path is invalid, note it and proceed with the documented defaults.
 
 2. [Agent] If a chart_of_accounts file is provided, read and parse it. Extract account codes, account names, account types (Asset, Liability, Equity, Revenue, Expense), and any sub-ledger mappings. Build an internal lookup table for validation in subsequent steps. If no file is provided, use a generic structure (1000-series Assets, 2000-series Liabilities, 3000-series Equity, 4000-series Revenue, 5000-series Expenses) and note that account codes will not be validated.
+   If fails: If the chart of accounts file cannot be read or parsed, notify the user and continue with the generic structure, noting that account codes will not be validated.
 
 3. [Agent] Generate the close checklist using the Close Checklist template. Populate dates based on the close calendar or the default T+5 schedule. Assign each task to its phase (Pre-close, Core Close, Post-close). Render as a markdown table and save to the workspace. Open in the session tab for the user to review.
+   If fails: If the checklist cannot be generated or saved, report the specific error to the user and present the checklist inline so the close can still proceed.
 
 4. [Ask user] Present the checklist and ask the user to confirm task assignments, add organization-specific tasks, remove irrelevant ones, or adjust deadlines. Incorporate feedback and regenerate if needed.
+   If fails: If the user does not respond or the checklist cannot be displayed, keep the current checklist as-is and tell the user it is saved for later review.
 
 5. [Agent] If the user requests reconciliation tracking, generate a reconciliation status tracker. For each balance sheet account (or the subset the user specifies), create a row with: account code, account name, prior period balance, current period balance, preparer, reviewer, status (Not Started, In Progress, Reviewed, Approved), and notes. Save as a markdown table or CSV per user preference.
+   If fails: If the tracker cannot be generated, report the error to the user and list the accounts to be reconciled in plain text so tracking can continue manually.
 
 6. [Ask user] When the user requests a journal entry, gather: entry description, debit account(s) and amount(s), credit account(s) and amount(s), supporting documentation reference, and whether the entry is an accrual requiring reversal. Validate that debits equal credits. Validate account codes against the CoA if available (Rule 7). Generate the entry using the Journal Entry template. Present for review.
+   If fails: If required entry details are missing or debits do not equal credits, re-ask the user for the missing or corrected values before generating the entry.
 
 7. [Decide] If prior_period_file is provided and the user requests variance analysis, proceed to step 8. Otherwise, skip to step 9 or ask the user if they want to provide prior period data.
 
 8. [Agent] Read both current and prior period data. Using run_python, compute period-over-period variances for each account or line item. Classify each variance by materiality threshold. For material variances, apply the Variance Commentary template, prompting the user for the business driver explanation per Rule 4. Render the variance report as a formatted table with commentary column. Save and open in the session tab.
+   If fails: If the current or prior period data cannot be read or compared, report the specific error to the user and skip variance analysis rather than producing unverified figures.
 
 9. [Agent] Generate the close status dashboard summarizing: phase progress (percentage of tasks complete per phase), open items count, overdue items (past deadline), pending journal entries awaiting approval, reconciliation completion rate. Render as a structured markdown document with section headers for each metric. Save and open in the session tab.
+   If fails: If the dashboard cannot be generated, report the error and summarize phase progress and open items in plain text instead.
 
 10. [Ask user] Present the dashboard and ask: "Are there tasks to mark complete, items to escalate, or additional journal entries needed?" Loop back to the relevant step based on user response. When all checklist items show complete status, present the close certification summary and confirm the user is ready to lock the period.
+    If fails: If the user does not respond or the dashboard cannot be displayed, take no lock or completion action and leave the close in its current state for later review.
 
 </Workflow - MonthEndClose>
 
@@ -147,6 +156,7 @@ triggers=["start month-end close", "close checklist", "reconciliation status", "
 <Templates>
 
 <Template - Close Checklist>
+```markdown
 # Month-End Close Checklist: {{close_period}}
 
 | # | Phase | Task | Owner | Deadline | Status | Notes |
@@ -167,9 +177,11 @@ triggers=["start month-end close", "close checklist", "reconciliation status", "
 | 14 | Post-close | Period lock confirmation | | T+5 | Not Started | Prevent post-close entries |
 
 Adjust tasks, owners, and deadlines to match your organization's close procedures.
+```
 </Template - Close Checklist>
 
 <Template - Journal Entry>
+```markdown
 # Journal Entry - DRAFT - NOT POSTED
 
 **Period:** {{close_period}}
@@ -195,9 +207,11 @@ Adjust tasks, owners, and deadlines to match your organization's close procedure
 - [ ] Posted to GL (date: _______)
 
 This is a draft entry. Do not post without completing all approval steps.
+```
 </Template - Journal Entry>
 
 <Template - Variance Commentary>
+```markdown
 # Variance Analysis: {{close_period}} vs. {{comparison_period}}
 
 | Account | Prior Period | Current Period | $ Variance | % Variance | Materiality | Direction | Commentary |
@@ -213,6 +227,7 @@ For each material variance, document:
 4. **Action required:** None, monitor next period, or escalate to management
 
 Variances below the immaterial threshold are noted but do not require commentary.
+```
 </Template - Variance Commentary>
 
 </Templates>

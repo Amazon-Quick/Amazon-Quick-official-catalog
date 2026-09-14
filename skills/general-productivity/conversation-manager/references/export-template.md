@@ -1,3 +1,9 @@
+---
+description: "Defines the exact directory structure and file format for every conversation export package the skill produces."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Export Package Template
 
 This reference defines the exact structure and format for every conversation export.

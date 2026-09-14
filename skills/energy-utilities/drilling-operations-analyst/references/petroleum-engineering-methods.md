@@ -1,3 +1,9 @@
+---
+description: "Field-unit petroleum engineering formulas and reference Python implementations, such as the minimum curvature survey method, that the Drilling Operations Analyst uses for stable wellbore and drilling calculations."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Petroleum Engineering Methods
 
 Formulas and reference Python implementations for the Drilling Operations Analyst.

@@ -1,3 +1,9 @@
+---
+description: "Python code that flags providers who bill more than 24 hours of time-based services in a single day using CPT time estimates."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Impossible Day Detection
 
 Flag providers who bill more than 24 hours of time-based services in a single day, using CPT

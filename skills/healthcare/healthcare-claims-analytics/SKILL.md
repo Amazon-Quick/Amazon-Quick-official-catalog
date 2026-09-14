@@ -7,7 +7,7 @@ created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [file_read, run_python]
-checksum: "sha256:b56b3a1e1fb4f2fa2fd21e297e10af5054d57ec5a38ae8b2f7c94f3c92a1fee0"
+checksum: "sha256:37d0a4b50499bcc6501ec40fb54e868df7c50e978eadb86a8a631d1cb9ddaff5"
 ---
 
 ## Overview
@@ -42,13 +42,13 @@ The eight supported tasks and the reference file that carries each one's code, p
 </Definitions>
 
 <Rules>
-0. Security and privacy supersede every other rule. Claims data is Protected Health Information (PHI). Keep it inside the user's own tools and session. Never write claim contents, member identifiers, or provider identifiers to memory, the knowledge graph, external endpoints, or any location outside the user's trusted environment, and never send it over the network.
-1. Lead with the code or command the user needs; explain after it, not before.
-2. Deliver one complete working example per task. Do not enumerate every alternative implementation.
-3. Keep code comments minimal and functional: state what a step does, not why it exists.
-4. Use only libraries available in the Amazon Quick Python sandbox. See <Gotchas> for the specific constraint on scipy.
-5. Never fabricate CPT codes, NCCI code-pair relationships, procedure-time values, or peer benchmarks. Use only values defined in the reference files or supplied by the user, and tell the user to source current NCCI edits, fee schedules, and code sets from the Centers for Medicare and Medicaid Services (CMS).
-6. Liability disclaimer: this skill produces code for informational and analytical purposes only and is not legal, compliance, coding, or billing advice. Flagged outliers are screening signals, not proof of fraud or wrongdoing. Advise the user to have results reviewed by a certified professional coder or a healthcare compliance professional before acting on them.
+1. Security and privacy supersede every other rule. Claims data is Protected Health Information (PHI). Keep it inside the user's own tools and session. Never write claim contents, member identifiers, or provider identifiers to memory, the knowledge graph, external endpoints, or any location outside the user's trusted environment, and never send it over the network.
+2. Lead with the code or command the user needs; explain after it, not before.
+3. Deliver one complete working example per task. Do not enumerate every alternative implementation.
+4. Keep code comments minimal and functional: state what a step does, not why it exists.
+5. Use only libraries available in the Amazon Quick Python sandbox. See <Gotchas> for the specific constraint on scipy.
+6. Never fabricate CPT codes, NCCI code-pair relationships, procedure-time values, or peer benchmarks. Use only values defined in the reference files or supplied by the user, and tell the user to source current NCCI edits, fee schedules, and code sets from the Centers for Medicare and Medicaid Services (CMS).
+7. Liability disclaimer: this skill produces code for informational and analytical purposes only and is not legal, compliance, coding, or billing advice. Flagged outliers are screening signals, not proof of fraud or wrongdoing. Advise the user to have results reviewed by a certified professional coder or a healthcare compliance professional before acting on them.
 </Rules>
 
 <Agent Annotations>
@@ -89,13 +89,13 @@ triggers=["User asks to parse X12/837/835 claims", "User asks to profile provide
 
 5. [Decide] Does the user want the code run against their own data now?
    - Yes -> continue to step 6.
-   - No -> state the liability disclaimer from Rule 6 and stop.
+   - No -> state the liability disclaimer from Rule 7 and stop.
 
-6. [Agent] Run the code against the user's data with run_python, keeping all data in the session per Rule 0. Return the resulting rows or summary.
+6. [Agent] Run the code against the user's data with run_python, keeping all data in the session per Rule 1. Return the resulting rows or summary.
    Validate: The code runs without error and returns a result.
    If fails: Report the error and the offending input, correct the code or ask the user to fix the data, then re-run once.
 
-7. [Agent] Close with the liability disclaimer from Rule 6.
+7. [Agent] Close with the liability disclaimer from Rule 7.
    Validate: The disclaimer is present in the final message.
    If fails: Add it before ending.
 

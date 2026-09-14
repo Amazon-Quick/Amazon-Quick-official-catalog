@@ -12,7 +12,7 @@ preferred_thinking: high
 tools: [get_current_time, file_read, file_write, folder_create, save_skill, extract_session_data, file_rag_search, web_search, run_python, start_task, create_task_group, get_task_group_result]
 scripts: [create_benchmark.py, check_skill.py, find_lines.py, create_checksum.py, create_reference_file.py, create_script.py, create_readme.py]
 readme: "Read README.md for an overview, installation, and getting started. This skill uses only built-in tools and needs no external connectors."
-checksum: "sha256:db491d89a8b10cb2fdea0d99c39d34d8b6834af658bb9ecbb69a9a762f77d65f"
+checksum: "sha256:0f52d4f1d467957316893279be06b8512a75c74ea0f84f2bf0f00ee828094012"
 ---
 
 ## Overview
@@ -162,7 +162,7 @@ Workflow steps are annotated with prefixes that indicate who acts and what happe
 - When a task genuinely requires strong model judgment, spawn it as a background task and set the model explicitly via start_task's model parameter. Do not assume the main session runs on any particular tier.
 - `run_python` has a 60 second default timeout (set in the tool definition). Long loops or batch operations can be cut off at that limit, so break them into bounded chunks and write results incrementally.
 - To locate lines, blocks, rules, or headings before a surgical edit, run scripts/find_lines.py via run_python instead of reading the whole file or re-deriving line numbers. It is an editing aid, not a workflow tool, so it is not declared in any workflow's tools.
-- scripts/create_checksum.py is the single owner that computes and writes the `checksum:` digest; check_skill.py only verifies the field is present and well-formed. create_checksum.py excludes its own `checksum:` line from the hash (so writing it back is idempotent) and excludes evals/, tests/, and transient files (*.pyc, __pycache__, .DS_Store), so changing a test does not change the checksum.
+- scripts/create_checksum.py is the owner that computes and writes the `checksum:` digest; check_skill.py verifies the field is well-formed and recomputes the digest self-contained (kept in sync with create_checksum.py) to verify integrity, FAILing on mismatch. create_checksum.py excludes its own `checksum:` line from the hash (so writing it back is idempotent) and excludes evals/, tests/, and transient files (*.pyc, __pycache__, .DS_Store), so changing a test does not change the checksum.
 - Unit tests live in scripts/tests/unit/: test_create_checksum.py, test_check_skill.py, test_create_benchmark.py, test_find_lines.py, test_create_script.py, test_create_reference_file.py, test_create_readme.py. Run them with `PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"`.
 - Scaffold new files with the generators so each starts with a compliant header: scripts/create_script.py (a scripts/*.py), scripts/create_reference_file.py (a references/*.md), and scripts/create_readme.py (the README).
 - `save_skill` routes every flat filename in the `scripts[]` bundle (single path component, e.g. `README.md`) into `scripts/` of the cloud-store skill directory. Only SKILL.md lands at the skill root. There is no workaround through scripts[] or file_write (the governed store blocks generic file tools). When saving via save_skill: pass README.md in the scripts array, it will land at scripts/README.md in the cloud store. The canonical layout (README.md at root) is enforced in the marketplace repo on disk and must be preserved there. This is a save_skill limitation to fix at the tool level, not a design change to the skill standard.
@@ -454,9 +454,9 @@ triggers=["User asks to audit a skill", "Called from <Workflow - Save> step 5"]
    Validate: SKILL.md content loaded and non-empty.
    If fails: Check path. If skill doesn't exist, inform user.
 
-1. [Agent] Run scripts/check_skill.py via run_python for all mechanical checks (its docstring lists them). This is the mechanical half only (Rule 18); the checks below are qualitative and done by reading.
-   Validate: check_skill.py exits 0.
-   If fails: Fix each reported failure and re-run until it exits 0.
+1. [Agent] Run scripts/check_skill.py via run_python for all mechanical checks (its docstring lists them), which now include checksum integrity (it recomputes the digest and FAILs on mismatch) and non-blocking staleness WARNINGs. This is the mechanical half only (Rule 18); the checks below are qualitative and done by reading.
+   Validate: check_skill.py exits 0. Staleness WARNINGs do not affect the exit code and are handled in the staleness step below.
+   If fails: Fix each reported failure and re-run until it exits 0. A checksum-mismatch FAIL means files changed without regenerating, so run scripts/create_checksum.py, then re-run.
 
 1. [Agent] Check directory structure against <Definition - Skill Directory Structure>.
    Validate: No files in wrong directories. evals/ exists.
@@ -466,9 +466,17 @@ triggers=["User asks to audit a skill", "Called from <Workflow - Save> step 5"]
    Validate: if it has any dependency, README.md exists with a `## Pre-requisites` section declaring each dependency (type, which connector, runtime, required or optional), the `readme` frontmatter field is set, and `## Installation` points to reference docs rather than copying them. If it has no dependency, no README is required.
    If fails: Log the missing README, `## Pre-requisites` entries, `readme` field, or copied-documentation violation as an issue with the fix.
 
-1. [Agent] Confirm the checksum and file headers: check_skill.py (step 2) validates that the frontmatter carries a well-formed sha256 checksum and that every README.md, references/*.md, and scripts/*.py declares the required header fields.
-   Validate: the checksum-field and file-header checks passed in step 2.
-   If fails: run scripts/create_checksum.py to regenerate the checksum, or scaffold missing headers with the generators, then re-run check_skill.py.
+1. [Agent] Confirm the checksum and file headers: check_skill.py (step 2) verifies the frontmatter carries a well-formed sha256 checksum, that its digest matches the current files (integrity), and that every README.md, references/*.md, and scripts/*.py declares the required header fields.
+   Validate: the checksum-field, checksum-integrity, and file-header checks passed in step 2.
+   If fails: run scripts/create_checksum.py to regenerate the checksum (fixes a malformed field or an integrity mismatch), or scaffold missing headers with the generators, then re-run check_skill.py.
+
+1. [Decide] Review staleness from check_skill.py (step 2), which flags SKILL.md and any README.md, references/*.md, or scripts/*.py that is stale per the staleness rule in `references/reference-file-standard.md`.
+   Validate: a branch is chosen for the reported staleness WARNINGs (none, SKILL.md, or a reference/script file).
+   - None → the skill is current; continue.
+   - SKILL.md stale → recommend a full re-evaluation via <Workflow - Eval> and a review of every Rule, Gotcha, and workflow step against the current standard.
+   - A reference or script stale → regenerate each file that has a `source_url` from that source, and review each `origin: original` file by hand.
+   After refreshing any file, bump its `last_updated` and rerun <Workflow - Save> so the checksum is regenerated.
+   If fails: if the warnings are unclear, list the flagged files and ask the user how to proceed.
 
 1. [Agent] Check each XML block's content against its definition in <Definition - XML Blocks>.
    Validate: Each block's content matches its definition. No content in wrong blocks.

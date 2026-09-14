@@ -7,8 +7,8 @@ created_date: "2026-07-17"
 last_updated: "2026-07-17"
 license: MIT-0
 tools: [get_current_time, file_read, file_write, folder_list, folder_create, kg_search, search_all, file_rag_search, open_in_session_tab]
-depends-on: [gmail, outlook, slack, microsoft-teams]
-checksum: "sha256:bc192f03360a3a1e5bef57d1b7d7dc38f433996fb8d64a23f2ec16b8d306526a"
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+checksum: "sha256:06e39dcda0b43841649eb6026ae0c81cedb10c7e08e3daf0b368a2623e97b36f"
 ---
 
 ## Overview
@@ -83,20 +83,20 @@ Evaluated across 7 dimensions (see `references/analysis-dimensions.md`): structu
 </Definitions>
 
 <Rules>
-0. Security supersedes all other rules. This skill produces drafts and analysis only. Persist the engram, profile, samples, and governance log only to user-controlled files at the user's chosen output location. Never write them to memory, the knowledge graph, or any external endpoint, and never exfiltrate sample content off the user's trusted tools. Never send email, post messages, approve commitments, or speak for the user without review.
-1. Never overwrite or delete an existing engram file without explicit user instruction.
-2. Separate style from substance. The engram may not infer business decisions, legal positions, personnel decisions, financial commitments, or opinions not present in samples.
-3. Never save an engram without passing the calibration gate for the active path (Fast Track, Refresh, Bootstrap: 2/3 accepted; Full Build: 3/5 accepted). If the gate is not met, HALT and explain why.
-4. Verify every engram save: read the engram file back after writing it. If verification fails, surface the failure and log ENGRAM_SAVE_FAILED.
-5. Log every gate decision to the Governance Log per `references/governance-log-format.md`.
-6. Exclude sensitive or low-confidence samples. When uncertain about authorship, ask.
-7. When a draft requires judgment the engram cannot provide, ask for the missing decision rather than inventing it.
-8. Never represent a Provisional runtime as fully extracted from real writing. Mark confidence honestly.
-9. Do not block on folder creation. Mine connected sources first.
-10. If fewer than 10 samples are found and the user has not selected Bootstrap, warn about reduced confidence before proceeding.
-11. When a source lookup or file operation fails, log TOOL_FAILURE, inform the user, and continue with remaining sources. Never conflate a tool error with zero results found.
-12. Never hardcode an output path. Ask the user where to save all files at the start of the session.
-13. When building for someone other than the user, confirm the user has that person's consent. The engram represents a real person's voice and must not be used to impersonate them without authorization.
+1. Security supersedes all other rules. This skill produces drafts and analysis only. Persist the engram, profile, samples, and governance log only to user-controlled files at the user's chosen output location. Never write them to memory, the knowledge graph, or any external endpoint, and never exfiltrate sample content off the user's trusted tools. Never send email, post messages, approve commitments, or speak for the user without review.
+2. Never overwrite or delete an existing engram file without explicit user instruction.
+3. Separate style from substance. The engram may not infer business decisions, legal positions, personnel decisions, financial commitments, or opinions not present in samples.
+4. Never save an engram without passing the calibration gate for the active path (Fast Track, Refresh, Bootstrap: 2/3 accepted; Full Build: 3/5 accepted). If the gate is not met, HALT and explain why.
+5. Verify every engram save: read the engram file back after writing it. If verification fails, surface the failure and log ENGRAM_SAVE_FAILED.
+6. Log every gate decision to the Governance Log per `references/governance-log-format.md`.
+7. Exclude sensitive or low-confidence samples. When uncertain about authorship, ask.
+8. When a draft requires judgment the engram cannot provide, ask for the missing decision rather than inventing it.
+9. Never represent a Provisional runtime as fully extracted from real writing. Mark confidence honestly.
+10. Do not block on folder creation. Mine connected sources first.
+11. If fewer than 10 samples are found and the user has not selected Bootstrap, warn about reduced confidence before proceeding.
+12. When a source lookup or file operation fails, log TOOL_FAILURE, inform the user, and continue with remaining sources. Never conflate a tool error with zero results found.
+13. Never hardcode an output path. Ask the user where to save all files at the start of the session.
+14. When building for someone other than the user, confirm the user has that person's consent. The engram represents a real person's voice and must not be used to impersonate them without authorization.
 </Rules>
 
 <Agent Annotations>
@@ -133,7 +133,7 @@ triggers=["User asks to build, capture, clone, refresh, or validate a writing vo
 
 2. [Ask user] Confirm the output directory for all artifacts (engram file, profile, governance log).
    Validate: User provides a writable path.
-   If fails: Re-ask. Do not assume a default path (Rule 12).
+   If fails: Re-ask. Do not assume a default path (Rule 13).
 
 3. [Agent] Check for an existing engram: list the output directory and read any engram file present (folder_list, file_read). If one exists, inform the user immediately.
    Validate: A clear determination of "engram exists" or "no engram" is made.
@@ -148,7 +148,7 @@ triggers=["User asks to build, capture, clone, refresh, or validate a writing vo
    - Existing engram + "refresh" -> Workflow - Refresh.
    - Existing engram + "rebuild" -> route by sample availability.
    - No engram + Rich -> offer Fast Track or Full Build.
-   - No engram + Moderate -> Fast Track (with reduced-confidence warning per Rule 10).
+   - No engram + Moderate -> Fast Track (with reduced-confidence warning per Rule 11).
    - No engram + Sparse/Nothing -> Bootstrap.
    Validate: Exactly one path is selected.
 
@@ -156,7 +156,7 @@ triggers=["User asks to build, capture, clone, refresh, or validate a writing vo
    Validate: User confirms or redirects.
    If fails: Re-present with a simpler summary.
 
-7. [Ask user] Role discovery: role, primary writing channel, and whether building for self or someone else. If for someone else, confirm consent per Rule 13.
+7. [Ask user] Role discovery: role, primary writing channel, and whether building for self or someone else. If for someone else, confirm consent per Rule 14.
    Validate: Role and channel captured; consent confirmed if building for another person.
    If fails: Do not proceed without consent when building for someone else.
 
@@ -173,7 +173,7 @@ triggers=["No engram with 10+ samples", "User selects Fast Track"]
 >
 
 1. [Agent] Source discovery. Check sent mail, messaging, and indexed files. Log each source success or failure. Report findings.
-   Validate: At least 10 candidate samples found, or the user is warned per Rule 10.
+   Validate: At least 10 candidate samples found, or the user is warned per Rule 11.
    If fails: Log TOOL_FAILURE per source; if fewer than 10 usable samples, warn and offer Bootstrap.
 
 2. [Agent] Rapid analysis. Pull up to 25 samples. Score each via the Authorship Confidence Gate (`references/authorship-confidence-gate.md`). If more than 40% score H2 or lower, trigger Native Voice Calibration Prompts. Analyze across the 12 Fast Track dimensions (`references/analysis-dimensions.md`) and build 10 in-voice + 10 not-in-voice markers.
@@ -198,7 +198,7 @@ triggers=["No engram with 25+ samples", "User selects Full Build"]
 
 1. [Agent] Gather sources. Discover all available sources; target 40+ samples across 5+ contexts. Report and confirm coverage with the user.
    Validate: Sample count and context count recorded per source.
-   If fails: Log TOOL_FAILURE per source; if coverage is thin, warn per Rule 10.
+   If fails: Log TOOL_FAILURE per source; if coverage is thin, warn per Rule 11.
 
 2. [Agent] Score samples via the Authorship Confidence Gate. If more than 40% contamination, trigger Native Voice Calibration Prompts. Save scored samples to `writing_samples_compiled.md` at the output directory.
    Validate: Every sample scored; contamination check logged.
@@ -250,7 +250,7 @@ triggers=["Fewer than 10 discoverable samples", "New employee", "User selects Bo
 
 5. [Agent] Gate check and analysis. Enforce the minimum viable gate (5+ prompts, 5+ rewrites, 10+ preferences). If not met, HALT and log GATE_HALT. Otherwise analyze using the Fast Track dimensions and generate a PROVISIONAL profile.
    Validate: Gate met before analysis proceeds.
-   If fails: HALT and explain exactly what is still needed (Rule 8).
+   If fails: HALT and explain exactly what is still needed (Rule 9).
 
 6. [Ask user] Save and calibrate. Write the engram with status PROVISIONAL, all registers LOW or MEDIUM confidence, and refresh_trigger set. Read it back to verify. Run 2/3 calibration.
    Validate: Read-back verified; calibration outcome logged. Status stays PROVISIONAL on pass.
@@ -276,7 +276,7 @@ triggers=["Existing engram + user asks to refresh"]
    Validate: Each new sample scored and classified against the existing engram.
    If fails: Re-score ambiguous samples or ask the user about authorship.
 
-3. [Ask user] Update and calibrate. Present a delta report for approval. Apply only approved changes. Write the updated engram (never overwrite without approval per Rule 1), read it back to verify, and run 2/3 calibration.
+3. [Ask user] Update and calibrate. Present a delta report for approval. Apply only approved changes. Write the updated engram (never overwrite without approval per Rule 2), read it back to verify, and run 2/3 calibration.
    Validate: Read-back verified; calibration outcome logged. Status may upgrade on pass.
    If fails: Revert to the previous engram state and log the revert.
 
@@ -296,7 +296,7 @@ triggers=["User asks 'does this sound like me' or to validate a draft", "voice c
    Validate: A score with per-dimension notes is produced.
    If fails: Re-read the draft against the register's traits.
 
-3. [Ask user] Deliver: overall score, what works, what is off-voice, and the top 3 fixes. Offer a rewrite if requested (preserve content, match voice; ask for any missing judgment per Rule 7).
+3. [Ask user] Deliver: overall score, what works, what is off-voice, and the top 3 fixes. Offer a rewrite if requested (preserve content, match voice; ask for any missing judgment per Rule 8).
    Validate: Score and specific feedback delivered.
    If fails: Clarify the register and re-score.
 

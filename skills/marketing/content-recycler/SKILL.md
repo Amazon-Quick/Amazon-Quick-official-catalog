@@ -6,7 +6,7 @@ description: "Repurposes a single piece of long-form content (blog post, whitepa
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
 license: "MIT-0"
-depends-on: []
+
 tools: [file_read, file_write, run_python, open_in_session_tab]
 inputs:
 
@@ -29,7 +29,7 @@ inputs:
   description: "Free-text guidance on brand voice, terminology preferences, or style constraints to apply across all variants."
   type: string
   required: false
-checksum: "sha256:d2c3787afcdd7a5a56476822db99bcfdcb6f4e9393129e37b774c126e2d7b196"
+checksum: "sha256:969727e372ac9abfe1b0e2242dba5a580d185a26a3164b3a6c45bb6c6ae808bb"
 ---
 
 ## Overview
@@ -104,24 +104,31 @@ Workflow steps use these prefixes:
 
 <Workflow - Content Recycling
 description="End-to-end content repurposing from source to platform-ready variants."
+tools=[file_read, file_write, run_python, open_in_session_tab]
 triggers=["repurpose this content", "turn this blog into social posts", "create a content package", "adapt this for LinkedIn", "multi-platform from this article", "content atomization"]
 >
 
 1. [Agent] Read the source content. If a file path is provided, use file_read (or the appropriate document reader for PDF/DOCX). If the content is pasted inline, capture it directly. Confirm the source length and type.
+   If fails: if the file cannot be read or the pasted text is empty, report the specific error and ask the user to provide the source content again.
 
 2. [Think] Extract core messages from the source. Identify the 2-4 central claims or insights. Note any direct quotes, statistics, or named examples that should be preserved. Flag any potentially outdated information per Rule 10.
 
 3. [Ask user] Present the extracted core messages as a numbered list. Confirm these are the right angles to amplify. If the source covers multiple unrelated themes, ask the user to select focus areas. Confirm the target platforms, tone, and any brand voice notes.
+   If fails: if the user does not confirm or the source spans too many themes, ask them to pick the focus themes and target platforms before drafting.
 
 4. [Think] For each selected platform, draft a variant that meets Platform Constraints. Apply the chosen tone. Incorporate brand voice notes if provided. Verify character/word counts against limits. Ensure each variant satisfies Rules 1-4.
 
 5. [Agent] Assemble the full content package as a Markdown document. Structure with H2 headers per platform. Include character/word counts next to each variant. Add a "Suggested first comment" line for LinkedIn if links are relevant. Add thread numbering validation for X/Twitter.
+   If fails: if any variant exceeds its platform limit, tighten that variant and re-measure before assembling the package.
 
 6. [Ask user] Present the content package for review. Highlight any variants where constraints forced simplification of the source message. Ask if any variants need a different angle, tighter editing, or tone adjustment.
+   If fails: if the requested changes are unclear, ask which specific variants and what angle before revising.
 
 7. [Agent] Apply any requested revisions. Re-verify character/word counts after edits. Confirm all variants still satisfy the rules.
+   If fails: if a revised variant breaks a rule or limit, revert to the prior compliant version and flag the conflict to the user.
 
 8. [Agent] Save the final content package to the workspace and open it in the session tab. Provide a brief summary: number of variants produced, platforms covered, and any flags (outdated info, simplification notes, link placement reminders).
+   If fails: report the specific save or open error and present the content package inline instead.
 
 </Workflow - Content Recycling>
 
@@ -130,6 +137,7 @@ triggers=["repurpose this content", "turn this blog into social posts", "create 
 <Templates>
 
 <Template - LinkedIn Post>
+```markdown
 {{hook_line}}
 
 {{body_paragraph_1}}
@@ -142,9 +150,11 @@ triggers=["repurpose this content", "turn this blog into social posts", "create 
 Suggested first comment: {{link_or_additional_context}}
 
 Character count: {{count}}/3000
+```
 </Template - LinkedIn Post>
 
 <Template - X/Twitter Thread>
+```markdown
 Tweet 1 (1/{{N}}):
 {{standalone_hook}} ({{count}}/280)
 
@@ -156,9 +166,11 @@ Tweet 3 (3/{{N}}):
 
 Tweet {{N}} ({{N}}/{{N}}):
 {{summary_or_cta}} ({{count}}/280)
+```
 </Template - X/Twitter Thread>
 
 <Template - Newsletter Blurb>
+```markdown
 Subject line: {{subject_line}} ({{count}}/60 chars)
 
 {{hook_sentence}}
@@ -170,9 +182,11 @@ Subject line: {{subject_line}} ({{count}}/60 chars)
 {{closing_line_with_link_or_cta}}
 
 Word count: {{count}}/300
+```
 </Template - Newsletter Blurb>
 
 <Template - Email Summary>
+```markdown
 Subject: {{action_oriented_subject}}
 
 {{opening_context_sentence}}
@@ -182,9 +196,11 @@ Subject: {{action_oriented_subject}}
 {{clear_next_step_or_ask}}
 
 Word count: {{count}}/200
+```
 </Template - Email Summary>
 
 <Template - Slide Talking Points>
+```markdown
 Slide concept: {{slide_title}}
 
 - {{point_1}}
@@ -194,9 +210,11 @@ Slide concept: {{slide_title}}
 - {{point_5}}
 
 (5-8 points per slide concept, one idea per bullet, under 15 words each)
+```
 </Template - Slide Talking Points>
 
 <Template - Video Script (60-90s)>
+```markdown
 [HOOK - first 5 seconds]
 {{bold_opening_question_or_statement}}
 
@@ -211,6 +229,7 @@ Slide concept: {{slide_title}}
 {{single_clear_cta}}
 
 Word count: {{count}}/225 (target: 150-225 words for 60-90 seconds)
+```
 </Template - Video Script (60-90s)>
 
 </Templates>

@@ -1,3 +1,9 @@
+---
+description: "Reference explaining how a HEDIS measure rate is built from eligible population, exclusions, and numerator that the skill uses to structure measure calculations."
+last_updated: 2026-09-13
+origin: original
+---
+
 # HEDIS Measure Structure
 
 Every Healthcare Effectiveness Data and Information Set (HEDIS) measure resolves

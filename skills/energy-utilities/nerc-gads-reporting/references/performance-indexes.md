@@ -1,3 +1,8 @@
+---
+description: "NERC GADS and IEEE 762 performance index formula reference defining base time components and the exact availability index calculations for reporting."
+last_updated: 2026-09-13
+origin: original
+---
 # NERC GADS / IEEE 762 Performance Index Formulas
 
 Use these formulas exactly. Never approximate or substitute simplified versions.

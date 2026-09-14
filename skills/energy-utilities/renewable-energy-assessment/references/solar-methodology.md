@@ -1,3 +1,8 @@
+---
+description: "Solar PV production methodology giving PVWatts-equivalent plane-of-array irradiance, cell temperature derate, and DC and AC power output formulas used for solar energy assessment."
+last_updated: 2026-09-13
+origin: original
+---
 # Solar PV Methodology (PVWatts-equivalent)
 
 All numeric coefficients below are physical model constants (transposition geometry,

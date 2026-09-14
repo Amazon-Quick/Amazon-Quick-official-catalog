@@ -1,3 +1,9 @@
+---
+description: "Static lookup catalog of energy market segments and terminology used by the energy market intelligence research workflows."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Energy Market Reference Catalog
 
 Lookup data for energy market research. This catalog does not change between runs.

@@ -1,3 +1,8 @@
+---
+description: "Optimization methodology reference describing the three-stage enumerate-simulate-rank sizing method and the dispatch strategies for microgrid design."
+last_updated: 2026-09-13
+origin: original
+---
 # Optimization Methodology and Dispatch Strategies
 
 This file holds the three-stage optimization method and the two dispatch strategies referenced by the main workflow. Implement all math in `run_python` using numpy and pandas. There is no HOMER, SAM, or pvlib package in the Amazon Quick sandbox; these names describe methodology, not tools you can import.

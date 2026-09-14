@@ -1,3 +1,9 @@
+---
+description: "Python and SQL implementations that compare each provider's Evaluation and Management code distribution to same-specialty peers using z-scores to flag upcoding."
+last_updated: 2026-09-13
+origin: original
+---
+
 # E&M Provider Profiling
 
 Compare each provider's Evaluation and Management (E&M) code distribution to same-specialty

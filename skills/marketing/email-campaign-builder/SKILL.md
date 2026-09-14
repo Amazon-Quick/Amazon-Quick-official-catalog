@@ -22,7 +22,7 @@ inputs:
   description: "Desired action: buy, book, reply, click, register"
   type: string
   required: false
-checksum: "sha256:40acc44de64636cd0f1adaf005a2f44c1b0cca0cfb030f4c6b0aeb8ec5be6ca9"
+checksum: "sha256:b58b2d0ac59780bc8a569b2ebe2c1de6e72ac3ac636a56d2a74978231081f93d"
 ---
 
 ## Overview

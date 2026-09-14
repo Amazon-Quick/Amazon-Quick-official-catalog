@@ -21,7 +21,6 @@ class AssetEntry(BaseModel):
     display_name: str = ""
     icon: str = ""
     description: str = ""
-    depends_on: list[str] = []
     last_updated: str = "—"
 
     @property
@@ -53,15 +52,14 @@ def define_env(env):
         for cat in categories:
             lines = [
                 f"### {cat.name}\n",
-                "| Name | Type | Description | Integrations | Updated |",
-                "|------|------|-------------|--------------|---------|",
+                "| Name | Type | Description | Updated |",
+                "|------|------|-------------|---------|",
             ]
             for a in cat.assets:
                 desc = _truncate(a.description, 100)
-                deps = ", ".join(a.depends_on) or "—"
                 dl_url = f"{REPO_URL}/tree/main/{a.path}"
                 lines.append(
-                    f"| {a.icon} [{a.label}]({dl_url}) | {a.type.capitalize()} | {desc} | {deps} | {a.last_updated} |"
+                    f"| {a.icon} [{a.label}]({dl_url}) | {a.type.capitalize()} | {desc} | {a.last_updated} |"
                 )
             sections.append("\n".join(lines))
 
@@ -84,7 +82,6 @@ def _build_categories(project_dir: Path, catalog_data: dict) -> list[Category]:
                     display_name=frontmatter.get("display_name", ""),
                     icon=frontmatter.get("icon", ""),
                     description=frontmatter.get("description", ""),
-                    depends_on=frontmatter.get("depends-on", []),
                     last_updated=frontmatter.get("last_updated", "—"),
                 )
             )

@@ -1,3 +1,9 @@
+---
+description: "Python code that identifies members whose total paid amount exceeds a percentile threshold and reports their share of total spend."
+last_updated: 2026-09-13
+origin: original
+---
+
 # High-Cost Claimant Identification
 
 Identify members whose total paid amount exceeds a percentile threshold and report their share of total spend.

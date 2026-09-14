@@ -1,3 +1,9 @@
+---
+description: "GHG Protocol Corporate Standard scope and category definitions used to classify each emission source before applying an emission factor."
+last_updated: 2026-09-13
+origin: original
+---
+
 # GHG Protocol Scopes and Categories
 
 The GHG Protocol Corporate Standard organizes emissions into three scopes. Use this

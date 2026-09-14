@@ -6,7 +6,8 @@ description: "Delivers a plain-language business health briefing for owner-opera
 created_date: "2026-06-04"
 last_updated: "2026-07-03"
 license: "MIT-0"
-depends-on: [quickbooks, google-calendar, outlook, gmail, slack, agent_management, memory_management]
+tools: [agent_management, gmail, google-calendar, memory_management, outlook, quickbooks, slack]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: cash_buffer
     description: "Minimum cash balance the owner wants to maintain, used to frame whether cash covers obligations (e.g., '5000')"
@@ -29,7 +30,7 @@ inputs:
     type: number
     required: false
     default: 0.4
-checksum: "sha256:3814a3f0e29f48161d5153137661e6ac2ccb0a2f3decf296c629b377a4458196"
+checksum: "sha256:e55d88e6f6704f983dfddfe071044ece5752bab09aef198e8c5ebb28b4823c93"
 ---
 
 ## Overview
@@ -216,7 +217,7 @@ triggers=["how's my business doing", "business pulse", "what's my cash position"
     - Otherwise (no schedule AND no recorded decision): you MUST continue to step 13 before ending. Never treat "this looks like a repeat run" as a reason to skip; only an existing schedule or a recorded decision counts.
 
 13. [Ask user] Before ending the interaction, ask the scheduling question, this is required, not optional: "Want me to run this for you automatically every morning at {{briefing_time}} and drop it in your {{delivery_channel}}?"
-    - If the owner declines: acknowledge, and **record the decision so future runs do not re-ask**. State it plainly for Quick to remember as a preference, e.g. "Noted: the owner declined automatic daily Business Pulse scheduling on {{date}}." Do not offer again unless the owner raises it.
+    - If the owner declines: acknowledge, and **record the decision so future runs do not re-ask**. State it plainly for Quick to remember as a preference, e.g. "Noted: the owner declined automatic daily Business Pulse scheduling on the current date." Do not offer again unless the owner raises it.
     - If the owner accepts: create the task with agent_management `create_scheduled_agent`:
         - schedule_type = "time_of_day", schedule_time = {{briefing_time}} (owner's laptop-local time)
         - prompt = run this Business Pulse workflow end to end and deliver via {{delivery_channel}}; if nothing is notable, still send a brief all-quiet pulse
@@ -237,6 +238,7 @@ triggers=["how's my business doing", "business pulse", "what's my cash position"
 <Templates>
 
 <Template - Briefing>
+```markdown
 # Business Pulse: {{date}}
 
 {{staleness_warning_if_any}}
@@ -269,6 +271,7 @@ triggers=["how's my business doing", "business pulse", "what's my cash position"
 {{narrative}}
 
 <small>QuickBooks data as of {{last_sync_time}}</small>
+```
 </Template - Briefing>
 
 </Templates>

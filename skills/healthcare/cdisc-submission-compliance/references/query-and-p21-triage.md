@@ -1,3 +1,9 @@
+---
+description: "Guidance for prioritizing data queries by clinical impact and triaging Pinnacle 21 findings before database lock or submission."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Query Prioritization and Pinnacle 21 Triage
 
 Use for data query prioritization and for triaging Pinnacle 21 (P21) findings before

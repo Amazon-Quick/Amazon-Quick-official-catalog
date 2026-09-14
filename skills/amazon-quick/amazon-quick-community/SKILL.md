@@ -4,7 +4,7 @@ display_name: Amazon Quick Community
 icon: "🌐"
 description: "Navigate and search the Amazon Quick Community, the public forum where Quick users ask questions, access learning content, attend live events, join local user groups, and share dashboards. Routes users to the right community section, searches for existing answers to questions, and provides awareness summaries of what the community offers. Use when asked about 'quick community', 'community resources', 'find an answer', 'learning resources', 'user groups', 'community events', or 'developer corner'."
 created_date: "2026-06-11"
-last_updated: "2026-06-11"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [web_search, url_fetch, browser_navigate, browser_extract_text, browser_scroll]
 inputs:
@@ -12,7 +12,7 @@ inputs:
     description: "What the user is looking for: a question to search, a topic to learn about, or a type of resource to discover"
     type: string
     required: false
-checksum: "sha256:d147b0b683af6599e209702084e493353fd6e2539664235eb3e0e9d70c80c737"
+checksum: "sha256:09218d11568f414dc9fdae944f2129275cbfbb9d9c3e41ffbfc1d341d5df735e"
 ---
 
 ## Overview
@@ -125,6 +125,7 @@ triggers=["User wants to find a community section or resource"]
    - General starting point → Community Homepage (see Community URL Map)
 
 2. [Agent] Present the recommended section with a brief description of what the user will find there. Link to the community homepage and tell them which section to navigate to. Include the Official Documentation link from the Community URL Map as the authoritative reference for product behavior.
+   If fails: If a needed link from the Community URL Map is unavailable, fall back to the Community Homepage link and tell the user which section to look for there.
 
 </Workflow - Recommend>
 
@@ -135,12 +136,14 @@ triggers=["User has a question and wants to see if it has been answered on the c
 >
 
 1. [Agent] Generate 2-3 variations of the user's question (rephrasings, alternate terminology, related keywords). Search each variation using web_search with the query prefixed by "site:community.amazonquicksight.com". Collect all results.
+   If fails: If web_search errors or returns nothing usable for every variation, continue to the browser fallback in step 2 rather than stopping.
 
 2. [Decide] Did web_search return relevant results?
    - Yes → Continue to step 3.
    - No or insufficient → Fall back to browser. Use browser_navigate to load https://community.amazonquicksight.com/search?q={query} and browser_extract_text to read the results.
 
 3. [Agent] Deduplicate and rank results by relevance to the original question. Select the top 3-5 most relevant posts.
+   If fails: If the results cannot be ranked (for example they are unstructured), present the raw result links unranked so the user still gets the sources.
 
 4. [Decide] Did the search return relevant community posts?
    - Yes → Present the top results with titles and direct links. Summarize the key answer if one exists. Cross-reference the Official Documentation from the Community URL Map for the relevant topic and include that link as the authoritative source.
@@ -162,6 +165,7 @@ triggers=["User wants a general overview of the community", "User asks what the 
    - All content is browsable without an account (only posting to Q&A requires sign-in)
    - Official documentation is the authoritative source for product behavior
    - Community guidelines should be reviewed before posting
+   If fails: If a referenced link from the Community URL Map is unavailable, present the summary with the remaining valid links and note which resource could not be included.
 
 </Workflow - Awareness>
 
@@ -176,12 +180,14 @@ triggers=["User wants to stay updated on community content", "After any other wo
    - Events: Stay informed about upcoming live sessions, workshops, and webinars
    - User Groups: Get updates about local meetups in their region
    - Q&A Activity: Surface new questions or answers on topics they care about
+   If fails: If the update options cannot be presented, skip the subscription offer and let the user know they can ask about community updates anytime.
 
 2. [Decide] Did the user express interest?
    - Yes → Ask which topics or sections interest them, and if relevant (user groups, events), ask their region. Then search the community for the latest content in those areas. Use web_search first; if insufficient, fall back to browser_navigate to load the relevant community page and browser_extract_text to read the content. Present the latest findings.
    - No → Acknowledge and move on. Do not ask again in the same session.
 
 3. [Agent] If the user wants recurring updates, recommend they set up a scheduled agent in Amazon Quick. Describe what the schedule would do: periodically browse the community for new posts in their chosen sections and surface anything new since the last check.
+   If fails: If the scheduled-agent recommendation cannot be generated, give the user the community section links to check manually on their own cadence.
 
 </Workflow - Subscribe>
 

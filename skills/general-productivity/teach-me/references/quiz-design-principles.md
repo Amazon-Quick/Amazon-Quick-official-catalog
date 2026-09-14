@@ -1,3 +1,9 @@
+---
+description: "Lookup data mapping quiz depth levels to Bloom's tiers and question constraints, used to select stem patterns and distractor strategies during generation."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Quiz Design Principles
 
 Lookup data for the Generate workflow. The agent reads this file to select stem patterns and distractor strategies appropriate to the depth level and question type.

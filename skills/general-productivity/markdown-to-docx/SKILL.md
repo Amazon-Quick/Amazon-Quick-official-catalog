@@ -22,7 +22,7 @@ inputs:
     description: Optional document title (overrides the first H1 heading)
     type: string
     required: false
-checksum: "sha256:99c3efa12a1d892c0015d0f8f47c97db417a2cd2ab744c8e428efb24ca28eb7a"
+checksum: "sha256:ad5f7af5a34fdb2eda58a1d5d0a9f126d698f280c75d7f0969255ef706a91fce"
 ---
 
 ## Overview
@@ -111,3 +111,5 @@ triggers=["convert to Word", "export as docx", "make a Word doc", "markdown to d
 </Workflow - Convert>
 
 </Instructions>
+
+- Unit tests (scripts/tests/unit/test_convert.py) provide filesystem-free coverage of the scripts. Run them with `PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"`.

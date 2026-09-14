@@ -1,3 +1,9 @@
+---
+description: "A deterministic Python rules engine the skill uses to adjudicate clear-cut prior authorization criteria such as step therapy, age, and lab thresholds."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Rules-Based Adjudication Engine
 
 A deterministic rules engine is the audit-defensible core of PA automation. It runs on

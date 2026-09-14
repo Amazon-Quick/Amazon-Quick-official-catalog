@@ -1,3 +1,9 @@
+---
+description: "Authoritative live data sources and standards, such as OpenEI URDB, EIA, and NREL, that the EV fleet planning skill fetches time-sensitive values from at runtime."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Authoritative Data Sources and Standards
 
 Fetch time-sensitive values from these sources at runtime with url_fetch or

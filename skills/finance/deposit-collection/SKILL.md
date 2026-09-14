@@ -6,8 +6,8 @@ description: "Collect a deposit before work starts, so the cash arrives before t
 created_date: "2026-06-07"
 last_updated: "2026-07-03"
 license: "MIT-0"
-depends-on: [quickbooks, gmail, outlook, paypal, memory_management]
 tools: [recall_memories]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: customer
     description: "Customer name as it appears in QuickBooks (e.g., 'Johnson Residence', 'Acme Corp')"
@@ -32,7 +32,7 @@ inputs:
     options: [request, confirm, final]
     required: false
     default: request
-checksum: "sha256:2093096bd5c9017865e62c0774d5577758db57e632426a49a83dad69608a536b"
+checksum: "sha256:9930207bdb47e1dbb6b941a4442caf436406f62bdb1ea95993c7173ce3128a0e"
 ---
 
 ## Overview

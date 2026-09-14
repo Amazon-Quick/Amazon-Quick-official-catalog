@@ -4,10 +4,10 @@ display_name: "Instant Invoice"
 icon: "💸"
 description: "Create and send an invoice as soon as a job is complete. Use when the user says 'invoice the job', 'send invoice', 'bill the customer', 'get me paid', or describes completing work and needing to invoice. Built for field service businesses (plumbers, HVAC, landscapers, consultants) that need to invoice promptly after finishing work."
 created_date: "2026-06-02"
-last_updated: "2026-06-09"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [recall_memories, save_to_memory, run_python]
-depends-on: [quickbooks, gmail, outlook, paypal, scheduled_tasks]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: customer
     description: Customer name as it appears in QuickBooks (e.g., 'Johnson Residence', 'Acme Corp')
@@ -34,7 +34,7 @@ inputs:
     description: "How this business's customers pay (a payment-page or invoice-pay URL, PayPal.me/Stripe link, Venmo/Zelle/Cash App handle, bank/ACH details, or a check mailing address / pay-by-phone contact). Used as the pay option in the invoice email when QuickBooks does not return its own pay link. Captured once on first use and remembered across ALL invoicing skills (Job-to-Invoice, Invoice Chaser, Deposit Collection). Never fabricated."
     type: string
     required: false
-checksum: "sha256:d664c83d5cf69d09e02a4a640fd774539658c7a8e03c0a3b39730c2c604e204a"
+checksum: "sha256:e12d4e8832da1e346eca938a88dd95f903749d1cad720d950ebe30eca7ae05db"
 ---
 
 ## Overview

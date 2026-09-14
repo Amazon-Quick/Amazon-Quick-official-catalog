@@ -1,3 +1,9 @@
+---
+description: "Reference tables and evaluation rules for HEDIS measure exclusions that the skill applies when computing eligible denominators."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Exclusion Logic
 
 | Category | Applies to | Condition |

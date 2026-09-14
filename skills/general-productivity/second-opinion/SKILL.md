@@ -32,7 +32,7 @@ inputs:
     type: boolean
     required: false
     default: false
-checksum: "sha256:52b48712275a3ec25748cbbd740969f4ef65f1b3939fc0e35bed8e4c3348578d"
+checksum: "sha256:c2577c6db513628ab22dcffcaf4eeb8551369da13aa6aad3655daa58d5ca06c6"
 ---
 
 ## Overview
@@ -189,6 +189,7 @@ preferred_thinking=high
 <Templates>
 
 <Template - Reviewer Briefing>
+```markdown
 You are an independent reviewer evaluating material for a structured council review.
 
 PERSPECTIVE: {{perspective_lens}}
@@ -212,9 +213,11 @@ OUTPUT FORMAT (produce EXACTLY this structure):
 
 ## Overall Take
 [3-4 sentences: overall quality assessment, key strengths, primary concerns]
+```
 </Template - Reviewer Briefing>
 
 <Template - Cross-Review Judge Briefing>
+```markdown
 You are a judge in an anonymous peer review. Below are {{N}} independent reviews of the same material. You do NOT know which review is yours (if any).
 
 {{anonymized_bundle}}
@@ -234,6 +237,7 @@ OUTPUT FORMAT:
 - F1: [agree/dispute/neutral] - [reason]
 - F2: [agree/dispute/neutral] - [reason]
 [repeat for all findings in all reviews]
+```
 </Template - Cross-Review Judge Briefing>
 
 </Templates>

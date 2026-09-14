@@ -4,11 +4,59 @@ display_name: Invoice Chaser
 icon: "💸"
 description: "Pulls overdue invoices from QuickBooks, segments them into Friendly / Firm / Final Notice tiers by days overdue, drafts tone-appropriate follow-up emails and SMS, and sends only after owner approval. Supports scheduled automation and customer segmentation. Use for overdue invoice follow-up, AR aging review, or collections - when asked 'who hasn't paid me?', 'what's overdue?', 'chase unpaid invoices', 'send payment reminders', 'run collections follow-up', or 'set up automatic reminders'."
 created_date: "2026-06-04"
-last_updated: "2026-06-09"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [recall_memories, save_to_memory, file_read, file_write]
-depends-on: [quickbooks, gmail, outlook, twilio, scheduled_tasks]
+readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
+
+  - name: flagged_count
+
+    description: "Count of drafts flagged for extra scrutiny, populated at runtime and shown in the review summary."
+
+    type: number
+
+    required: false
+
+  - name: last_chase_date
+
+    description: "Date a customer was last chased, read from QuickBooks notes and shown in the duplicate-notice decision prompt."
+
+    type: string
+
+    required: false
+
+  - name: notified_count
+
+    description: "Count of customers already chased within the duplicate window, shown in the review decision prompt."
+
+    type: number
+
+    required: false
+
+  - name: prior_notice_line
+
+    description: "One-line prior-contact context appended to a per-draft send decision, populated at runtime."
+
+    type: string
+
+    required: false
+
+  - name: total
+
+    description: "Total number of drafts prepared in the run, shown in the review summary and decision prompts."
+
+    type: number
+
+    required: false
+
+  - name: unchased_count
+
+    description: "Count of customers not yet notified, shown in the review decision prompt."
+
+    type: number
+
+    required: false
   - name: friendly_threshold_days
     description: "Upper bound (in days overdue) for the Friendly tier. Invoices 1 to this value are tagged Friendly."
     type: number
@@ -104,7 +152,7 @@ inputs:
     type: number
     required: false
     default: 3
-checksum: "sha256:84eeef8b4300d013e7b82ef32d91b94e4813dc3a3488b17d98c8b731c35d53be"
+checksum: "sha256:c6754d81fa65792a5ade945585306235bac022a73c5357f4fa27d4b6e3bedca6"
 ---
 
 ## Overview
@@ -195,6 +243,7 @@ wait; [Decide] = evaluate and branch; [Think] = reason internally.
 
 <Workflow
 description="End-to-end overdue invoice chase: gather, segment, draft, approve, send, log."
+tools=[recall_memories, save_to_memory, file_read, file_write]
 triggers=["who hasn't paid me", "what's overdue", "chase unpaid invoices", "send payment reminders", "run collections follow-up"]
 >
 
@@ -212,6 +261,7 @@ triggers=["who hasn't paid me", "what's overdue", "chase unpaid invoices", "send
 
    Filter out any invoice below {{minimum_invoice_amount}} per Rule 3. Produce tier counts for the summary.
    Validate: every remaining invoice has exactly one tier assigned. No overlap.
+   If fails: If tier segmentation cannot be completed (for example a threshold input is missing or invalid), report the specific problem to the owner and stop before drafting rather than guessing a tier.
 
 4. [Agent] Pull customer contact info using `quickbooks__QueryEntities` (entity: Customer). Call once and join in memory - do not call per-invoice. Extract `customer_email`, `customer_display_name` per invoice. Default to billing email; fall back to primary if no billing email exists.
    Validate: flag invoices with missing or malformed email - these are surfaced separately in Step 6.
@@ -253,6 +303,7 @@ triggers=["who hasn't paid me", "what's overdue", "chase unpaid invoices", "send
    <option description="Cancel this run">Cancel</option>
    </decision>
    Validate: owner chooses "Review drafts"; the payment link is either on file, just captured, or explicitly skipped; volume is acknowledged if the send count exceeds {{volume_warning_threshold}}.
+   If fails: If the owner does not respond or the decision card cannot be presented, take no drafting or sending action and leave the run paused for the owner to restart.
 
 7. [Agent] Before drafting, confirm payment setup is resolved per Rule 17: a link is on file, was just provided, or the owner explicitly skipped. If it is NOT resolved - including when the owner gave a narrowing instruction like "draft the 5" without addressing payment - ask the one-time payment-setup question (Step 6) first, then draft. Apply the {{tone}} input (and any customer_groups override); never ask the owner about tone or style (Rule 19). Draft tier-appropriate emails for all approved invoices following the tier <Template> and Rule 20 formatting (short, human, correct line breaks, plain text; in particular, put NO blank line between the sign-off word and the owner's name - write "Thanks," and then the name on the very next line). Reference Follow-up History in Firm and Final Notice drafts where prior outreach exists. Append the soft-payment caveat to Firm and Final Notice emails per Rule 7 unless the owner disabled it. Include the owner's payment link or instructions (per <Definition - Payment Instructions>) in every draft when one is on file, as a clear "How to pay" line, substituting each invoice's number into any placeholder in the link; use the saved or captured value and never fabricate one. Group recurring invoices by customer per tier - one email per customer per tier, listing all overdue invoices at that tier level. A customer with 2 Friendly and 1 Firm invoice receives 2 emails: one Friendly covering both, one Firm covering the third.
    Validate: payment setup was resolved before drafting; each draft has non-empty subject, body, and recipient; body references actual invoice number and amount, includes the payment link/instructions when on file, and follows Rule 20 formatting (human wording; sign-off word and owner name on two separate adjacent lines; NO occurrence of the banned robotic phrasing about not receiving "payment or a response to previous communications"); every Firm and Final Notice draft includes the soft-payment caveat per Rule 7 unless the owner disabled it. No template placeholders remain.
@@ -297,6 +348,7 @@ triggers=["who hasn't paid me", "what's overdue", "chase unpaid invoices", "send
    STOP and wait for that choice in a LATER turn. Never stage or send in the same turn you present the drafts. A "draft the top N" instruction means draft and SHOW those N in full, then wait; it is NOT approval to stage or send.
    If {{dry_run}} is true: show the full drafts as preview only and confirm nothing will be staged or sent, per Rule 10. End workflow after this step.
    Validate: every draft that will stage or send was shown IN FULL with its prior-notification context; the owner made an explicit decision-card choice; default is do-nothing.
+   If fails: If the drafts cannot be rendered in full, do not stage or send anything; report the display problem to the owner and stop, since approval requires seeing the full drafts.
 
 9. [Decide] Act on the owner's Step 8 decision-card choice:
    - dry_run true, or the owner only previewed or chose "Cancel": nothing is staged or sent; summarize what would have happened and end.
@@ -328,11 +380,13 @@ triggers=["who hasn't paid me", "what's overdue", "chase unpaid invoices", "send
 13. [Agent] Present the final summary.
     Precondition: Steps 11 (logging) and 12 (reminder) are resolved. Never show this summary - or any "done" / "all sent" confirmation - while logging or the reminder is still unresolved.
     Include: emails sent (count, recipients, tiers); emails skipped (with reasons); logging status (local record written, and whether the QB note write succeeded or failed); the follow-up reminder set (date and scope); and any failures encountered. If this was a dry run, reiterate that nothing was sent.
+    If fails: If the summary cannot be assembled, tell the owner directly which emails were sent, logged, and reminded so the run outcome is not lost.
 
 </Workflow>
 
 <Workflow
 description="Set up or modify automated reminder schedule."
+tools=[]
 triggers=["set up automatic reminders", "schedule payment chasing", "automate invoice reminders", "change reminder schedule"]
 >
 
@@ -343,6 +397,7 @@ triggers=["set up automatic reminders", "schedule payment chasing", "automate in
    - Channel: email, sms, or both?
    
    Present current schedule if one exists. Allow modification.
+   If fails: If the owner does not specify preferences, re-ask for the frequency, auto-action, scope, and channel before continuing.
 
 2. [Decide] Validate configuration:
    - If 'send_friendly_auto' selected, confirm: "This will automatically send Friendly-tier reminders without your approval. Firm and Final Notice will still require approval. Confirm?"
@@ -353,13 +408,16 @@ triggers=["set up automatic reminders", "schedule payment chasing", "automate in
    - Run day/time per owner's choice (defaults: {{auto_schedule_day}} at {{auto_schedule_time}} in owner's timezone)
    - Action mode per owner's choice
    - Customer group filter if specified
+   If fails: If the scheduled task cannot be registered or updated, report the specific error to the owner and confirm no automation was set.
 
 4. [Agent] Confirm setup to owner with summary of what will happen and when. Include how to modify or cancel.
+   If fails: If the confirmation summary cannot be produced, tell the owner the schedule was saved and provide the key settings directly.
 
 </Workflow>
 
 <Workflow
 description="Send SMS reminder for overdue invoice."
+tools=[file_write]
 triggers=["send sms reminder", "text them about the invoice"]
 >
 
@@ -371,19 +429,24 @@ triggers=["send sms reminder", "text them about the invoice"]
    - If no phone number: surface to owner, offer to send email instead.
 
 3. [Think] Draft SMS message (must be ≤160 chars). Format:
+   ```text
    - Friendly: "Hi {{name}}, quick reminder: Invoice #{{num}} ({{amt}}) was due {{date}}. Questions? Reply here or email us."
    - Firm: "{{name}}: Invoice #{{num}} ({{amt}}) is {{days}}d overdue. Please pay ASAP or contact us to discuss."
    - Final Notice: "FINAL NOTICE: Invoice #{{num}} ({{amt}}) is {{days}}d overdue. Contact us immediately to avoid escalation."
+   ```
 
 4. [Ask user] Present SMS draft for approval. Show: recipient, phone number, message text, character count.
    Validate: message ≤160 chars. If over, offer to shorten.
+   If fails: If the owner does not approve the message, do not send it and offer to edit the draft or cancel.
 
 5. [Agent] Send via `twilio.send_sms` after approval. Log to Follow-up History with channel='sms'.
+   If fails: If the SMS cannot be sent, report the send error to the owner and offer to send the reminder by email instead.
 
 </Workflow>
 
 <Workflow
 description="Configure customer groups for segmented chase strategies."
+tools=[file_write]
 triggers=["set up customer groups", "segment my customers", "different reminders for different customers", "configure customer groups"]
 >
 
@@ -393,6 +456,7 @@ triggers=["set up customer groups", "segment my customers", "different reminders
    - Repeat offenders (firmer tone, shorter grace period, SMS enabled)
    - New customers (standard defaults, email only)
    Allow custom group names and rules.
+   If fails: If the owner does not describe any groups, re-ask using the suggested common groups as a starting point.
 
 2. [Ask user] For each group, configure:
    - Which customers belong (by name, company, or customer ID)?
@@ -400,17 +464,20 @@ triggers=["set up customer groups", "segment my customers", "different reminders
    - Threshold overrides (friendly_days, firm_days)?
    - Channel preference (email/sms/both)?
    - Any special rules (e.g., "always require approval", "never auto-send")?
+   If fails: If group details are incomplete, re-ask for the missing membership, tone, threshold, or channel settings before saving.
 
 3. [Agent] Save customer_groups configuration to local skill state. Validate no customer appears in multiple groups.
+   If fails: If the configuration cannot be saved or a customer appears in multiple groups, report the specific problem to the owner and do not save an invalid configuration.
 
 4. [Agent] Confirm setup. Show summary table of all groups with their settings. Remind owner that ungrouped customers use global defaults.
+   If fails: If the summary table cannot be produced, tell the owner the groups were saved and list their names directly.
 
 </Workflow>
 
 </Instructions>
 
 <Templates>
-
+```markdown
 **Email subjects**. Friendly: "Quick reminder: Invoice #{{invoice_number}} is past due" · Firm: "Follow-up: Invoice #{{invoice_number}} - {{days_overdue}} days overdue" · Final Notice: "Final Notice: Invoice #{{invoice_number}} - immediate attention required"
 
 All emails follow Rule 20 formatting (greeting on its own line; blank line between paragraphs; payment line on its own line; sign-off word and owner name on two adjacent lines, no blank line between; plain-text currency like $1,234.56; vary phrasing across runs). Include the "How to pay" line only when a payment instruction is on file.
@@ -420,7 +487,7 @@ All emails follow Rule 20 formatting (greeting on its own line; blank line betwe
 - **Final Notice** (serious, not hostile; sounds human, not a legal threat). Must include: first name; that it's a final notice + invoice #, amount, days overdue; one factual consequence line appropriate to the business (never invent unauthorized ones / no legal action unless owner instructs); clear call to pay or make contact; soft-payment caveat (unless disabled).
 
 Example (Firm, link on file):
-```
+~~~
 Hi Raj,
 
 Invoice #25 for $1,840.00 is now 22 days past due. Could you take care of it this week?
@@ -432,11 +499,12 @@ If you've already paid through another channel, please disregard this and accept
 
 Thanks,
 John Walker
-```
+~~~
 
 **SMS** (≤160 chars). Friendly: "Hi {{name}}, reminder: Invoice #{{num}} ({{amt}}) was due {{date}}. Questions? Reply or email us." · Firm: "{{name}}: Invoice #{{num}} ({{amt}}) is {{days}}d overdue. Please pay ASAP or contact us." · Final: "FINAL NOTICE: #{{num}} ({{amt}}) {{days}}d overdue. Contact us immediately to avoid escalation."
 
 **Run Summary** (end of every run, including dry runs): invoices reviewed; emails sent (count + per tier); skipped (below minimum / duplicate / owner-skipped); missing contact info; logging status; "Note: soft-payment caveat included on Firm/Final" if active; "DRY RUN - nothing was sent" if dry run.
 
 **Auto-Schedule Notification** (activity feed, draft_only mode): "Invoice Chaser ran automatically - {{count}} draft reminders ready for review. {{f}} Friendly, {{fi}} Firm, {{fn}} Final Notice. Total: {{total_amount}}. Review and approve when ready."
+```
 </Templates>

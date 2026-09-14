@@ -1,3 +1,9 @@
+---
+description: "Guidance and code for training an XGBoost machine learning classifier that the skill uses to augment the rules engine on ambiguous prior authorization cases."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Machine Learning Classifier for PA Decisions
 
 Use a machine learning (ML) classifier only to augment the rules engine on ambiguous

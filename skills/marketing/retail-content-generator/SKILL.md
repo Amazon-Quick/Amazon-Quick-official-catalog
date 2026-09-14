@@ -4,11 +4,19 @@ display_name: Product Content Generator
 icon: "✍️"
 description: "Generates SEO, GEO, and AEO-optimized product titles, descriptions, and attributes from product data at scale while maintaining brand voice consistency. Optimizes for traditional search engines, generative AI engines (AI-powered search engines), and answer engines (voice assistants, featured snippets). Use when asked to 'generate product descriptions', 'write product content', 'create listings for new SKUs', 'product copywriting', 'bulk content generation', 'optimize for AI search', or 'write in our brand voice'."
 created_date: "2026-06-10"
-last_updated: "2026-06-11"
+last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, file_read_image, open_in_session_tab, web_search]
-depends-on: []
+
 inputs:
+
+  - name: config_directory
+
+    description: "Directory where the skill stores and reads its persisted config/schema context (e.g., discovered schema JSON). Defaults to the skill working directory."
+
+    type: path
+
+    required: false
   - name: product_data
     description: "Path to product data file (CSV/Excel with SKU, product name, attributes, category) or pasted product details"
     type: string
@@ -39,7 +47,7 @@ inputs:
     type: number
     required: false
     default: 10
-checksum: "sha256:0c0b8b029723006bcb37b5ec2b0276afa9ff17433108408ccf36ca4943ac3db1"
+checksum: "sha256:d38c5817be83964f1a088623bce2d4f16797b766a27db3a95de371a898942089"
 ---
 
 ## Overview
@@ -278,6 +286,7 @@ triggers=["generate product descriptions", "write product content", "create list
 <Templates>
 
 <Template - Calibration Samples Presentation>
+```markdown
 Here are {{sample_count}} sample descriptions in your brand voice. Each includes:
 - [SEO] keyword integration (highlighted)
 - [GEO] citable factual claim (highlighted)
@@ -286,9 +295,11 @@ Here are {{sample_count}} sample descriptions in your brand voice. Each includes
 {{samples}}
 
 Please review and tell me if the tone and optimization balance feels right, or what to adjust.
+```
 </Template - Calibration Samples Presentation>
 
 <Template - Batch Review Presentation>
+```markdown
 Batch {{batch_number}} complete: {{product_count}} products. QA results: {{qa_pass_fail_summary}}.
 
 Here are 3 representative samples from this batch. Full batch available in the output file.
@@ -296,6 +307,7 @@ Here are 3 representative samples from this batch. Full batch available in the o
 {{representative_samples}}
 
 Approve to continue, or flag specific products for revision.
+```
 </Template - Batch Review Presentation>
 
 <Template - Output Columns>
@@ -303,10 +315,12 @@ sku, product_name, generated_title, generated_description, seo_keywords, geo_cla
 </Template - Output Columns>
 
 <Template - Generation Summary>
+```markdown
 {{total_products}} product descriptions generated in {{elapsed_time}}.
 Optimization applied: {{optimization_flags}}.
 Output: {{filename}} (open in tab).
 QA summary: {{pass_rate}}% passed all checks.
+```
 </Template - Generation Summary>
 
 </Templates>

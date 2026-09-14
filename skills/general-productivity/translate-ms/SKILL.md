@@ -17,7 +17,7 @@ inputs:
     description: "Target language for translation (e.g. French, Japanese, German, Spanish)"
     type: string
     required: true
-checksum: "sha256:7b31228439370918c76d4e37f4a844da76802dc75936fcef634bb14d472be53b"
+checksum: "sha256:9955e48da804e90cde83ffcd06df5da85f007e5d62166022f56a90cb9ce49144"
 ---
 
 ## Overview
@@ -251,3 +251,5 @@ triggers=["translate this document", "translate this presentation", "convert to 
 </Workflow - Translate Document>
 
 </Instructions>
+
+- Unit tests (scripts/tests/unit/test_state.py, scripts/tests/unit/test_extract.py, scripts/tests/unit/test_glossary.py, scripts/tests/unit/test_reconstruct.py) provide filesystem-free coverage of the scripts. Run them with `PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"`.

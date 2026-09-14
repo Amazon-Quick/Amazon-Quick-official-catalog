@@ -1,3 +1,9 @@
+---
+description: "Severity-ranked list of common CDISC compliance mistakes with the wrong pattern, correct pattern, and reason for each."
+last_updated: 2026-09-13
+origin: original
+---
+
 # Common Compliance Mistakes (Severity-Ranked)
 
 Use when reviewing datasets for compliance gaps. Each entry gives the wrong pattern,

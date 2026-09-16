@@ -1,0 +1,16 @@
+{
+  "source": "synthetic+replay-override",
+  "as_of": "2026-09-01T14:04:00.000Z",
+  "rows": [
+    {
+      "name": "TargetZone",
+      "top_md": 10070.0,
+      "base_md": 10100.0
+    },
+    {
+      "name": "ExitZone",
+      "top_md": 10100.0,
+      "base_md": 10250.0
+    }
+  ]
+}

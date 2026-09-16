@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exit Zone Geosteering fallback</title>
+<style>
+:root{color-scheme:light dark}*{box-sizing:border-box}body{margin:0;font:14px/1.45 var(--font-sans,system-ui,sans-serif);background:var(--color-bg,#fff);color:var(--color-text,#172b4d)}main{max-width:1180px;margin:auto;padding:24px}.head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.sub,.muted{color:var(--color-text-muted,#667085)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:20px 0}.card{background:var(--color-bg-secondary,#f5f7fa);border:1px solid var(--color-border-light,#dfe3e8);border-radius:10px;padding:16px;overflow:auto}.value{font:700 24px var(--font-mono,ui-monospace,monospace);margin-top:5px}.tier{display:inline-block;border-radius:999px;padding:4px 10px;font-weight:700}.Watch{background:var(--color-info-subtle,#e9f2ff);color:var(--color-info,#1769aa)}.Warn{background:var(--color-warning-subtle,#fff4ce);color:var(--color-warning,#8a5b00)}.Escalate{background:var(--color-danger-subtle,#ffe8e8);color:var(--color-danger,#b42318)}table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;border-bottom:1px solid var(--color-border-light,#dfe3e8);vertical-align:top}code{font-family:var(--font-mono,ui-monospace,monospace)}.empty{text-align:center;padding:36px 20px}.notice{border-left:4px solid var(--color-warning,#8a5b00);margin:16px 0}.wide{grid-column:1/-1}</style>
+</head>
+<body><main id="app"></main>
+<script id="geosteering-data" type="application/json">__GEOSTEERING_DATA__</script>
+<script>
+(function(){
+'use strict';
+const data=JSON.parse(document.getElementById('geosteering-data').textContent);
+const app=document.getElementById('app');
+function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function money(value){return typeof value==='number'?new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2}).format(value):'UNKNOWN'}
+function rows(items,columns){if(!items.length){return '<tr><td colspan="'+columns.length+'">No data</td></tr>'}return items.map(function(item){return '<tr>'+columns.map(function(column){return '<td>'+esc(column.read(item))+'</td>'}).join('')+'</tr>'}).join('')}
+function table(headers,body){return '<table><thead><tr>'+headers.map(function(value){return '<th>'+esc(value)+'</th>'}).join('')+'</tr></thead><tbody>'+body+'</tbody></table>'}
+if(data.empty){app.innerHTML='<section class="card empty"><h1>Exit Zone Geosteering</h1><p>'+esc(data.message)+'</p><p class="muted">Plain-HTML fallback. Interactive charts are unavailable.</p></section>';return}
+const verify=data.verification&&data.verification.value||{};
+const alert=data.zone_exit&&data.zone_exit.value||{};
+const scenarios=data.price_impact&&data.price_impact.value&&data.price_impact.value.scenarios||[];
+const correct=scenarios.find(function(item){return item.scenario==='correct_now'})||{};
+const hold=scenarios.find(function(item){return item.scenario==='hold_3_stands'})||{};
+const curveRows=Object.keys(data.lwd_curves||{}).sort().map(function(name){const series=data.lwd_curves[name];const latest=series[series.length-1]||[];return{name:name,depth:latest[0],value:latest[1],points:series.length}});
+const zoneRows=data.zone_bands||[];
+const trajectoryRows=(data.trajectory||[]).slice(-12);
+const confidenceRows=data.confidence_trend||[];
+const alertRows=(data.alert_feed||[]).slice().reverse();
+app.innerHTML='<div class="head"><div><h1>Exit Zone Geosteering</h1><div class="sub">Well '+esc(data.wellbore_id)+' | persisted observation read model</div></div><span class="tier '+esc(alert.severity||'Watch')+'">'+esc(alert.severity||'No alert')+'</span></div>'+
+'<section class="card notice"><strong>Plain-HTML fallback.</strong> Highcharts or html_design was unavailable, so the same projected data is shown as tables.</section>'+
+'<div class="grid"><div class="card"><div class="muted">Current measured depth</div><div class="value">'+esc(data.latest_depth_md)+' ft</div></div><div class="card"><div class="muted">Pay delta P50</div><div class="value">'+esc(verify.p50_delta_ft)+' ft</div></div><div class="card"><div class="muted">Confidence</div><div class="value">'+esc(data.verification&&data.verification.confidence)+'</div></div><div class="card"><div class="muted">Exit ETA / margin</div><div class="value">'+esc(alert.eta_minutes)+' min / '+esc(alert.margin_ft)+' ft</div></div></div>'+
+'<div class="grid"><section class="card"><h2>Price impact</h2>'+table(['Scenario','Outcome'],rows([{name:'Correct now',usd:correct.usd},{name:'Hold 3 stands',usd:hold.usd}], [{read:function(item){return item.name}},{read:function(item){return money(item.usd)}}]))+'<p class="muted">Generated text may not alter these script-owned figures.</p></section>'+
+'<section class="card"><h2>Verification evidence</h2><p>'+esc(data.verification&&data.verification.reasoning)+'</p><p><code>'+esc(JSON.stringify(data.verification&&data.verification.source||[]))+'</code></p></section></div>'+
+'<div class="grid"><section class="card"><h2>LWD curves vs measured depth</h2>'+table(['Curve','Latest MD','Latest value','Points'],rows(curveRows,[{read:function(item){return item.name}},{read:function(item){return item.depth}},{read:function(item){return item.value}},{read:function(item){return item.points}}]))+'</section>'+
+'<section class="card"><h2>Zone bands</h2>'+table(['Zone','Top MD','Base MD'],rows(zoneRows,[{read:function(item){return item.name}},{read:function(item){return item.from_md}},{read:function(item){return item.to_md}}]))+'</section></div>'+
+'<section class="card"><h2>Curtain-section trajectory</h2>'+table(['Section footage','Measured depth'],rows(trajectoryRows,[{read:function(item){return item.section_ft}},{read:function(item){return item.depth_md}}]))+'</section>'+
+'<div class="grid"><section class="card"><h2>Confidence trend</h2>'+table(['MD','Confidence','Timestamp','Observation'],rows(confidenceRows,[{read:function(item){return item.depth_md}},{read:function(item){return item.confidence}},{read:function(item){return item.timestamp}},{read:function(item){return item.observation_id}}]))+'</section>'+
+'<section class="card"><h2>Alert feed</h2>'+table(['Tier','ETA','Margin','Boundary','Time'],rows(alertRows,[{read:function(item){return item.tier}},{read:function(item){return item.eta_minutes}},{read:function(item){return item.margin_ft}},{read:function(item){return item.boundary_zone+' @ '+item.boundary_md}},{read:function(item){return item.timestamp}}]))+'</section></div>'+
+'<section class="card"><h2>Observation history</h2>'+table(['Type','Depth','Confidence','Reasoning'],rows(data.observations,[{read:function(item){return item.type}},{read:function(item){return item.depth_md}},{read:function(item){return item.confidence}},{read:function(item){return item.reasoning}}]))+'<p class="muted">Quick reports the projection. It does not interpret the geology or make the steer.</p></section>';
+}());
+</script></body></html>

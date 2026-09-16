@@ -1,0 +1,103 @@
+{
+  "fixture_label": "synthetic",
+  "field": "Synthetic Deepwater Gas Field",
+  "created": "2026-08-11",
+  "wells": {
+    "SK-14": {
+      "total_depth_m": 4250,
+      "water_depth_m": 2100,
+      "tops": [
+        {
+          "formation": "Seabed",
+          "top_m": 0.0,
+          "base_m": 50.0
+        },
+        {
+          "formation": "Pliocene Silt",
+          "top_m": 50.0,
+          "base_m": 1200.0
+        },
+        {
+          "formation": "Miocene Marl",
+          "top_m": 1200.0,
+          "base_m": 2800.0
+        },
+        {
+          "formation": "Eocene Limestone",
+          "top_m": 2800.0,
+          "base_m": 3500.0
+        },
+        {
+          "formation": "Paleocene Chalk",
+          "top_m": 3500.0,
+          "base_m": 3980.0
+        },
+        {
+          "formation": "Synthetic Turbidite Reservoir",
+          "top_m": 3980.0,
+          "base_m": 4100.0,
+          "reservoir": true,
+          "fluid": "GAS"
+        },
+        {
+          "formation": "Marine Shale",
+          "top_m": 4100.0,
+          "base_m": 4180.0
+        },
+        {
+          "formation": "TD",
+          "top_m": 4250.0,
+          "base_m": null
+        }
+      ]
+    },
+    "SK-22": {
+      "total_depth_m": 4120,
+      "water_depth_m": 1950,
+      "tops": [
+        {
+          "formation": "Seabed",
+          "top_m": 0.0,
+          "base_m": 50.0
+        },
+        {
+          "formation": "Pliocene Silt",
+          "top_m": 50.0,
+          "base_m": 1100.0
+        },
+        {
+          "formation": "Miocene Marl",
+          "top_m": 1100.0,
+          "base_m": 2700.0
+        },
+        {
+          "formation": "Eocene Limestone",
+          "top_m": 2700.0,
+          "base_m": 3400.0
+        },
+        {
+          "formation": "Paleocene Chalk",
+          "top_m": 3400.0,
+          "base_m": 3850.0
+        },
+        {
+          "formation": "Synthetic Turbidite Reservoir",
+          "top_m": 3850.0,
+          "base_m": 3975.0,
+          "reservoir": true,
+          "fluid": "GAS"
+        },
+        {
+          "formation": "Marine Shale",
+          "top_m": 3975.0,
+          "base_m": 4055.0
+        },
+        {
+          "formation": "TD",
+          "top_m": 4120.0,
+          "base_m": null
+        }
+      ]
+    }
+  }
+}

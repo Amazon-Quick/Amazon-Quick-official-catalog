@@ -1,0 +1,18 @@
+{
+  "source": "synthetic+replay-override",
+  "as_of": "2026-09-01T14:04:00.000Z",
+  "rows": [
+    {
+      "well": "SYN1-offset",
+      "distance_ft": 660.0,
+      "agrees": true,
+      "pay_delta_ft": -4.2
+    },
+    {
+      "well": "SYN1-offset-N2",
+      "distance_ft": 1320.0,
+      "agrees": true,
+      "pay_delta_ft": -3.1
+    }
+  ]
+}

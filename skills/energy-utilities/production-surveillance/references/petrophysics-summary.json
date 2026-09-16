@@ -1,0 +1,55 @@
+{
+  "fixture_label": "synthetic",
+  "formation": "Synthetic Turbidite Reservoir",
+  "calculation_sequence": [
+    "density_porosity",
+    "shale_volume",
+    "effective_porosity",
+    "archie_water_saturation",
+    "net_pay"
+  ],
+  "cutoffs": {
+    "porosity_min": 0.06,
+    "sw_max": 0.6,
+    "vshale_max": 0.4
+  },
+  "wells": {
+    "SK-14": {
+      "source_rows": 200,
+      "reservoir_rows": 120,
+      "interval_md_ft": {
+        "top": 13057.7432,
+        "base": 13451.444
+      },
+      "net_pay": {
+        "status": "success",
+        "gross_ft": 393.7,
+        "net_pay_ft": 393.7,
+        "net_to_gross": 1.0,
+        "average_porosity_in_pay": 0.2289,
+        "average_water_saturation_in_pay": 0.0856
+      }
+    },
+    "SK-22": {
+      "source_rows": 206,
+      "reservoir_rows": 125,
+      "interval_md_ft": {
+        "top": 12631.234,
+        "base": 13041.339
+      },
+      "net_pay": {
+        "status": "success",
+        "gross_ft": 410.1,
+        "net_pay_ft": 410.1,
+        "net_to_gross": 1.0,
+        "average_porosity_in_pay": 0.1875,
+        "average_water_saturation_in_pay": 0.1232
+      }
+    }
+  },
+  "limitations": [
+    "Pre-computed from synthetic sidecar data for deterministic demonstration.",
+    "Raw LAS and Parquet files are not included.",
+    "Values are not field certification or operating limits."
+  ]
+}

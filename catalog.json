@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:26ba20a82285b849ea54d2d6c6cffb320600c0083fcbc393bb82bd56e67f2444",
+  "skillsChecksum": "sha256:b9213c2b9b328bb103b16c439234782e080dcb851c62d4f188c92f84e7179c35",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -115,6 +115,11 @@
           "checksum": "sha256:2013e7ed0a290b09dad7d8ec61bfbdbb34dec18a80a8db48b7be70c2bf4c86cd"
         },
         {
+          "path": "skills/energy-utilities/exit-zone-geosteering",
+          "type": "skill",
+          "checksum": "sha256:752935e274167085e9ff69f2c9ac0188478ffd83b1bd3be3a4741a14de280621"
+        },
+        {
           "path": "skills/energy-utilities/grid-capacity-planning",
           "type": "skill",
           "checksum": "sha256:15fc06225b52674bbcada7190580b28e4ba8174de6ad33e69a4002668effc514"
@@ -133,6 +138,11 @@
           "path": "skills/energy-utilities/power-plant-performance",
           "type": "skill",
           "checksum": "sha256:19d4dfee7a28fba7da9e15ad909f0c6e5d196a9bd459f399eecd0ef67f60fde0"
+        },
+        {
+          "path": "skills/energy-utilities/production-surveillance",
+          "type": "skill",
+          "checksum": "sha256:f2eb34a90536edfb2282491d2b3888a34c1f403a294a3b55db71b15b86ed800b"
         },
         {
           "path": "skills/energy-utilities/renewable-energy-assessment",

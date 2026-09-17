@@ -1,0 +1,96 @@
+{
+  "gamma_ray": {
+    "GRMA": "GR",
+    "GRR": "GR",
+    "GR:1": "GR",
+    "SGR": "GR",
+    "GRD": "GR",
+    "ECGR": "GR",
+    "CGR": "GR",
+    "GR_EDTC": "GR",
+    "GR_ARC": "GR",
+    "HSGR": "GR"
+  },
+  "density": {
+    "ROBB": "RHOB",
+    "ZDEN": "RHOB",
+    "RHOZ": "RHOB",
+    "DEN": "RHOB",
+    "DENB": "RHOB",
+    "EDRHOB": "RHOB",
+    "HRHOB": "RHOB",
+    "RHOBT": "RHOB"
+  },
+  "neutron": {
+    "BPHI": "NPHI",
+    "TNPH": "NPHI",
+    "NPOR": "NPHI",
+    "PHIN": "NPHI",
+    "HNPHI": "NPHI",
+    "CNC": "NPHI",
+    "CNCF": "NPHI",
+    "NEU": "NPHI",
+    "TNPB": "NPHI"
+  },
+  "resistivity_deep": {
+    "RT_ARC": "RT",
+    "P40H": "RT",
+    "AHT90": "RT",
+    "RD": "RT",
+    "ILD": "RT",
+    "LLD": "RT",
+    "RILM": "RT",
+    "HDRS": "RT",
+    "AT90": "RT",
+    "M2R9": "RT",
+    "RLLD": "RT",
+    "RILD": "RT",
+    "RLA5": "RT",
+    "RLA4": "RT",
+    "RESD": "RT",
+    "RPCEHM": "RT"
+  },
+  "resistivity_shallow": {
+    "RS": "RSHL",
+    "ILM": "RSHL",
+    "LLS": "RSHL",
+    "RESS": "RSHL",
+    "RFOC": "RSHL",
+    "AHT10": "RSHL",
+    "RLLS": "RSHL",
+    "RLA1": "RSHL",
+    "AT10": "RSHL"
+  },
+  "sonic": {
+    "DT4P": "DT",
+    "DTCO": "DT",
+    "DTC": "DT",
+    "AC": "DT",
+    "DT4S": "DTS",
+    "DTSM": "DTS"
+  },
+  "caliper": {
+    "CAL": "CALI",
+    "HCAL": "CALI",
+    "C1": "CALI",
+    "C2": "CALI",
+    "DCAL": "CALI"
+  },
+  "sp": {
+    "SPNT": "SP",
+    "SSP": "SP"
+  },
+  "photoelectric": {
+    "PEFZ": "PE",
+    "PEF": "PE"
+  },
+  "vshale": {
+    "VCL": "VSH",
+    "VSHALE": "VSH",
+    "VSH_GR": "VSH"
+  },
+  "bit_size": {
+    "BS": "BIT",
+    "BITSZ": "BIT"
+  }
+}

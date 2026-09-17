@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:b9213c2b9b328bb103b16c439234782e080dcb851c62d4f188c92f84e7179c35",
+  "skillsChecksum": "sha256:878f2cfbc2fc469a18ae7ade70dbb25b0c7a9f8415a0c9d333ef2435f8423ec2",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -9,12 +9,17 @@
         {
           "path": "skills/amazon-quick/amazon-quick-community",
           "type": "skill",
-          "checksum": "sha256:09218d11568f414dc9fdae944f2129275cbfbb9d9c3e41ffbfc1d341d5df735e"
+          "checksum": "sha256:1e2519f3ab9333d1fcd5243c78824d8a1483483bad456a0b5915b6f4a8d3fc35"
         },
         {
           "path": "skills/amazon-quick/skill-builder",
           "type": "skill",
           "checksum": "sha256:0f52d4f1d467957316893279be06b8512a75c74ea0f84f2bf0f00ee828094012"
+        },
+        {
+          "path": "skills/amazon-quick/agent-to-quick-skill",
+          "type": "skill",
+          "checksum": "sha256:2813afa95d8fb276a9417faf6892b2fb90b95878bea60cb045ff3f4c9658c0ef"
         }
       ]
     },
@@ -89,6 +94,11 @@
       "slug": "energy-utilities",
       "description": "Powering innovation across generation, distribution, and the energy transition.",
       "assets": [
+        {
+          "path": "skills/energy-utilities/automated-log-analysis",
+          "type": "skill",
+          "checksum": "sha256:5f950c540c2519767dd31dbebb4fb0776bd44b685dbb56e45e93da80d3ddf33b"
+        },
         {
           "path": "skills/energy-utilities/battery-storage-analyst",
           "type": "skill",

@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:878f2cfbc2fc469a18ae7ade70dbb25b0c7a9f8415a0c9d333ef2435f8423ec2",
+  "skillsChecksum": "sha256:0c8049fefddced96279af50f8ed1efd630039e0d88bf355bf20c07156798dc48",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -530,6 +530,61 @@
           "path": "skills/sales/proposal-generator",
           "type": "skill",
           "checksum": "sha256:f5e3366afbe7d388f50c5c9a60b4b85033b9ef9d299d478575ff5790198b9cb7"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-issues",
+          "type": "skill",
+          "checksum": "sha256:93f11d1a8032986a74ce1e77fa79377566100650f6cbae2348a8c679cd3eacd0"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-buyability",
+          "type": "skill",
+          "checksum": "sha256:4b855be28a4fe827b3599ca577ab18f11f6863034757f0cf821f14948a19d38c"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-searchability",
+          "type": "skill",
+          "checksum": "sha256:485e0a86c26945a03a04f423c3cc34f2bf447f79008a8ef0aedb2a3954cfa767"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-troubleshooter",
+          "type": "skill",
+          "checksum": "sha256:e9dd27d242976e03563f7c5de16143e2525ecec66d56a8a68b91a83ad5a62710"
+        },
+        {
+          "path": "skills/sales/selling-partner-support-case-helper",
+          "type": "skill",
+          "checksum": "sha256:d9ec9f11623d03cf498ff69168ea4a6e12d8525cf20e5ef23cf925a0b1244894"
+        },
+        {
+          "path": "skills/sales/selling-partner-stockout-prevention",
+          "type": "skill",
+          "checksum": "sha256:180636c360325797f829c90082ebd71bf9dc53db18953242b754817b70f63da8"
+        },
+        {
+          "path": "skills/sales/selling-partner-fba-inbound-management",
+          "type": "skill",
+          "checksum": "sha256:6670dc2fee13fca786ba69d3187e65c0d9a45d6542a6710606b0da9911492168"
+        },
+        {
+          "path": "skills/sales/selling-partner-seller-analytics",
+          "type": "skill",
+          "checksum": "sha256:90c8ed62f6873aea3f6d7ca25336fcc7370db3910a4297d530dc0e761b5a292a"
+        },
+        {
+          "path": "skills/sales/selling-partner-invite-secondary-users",
+          "type": "skill",
+          "checksum": "sha256:b57726db73ab6af5b8a72fe2b65ab21211db89d7e68b45b50cd79f1890eb387b"
+        },
+        {
+          "path": "skills/sales/selling-partner-knowledge",
+          "type": "skill",
+          "checksum": "sha256:9e071e74c87a511010e3ce15459ea3bc1de65bfd317fa58e9453cb13a40cff5e"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-compliance",
+          "type": "skill",
+          "checksum": "sha256:2c67c731077016a4b80d371b8aab62dbc3d6d6732b3beed32af3090e1e86252b"
         }
       ]
     },

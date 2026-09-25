@@ -2,12 +2,12 @@
 name: personal-agent-architect
 display_name: Personal Agent Architect
 icon: "🤖"
-description:
+description: "Introspects a person's own Amazon Quick environment (memories, knowledge graph, past conversations, installed skills, connectors, frequently-used data) to infer their role, voice, and working patterns, then builds a matched set: a personal voice-and-preference skill, a space preloaded with data they use often, and a lightweight agent wired to both. Use when asked to 'build my personal agent', 'architect an agent for me', 'create a personalized agent from my setup', 'make an agent that knows my voice', 'build me a personal skill from my tools', or any request to self-tailor an agent, skill, and space from the person's own environment."
 created_date: "2026-09-24"
 last_updated: "2026-09-24"
 tools: [get_current_time, recall_memories, kg_search, search_conversations, list_user_created_skills, find_relevant_chat_agents, create_chat_agent, update_chat_agent, create_space, write_quick_suite_file, save_engram, get_engram, list_engrams, save_skill, start_task, load_skill]
 readme: "Read README.md before running. Its ## Pre-requisites lists the skills this composes and the optional messaging/email connector used for voice and role signal; verify each and continue with reduced capability if an optional one is missing."
-checksum: "sha256:f83b9c9b221eed4f6185a19c818689181396a4df12c0afa8aabd906972ba819e"
+checksum: "sha256:cb881c128b4904863f6a163c287e0f76858794bc79bd85140954ea26f30959ec"
 ---
 
 ## Overview

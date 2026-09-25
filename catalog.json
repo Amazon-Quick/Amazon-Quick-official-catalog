@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:9918a1adcf6726f86e79d82e7c9de48ed95b8b69c7ce17e6e8908d197149fc7a",
+  "skillsChecksum": "sha256:d8980549eda82bc20d38f6765c571d31eff0584acd3545aad850cb8efa8f1d19",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -24,7 +24,7 @@
         {
           "path": "skills/amazon-quick/personal-agent-architect",
           "type": "skill",
-          "checksum": "sha256:f83b9c9b221eed4f6185a19c818689181396a4df12c0afa8aabd906972ba819e"
+          "checksum": "sha256:cb881c128b4904863f6a163c287e0f76858794bc79bd85140954ea26f30959ec"
         }
       ]
     },

@@ -5,13 +5,13 @@ icon: "🔎"
 description: "Analyze synthetic production surveillance data with deterministic field, well-log, flow-assurance, reservoir, safety, petrophysics, and economics checks. Use when asked to 'generate a morning field report', 'run production surveillance', 'read this LAS file', 'ingest well logs', 'what curves are in SK-14', 'investigate the RED alarm', 'run a full investigation on a well', 'check flow assurance', 'calculate hydrate margin', 'assess reservoir constraints', 'run a safety compliance check', or 'create a production surveillance watch'."
 license: MIT-0
 created_date: "2026-09-14"
-last_updated: 2026-09-16
+last_updated: "2026-09-16"
 preferred_model: balanced
 preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time, start_task, create_task_group, get_task_group_result, inspect_task, agent_management, memory_management, list_scheduled_agents, create_scheduled_agent, recall_memories, save_to_memory]
 readme: "Read README.md before running. Its ## Pre-requisites lists the required Python system tool and optional dashboard, scheduling, memory, and local LAS/DLIS conversion capabilities; verify availability, stop if the required tool is missing, and note reduced capability when an optional prerequisite is missing."
 scripts: [run_tiger_fixture.py, run_petrophysics.py, run_economics.py, run_las_reader.py]
-checksum: "sha256:f2eb34a90536edfb2282491d2b3888a34c1f403a294a3b55db71b15b86ed800b"
+checksum: "sha256:70fec11057fe643374a2d37cdcaac28705ed2157e9acbedf9739b1d22d8f2d79"
 ---
 
 ## Overview

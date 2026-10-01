@@ -16,7 +16,6 @@
 }
 
 .md-content h1#amazon-quick-official-catalog + p {
-  text-align: center;
   border-bottom: 2px solid var(--md-primary-fg-color);
   padding-bottom: 1em;
 }

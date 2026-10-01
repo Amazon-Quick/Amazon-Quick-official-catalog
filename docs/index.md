@@ -2,23 +2,12 @@
 
 # Amazon Quick Official Catalog
 
-[![License](https://img.shields.io/github/license/Amazon-Quick/amazon-quick-official-catalog)](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/LICENSE)
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/Amazon-Quick/amazon-quick-official-catalog)](https://github.com/Amazon-Quick/amazon-quick-official-catalog/commits/main)
-[![Issues](https://img.shields.io/github/issues/Amazon-Quick/amazon-quick-official-catalog)](https://github.com/Amazon-Quick/amazon-quick-official-catalog/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/Amazon-Quick/amazon-quick-official-catalog)](https://github.com/Amazon-Quick/amazon-quick-official-catalog/pulls)
+Building a skill that works well takes time, effort, and expertise. You have to work out every step of a task, write instructions an agent can follow, decide what should happen when a step fails, and test the result against real requests. The Amazon Quick Official Catalog is a collection of skills where that work has already been done, so you can spend your time using a skill instead of building one. You can install any of them directly in Amazon Quick and use it as it is, or take it as a starting point and adapt it to your own work. For the steps, see [Install a skill](install.md).
 
-## What is Amazon Quick?
+The catalog covers everyday productivity, the work of teams such as sales, marketing, and legal, and industries such as finance, healthcare and life sciences, and energy and utilities. You can browse all of them in the [skill catalog](skill-catalog.md).
 
-[Amazon Quick](https://docs.aws.amazon.com/quick/latest/userguide/what-is.html) is an AI-powered service for automating tasks, analyzing data, building web apps, and conducting research. You talk to it in natural language and it uses AI agents to do the work against your connected data sources and applications. Available on the web, as a desktop app, and inside Chrome, Slack, Teams, and Microsoft 365.
+> *Every skill in this catalog has been rigourously tested and scanned for quality, security, and other factors.*
 
-## What is Amazon Quick on desktop?
+## Adapt a skill to your work
 
-[Amazon Quick on desktop](https://docs.aws.amazon.com/quick/latest/userguide/amazon-quick-desktop.html) is the native desktop app. It brings Quick to your local environment, connecting to local tools and services through skills, plugins, MCP servers, and coding agents.
-
-## What is this catalog?
-
-The official, curated collection of skills for Amazon Quick on desktop. Everything here has been reviewed for quality, security, and usefulness. Browse the [Skill Catalog](skill-catalog.md) to see what's available and install them directly.
-
-## License
-
-MIT-0. See [LICENSE](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/LICENSE).
+A skill that's close to what you need is a better starting point than a blank page. You can duplicate an installed skill in Amazon Quick and edit your copy, or download a skill's folder from the [GitHub repository](https://github.com/Amazon-Quick/amazon-quick-official-catalog) and change it there. The skills are licensed under [MIT-0](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/LICENSE), so you're free to copy and modify them. If you plan to share your version, [Build skills with software engineering practices](build-skills.md) explains how to check that it works for the people you share it with.

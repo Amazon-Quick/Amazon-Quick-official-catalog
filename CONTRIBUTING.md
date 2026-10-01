@@ -1,7 +1,3 @@
 # Contributing
 
-This repository is maintained by the Amazon Quick team. All development and review happens through an internal repository, and approved changes are synced here as a read-only mirror. External pull requests will be closed.
-
-Bug reports and skill requests are welcome -- open an issue on this repo.
-
-For skill requirements and code quality expectations, see the [contributing docs](https://Amazon-Quick.github.io/amazon-quick-official-catalog/contributing/).
+This repository is a read-only mirror. The Amazon Quick team develops and reviews skills in an internal repository and syncs approved changes here, so pull requests opened here are closed. To report a problem with a skill or request a new one, [open an issue](https://github.com/Amazon-Quick/amazon-quick-official-catalog/issues).

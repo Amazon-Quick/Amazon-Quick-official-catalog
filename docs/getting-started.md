@@ -1,25 +1,35 @@
-# What is a Skill?
+# What is a skill?
 
-A skill is a folder with a `SKILL.md` file in it. That file contains step-by-step instructions that tell Amazon Quick how to do a specific task. You can think of it as domain expertise packaged up for the agent.
+A skill is a set of instructions that tells Amazon Quick how to do a specific task, such as preparing your weekly status update from your team's template. You write the instructions once, and Amazon Quick follows them whenever that task comes up, instead of you explaining how you want it done in every conversation.
 
-You can have dozens of skills installed without slowing anything down. Quick only reads the full instructions when it decides a skill is relevant to what you asked.
+## How Amazon Quick finds a skill
 
-## What's inside a skill?
+Amazon Quick doesn't load every installed skill into each conversation. It reads only each skill's name and description, and when your request matches a description, or you ask for a skill by name, it loads that skill's full instructions and follows them. This keeps the skills you aren't using out of the conversation, and it means the description decides whether someone who doesn't know a skill's name ever gets it. [Write the description for someone who has never seen the skill](build-skills.md#write-the-description-for-someone-who-has-never-seen-the-skill) covers how to write one that matches the way people ask.
 
-1. **Instructions** - The `SKILL.md` file. This is the brain. It tells Quick what to do, step by step.
-1. **Tools** - Callable capabilities the skill makes available (sending a message, creating a file, hitting an API, etc.).
-1. **Reference files** - Supporting docs, templates, or configs that the skill pulls in during execution.
+## What's in a skill
 
-## How does Quick decide when to use a skill?
+A skill is a folder with a file named `SKILL.md` at its root. The file starts with a block of settings between two `---` lines, called the **frontmatter**, which holds the skill's name and description along with settings such as the inputs it asks for and the tools it uses. The following frontmatter is from Template Enforcer, a skill in the catalog that applies a brand guide or style template to a document, shortened to its first two inputs:
 
-Quick uses [progressive disclosure](https://agentskills.io/home#where-can-i-use-agent-skills). It does NOT load every skill into context at once.
+```yaml
+---
+name: template-enforcer
+display_name: Template Enforcer
+description: "Apply a brand guide or style template to any document, presentation, or generated output, enforcing colors, fonts, tone of voice, logo placement, and formatting rules. Use when the user says 'apply brand guide', 'enforce template', 'match this style', 'make it consistent with our brand', 'apply our formatting', 'style this document', or any request to align a document with a visual/brand standard."
+created_date: "2026-06-15"
+last_updated: "2026-09-13"
+tools: [file_read, file_read_pdf, file_read_docx, file_read_pptx, run_python, file_write, open_in_session_tab]
+inputs:
+  - name: source_document
+    description: "Path to the document or content to be styled"
+    type: path
+    required: true
+  - name: brand_guide
+    description: "Path to brand guide document (PDF, DOCX, or XLSX) or previously saved brand profile name"
+    type: string
+    required: true
+---
+```
 
-1. **Discovery** - At startup, Quick reads only the `name` and `description` from each installed skill. That's all it needs to know what's available.
-1. **Activation** - When your request matches a skill's description, Quick loads the full `SKILL.md` into the conversation. The skill's tools become callable.
-1. **Execution** - Quick follows the workflow steps and calls tools. Reference files get read on demand, not all at once.
+Below the frontmatter are the steps Amazon Quick follows when the skill is active, and the folder can also hold the scripts, templates, and reference files those steps use. A skill doesn't include the connectors or other dependencies it relies on, such as Outlook or Slack, so many skills also include a `README.md` that lists what you need to set up before you run them.
 
-The `description` field is the single most important line in a skill. It's the only signal Quick uses to decide whether to activate a skill for a given request.
-
-## Prerequisites
-
-You need [Amazon Quick on desktop](https://docs.aws.amazon.com/quick/latest/userguide/amazon-quick-desktop.html) installed and signed in. If a skill depends on integrations (Outlook, Slack, etc.), connect those under **Settings > Capabilities > Connections** first.
+To learn about the other kinds of skills in Amazon Quick, including the system skills that come with it, see [Skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html) in the Amazon Quick User Guide.

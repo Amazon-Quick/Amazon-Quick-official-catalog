@@ -5,7 +5,7 @@ icon: "🛢️"
 description: "Parse LAS 2.0 well logs with vendor curve-alias resolution, run a deterministic petrophysical evaluation (Vshale, density porosity, Archie Sw, effective porosity, net pay, pay zones, OOIP), render a five-track composite log, write a Word and Markdown report, and draft results by email. Use when asked to 'process daily drilling logs', 'check for new MWD data', 'run petrophysics on incoming email', 'analyze vendor log delivery', 'evaluate this well log', 'analyze this LAS file', or 'run the log analysis pipeline'."
 license: MIT-0
 created_date: "2026-09-15"
-last_updated: 2026-09-16
+last_updated: "2026-09-16"
 preferred_model: smart
 preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time]
@@ -24,7 +24,7 @@ inputs:
     description: "Email addresses to CC on the results draft (comma-separated)"
     type: string
     required: false
-checksum: "sha256:5f950c540c2519767dd31dbebb4fb0776bd44b685dbb56e45e93da80d3ddf33b"
+checksum: "sha256:4a1b8da3590e0d51b09040ede0cbb484bd19d0f3bb4931ec2640d267c6675f1c"
 ---
 
 ## Overview

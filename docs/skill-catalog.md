@@ -1,5 +1,5 @@
-# Skill Catalog
+# Skill catalog
 
-Browse all available skills in the catalog. This page is generated automatically from the repository at build time.
+To add any of these skills to Amazon Quick, see [Install a skill](install.md).
 
 {{ skill_catalog() }}

@@ -1,12 +1,60 @@
 [project]
 site_name = "Amazon Quick Official Catalog"
-site_url = "https://Amazon-Quick.github.io/amazon-quick-official-catalog"
+site_url = "https://amazon-quick.github.io/Amazon-Quick-official-catalog/"
 repo_url = "https://github.com/Amazon-Quick/amazon-quick-official-catalog"
+copyright = "© Amazon Web Services, Inc. or its affiliates. All rights reserved."
 extra_css = ["assets/stylesheets/custom.css"]
 nav = [
     { Home = "index.md" },
-    { "What is a Skill?" = "getting-started.md" },
-    { "Skill Catalog" = "skill-catalog.md" },
+    { "What is a skill?" = "getting-started.md" },
+    { "Install a skill" = "install.md" },
+    { "Build skills" = "build-skills.md" },
+    { "Skill catalog" = "skill-catalog.md" },
 ]
 
+[project.theme]
+# Show Previous and Next links at the bottom of each page, in nav order.
+features = ["navigation.footer"]
+
+# Declaring any markdown_extensions table replaces Zensical's default extension
+# list, so the defaults are listed here in full. Without them, fenced code
+# blocks, admonitions, and tabs render as plain text.
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.toc]
+permalink = true
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+[project.markdown_extensions.pymdownx.betterem]
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji"
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.magiclink]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.smartsymbols]
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [{ name = "mermaid", class = "mermaid" }]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+combine_header_slug = true
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.tilde]
+
 [project.markdown_extensions.zensical.extensions.macros]
+# Fail the build if a macro raises, instead of silently emitting the raw
+# "{{ skill_catalog() }}" text. Without this, a broken catalog render ships
+# unnoticed because the docs build still exits 0.
+on_error_fail = true

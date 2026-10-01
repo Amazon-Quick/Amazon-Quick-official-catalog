@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:d8980549eda82bc20d38f6765c571d31eff0584acd3545aad850cb8efa8f1d19",
+  "skillsChecksum": "sha256:3c3cc57b43cd9bd9d79b5314c80d4a4362c100394e2f8bee5c014d451d614592",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -102,7 +102,7 @@
         {
           "path": "skills/energy-utilities/automated-log-analysis",
           "type": "skill",
-          "checksum": "sha256:5f950c540c2519767dd31dbebb4fb0776bd44b685dbb56e45e93da80d3ddf33b"
+          "checksum": "sha256:4a1b8da3590e0d51b09040ede0cbb484bd19d0f3bb4931ec2640d267c6675f1c"
         },
         {
           "path": "skills/energy-utilities/battery-storage-analyst",
@@ -132,7 +132,7 @@
         {
           "path": "skills/energy-utilities/exit-zone-geosteering",
           "type": "skill",
-          "checksum": "sha256:752935e274167085e9ff69f2c9ac0188478ffd83b1bd3be3a4741a14de280621"
+          "checksum": "sha256:57e5ca8295fb939b8e4825f9dcdbf737702497311bae6d1e297d2e9f90521a3c"
         },
         {
           "path": "skills/energy-utilities/grid-capacity-planning",
@@ -157,7 +157,7 @@
         {
           "path": "skills/energy-utilities/production-surveillance",
           "type": "skill",
-          "checksum": "sha256:f2eb34a90536edfb2282491d2b3888a34c1f403a294a3b55db71b15b86ed800b"
+          "checksum": "sha256:70fec11057fe643374a2d37cdcaac28705ed2157e9acbedf9739b1d22d8f2d79"
         },
         {
           "path": "skills/energy-utilities/renewable-energy-assessment",
@@ -276,7 +276,7 @@
         {
           "path": "skills/general-productivity/desktop-cleanup",
           "type": "skill",
-          "checksum": "sha256:c0b8e5fffc6c756270c3c5ac9bd44a201b3ecfbf07277ee695051e1e44618e42"
+          "checksum": "sha256:b2c3e46156db61d8b14d9a11875ed6b00432c55d2753517e865170662721953f"
         },
         {
           "path": "skills/general-productivity/conversation-manager",

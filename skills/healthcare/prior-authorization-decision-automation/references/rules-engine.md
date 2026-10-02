@@ -14,6 +14,7 @@ lab thresholds) and route only ambiguous cases to a machine learning model (see
 
 ```python
 """Rules-based PA adjudication engine."""
+
 from dataclasses import dataclass
 from enum import Enum
 
@@ -45,7 +46,9 @@ def adjudicate(features: dict, policy: dict) -> AdjudicationResult:
     # Rule 1: Documentation completeness
     if features["documentation_score"] < policy.get("min_documentation_score", 0.75):
         return AdjudicationResult(
-            Decision.PEND, "PEND-001", "Insufficient documentation; request additional clinical records"
+            Decision.PEND,
+            "PEND-001",
+            "Insufficient documentation; request additional clinical records",
         )
     # Rule 2: Diagnosis specificity
     if features["dx_specificity"] < policy.get("min_dx_specificity", 4):
@@ -53,7 +56,10 @@ def adjudicate(features: dict, policy: dict) -> AdjudicationResult:
             Decision.DENY, "DENY-DX", "Diagnosis code lacks required specificity"
         )
     # Rule 3: Step therapy
-    if policy.get("require_step_therapy", True) and not features["step_therapy_complete"]:
+    if (
+        policy.get("require_step_therapy", True)
+        and not features["step_therapy_complete"]
+    ):
         return AdjudicationResult(
             Decision.DENY, "DENY-STEP", "Step therapy requirements not met"
         )
@@ -63,7 +69,9 @@ def adjudicate(features: dict, policy: dict) -> AdjudicationResult:
             Decision.DENY, "DENY-LAB", "Required lab value not within criteria range"
         )
     # All rules passed
-    return AdjudicationResult(Decision.APPROVE, "APPROVE-001", "All clinical criteria met")
+    return AdjudicationResult(
+        Decision.APPROVE, "APPROVE-001", "All clinical criteria met"
+    )
 ```
 
 Key design points:

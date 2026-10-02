@@ -26,7 +26,9 @@ import pandas as pd
 def validate_ncci(claims_df: pd.DataFrame, ncci_edits: pd.DataFrame) -> pd.DataFrame:
     """Validate claims against NCCI edits. Returns violations."""
     violations = []
-    for (prov, mem, dt), grp in claims_df.groupby(["provider_id", "member_id", "service_date"]):
+    for (prov, mem, dt), grp in claims_df.groupby(
+        ["provider_id", "member_id", "service_date"]
+    ):
         codes = grp["proc_code"].tolist()
         mods = grp["modifier_1"].fillna("").tolist()
 
@@ -39,7 +41,10 @@ def validate_ncci(claims_df: pd.DataFrame, ncci_edits: pd.DataFrame) -> pd.DataF
                         (ncci_edits["column1_cpt"] == col1)
                         & (ncci_edits["column2_cpt"] == col2)
                         & (ncci_edits["effective_date"] <= dt)
-                        & (ncci_edits["deletion_date"].isna() | (ncci_edits["deletion_date"] > dt))
+                        & (
+                            ncci_edits["deletion_date"].isna()
+                            | (ncci_edits["deletion_date"] > dt)
+                        )
                     ]
                     if match.empty:
                         continue
@@ -54,7 +59,9 @@ def validate_ncci(claims_df: pd.DataFrame, ncci_edits: pd.DataFrame) -> pd.DataF
                                 "column1_cpt": col1,
                                 "column2_cpt": col2,
                                 "modifier_indicator": ind,
-                                "status": "DENIED" if ind == "0" else "DENIED - modifier required",
+                                "status": "DENIED"
+                                if ind == "0"
+                                else "DENIED - modifier required",
                             }
                         )
     return pd.DataFrame(violations)

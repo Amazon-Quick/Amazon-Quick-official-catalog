@@ -1,6 +1,9 @@
 [project]
 site_name = "Amazon Quick Official Catalog"
 site_url = "https://amazon-quick.github.io/Amazon-Quick-official-catalog/"
+site_description = "Browse and install reusable agent skills for Amazon Quick on desktop, including skills for productivity, business roles, and industry-specific work."
+site_author = "Amazon Web Services"
+repo_name = "Amazon-Quick/amazon-quick-official-catalog"
 repo_url = "https://github.com/Amazon-Quick/amazon-quick-official-catalog"
 copyright = "© Amazon Web Services, Inc. or its affiliates. All rights reserved."
 extra_css = ["assets/stylesheets/custom.css"]
@@ -13,6 +16,7 @@ nav = [
 ]
 
 [project.theme]
+custom_dir = "overrides"
 # Show Previous and Next links at the bottom of each page, in nav order.
 features = ["navigation.footer"]
 

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block htmltitle %}
+  {% if page.meta and page.meta.homepage %}
+    <title>{{ config.site_name }}</title>
+  {% elif page.meta and page.meta.title %}
+    <title>{{ page.meta.title }} - {{ config.site_name }}</title>
+  {% elif page.title %}
+    <title>{{ page.title | striptags }} - {{ config.site_name }}</title>
+  {% else %}
+    <title>{{ config.site_name }}</title>
+  {% endif %}
+{% endblock %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% if page.meta and page.meta.homepage %}
+    {% set social_title = config.site_name %}
+  {% elif page.meta and page.meta.title %}
+    {% set social_title = page.meta.title ~ " - " ~ config.site_name %}
+  {% else %}
+    {% set social_title = page.title ~ " - " ~ config.site_name %}
+  {% endif %}
+  {% if page.meta and page.meta.description %}
+    {% set social_description = page.meta.description %}
+  {% else %}
+    {% set social_description = config.site_description %}
+  {% endif %}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="{{ config.site_name }}" />
+  <meta property="og:title" content="{{ social_title }}" />
+  <meta property="og:description" content="{{ social_description }}" />
+  <meta property="og:url" content="{{ page.canonical_url }}" />
+  <meta property="og:image" content="{{ config.site_url }}assets/images/amazonquick.png" />
+  <meta property="og:image:alt" content="Amazon Quick Official Catalog" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{ social_title }}" />
+  <meta name="twitter:description" content="{{ social_description }}" />
+  <meta name="twitter:image" content="{{ config.site_url }}assets/images/amazonquick.png" />
+  <meta name="twitter:image:alt" content="Amazon Quick Official Catalog" />
+  {% if page.meta and page.meta.homepage %}
+    <script type="application/ld+json">
+      {{ {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": config.site_name,
+        "url": config.site_url,
+        "description": config.site_description
+      } | tojson }}
+    </script>
+  {% endif %}
+{% endblock %}

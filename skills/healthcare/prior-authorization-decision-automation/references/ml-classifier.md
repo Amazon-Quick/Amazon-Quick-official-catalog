@@ -28,6 +28,7 @@ standard library, so that code does run in the Quick sandbox.
 
 ```python
 """Train a gradient-boosted classifier on historical PA decisions."""
+
 import pandas as pd
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score
@@ -59,7 +60,9 @@ def train_pa_classifier(
     cv_results = []
     splitter = StratifiedKFold(n_folds, shuffle=True, random_state=42)
     for fold, (ti, vi) in enumerate(splitter.split(X, y)):
-        model.fit(X.iloc[ti], y.iloc[ti], eval_set=[(X.iloc[vi], y.iloc[vi])], verbose=False)
+        model.fit(
+            X.iloc[ti], y.iloc[ti], eval_set=[(X.iloc[vi], y.iloc[vi])], verbose=False
+        )
         y_prob = model.predict_proba(X.iloc[vi])[:, 1]
         cv_results.append({"fold": fold, "auc": roc_auc_score(y.iloc[vi], y_prob)})
     model.fit(X, y, verbose=False)
@@ -76,6 +79,7 @@ percent approvals).
 
 ```python
 """Generate SHAP explanations for PA decisions."""
+
 import shap
 
 

@@ -1,4 +1,9 @@
-# What is a skill?
+---
+title: What are skills in Amazon Quick?
+description: Learn how reusable skills teach Amazon Quick agents to follow task-specific instructions, use tools, and work with reference files.
+---
+
+# What are skills in Amazon Quick?
 
 A skill is a set of instructions that tells Amazon Quick how to do a specific task, such as preparing your weekly status update from your team's template. You write the instructions once, and Amazon Quick follows them whenever that task comes up, instead of you explaining how you want it done in every conversation.
 

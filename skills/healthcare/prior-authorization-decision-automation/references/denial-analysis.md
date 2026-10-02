@@ -14,6 +14,7 @@ sandbox.
 
 ```python
 """Analyze PA denial patterns to identify systemic issues."""
+
 import pandas as pd
 
 
@@ -37,7 +38,9 @@ def analyze_denials(
             continue
         g = (
             denied.groupby(col)
-            .agg(denial_count=("pa_id", "count"), unique_members=("member_id", "nunique"))
+            .agg(
+                denial_count=("pa_id", "count"), unique_members=("member_id", "nunique")
+            )
             .sort_values("denial_count", ascending=False)
             .reset_index()
         )
@@ -45,7 +48,9 @@ def analyze_denials(
         analyses[col] = g
     if "denial_reason" in denied.columns:
         doc_gaps = denied[
-            denied["denial_reason"].str.contains("documentation|insufficient", case=False, na=False)
+            denied["denial_reason"].str.contains(
+                "documentation|insufficient", case=False, na=False
+            )
         ]
         analyses["documentation_gaps"] = (
             doc_gaps.groupby("drug_class")

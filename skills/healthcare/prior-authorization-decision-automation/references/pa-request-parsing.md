@@ -18,6 +18,7 @@ Segments are separated by `~` and elements within a segment by `*`.
 
 ```python
 """Parse X12 278 prior authorization request into structured dict."""
+
 from dataclasses import dataclass, field
 
 
@@ -71,6 +72,7 @@ length check as shown, since real 278 files omit trailing empty elements.
 
 ```python
 """Extract PA fields from a FHIR Da Vinci PAS Bundle."""
+
 from dataclasses import dataclass, field
 
 

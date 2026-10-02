@@ -63,7 +63,7 @@ run.italic = True
 
 ```python
 run = paragraph.add_run("code_here")
-run.font.name = 'Consolas'
+run.font.name = "Consolas"
 run.font.size = Pt(10)
 ```
 
@@ -78,26 +78,26 @@ def add_hyperlink(paragraph, text, url):
     part = paragraph.part
     r_id = part.relate_to(
         url,
-        'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',
-        is_external=True
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+        is_external=True,
     )
-    w_ns = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
-    r_ns = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+    w_ns = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    r_ns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 
-    hyperlink = etree.SubElement(paragraph._p, f'{{{w_ns}}}hyperlink')
-    hyperlink.set(f'{{{r_ns}}}id', r_id)
+    hyperlink = etree.SubElement(paragraph._p, f"{{{w_ns}}}hyperlink")
+    hyperlink.set(f"{{{r_ns}}}id", r_id)
 
-    run_elem = etree.SubElement(hyperlink, f'{{{w_ns}}}r')
-    rPr = etree.SubElement(run_elem, f'{{{w_ns}}}rPr')
+    run_elem = etree.SubElement(hyperlink, f"{{{w_ns}}}r")
+    rPr = etree.SubElement(run_elem, f"{{{w_ns}}}rPr")
 
-    color = etree.SubElement(rPr, f'{{{w_ns}}}color')
-    color.set(f'{{{w_ns}}}val', '0563C1')
+    color = etree.SubElement(rPr, f"{{{w_ns}}}color")
+    color.set(f"{{{w_ns}}}val", "0563C1")
 
-    u = etree.SubElement(rPr, f'{{{w_ns}}}u')
-    u.set(f'{{{w_ns}}}val', 'single')
+    u = etree.SubElement(rPr, f"{{{w_ns}}}u")
+    u.set(f"{{{w_ns}}}val", "single")
 
-    t_elem = etree.SubElement(run_elem, f'{{{w_ns}}}t')
-    t_elem.set('{http://www.w3.org/XML/1998/namespace}space', 'preserve')
+    t_elem = etree.SubElement(run_elem, f"{{{w_ns}}}t")
+    t_elem.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
     t_elem.text = text
 ```
 
@@ -113,7 +113,7 @@ Result: Blue (#0563C1) underlined text that opens the URL when clicked in Word.
 ```
 
 ```python
-p = doc.add_paragraph(style='List Bullet')
+p = doc.add_paragraph(style="List Bullet")
 # apply inline formatting to text
 ```
 
@@ -126,7 +126,7 @@ p = doc.add_paragraph(style='List Bullet')
 
 ```python
 # indent >= 4 spaces triggers nested style
-p = doc.add_paragraph(style='List Bullet 2')
+p = doc.add_paragraph(style="List Bullet 2")
 ```
 
 ### Numbered List
@@ -137,7 +137,7 @@ p = doc.add_paragraph(style='List Bullet 2')
 ```
 
 ```python
-p = doc.add_paragraph(style='List Number')
+p = doc.add_paragraph(style="List Number")
 ```
 
 ### Nested Numbered List
@@ -148,7 +148,7 @@ p = doc.add_paragraph(style='List Number')
 ```
 
 ```python
-p = doc.add_paragraph(style='List Number 2')
+p = doc.add_paragraph(style="List Number 2")
 ```
 
 ## Block Elements
@@ -162,17 +162,17 @@ p = doc.add_paragraph(style='List Number 2')
 ```python
 def add_horizontal_rule(doc):
     p = doc.add_paragraph()
-    w_ns = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
-    pPr = p._p.find(f'{{{w_ns}}}pPr')
+    w_ns = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    pPr = p._p.find(f"{{{w_ns}}}pPr")
     if pPr is None:
-        pPr = etree.SubElement(p._p, f'{{{w_ns}}}pPr')
+        pPr = etree.SubElement(p._p, f"{{{w_ns}}}pPr")
         p._p.insert(0, pPr)
-    pBdr = etree.SubElement(pPr, f'{{{w_ns}}}pBdr')
-    bottom = etree.SubElement(pBdr, f'{{{w_ns}}}bottom')
-    bottom.set(f'{{{w_ns}}}val', 'single')
-    bottom.set(f'{{{w_ns}}}sz', '6')
-    bottom.set(f'{{{w_ns}}}space', '1')
-    bottom.set(f'{{{w_ns}}}color', 'auto')
+    pBdr = etree.SubElement(pPr, f"{{{w_ns}}}pBdr")
+    bottom = etree.SubElement(pBdr, f"{{{w_ns}}}bottom")
+    bottom.set(f"{{{w_ns}}}val", "single")
+    bottom.set(f"{{{w_ns}}}sz", "6")
+    bottom.set(f"{{{w_ns}}}space", "1")
+    bottom.set(f"{{{w_ns}}}color", "auto")
 ```
 
 Also triggered by `***` and `___`.
@@ -187,12 +187,12 @@ Also triggered by `***` and `___`.
 p = doc.add_paragraph()
 p.paragraph_format.left_indent = Inches(0.5)
 # Add gray left border via XML:
-pBdr = etree.SubElement(pPr, f'{{{w_ns}}}pBdr')
-left = etree.SubElement(pBdr, f'{{{w_ns}}}left')
-left.set(f'{{{w_ns}}}val', 'single')
-left.set(f'{{{w_ns}}}sz', '12')
-left.set(f'{{{w_ns}}}space', '4')
-left.set(f'{{{w_ns}}}color', '808080')
+pBdr = etree.SubElement(pPr, f"{{{w_ns}}}pBdr")
+left = etree.SubElement(pBdr, f"{{{w_ns}}}left")
+left.set(f"{{{w_ns}}}val", "single")
+left.set(f"{{{w_ns}}}sz", "12")
+left.set(f"{{{w_ns}}}space", "4")
+left.set(f"{{{w_ns}}}color", "808080")
 # Text rendered in italic
 ```
 
@@ -209,7 +209,7 @@ def hello():
 p = doc.add_paragraph()
 p.paragraph_format.left_indent = Inches(0.25)
 run = p.add_run(code_text)
-run.font.name = 'Consolas'
+run.font.name = "Consolas"
 run.font.size = Pt(9)
 ```
 
@@ -223,7 +223,7 @@ run.font.size = Pt(9)
 
 ```python
 tbl = doc.add_table(rows=num_rows, cols=num_cols)
-tbl.style = 'Table Grid'
+tbl.style = "Table Grid"
 # Header row cells get bold formatting
 # Each cell's text has inline formatting applied
 ```

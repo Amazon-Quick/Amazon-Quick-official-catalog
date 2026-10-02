@@ -20,12 +20,24 @@ A claims DataFrame with columns: `provider_id`, `service_date`, `proc_code`, `un
 import pandas as pd
 
 CPT_MINUTES = {
-    "99213": 15, "99214": 25, "99215": 40, "99203": 30, "99204": 45, "99205": 60,
-    "90837": 53, "90834": 38, "97110": 15, "97140": 15, "99291": 74, "99292": 30,
+    "99213": 15,
+    "99214": 25,
+    "99215": 40,
+    "99203": 30,
+    "99204": 45,
+    "99205": 60,
+    "90837": 53,
+    "90834": 38,
+    "97110": 15,
+    "97140": 15,
+    "99291": 74,
+    "99292": 30,
 }
 
 
-def detect_impossible_days(claims_df: pd.DataFrame, max_min: int = 1440) -> pd.DataFrame:
+def detect_impossible_days(
+    claims_df: pd.DataFrame, max_min: int = 1440
+) -> pd.DataFrame:
     """Flag providers billing more than 24 hours of services in a single day."""
     df = claims_df.copy()
     df["est_min"] = df["proc_code"].map(CPT_MINUTES).fillna(0) * df["units"].fillna(1)

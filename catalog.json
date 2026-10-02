@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:3c3cc57b43cd9bd9d79b5314c80d4a4362c100394e2f8bee5c014d451d614592",
+  "skillsChecksum": "sha256:2cb11be9183f024544c7b804c1ab50b0b4cda1aed48ce0006a8c914251e8b75c",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -14,7 +14,7 @@
         {
           "path": "skills/amazon-quick/skill-builder",
           "type": "skill",
-          "checksum": "sha256:0f52d4f1d467957316893279be06b8512a75c74ea0f84f2bf0f00ee828094012"
+          "checksum": "sha256:586227879e4507f318b87baa66f5b126976a4dbc96a127ef6d3265f9c948336f"
         },
         {
           "path": "skills/amazon-quick/agent-to-quick-skill",
@@ -117,7 +117,7 @@
         {
           "path": "skills/energy-utilities/drilling-operations-analyst",
           "type": "skill",
-          "checksum": "sha256:23ecfa3bf3d11cb6ce6315d6c06d2a80ae7c95d5334d2ee15e2a372dc8a5d166"
+          "checksum": "sha256:1ac063c88190b5c405f96bbb19c9c040fc788d83e3990a8425e05fbf6d4577f9"
         },
         {
           "path": "skills/energy-utilities/energy-market-intelligence",
@@ -152,7 +152,7 @@
         {
           "path": "skills/energy-utilities/power-plant-performance",
           "type": "skill",
-          "checksum": "sha256:19d4dfee7a28fba7da9e15ad909f0c6e5d196a9bd459f399eecd0ef67f60fde0"
+          "checksum": "sha256:1bf2ee35bfb7e382469bca29156f3eef5ff893e56dfc540c60ccd0515bf6b3c3"
         },
         {
           "path": "skills/energy-utilities/production-surveillance",
@@ -162,7 +162,7 @@
         {
           "path": "skills/energy-utilities/renewable-energy-assessment",
           "type": "skill",
-          "checksum": "sha256:e9c2308c3adcc508c0b86bb3bfa08e985e880ab5fc501d560f05d58b9f76b87a"
+          "checksum": "sha256:eec57ebf9a0f0142f0a3d241a569243cb25c53d39d1bde068e1982dfff26d69d"
         },
         {
           "path": "skills/energy-utilities/well-completion-optimization",
@@ -271,7 +271,7 @@
         {
           "path": "skills/general-productivity/translate-ms",
           "type": "skill",
-          "checksum": "sha256:9955e48da804e90cde83ffcd06df5da85f007e5d62166022f56a90cb9ce49144"
+          "checksum": "sha256:704664caf23bd255f1ce5f67785252232406284a01a418457fc33d00296bb68d"
         },
         {
           "path": "skills/general-productivity/desktop-cleanup",
@@ -286,7 +286,7 @@
         {
           "path": "skills/general-productivity/markdown-to-docx",
           "type": "skill",
-          "checksum": "sha256:ad5f7af5a34fdb2eda58a1d5d0a9f126d698f280c75d7f0969255ef706a91fce"
+          "checksum": "sha256:57a2c5b3ea145a066e5c4b346b9d90e38d5ac42b91402c79e0b8a04e4875f9f2"
         }
       ]
     },
@@ -303,12 +303,12 @@
         {
           "path": "skills/healthcare/healthcare-claims-analytics",
           "type": "skill",
-          "checksum": "sha256:37d0a4b50499bcc6501ec40fb54e868df7c50e978eadb86a8a631d1cb9ddaff5"
+          "checksum": "sha256:a403253585e73c600811dd37c46f4b9a7188b59a6f85fcf3f4b8cb8c062e73d5"
         },
         {
           "path": "skills/healthcare/hedis-measure-calculation",
           "type": "skill",
-          "checksum": "sha256:d13d9a53beb7af02a00895fc33cb536bd20a9867d94c27ad6acc8dbf14fbde01"
+          "checksum": "sha256:253ec00bf56574b4f082ec56656b79f80afcfdaa2c64449416cd249270cc16e9"
         },
         {
           "path": "skills/healthcare/hedis-measure-specification",
@@ -323,7 +323,7 @@
         {
           "path": "skills/healthcare/prior-authorization-decision-automation",
           "type": "skill",
-          "checksum": "sha256:df67e29d699d210e586e242ad6ee044e1adfb2aa78f451afa62a7a88ded0ee15"
+          "checksum": "sha256:9af355e94f8ff27b8834f24a10b475277b4e0841da90e96921023d514b0ac8c8"
         },
         {
           "path": "skills/healthcare/protocol-drafting",

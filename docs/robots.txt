@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://amazon-quick.github.io/Amazon-Quick-official-catalog/sitemap.xml

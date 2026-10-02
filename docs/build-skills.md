@@ -1,3 +1,8 @@
+---
+title: Build reliable skills for Amazon Quick
+description: Apply dependency, validation, versioning, security, and evaluation practices when you build reusable skills for Amazon Quick.
+---
+
 # Build skills with software engineering practices in Amazon Quick
 
 When you build a skill for yourself, it works because everything it depends on is already set up in your account. When you share it, the people you share it with need those same things. For example, your skill might use the Microsoft Outlook connector or a specific Microsoft SharePoint knowledge base. If the person you share it with doesn't have access to that connector or knowledge base, the steps that use it fail. Other dependencies are harder to see, such as the response mode, which tools are available, whether the skill still works months later, and whether code the skill generates can run.
@@ -28,7 +33,7 @@ A better description says what the skill does and lists the phrases people might
 description: "Prepare a weekly status update from your notes using the team template. Use when asked for a 'weekly update', 'status report', 'what I did this week', or any request to summarize the week's work."
 ```
 
-A function in code needs a clear name and documentation for the same reason, because other developers decide whether to use it from that alone, without reading the code inside. Skill Builder drafts the description before it writes any steps and asks you to approve it, so the line that decides whether the skill gets used is settled first.
+Other developers decide whether to use a function from its name and documentation alone, without reading the code inside, which is why both need to be clear. Skill Builder drafts the description before it writes any steps and asks you to approve it, so the line that decides whether the skill gets used is settled first.
 
 ## Keep values that change out of the steps
 
@@ -139,7 +144,7 @@ source_url: <URL of the documentation page the list came from>
 ---
 ```
 
-When someone writes a file from scratch, the header records `origin: original` instead, so the maintainer knows there's no source to compare against and reviews the file by hand. Developers note where they copied code from for the same reason, so they can pull in updates later. Skill Builder creates every reference file and script from a generator that requires exactly one of `source_url` or `origin: original`, and the [reference file header standard](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/skills/amazon-quick/skill-builder/references/reference-file-standard.md) lists every field.
+When someone writes a file from scratch, the header records `origin: original` instead, so the maintainer knows there's no source to compare against and reviews the file by hand. Developers keep a note of where they copied code from, so they can pull in updates later. Skill Builder creates every reference file and script from a generator that requires exactly one of `source_url` or `origin: original`, and the [reference file header standard](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/skills/amazon-quick/skill-builder/references/reference-file-standard.md) lists every field.
 
 ## Fingerprint the files you checked
 
@@ -163,7 +168,7 @@ A skill that worked once on your own request hasn't shown that it does better th
 
 Each request then runs twice, once with the skill and once without it. For the status update skill, that comparison shows whether Amazon Quick already follows your template without the skill. If it does, you don't need the skill.
 
-Each run happens in a separate session that can't see the conversation where you built the skill, because the people you share it with can't see that conversation either. Software teams test on a clean computer for the same reason, since a test on the developer's own computer can pass because of something only that computer has. The runs also use the model tier set in the skill's `preferred_model` field (fast, balanced, or smart), so a skill meant for the fast tier is tested on the fast tier.
+Each run happens in a separate session that can't see the conversation where you built the skill, because the people you share it with can't see that conversation either. Software teams test on a clean computer, since a test on the developer's own computer can pass because of something only that computer has. The runs also use the model tier set in the skill's `preferred_model` field (fast, balanced, or smart), so a skill meant for the fast tier is tested on the fast tier.
 
 A separate session grades each run, because whoever built the skill knows what they meant and grades with that bias, which is also why code is reviewed by someone other than its author. The results show each run's pass rate next to how long it took and how many tool calls it made, so you can tell when a change made the skill more accurate but slower. Change one thing between rounds, so you know which change made the difference.
 

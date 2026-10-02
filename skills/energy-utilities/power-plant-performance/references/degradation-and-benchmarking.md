@@ -49,9 +49,10 @@ hours, for GT and combined-cycle degradation trending.
 Regression without scipy (scipy is not in the Quick sandbox; use numpy):
 ```python
 import numpy as np
+
 months = np.arange(len(hr_corrected_monthly))
 y = np.asarray(hr_corrected_monthly, dtype=float)
-slope, intercept = np.polyfit(months, y, 1)          # BTU/kWh per month
+slope, intercept = np.polyfit(months, y, 1)  # BTU/kWh per month
 fit = np.polyval([slope, intercept], months)
 ss_res = float(np.sum((y - fit) ** 2))
 ss_tot = float(np.sum((y - y.mean()) ** 2))

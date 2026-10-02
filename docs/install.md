@@ -1,4 +1,9 @@
-# Install a skill
+---
+title: Install skills in Amazon Quick on desktop
+description: Find, preview, and install official agent skills from the Amazon Quick desktop application on macOS or Windows.
+---
+
+# Install skills in Amazon Quick on desktop
 
 You install skills from the catalog directly in Amazon Quick on desktop, so you don't need to download anything from this site.
 

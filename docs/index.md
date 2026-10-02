@@ -1,6 +1,12 @@
-![Amazon Quick](assets/images/amazonquick.png)
+---
+homepage: true
+title: Amazon Quick Official Skills Catalog
+description: Browse reusable agent skills for Amazon Quick on desktop, with installation guidance and workflows for productivity, business roles, and industries.
+---
 
-# Amazon Quick Official Catalog
+![Amazon Quick Official Catalog logo](assets/images/amazonquick.png)
+
+# Amazon Quick Official Skills Catalog
 
 Building a skill that works well takes time, effort, and expertise. You have to work out every step of a task, write instructions an agent can follow, decide what should happen when a step fails, and test the result against real requests. The Amazon Quick Official Catalog is a collection of skills where that work has already been done, so you can spend your time using a skill instead of building one. You can install any of them directly in Amazon Quick and use it as it is, or take it as a starting point and adapt it to your own work. For the steps, see [Install a skill](install.md).
 

@@ -12,6 +12,7 @@ Compute a measure rate as numerator over eligible denominator, after removing ex
 
 ```python
 """Generic HEDIS measure rate calculator."""
+
 import pandas as pd
 from dataclasses import dataclass
 

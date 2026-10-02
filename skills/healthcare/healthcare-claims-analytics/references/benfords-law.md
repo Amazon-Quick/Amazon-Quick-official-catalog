@@ -21,8 +21,17 @@ import math
 import pandas as pd
 import numpy as np
 
-BENFORD = {1: 0.301, 2: 0.176, 3: 0.125, 4: 0.097,
-           5: 0.079, 6: 0.067, 7: 0.058, 8: 0.051, 9: 0.046}
+BENFORD = {
+    1: 0.301,
+    2: 0.176,
+    3: 0.125,
+    4: 0.097,
+    5: 0.079,
+    6: 0.067,
+    7: 0.058,
+    8: 0.051,
+    9: 0.046,
+}
 
 
 def _chi2_sf(x: float, df: int = 8) -> float:
@@ -41,7 +50,9 @@ def _chi2_sf(x: float, df: int = 8) -> float:
 
 def benfords_test(charges: pd.Series, provider_id: str = "") -> dict:
     """Test charge first-digit distribution against Benford's Law (df = 8)."""
-    first = charges[charges >= 10].apply(lambda x: int(str(x).lstrip("0").lstrip(".")[0]))
+    first = charges[charges >= 10].apply(
+        lambda x: int(str(x).lstrip("0").lstrip(".")[0])
+    )
     first = first[first.between(1, 9)]
     counts = first.value_counts().sort_index()
     n = counts.sum()
@@ -49,8 +60,12 @@ def benfords_test(charges: pd.Series, provider_id: str = "") -> dict:
     exp = np.array([BENFORD[d] * n for d in range(1, 10)])
     chi2 = float(((obs - exp) ** 2 / exp).sum())
     p = _chi2_sf(chi2, df=8)
-    return {"provider_id": provider_id, "chi2": round(chi2, 2),
-            "p_value": round(p, 4), "flag": p < 0.01}
+    return {
+        "provider_id": provider_id,
+        "chi2": round(chi2, 2),
+        "p_value": round(p, 4),
+        "flag": p < 0.01,
+    }
 ```
 
 ## Key parameters

@@ -12,12 +12,16 @@ Determine whether a member is continuously enrolled through the measurement peri
 
 ```python
 """Check continuous enrollment with allowable gap."""
+
 import pandas as pd
 
 
 def check_continuous_enrollment(
-    enrollment: pd.DataFrame, member_id: str,
-    start_date: str, end_date: str, max_gap_days: int = 45,
+    enrollment: pd.DataFrame,
+    member_id: str,
+    start_date: str,
+    end_date: str,
+    max_gap_days: int = 45,
 ) -> dict:
     """Check if a member is continuously enrolled with allowable gap.
 
@@ -35,22 +39,48 @@ def check_continuous_enrollment(
     me = enrollment[enrollment["member_id"] == member_id].copy()
     me["enroll_start"] = pd.to_datetime(me["enroll_start"]).clip(lower=start)
     me["enroll_end"] = pd.to_datetime(me["enroll_end"]).clip(upper=end)
-    me = me[me["enroll_start"] <= me["enroll_end"]].sort_values("enroll_start").reset_index(drop=True)
+    me = (
+        me[me["enroll_start"] <= me["enroll_end"]]
+        .sort_values("enroll_start")
+        .reset_index(drop=True)
+    )
     if me.empty:
-        return {"is_enrolled": False, "total_gap_days": (end - start).days, "gap_periods": []}
+        return {
+            "is_enrolled": False,
+            "total_gap_days": (end - start).days,
+            "gap_periods": [],
+        }
     if not (me["enroll_end"] >= end).any():
         return {"is_enrolled": False, "total_gap_days": -1, "gap_periods": []}
     gap_periods, total_gap = [], 0
     if me.iloc[0]["enroll_start"] > start:
         g = (me.iloc[0]["enroll_start"] - start).days
         total_gap += g
-        gap_periods.append({"from": str(start.date()), "to": str(me.iloc[0]["enroll_start"].date()), "days": g})
+        gap_periods.append(
+            {
+                "from": str(start.date()),
+                "to": str(me.iloc[0]["enroll_start"].date()),
+                "days": g,
+            }
+        )
     for i in range(1, len(me)):
-        if me.iloc[i]["enroll_start"] > me.iloc[i - 1]["enroll_end"] + pd.Timedelta(days=1):
+        if me.iloc[i]["enroll_start"] > me.iloc[i - 1]["enroll_end"] + pd.Timedelta(
+            days=1
+        ):
             g = (me.iloc[i]["enroll_start"] - me.iloc[i - 1]["enroll_end"]).days - 1
             total_gap += g
-            gap_periods.append({"from": str(me.iloc[i - 1]["enroll_end"].date()), "to": str(me.iloc[i]["enroll_start"].date()), "days": g})
-    return {"is_enrolled": total_gap <= max_gap_days, "total_gap_days": total_gap, "gap_periods": gap_periods}
+            gap_periods.append(
+                {
+                    "from": str(me.iloc[i - 1]["enroll_end"].date()),
+                    "to": str(me.iloc[i]["enroll_start"].date()),
+                    "days": g,
+                }
+            )
+    return {
+        "is_enrolled": total_gap <= max_gap_days,
+        "total_gap_days": total_gap,
+        "gap_periods": gap_periods,
+    }
 ```
 
 For multi-payer enrollment, merge overlapping enrollment spans into a single set of segments before calling this, so shared coverage is not counted as a gap.

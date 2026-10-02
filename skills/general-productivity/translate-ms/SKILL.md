@@ -17,7 +17,7 @@ inputs:
     description: "Target language for translation (e.g. French, Japanese, German, Spanish)"
     type: string
     required: true
-checksum: "sha256:9955e48da804e90cde83ffcd06df5da85f007e5d62166022f56a90cb9ce49144"
+checksum: "sha256:704664caf23bd255f1ce5f67785252232406284a01a418457fc33d00296bb68d"
 ---
 
 ## Overview
@@ -137,8 +137,12 @@ triggers=["translate this document", "translate this presentation", "convert to 
 5. [Agent] Match glossary columns:
 
    ```python
-   glossary_source, glossary_target, all_headers = match_glossary_columns(glossary, source_language, target_language)
-   print(f"Glossary: source='{glossary_source}', target='{glossary_target}', headers={all_headers}")
+   glossary_source, glossary_target, all_headers = match_glossary_columns(
+       glossary, source_language, target_language
+   )
+   print(
+       f"Glossary: source='{glossary_source}', target='{glossary_target}', headers={all_headers}"
+   )
    ```
 
    If `glossary_target` is empty, the glossary won't be used for this language pair, and that's fine.
@@ -160,15 +164,19 @@ triggers=["translate this document", "translate this presentation", "convert to 
    ```python
    for batch_idx, batch in enumerate(extracted_batches):
        batch_json = sanitize_batch_for_embedding(batch)
-       glossary_block = get_glossary_instruction(batch, glossary, glossary_source, glossary_target)
-       objective = f"""<worker prompt below with {batch_json} and {glossary_block} substituted>"""
+       glossary_block = get_glossary_instruction(
+           batch, glossary, glossary_source, glossary_target
+       )
+       objective = (
+           f"""<worker prompt below with {batch_json} and {glossary_block} substituted>"""
+       )
        thread_id = start_task(
            objective=objective,
            model="smart",
            mode="continue_then_receive",
            name=f"batch-{batch_idx}",
            group_id=task_group_id,
-           tools="file_only"
+           tools="file_only",
        )
        print(f"Spawned batch-{batch_idx}: {thread_id}")
    ```

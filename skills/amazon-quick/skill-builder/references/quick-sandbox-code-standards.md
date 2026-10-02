@@ -38,8 +38,10 @@ import re
 
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")  # compiled once, anchored (Rules 9, 11)
 
+
 def is_active(record: dict) -> bool:  # named predicate (Rule 12)
     return record.get("status") == "active"
+
 
 records = json.load(open(os.path.join(os.environ["WORKSPACE_DIR"], "in.json")))
 active = [r for r in records if is_active(r) and ISO_DATE.match(r["date"])]
@@ -53,8 +55,13 @@ print(f"{len(active)} active records")  # print the result (Rule 5)
 # needless capture (10), recompiled per item (12), dense filter (12).
 def filter_rows(records):
     import re
-    return [r for r in records
-            if re.compile(r"(\w+)+@").search(r["email"]) and re.search(r".*(active).*", r["status"])]
+
+    return [
+        r
+        for r in records
+        if re.compile(r"(\w+)+@").search(r["email"])
+        and re.search(r".*(active).*", r["status"])
+    ]
 ```
 </example>
 </examples>

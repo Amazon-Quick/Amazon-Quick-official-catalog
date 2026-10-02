@@ -65,14 +65,18 @@ def minimum_curvature(surveys):
     tvd, ns, ew = 0.0, 0.0, 0.0
     for i in range(len(surveys)):
         if i == 0:
-            results.append({"MD": surveys.iloc[i]["MD"], "TVD": 0, "NS": 0, "EW": 0, "DLS": 0})
+            results.append(
+                {"MD": surveys.iloc[i]["MD"], "TVD": 0, "NS": 0, "EW": 0, "DLS": 0}
+            )
             continue
         md1, i1, a1 = surveys.iloc[i - 1][["MD", "INC", "AZ"]]
         md2, i2, a2 = surveys.iloc[i][["MD", "INC", "AZ"]]
         i1r, i2r = np.radians(i1), np.radians(i2)
         a1r, a2r = np.radians(a1), np.radians(a2)
         dmd = md2 - md1
-        cos_beta = np.cos(i2r - i1r) - np.sin(i1r) * np.sin(i2r) * (1 - np.cos(a2r - a1r))
+        cos_beta = np.cos(i2r - i1r) - np.sin(i1r) * np.sin(i2r) * (
+            1 - np.cos(a2r - a1r)
+        )
         beta = np.arccos(np.clip(cos_beta, -1, 1))
         rf = 1.0 if beta < np.radians(0.25) else (2.0 / beta) * np.tan(beta / 2.0)
         tvd += (dmd / 2.0) * (np.cos(i1r) + np.cos(i2r)) * rf

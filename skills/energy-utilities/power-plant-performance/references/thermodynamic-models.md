@@ -64,24 +64,25 @@ condenser pressure (typical coal plant).
 Uses ideal-gas relations with physical constants; safe to compute in the sandbox.
 ```python
 import numpy as np
-gamma = 1.4        # ratio of specific heats for air at moderate temperature
-cp = 1.005         # kJ/(kg*K) for air
-T1 = 288.15        # K, ISO 15 C
-rp = 18            # compressor pressure ratio (F-class example)
-T3 = 1673          # K, turbine inlet temperature example (1400 C)
-eta_c = 0.88       # compressor isentropic efficiency (use plant value)
-eta_t = 0.92       # turbine isentropic efficiency (use plant value)
+
+gamma = 1.4  # ratio of specific heats for air at moderate temperature
+cp = 1.005  # kJ/(kg*K) for air
+T1 = 288.15  # K, ISO 15 C
+rp = 18  # compressor pressure ratio (F-class example)
+T3 = 1673  # K, turbine inlet temperature example (1400 C)
+eta_c = 0.88  # compressor isentropic efficiency (use plant value)
+eta_t = 0.92  # turbine isentropic efficiency (use plant value)
 
 T2_ideal = T1 * rp ** ((gamma - 1) / gamma)
 T4_ideal = T3 / rp ** ((gamma - 1) / gamma)
 T2_actual = T1 + (T2_ideal - T1) / eta_c
 T4_actual = T3 - eta_t * (T3 - T4_ideal)
 
-w_c = cp * (T2_actual - T1)     # kJ/kg
-w_t = cp * (T3 - T4_actual)     # kJ/kg
-q_in = cp * (T3 - T2_actual)    # kJ/kg
+w_c = cp * (T2_actual - T1)  # kJ/kg
+w_t = cp * (T3 - T4_actual)  # kJ/kg
+q_in = cp * (T3 - T2_actual)  # kJ/kg
 w_net = w_t - w_c
-bwr = w_c / w_t                 # back-work ratio, typically 0.40-0.55
+bwr = w_c / w_t  # back-work ratio, typically 0.40-0.55
 eta_brayton = w_net / q_in
 ```
 Ideal efficiency check: `eta_ideal = 1 - 1 / rp ** ((gamma - 1) / gamma)`.

@@ -54,7 +54,7 @@ import math
 # Fit Weibull by method of moments (exclude calm periods, account for them separately)
 speeds = wind_speeds[wind_speeds > 0]
 mean, std = speeds.mean(), speeds.std()
-k = (std / mean) ** -1.086          # empirical estimator, valid ~1 <= k <= 10
+k = (std / mean) ** -1.086  # empirical estimator, valid ~1 <= k <= 10
 c = mean / math.gamma(1 + 1 / k)
 
 # Wind shear to hub height
@@ -62,17 +62,21 @@ alpha, h_hub, h_meas = 0.14, 80.0, 10.0
 v_hub_scale = (h_hub / h_meas) ** alpha  # multiply speeds or scale c
 
 # Expected power via numerical integration over a speed grid
-grid = np.linspace(0.001, 30, 3000)     # start above 0 to avoid div-by-zero when k<1
+grid = np.linspace(0.001, 30, 3000)  # start above 0 to avoid div-by-zero when k<1
+
 
 def power_curve(x, p_rated, v_cutin=3.5, v_rated=12.0, v_cutout=25.0):
     p = np.zeros_like(x)
     ramp = (x >= v_cutin) & (x < v_rated)
-    p[ramp] = p_rated * (x[ramp] ** 3 - v_cutin ** 3) / (v_rated ** 3 - v_cutin ** 3)
+    p[ramp] = p_rated * (x[ramp] ** 3 - v_cutin**3) / (v_rated**3 - v_cutin**3)
     p[(x >= v_rated) & (x <= v_cutout)] = p_rated
     return p
 
-pdf = (k / c) * (grid / c) ** (k - 1) * np.exp(-(grid / c) ** k)
-trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz  # numpy 2.x renamed trapz
+
+pdf = (k / c) * (grid / c) ** (k - 1) * np.exp(-((grid / c) ** k))
+trapz = (
+    np.trapezoid if hasattr(np, "trapezoid") else np.trapz
+)  # numpy 2.x renamed trapz
 expected_power_kw = trapz(power_curve(grid, capacity_kw) * pdf, grid)
 gross_energy_kwh = expected_power_kw * 8760
 capacity_factor = expected_power_kw / capacity_kw

@@ -51,7 +51,7 @@ def define_env(env):
         sections = []
         for cat in categories:
             lines = [
-                f"### {cat.name}\n",
+                f"## {cat.name}\n",
                 "| Name | Type | Description | Updated |",
                 "|------|------|-------------|---------|",
             ]

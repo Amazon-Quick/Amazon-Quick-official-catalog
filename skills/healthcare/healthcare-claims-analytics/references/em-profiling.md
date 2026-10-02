@@ -20,14 +20,28 @@ version, a `claims` table with the same columns.
 import pandas as pd
 import numpy as np
 
-EM_CODES = ["99202", "99203", "99204", "99205", "99211", "99212", "99213", "99214", "99215"]
+EM_CODES = [
+    "99202",
+    "99203",
+    "99204",
+    "99205",
+    "99211",
+    "99212",
+    "99213",
+    "99214",
+    "99215",
+]
 
 
 def profile_em_distribution(claims_df: pd.DataFrame) -> pd.DataFrame:
     """Compare each provider's E&M distribution to specialty peers via z-scores."""
     em = claims_df[claims_df["proc_code"].isin(EM_CODES)].copy()
 
-    prov_dist = em.groupby(["provider_id", "specialty", "proc_code"]).size().unstack(fill_value=0)
+    prov_dist = (
+        em.groupby(["provider_id", "specialty", "proc_code"])
+        .size()
+        .unstack(fill_value=0)
+    )
     prov_pct = prov_dist.div(prov_dist.sum(axis=1), axis=0)
 
     spec_mean = prov_pct.groupby("specialty").mean()

@@ -52,8 +52,10 @@ the most common error is mixing $/kW-DC with $/kW-AC or nominal with real WACC.
 ```python
 import numpy as np
 
+
 def npv(rate, cashflows):
     return sum(cf / (1 + rate) ** t for t, cf in enumerate(cashflows))
+
 
 def irr(cashflows, lo=-0.9, hi=2.0, tol=1e-7, iters=200):
     """Solve IRR by bisection. numpy.irr was removed and numpy_financial is not
@@ -72,6 +74,7 @@ def irr(cashflows, lo=-0.9, hi=2.0, tol=1e-7, iters=200):
             lo, f_lo = mid, f_mid
     return (lo + hi) / 2
 
+
 # LCOE (full NPV)
 capex_total = capex_per_kw * capacity_kw
 fixed_om_annual = fixed_om_per_kw * capacity_kw
@@ -79,7 +82,8 @@ r, n, d = discount_rate, project_life, degradation_rate
 
 npv_costs = capex_total + sum(fixed_om_annual / (1 + r) ** t for t in range(1, n + 1))
 npv_energy_mwh = sum(
-    (net_energy_year1 / 1000) * (1 - d) ** (t - 1) / (1 + r) ** t for t in range(1, n + 1)
+    (net_energy_year1 / 1000) * (1 - d) ** (t - 1) / (1 + r) ** t
+    for t in range(1, n + 1)
 )
 lcoe = npv_costs / npv_energy_mwh  # $/MWh
 

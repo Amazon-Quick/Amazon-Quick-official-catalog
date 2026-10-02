@@ -32,6 +32,7 @@ dev = [
     "jsonschema>=4,<5",
     "loguru>=0.7,<1",
     "mdformat>=1,<2",
+    "mdformat-frontmatter>=2,<3",
     "mkdocs-macros-plugin>=1,<2",
     "pathspec>=1,<2",
     "pydantic>=2,<3",

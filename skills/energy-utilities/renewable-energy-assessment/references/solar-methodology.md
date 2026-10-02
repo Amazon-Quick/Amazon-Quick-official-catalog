@@ -67,21 +67,32 @@ lifetime forecast, not inside the year-1 loss stack.
 import numpy as np
 
 losses = {
-    "soiling": 0.02, "shading": 0.03, "mismatch": 0.02, "dc_wiring": 0.02,
-    "connections": 0.005, "inverter": 0.04, "ac_wiring": 0.01,
-    "transformer": 0.01, "lid": 0.015, "nameplate": 0.01, "availability": 0.03,
+    "soiling": 0.02,
+    "shading": 0.03,
+    "mismatch": 0.02,
+    "dc_wiring": 0.02,
+    "connections": 0.005,
+    "inverter": 0.04,
+    "ac_wiring": 0.01,
+    "transformer": 0.01,
+    "lid": 0.015,
+    "nameplate": 0.01,
+    "availability": 0.03,
 }
 temp_derate = 1 + (-0.004) * (avg_cell_temp - 25)
 total_derate = temp_derate
 for pct in losses.values():
-    total_derate *= (1 - pct)
+    total_derate *= 1 - pct
 
 net_energy_year1 = gross_energy_kwh * total_derate
 capacity_factor_ac = net_energy_year1 / (capacity_kw * 8760)
 
 degradation_rate = 0.005
 annual_production = [
-    {"year": n, "energy_mwh": net_energy_year1 * (1 - degradation_rate) ** (n - 1) / 1000}
+    {
+        "year": n,
+        "energy_mwh": net_energy_year1 * (1 - degradation_rate) ** (n - 1) / 1000,
+    }
     for n in range(1, project_life + 1)
 ]
 ```

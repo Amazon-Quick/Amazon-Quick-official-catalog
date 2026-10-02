@@ -20,7 +20,9 @@ A claims DataFrame with columns: `claim_id`, `member_id`, `provider_id`, `proc_c
 import pandas as pd
 
 
-def detect_duplicates(claims_df: pd.DataFrame, fuzzy_window_days: int = 3) -> pd.DataFrame:
+def detect_duplicates(
+    claims_df: pd.DataFrame, fuzzy_window_days: int = 3
+) -> pd.DataFrame:
     """Detect exact and near-duplicate claims."""
     key_cols = ["member_id", "provider_id", "proc_code", "service_date"]
     exact = claims_df[claims_df.duplicated(subset=key_cols, keep=False)].copy()
@@ -32,7 +34,14 @@ def detect_duplicates(claims_df: pd.DataFrame, fuzzy_window_days: int = 3) -> pd
     near = s[(s["gap"] > 0) & (s["gap"] <= fuzzy_window_days)].copy()
     near["dup_type"] = "near"
 
-    cols = ["claim_id", "member_id", "provider_id", "proc_code", "service_date", "dup_type"]
+    cols = [
+        "claim_id",
+        "member_id",
+        "provider_id",
+        "proc_code",
+        "service_date",
+        "dup_type",
+    ]
     return pd.concat([exact[cols], near[cols]])
 ```
 

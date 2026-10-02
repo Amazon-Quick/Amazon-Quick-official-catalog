@@ -132,9 +132,9 @@ def main() -> int:
     parser.add_argument("path")
     args = parser.parse_args()
 
-    logger.info("Counting lines in %s", args.path)   # progress -> stdout
+    logger.info("Counting lines in %s", args.path)  # progress -> stdout
     result = LineCountReport(Path(args.path)).build()
-    logger.info("non_empty=%d", result.non_empty)    # result -> stdout
+    logger.info("non_empty=%d", result.non_empty)  # result -> stdout
     return 0
 
 
@@ -165,15 +165,15 @@ if __name__ == "__main__":
 # God class with several public methods (10), I/O and no encoding in __init__
 # (9, 11), a dict across a boundary (4), and progress mixed into stdout (16).
 class Records:
-    def __init__(self, path):                 # no type hints (1); reads in __init__ (11)
+    def __init__(self, path):  # no type hints (1); reads in __init__ (11)
         self.lines = open(path).read().split("\n")  # no encoding/newline (9)
 
-    def count(self): ...                      # multiple public methods on a
-    def summarize(self): ...                  # logic class violates SRP (10)
+    def count(self): ...  # multiple public methods on a
+    def summarize(self): ...  # logic class violates SRP (10)
 
     def write(self, out):
-        print("writing report...")            # bare print instead of logging (16)
-        return {"total": len(self.lines)}     # dict across a boundary (4)
+        print("writing report...")  # bare print instead of logging (16)
+        return {"total": len(self.lines)}  # dict across a boundary (4)
 ```
 </example>
 </examples>

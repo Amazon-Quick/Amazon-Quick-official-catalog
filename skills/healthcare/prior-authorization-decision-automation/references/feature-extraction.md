@@ -29,6 +29,7 @@ Amazon Quick `run_python` sandbox.
 
 ```python
 """Extract clinical features from parsed PA request + claims history."""
+
 import pandas as pd
 from datetime import datetime
 
@@ -66,7 +67,9 @@ def extract_features(
     prior_treatment_count = prior_treatments["ndc"].nunique()
 
     # Step therapy completion
-    required_steps = int(drug_info["prior_drugs_required"].iloc[0]) if len(drug_info) > 0 else 0
+    required_steps = (
+        int(drug_info["prior_drugs_required"].iloc[0]) if len(drug_info) > 0 else 0
+    )
     step_therapy_complete = prior_treatment_count >= required_steps
 
     # Days since last treatment in class
@@ -79,7 +82,11 @@ def extract_features(
     # Lab value check (example: HbA1c for diabetes drugs)
     member_labs = lab_results[lab_results["member_id"] == member_id]
     recent_lab = member_labs.sort_values("result_date", ascending=False).head(1)
-    lab_in_range = bool(recent_lab["result_value"].iloc[0] >= 7.0) if len(recent_lab) > 0 else False
+    lab_in_range = (
+        bool(recent_lab["result_value"].iloc[0] >= 7.0)
+        if len(recent_lab) > 0
+        else False
+    )
 
     # Documentation completeness score
     supporting_info = pa_request.get("supporting_info_types", [])

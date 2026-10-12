@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:2cb11be9183f024544c7b804c1ab50b0b4cda1aed48ce0006a8c914251e8b75c",
+  "skillsChecksum": "sha256:fe8bd42cb044363e35ce58138c76d366cf086b9cd44dbb6ad5d868d79878d284",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -215,6 +215,13 @@
           "path": "skills/finance/fsi-product-management",
           "type": "skill",
           "checksum": "sha256:3da0fd0f8ec4ac0fda962d4d5c916415f706a5f879bcf6f4d9797e5593f36aca"
+        },
+        {
+          "path": "skills/finance/iso-premium-audit-advisory-get",
+          "type": "skill",
+          "checksum": "sha256:85647aa2d205a7b80ead44f3fa574a77e16bcbb5824e2b6ac037216db3dfbfd9",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Verisk Analytics"
         }
       ]
     },

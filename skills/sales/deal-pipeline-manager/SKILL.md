@@ -2,13 +2,13 @@
 
 name: deal-pipeline-manager
 display_name: Deal Pipeline Manager
-icon: "📊"
+icon: assets/funnel.svg
 description: "Manages and optimizes the sales pipeline for small businesses. Provides pipeline reviews, deal coaching, forecasting, stale deal identification, and next-best-action recommendations. Use when asked to 'review my pipeline', 'what deals need attention', 'forecast my revenue', 'which deals are stuck', 'help me prioritize my deals', 'pipeline review', 'deal coaching', 'what should I work on today', or 'sales priorities'."
 created_date: "2026-05-15"
 last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, open_in_session_tab]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 
 - name: pipeline_data
@@ -24,7 +24,7 @@ inputs:
   type: string
   required: false
   default: "full"
-checksum: "sha256:b950b7b6f3b51a07305c5cf713b732acec78954b5da16cb5729d276387eee0de"
+checksum: "sha256:a4e9c6dc44252b24055e0a95d7e410dceb4a935d18210bc917823d5c6fea5566"
 ---
 
 ## Overview

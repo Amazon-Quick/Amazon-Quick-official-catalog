@@ -1,7 +1,7 @@
 ---
 name: architecture-decision-record
 display_name: Architecture Decision Record Generator
-icon: "📐"
+icon: assets/drafting-compass.svg
 description: "Generates structured Architecture Decision Records (ADRs) from design conversations, meeting notes, or direct prompts. Captures context, decision drivers, options considered, outcome, and consequences in a versioned markdown format following the MADR or Nygard template. Use when asked to 'create an ADR', 'create architecture decision record', 'document this architecture decision', 'record why we chose X', 'write a decision record', or 'ADR for this design choice'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -24,7 +24,7 @@ inputs:
   required: false
   default: "madr"
   choices: ["madr", "nygard", "custom"]
-checksum: "sha256:b7285a3c8e155339b0f30c8cf7288bea61cb0cf2a5fd2f31176d05ae4316bbd8"
+checksum: "sha256:759e5dabda59d5d964472a3ff4ef732d4ddc20f112f54e4fa87cb08d95d6618c"
 ---
 
 ## Overview

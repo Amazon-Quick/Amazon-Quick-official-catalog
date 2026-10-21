@@ -1,13 +1,13 @@
 ---
 name: payroll-forecast
 display_name: "Payday Cash Projection"
-icon: "💰"
+icon: assets/wallet.svg
 description: "Project whether you can cover payroll on an upcoming payday using only the cash you actually control. Use when the user says 'payday cash check', 'project cash for payday', 'cash flow projection', 'will I make payroll', 'can I make payroll this week', or asks about cash runway before a payroll date. Computes a conservative cash floor (cleared bank cash minus a buffer minus every must-pay obligation due before payday) and shows expected invoice collections only as separately labeled upside, never as part of the verdict."
 created_date: "2026-06-02"
 last_updated: "2026-07-03"
 license: "MIT-0"
 tools: [quickbooks, agent_management, memory_management, quickbooks__QueryAccount, quickbooks__QueryEntities, list_scheduled_agents, create_scheduled_agent, recall_memories]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: payday_date
     description: "The upcoming payday date to project toward (e.g., '2026-06-15'). If not provided, defaults to the next Friday or the user's known pay schedule."
@@ -23,7 +23,7 @@ inputs:
     type: number
     required: false
     default: 5
-checksum: "sha256:6bb95f26dbaea4096b118431da272c2d8fe2bfab332a15f2e5d3a33cbeaca3d8"
+checksum: "sha256:77603c8ee7ac24a1c40e514d21d9593f33fb417138cfe143a25fa822b0c104c0"
 ---
 
 ## Overview

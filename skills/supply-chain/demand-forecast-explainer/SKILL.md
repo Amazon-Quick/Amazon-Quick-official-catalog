@@ -1,7 +1,7 @@
 ---
 name: demand-forecast-explainer
 display_name: Demand Forecast Explainer
-icon: "📊"
+icon: assets/trending-up.svg
 description: "Translates statistical demand forecasts into plain-English explanations with confidence intervals, key drivers, and inventory action recommendations for VP/SVP of supply chain and their teams. Use when the user asks why a forecast changed, what drove variance, what confidence bands mean, or needs help interpreting ML forecast outputs. Trigger phrases: 'why did the forecast change', 'explain this forecast', 'what drove the variance', 'forecast for [SKU/category]', 'confidence interval', 'demand drivers'."
 created_date: "2026-06-12"
 last_updated: "2026-06-16"
@@ -32,7 +32,7 @@ inputs:
   options: ["Weekly", "Monthly", "Quarterly", "Annual"]
   default: "Monthly"
   required: false
-checksum: "sha256:b1fb7a8274bebf8f591ba2d4a4da1660b770927e8540e49a182da675c10c5a3a"
+checksum: "sha256:acccb8953b03dc152c49d49a1626f6caf18349fa94a528dc3a0681733e9fdb57"
 ---
 
 ## Overview

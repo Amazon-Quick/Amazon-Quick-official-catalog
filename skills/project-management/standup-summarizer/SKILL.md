@@ -1,13 +1,13 @@
 ---
 name: standup-summarizer
 display_name: Standup Summarizer
-icon: "🗒️"
+icon: assets/clipboard-check.svg
 description: "Summarize daily standup notes into blockers, progress, and plans. Use when asked to 'summarize standup', 'process standup notes', or 'daily summary'."
 created_date: "2026-07-02"
 last_updated: "2026-07-02"
 license: "MIT-0"
 tools: [file_read, file_write]
-checksum: "sha256:ba8c9c8b6c2df7446546484caff93215d39d38c394a1852107560997ac4cf799"
+checksum: "sha256:e0b6763ea301fda8899b83b1dd3e3b4bfe71d564ee0d7186f34b71c5cb06bd11"
 ---
 
 ## Overview

@@ -1,7 +1,7 @@
 ---
 name: protocol-drafting
 display_name: "Clinical Trial Protocol Drafting"
-icon: "🧬"
+icon: assets/notebook-pen.svg
 description: "Draft clinical trial protocol sections grounded in ICH guidelines and FDA regulations, starting from a grant document or study synopsis. Generates Objectives, Background & Rationale, Study Design, and assembles them into a cohesive protocol document. Use when asked to 'draft a clinical trial protocol', 'write protocol objectives from this grant', 'generate a study design section', 'create a protocol from my synopsis', 'draft IND protocol sections', or any request to produce ICH/FDA-compliant protocol text from research source documents."
 created_date: "2026-07-27"
 last_updated: "2026-07-27"
@@ -9,7 +9,7 @@ license: MIT-0
 preferred_model: smart
 preferred_thinking: medium
 tools: [file_read, file_read_pdf, file_read_docx, file_write, open_in_session_tab, run_python, awslabs.bedrock-kb-retrieval-mcp-server, fda-ecfr]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: source_document
     description: "Grant document or study synopsis to extract protocol content from. Can be a file path or uploaded document."
@@ -23,7 +23,7 @@ inputs:
     description: "Disease area or therapeutic focus (e.g., oncology, cardiology). Inferred from source if not provided."
     type: string
     required: false
-checksum: "sha256:1142517aa2195cbff239fc0c9b29424e30a7fc19b7ca79a9a34415098fada2f3"
+checksum: "sha256:93b6ccdced142e54ae33a7e711c40ac255ccb4da4eba704bc57b827746763171"
 ---
 
 ## Overview

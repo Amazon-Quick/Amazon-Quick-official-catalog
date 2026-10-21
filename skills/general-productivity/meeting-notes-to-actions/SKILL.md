@@ -1,7 +1,7 @@
 ---
 name: meeting-notes-to-actions
 display_name: Meeting Notes to Actions
-icon: "✅"
+icon: assets/list-checks.svg
 description: "Transforms meeting transcripts, raw notes, or audio transcriptions into structured outputs: key decisions made, owned action items with deadlines, open questions, and a concise executive recap. Supports multiple output formats. Use when asked to 'summarize this meeting', 'extract action items', 'what were the decisions', 'meeting recap', 'process these meeting notes', or 'turn transcript into actions'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -28,7 +28,7 @@ inputs:
   options: [markdown, email_summary, chat_post]
   required: false
   default: "markdown"
-checksum: "sha256:e6822ceb47b11ea5ee6a7e174bb7ff01f1dfd8afa4d6fe6a0504c35fc52e05fe"
+checksum: "sha256:304753f35698fc2ff61526f4c8a77f78e302930614808930666cb56175825786"
 ---
 
 ## Overview

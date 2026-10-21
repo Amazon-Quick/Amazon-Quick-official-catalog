@@ -1,14 +1,14 @@
 ---
 name: power-plant-performance
 display_name: Power Plant Performance
-icon: "⚡"
+icon: assets/gauge.svg
 description: "Analyze thermal power plant performance: heat rate, NERC GADS availability metrics, thermodynamic cycle modeling, ambient corrections, degradation trending, and fleet benchmarking. Use when asked to 'calculate heat rate', 'compute EFOR or availability', 'model a Rankine or Brayton cycle', 'apply ambient corrections', 'trend plant degradation', 'benchmark against the NERC fleet', or analyze thermal generation efficiency"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [get_current_time, file_read, file_write, run_python, web_search, url_fetch, open_in_session_tab]
-checksum: "sha256:1bf2ee35bfb7e382469bca29156f3eef5ff893e56dfc540c60ccd0515bf6b3c3"
+checksum: "sha256:b0835a762286d18f724cc30924deaa184937e4c7b1fd697410cdd74acc33ef56"
 ---
 
 ## Overview

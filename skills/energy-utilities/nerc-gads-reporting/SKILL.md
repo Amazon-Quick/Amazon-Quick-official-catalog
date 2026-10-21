@@ -1,14 +1,14 @@
 ---
 name: nerc-gads-reporting
 display_name: NERC GADS Reporting
-icon: "⚡"
+icon: assets/file-chart-column.svg
 description: "Convert raw generator operational data into validated North American Electric Reliability Corporation (NERC) Generating Availability Data System (GADS) event reports and IEEE 762 performance indexes. Use when asked to 'prepare a GADS report', 'calculate EFOR/EAF', 'classify generating unit events', 'validate GADS data for eGADS submission', 'check GADS submission readiness', 'run generator availability metrics', 'analyze outage cause codes', or benchmark fleet reliability against NERC averages."
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 license: MIT-0
 tools: [get_current_time, file_read, file_read_pdf, run_python, web_search, url_fetch, open_in_session_tab]
-checksum: "sha256:2be87737ae137406211fede07ed062c8261b53c3c636fc72169627a9e7a55bd6"
+checksum: "sha256:4eac41765e0517bfd20c0d3b68166002c5df5d33d973a0ceb657e84cc80904bf"
 ---
 
 ## Overview

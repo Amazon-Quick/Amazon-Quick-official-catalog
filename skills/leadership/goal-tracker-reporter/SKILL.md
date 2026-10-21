@@ -1,7 +1,7 @@
 ---
 name: goal-tracker-reporter
 display_name: Goal Tracker and Reporter
-icon: "🎯"
+icon: assets/target.svg
 description: "Creates, tracks, and reports on team and organizational goals across multiple frameworks: Objectives and Key Results (OKRs), Key Performance Indicators (KPIs), V2MOMs, balanced scorecards, or custom goal structures. Generates goal drafts from strategy documents, scores progress check-ins, produces executive scorecards, and identifies at-risk goals. Use when asked to 'create goals', 'set up OKRs', 'track KPIs', 'goal check-in', 'quarterly goal report', 'how are we doing on goals', 'score our objectives', or 'V2MOM update'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -33,7 +33,7 @@ inputs:
   description: "Team or org name the goals belong to (e.g., 'Platform Engineering', 'Customer Success'). Defaults to the user's team if detectable."
   type: string
   required: false
-checksum: "sha256:c0216144760a3f09a2b2cadac321756b8bd4f5b6893cfbd86386e6e3e10d9db8"
+checksum: "sha256:58a7ac5662828df3747f965bc2241a70903dabc963fc17205919f6fcc91cf38d"
 ---
 
 ## Overview

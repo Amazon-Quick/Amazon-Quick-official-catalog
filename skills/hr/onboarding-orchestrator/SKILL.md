@@ -1,7 +1,7 @@
 ---
 name: onboarding-orchestrator
 display_name: Onboarding Orchestrator
-icon: "🚀"
+icon: assets/user-plus.svg
 description: "Designs and manages end-to-end employee onboarding programs with structured 30/60/90 day plans, buddy assignments, meeting schedules, tool access checklists, and milestone tracking. Adapts plans by role type and seniority. Use when asked to 'set up onboarding', 'create onboarding plan', 'new hire checklist', '30-60-90 plan', 'onboard new team member', or 'prepare for new joiner'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -34,7 +34,7 @@ inputs:
   description: "Name of the assigned onboarding buddy. If not provided, the skill will suggest one based on team composition."
   type: string
   required: false
-checksum: "sha256:dd779e94379e9bd7f4753e99875ce607c0a1a32199dc3fafbee95f9931c5db47"
+checksum: "sha256:c471465d0e712203e7421815551f0080be2b0a8e942a9e940db01fc9d01bf144"
 ---
 
 ## Overview

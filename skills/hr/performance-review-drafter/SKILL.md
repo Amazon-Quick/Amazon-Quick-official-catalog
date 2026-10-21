@@ -1,7 +1,7 @@
 ---
 name: performance-review-drafter
 display_name: Performance Review Drafter
-icon: "📝"
+icon: assets/star.svg
 description: "Generates structured performance review drafts using Situation-Task-Action-Result (STAR) format evidence from contributions, project outcomes, peer feedback, and 1:1 notes. Produces balanced assessments covering achievements, growth areas, and development recommendations. Use when asked to 'write a performance review', 'draft my self-assessment', 'prepare review for direct report', 'perf review', or 'annual review draft'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -31,7 +31,7 @@ inputs:
   type: choice
   options: [self_assessment, manager_review, peer_feedback]
   required: true
-checksum: "sha256:c9d5c7ec9155b04e7d5a1236a999c8d2a05dcbb24623116dcdc9dc85839879c4"
+checksum: "sha256:adafbbe360d2e5add2db53de23bec50ece9bb86f299553c84fd582829b10dce3"
 ---
 
 ## Overview

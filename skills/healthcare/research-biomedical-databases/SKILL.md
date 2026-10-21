@@ -1,12 +1,12 @@
 ---
 name: research-biomedical-databases
 display_name: Research Biomedical Databases
-icon: "🧬"
+icon: assets/dna.svg
 description: "Query biomedical databases via the Biomni AgentCore Gateway MCP server for protein lookup, variant interpretation, pathway analysis, drug-target associations, and genomic annotations. Use when asked to 'find protein info', 'check variant pathogenicity', 'look up a gene in ClinVar', 'find drug targets for a disease', 'search clinical trials', 'get population frequency', 'find protein structure', 'query UniProt', 'look up pathways in Reactome', or any biomedical database research question."
 created_date: "2026-07-20"
 last_updated: "2026-07-20"
 license: "MIT-0"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 - name: query
   description: "The biomedical research question or entity to investigate (gene name, variant ID, protein, disease, drug target)"
@@ -18,7 +18,7 @@ inputs:
   options: [variant-interpretation, drug-target-analysis, gene-expression, protein-analysis, discovery]
   required: false
   default: discovery
-checksum: "sha256:b791e24323549b4f19871c15277ff9295252d44ede40dd17cde0270452b17759"
+checksum: "sha256:2f4660a8125a1992d7247e46f70ba7260fcb16d54be3dc3859b026bd828b3e01"
 ---
 
 ## Overview

@@ -1,7 +1,7 @@
 ---
 name: hr-policy-agent
 display_name: HR Policy Agent
-icon: "📖"
+icon: assets/book.svg
 description: "Answers employee questions about company policies by searching indexed HR handbooks, benefits guides, and policy documents. Provides accurate, sourced responses with page references and escalates ambiguous or sensitive questions to HR. Use when asked about 'PTO policy', 'benefits question', 'company policy on X', 'HR handbook', 'what's our policy for', or any employee policy inquiry."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -18,7 +18,7 @@ inputs:
   description: "Source for HR policy documents. Accepts: a local folder path containing indexed HR handbooks and policy documents, a Quick Space name (documents in the space will be searched semantically), or leave empty to use the default indexed documents."
   type: string
   required: false
-checksum: "sha256:492845c07bc6acce6c100bddbfb83414c56938ef91b2c826b9e1229abdac9c9f"
+checksum: "sha256:5bd0ef61030d2b3c9940522dd55411d1242aff5559d45f300b0a25da1d35ae3d"
 ---
 
 ## Overview

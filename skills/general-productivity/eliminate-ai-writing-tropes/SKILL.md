@@ -1,14 +1,14 @@
 ---
 name: eliminate-ai-writing-tropes
 display_name: Eliminate AI Writing Tropes
-icon: "✍️"
+icon: assets/pencil-line.svg
 description: "Mandatory writing ruleset that eliminates detectable AI-generated patterns from all prose output, enforcing concrete specificity, AI-tell vocabulary replacement, punctuation discipline, and a 13-point self-check on every draft. Use for any 'writing', 'editing', or 'drafting' task, or when asked to 'compose', 'write an email', 'draft a document', 'rewrite this', 'make this sound less like AI', or any request that produces prose for a human reader."
 created_date: "2026-06-11"
 last_updated: "2026-09-13"
 license: "MIT-0"
 tools: []
 
-checksum: "sha256:cd91e3e8701760ee79871a4eec4cd22864527c9e83696c5754531553107947fb"
+checksum: "sha256:7122d357609edb3a88ef024cc11d37497e6909d1983d2eed2d44e061214dd665"
 ---
 
 ## Overview

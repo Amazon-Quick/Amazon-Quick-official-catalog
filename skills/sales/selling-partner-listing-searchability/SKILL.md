@@ -1,13 +1,13 @@
 ---
 name: selling-partner-listing-searchability
 display_name: SP-API Listing Searchability Troubleshooter
-icon: "🔎"
+icon: assets/search.svg
 description: "Diagnoses why a Selling Partner API (SP-API) listing isn't found in search and helps make it more discoverable. Checks whether the listing is discoverable at all, then optimizes the content shoppers search on: title, description, bullet points, and generic keywords, with the seller's approval. Use when asked why a listing isn't showing up in search, can't be found, isn't discoverable, how to improve ranking or search visibility, optimize a listing for search, or search engine optimization (SEO). Do NOT use for a listing that isn't buyable (use selling-partner-listing-buyability) or fixing reported listing issues (use selling-partner-listing-issues)."
 created_date: "2026-09-15"
 last_updated: "2026-09-16"
 license: "Apache-2.0"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector; verify it is connected and stop if it is missing."
-checksum: "sha256:485e0a86c26945a03a04f423c3cc34f2bf447f79008a8ef0aedb2a3954cfa767"
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector; verify it is connected and stop if it is missing."
+checksum: "sha256:1f63605794e70260120afe590ab92358e92de3461c353069eaba2fa97857b133"
 ---
 
 ## Overview

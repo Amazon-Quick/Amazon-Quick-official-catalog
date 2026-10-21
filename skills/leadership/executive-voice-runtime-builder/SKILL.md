@@ -1,14 +1,14 @@
 ---
 name: executive-voice-runtime-builder
 display_name: Executive Voice Runtime Builder
-icon: "🗣️"
+icon: assets/mic.svg
 description: "Analyzes how a person writes and encodes it into a portable, machine-readable voice profile (engram) for drafting in their voice, with calibration gates and a governance log. Use when asked to 'build a voice profile', 'capture my writing voice', 'create a voice engram', 'clone my writing style', 'refresh my voice model', 'validate a draft against my voice', or 'does this sound like me'"
 created_date: "2026-07-17"
 last_updated: "2026-07-17"
 license: MIT-0
 tools: [get_current_time, file_read, file_write, folder_list, folder_create, kg_search, search_all, file_rag_search, open_in_session_tab]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
-checksum: "sha256:06e39dcda0b43841649eb6026ae0c81cedb10c7e08e3daf0b368a2623e97b36f"
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+checksum: "sha256:9d3fdb26da942c1e6d2e39f5004dcded4dc1b30251557e61b2a6b617c0ad4e42"
 ---
 
 ## Overview

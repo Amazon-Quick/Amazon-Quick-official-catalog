@@ -1,7 +1,7 @@
 ---
 name: fsi-architecture-assessment
 display_name: Financial Services Industry Architecture Assessment
-icon: "🏛️"
+icon: assets/building.svg
 description: "Assess a financial services architecture diagram against the AWS Well-Architected Financial Services Industry (FSI) Lens, rate maturity across the six pillars, and produce prioritized recommendations. Use when asked to 'assess my architecture against the FSI Lens', 'run a Well-Architected FSI review', 'check this diagram for FSI compliance gaps', 'review my financial services architecture', or any request to evaluate an FSI workload diagram against Well-Architected best practices."
 created_date: "2026-07-13"
 last_updated: "2026-07-13"
@@ -25,7 +25,7 @@ inputs:
     description: "Directory where the assessment report file should be written."
     type: path
     required: false
-checksum: "sha256:63ccd7d78000a46bd8bf53f48a949595cbab32c3152d4721101c4bea630f7008"
+checksum: "sha256:e3af4ac33dbd4d8c692f7a3bce8c1bf51370734dc0a533fd7af2694c498bbd8f"
 ---
 
 ## Overview

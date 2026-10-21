@@ -1,13 +1,13 @@
 ---
 name: ev-fleet-planning
 display_name: Electric Vehicle Fleet Planning
-icon: "🔌"
+icon: assets/car.svg
 description: "Produce electrically feasible, financially justified electric vehicle (EV) fleet electrification plans grounded in duty-cycle, site electrical, and tariff data. Use when asked to 'plan fleet electrification', 'size EV chargers', 'model fleet charging load', 'assess site electrical capacity for EV charging', 'compare EV vs internal combustion total cost of ownership', 'optimize managed charging', 'assess grid impact of fleet charging', or build a phased fleet transition plan."
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, run_python, file_write, open_in_session_tab]
-checksum: "sha256:2013e7ed0a290b09dad7d8ec61bfbdbb34dec18a80a8db48b7be70c2bf4c86cd"
+checksum: "sha256:43106547b12ddd0d477806aa7fd80f5a0a090bdb455b0ee6d49bb294079b2241"
 ---
 
 ## Overview

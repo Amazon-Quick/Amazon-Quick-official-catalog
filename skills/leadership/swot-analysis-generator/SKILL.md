@@ -1,7 +1,7 @@
 ---
 name: swot-analysis-generator
 display_name: SWOT Analysis Generator
-icon: "🎯"
+icon: assets/layout-grid.svg
 description: "Generates structured SWOT (Strengths, Weaknesses, Opportunities, Threats) analyses with strategic combination strategies (SO, WO, ST, WT) and prioritized action recommendations. Supports company-level, product-level, and competitive SWOT variants. Use when asked to 'do a SWOT analysis', 'SWOT for this project', 'strategic assessment', 'strengths and weaknesses of', or 'competitive positioning analysis'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -28,7 +28,7 @@ inputs:
   type: boolean
   required: false
   default: true
-checksum: "sha256:2dab83b55ee01aabf0b1be40d573fc5140bc1bff5f8c0aecfe02f5149bbe18bb"
+checksum: "sha256:9f4666be3ceb184195f029ca5efd01a8f818b9d225eab730999e56c48cdb7ced"
 ---
 
 ## Overview

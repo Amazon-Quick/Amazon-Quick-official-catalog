@@ -280,7 +280,7 @@ class TigerFixtureAnalyzer:
         history: list[dict[str, Any]] = []
         for index in range(days):
             date = end_date - timedelta(days=days - index - 1)
-            rng = random.Random(  # nosec B311 - seeded synthetic jitter, not security randomness
+            rng = random.Random(  # nosec B311  # seeded synthetic jitter, not security randomness
                 f"history:{well_id}:{date.isoformat()}"
             )
             recency = index / max(days - 1, 1)
@@ -682,7 +682,7 @@ class TigerFixtureAnalyzer:
         anomaly_progress: float | None,
     ) -> dict[str, Any]:
         baseline = well["measurements"]
-        rng = random.Random(  # nosec B311 - seeded synthetic jitter, not security randomness
+        rng = random.Random(  # nosec B311  # seeded synthetic jitter, not security randomness
             f"{well['well_id']}:{timestamp.isoformat()}"
         )
         result: dict[str, Any] = {}

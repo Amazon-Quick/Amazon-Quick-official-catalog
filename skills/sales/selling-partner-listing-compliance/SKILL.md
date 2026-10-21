@@ -1,13 +1,13 @@
 ---
 name: selling-partner-listing-compliance
 display_name: SP-API Listing Compliance Guardrails
-icon: "🛡️"
+icon: assets/shield.svg
 description: "Pre-flight compliance gate for any Selling Partner API (SP-API) listing write. Before a listing is created, relisted, or its attributes changed, identifies which Amazon listing requirements and regulatory rules (FDA, EPA, CPSC, FCC, FTC, required disclosures, GTIN, category gating) likely apply to the product, asks the seller once for the facts only they know, verifies the current rules through Seller Assistant, checks account-side gating, and holds the write until the seller gives an explicit go. Use when asked 'can I list this', 'what do I need to sell X', 'is this compliant', or whenever a sibling listing skill is about to write and the change touches product claims, ingredients, category, condition, images, or identifiers. Do NOT use for fixing reported issues (use selling-partner-listing-issues), buyability (use selling-partner-listing-buyability), search optimization (use selling-partner-listing-searchability), or general program policy Q&A unrelated to listings."
 created_date: "2026-09-16"
 last_updated: "2026-09-16"
 license: "Apache-2.0"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector and the Seller Assistant tools it must expose; verify they are available and stop if missing."
-checksum: "sha256:2c67c731077016a4b80d371b8aab62dbc3d6d6732b3beed32af3090e1e86252b"
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector and the Seller Assistant tools it must expose; verify they are available and stop if missing."
+checksum: "sha256:0aa3f843e3df391697e5daa005e6fc8b2e1612d75768ba3dd5fbbfc9c420a5a9"
 ---
 
 ## Overview

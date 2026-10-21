@@ -1,7 +1,7 @@
 ---
 name: file-organizer
 display_name: File Organizer
-icon: "📁"
+icon: assets/folder.svg
 description: "Scan a folder, analyze file contents and naming patterns, then propose renaming, categorization, and folder structure improvements. All changes require explicit user confirmation before execution. Use when asked to 'organize this folder', 'clean up my files', 'sort these documents', 'rename my files', 'folder structure suggestions', 'tidy up this directory', or any request to restructure a messy directory."
 created_date: "2026-06-05"
 last_updated: "2026-09-13"
@@ -25,7 +25,7 @@ inputs:
     options: [kebab-case, snake_case, PascalCase, camelCase, date-prefix, original, other]
     required: false
     default: "kebab-case"
-checksum: "sha256:28d41944e2d24a41b9951bc4bbb573637e61d4321dc3f2208987987488069184"
+checksum: "sha256:2396bf4914178ba1d8e10d41f2a73e23dd664392c24921a57ebf45fb1fa73602"
 ---
 
 ## Overview

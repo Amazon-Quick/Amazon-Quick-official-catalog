@@ -1,7 +1,7 @@
 ---
 name: dependency-critical-path-analyzer
 display_name: "Dependency & Critical Path Analyzer"
-icon: "🔗"
+icon: assets/git-branch.svg
 description: "Analyzes task and project dependency graphs to identify the critical path, surface blockers, calculate slack/float for non-critical tasks, and produce schedule risk assessments with prioritized recommendations. Accepts task lists with dependencies in various formats (CSV, markdown tables, JSON). Use when asked to 'find the critical path', 'what's blocking this project', 'dependency analysis', 'schedule risk', 'which tasks have slack', or 'project timeline analysis'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -21,7 +21,7 @@ inputs:
   description: "Project deadline (e.g., '2026-08-15'). Used for schedule risk calculations."
   type: string
   required: false
-checksum: "sha256:0376d734e185ed90f2799231b862c467489633d6beb3b482a7a7746e00bb6106"
+checksum: "sha256:b67d6b135e36d350cee3830b62de5dd22216dd993aa9c204c3f9e17de207b86e"
 ---
 
 ## Overview

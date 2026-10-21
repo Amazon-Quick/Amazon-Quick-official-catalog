@@ -1,9 +1,9 @@
 ---
 name: battery-storage-analyst
 display_name: Battery Storage Analyst
-icon: "🔋"
+icon: assets/battery-charging.svg
 description: "Size battery energy storage systems, model lithium-ion degradation, co-optimize revenue streams, and build degradation-adjusted financial pro-formas. Use when asked to 'size a battery', 'model BESS degradation', 'optimize battery dispatch', 'run a storage pro-forma', 'evaluate peak shaving', 'analyze energy arbitrage', 'model solar plus storage', or any battery energy storage sizing, dispatch, or investment analysis."
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
@@ -28,7 +28,7 @@ inputs:
     description: "Directory where deliverables (pro-forma, charts, summary) are written."
     type: path
     required: false
-checksum: "sha256:268e8fe458ce36dbe15b2e08652b62e5d8b0d955a13b7d92e9e71da60ba7acd8"
+checksum: "sha256:6ce800dc22cf0e20496dfdd28bc21ff54dfba15115730aef11f97219d5a711b1"
 ---
 
 ## Overview

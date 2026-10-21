@@ -80,7 +80,7 @@ class SyntheticWellBuilder:
 
     def _record(self, tick: int) -> StreamRecord:
         stamp = BASE_TIME + timedelta(minutes=MINUTES_PER_TICK * tick)
-        gamma = random.Random(GAMMA_SEED + tick).uniform(  # nosec B311 - seeded synthetic jitter, not security randomness
+        gamma = random.Random(GAMMA_SEED + tick).uniform(  # nosec B311  # seeded synthetic jitter, not security randomness
             GAMMA_MIN_API, GAMMA_MAX_API
         )
         return StreamRecord(

@@ -19,7 +19,7 @@ from typing import Any
 WELLBORE_ID_PATTERN = re.compile(r"^[A-Za-z0-9._-]+$")
 DEFAULT_DATA_ROOT = "exit-zone-geosteering-data"
 DEFAULT_WELLBORE_ID = "SYN1"
-DATA_TOKEN = "__GEOSTEERING_DATA__"  # nosec B105 - HTML placeholder, not a credential
+DATA_TOKEN = "__GEOSTEERING_DATA__"  # nosec B105  # HTML placeholder, not a credential
 
 
 class _PrintStream:

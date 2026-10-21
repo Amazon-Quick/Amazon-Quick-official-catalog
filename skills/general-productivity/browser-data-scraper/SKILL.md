@@ -1,7 +1,7 @@
 ---
 name: browser-data-scraper
 display_name: Browser Data Scraper
-icon: "🕸️"
+icon: assets/globe.svg
 description: "Scrapes structured data from static web pages into JSONL and exports to CSV, XLSX, or JSONL. Use when asked to 'scrape a website', 'extract data from these URLs', 'collect listings into a spreadsheet', 'paginate through search results', 'crawl a sitemap', or 'pull records from a page'. Handles URL-parameter pagination, next-link following, and URL lists; not JavaScript-rendered pages"
 created_date: "2026-07-13"
 last_updated: "2026-07-13"
@@ -37,7 +37,7 @@ inputs:
     description: "Directory for all output files. If omitted, a timestamped folder is created under the workspace directory."
     type: path
     required: false
-checksum: "sha256:ed8dea49b9811f8e3dafa5174ffdc5ddce23cc240cd6753c1e145b37df525c4f"
+checksum: "sha256:a7405e18ca56c7b35f0530af8e3d014d7291c9d1a96600a99568f3f10eeaa09d"
 ---
 
 ## Overview

@@ -1,13 +1,13 @@
 ---
 name: invoice-chaser
 display_name: Invoice Chaser
-icon: "💸"
+icon: assets/receipt.svg
 description: "Pulls overdue invoices from QuickBooks, segments them into Friendly / Firm / Final Notice tiers by days overdue, drafts tone-appropriate follow-up emails and SMS, and sends only after owner approval. Supports scheduled automation and customer segmentation. Use for overdue invoice follow-up, AR aging review, or collections - when asked 'who hasn't paid me?', 'what's overdue?', 'chase unpaid invoices', 'send payment reminders', 'run collections follow-up', or 'set up automatic reminders'."
 created_date: "2026-06-04"
 last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [recall_memories, save_to_memory, file_read, file_write]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 
   - name: flagged_count
@@ -152,7 +152,7 @@ inputs:
     type: number
     required: false
     default: 3
-checksum: "sha256:c6754d81fa65792a5ade945585306235bac022a73c5357f4fa27d4b6e3bedca6"
+checksum: "sha256:98a23faee088753f43f2977afc76555cb46e6fec457fac3ee80026a6db168c93"
 ---
 
 ## Overview

@@ -1,7 +1,7 @@
 ---
 name: customer-health-scorer
 display_name: Customer Health Scorer
-icon: "💚"
+icon: assets/heart-pulse.svg
 description: "Computes multi-dimensional customer health scores across usage, engagement, support, and relationship dimensions. Classifies accounts as Healthy/At-Risk/Critical with segment-aware benchmarking and produces actionable intervention recommendations. Use when asked to 'score customer health', 'account health check', 'which customers are at risk', 'customer health report', 'renewal risk assessment', or 'portfolio health overview'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -26,7 +26,7 @@ inputs:
   options: [usage, engagement, support, relationship, commercial]
   required: false
   default: [usage, engagement, support, relationship, commercial]
-checksum: "sha256:ba7d689cd2c008ff28568f9ac75a5f3819bd28f85a2420e3af44b0d999fdaba0"
+checksum: "sha256:0dfe3d08b4c1403d6f4cb87aa3af94872393a5dfc15aa8f57b9d88476752a3bb"
 ---
 
 ## Overview

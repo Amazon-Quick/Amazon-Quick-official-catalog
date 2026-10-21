@@ -1,13 +1,13 @@
 ---
 name: selling-partner-stockout-prevention
 display_name: SP-API Stockout Prevention
-icon: "📦"
+icon: assets/package-check.svg
 description: "Monitors Selling Partner API (SP-API) Fulfillment by Amazon (FBA) inventory health, finds stockout risk from sales velocity, and orchestrates prevention actions: days-of-cover per SKU, inbound-shipment gap analysis, and restocking. It can also draft a seller-requested, previewed-and-approved temporary price change to slow demand if the seller asks. Reads inventory and sales read-only and previews every price change before it goes live. Use when asked to check inventory health, stockout risk, FBA stock levels, days of cover, days of supply, replenishment timing, or 'am I going to run out'. Do NOT use for creating or fixing listings (use the selling-partner-listing skills), inbound shipment creation and placement (use selling-partner-fba-inbound-management), advertising, or order fulfillment."
 created_date: "2026-09-15"
 last_updated: "2026-09-15"
 license: "Apache-2.0"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
-checksum: "sha256:180636c360325797f829c90082ebd71bf9dc53db18953242b754817b70f63da8"
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
+checksum: "sha256:a4dc3643ce2bc164fb6d396b379e7d93bad87a945daea08d888d01c193fc1cbf"
 ---
 
 ## Overview

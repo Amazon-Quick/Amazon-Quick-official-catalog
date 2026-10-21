@@ -1,7 +1,7 @@
 ---
 name: contract-clause-extractor
 display_name: Contract Clause Extractor
-icon: "📄"
+icon: assets/file-pen.svg
 description: "Extracts, classifies, and risk-scores key clauses from contracts and legal agreements. Identifies standard vs non-standard terms, flags high-risk provisions (unlimited liability, broad indemnification, auto-renewal), and produces structured clause inventories with plain-language summaries. Use when asked to 'review this contract', 'extract key clauses', 'flag risky terms', 'contract risk assessment', 'what are the key provisions', or 'summarize this agreement'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -25,7 +25,7 @@ inputs:
   options: [liability, termination, ip, payment, confidentiality, indemnification, all]
   required: false
   default: "all"
-checksum: "sha256:21bb1bc8ebdf774f678e311391e8f3c3f2caffce2f47f6280e646ec6cad3607a"
+checksum: "sha256:9dd5717857d6abbbfeb833cf228b7dffd19055f206d2f9d3945a0f8ab9ee1ed3"
 ---
 
 ## Overview

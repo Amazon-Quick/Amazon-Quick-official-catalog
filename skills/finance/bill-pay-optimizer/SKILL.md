@@ -1,13 +1,13 @@
 ---
 name: bill-pay-optimizer
 display_name: Bill Pay Optimizer
-icon: "💳"
+icon: assets/credit-card.svg
 description: "Shows all upcoming bills from QuickBooks, optimizes payment timing against cash position, flags early-pay discounts, and prepares a prioritized, ready-to-pay plan for the owner to action. Read-only: it never moves money or changes anything in QuickBooks. Use when asked 'what bills do I need to pay', 'what's due this week', 'which bills can wait', 'can I afford my bills', 'optimize my payments', 'what's my cash position after bills', 'bill pay', 'vendor payments', or any request to plan accounts payable."
 created_date: "2026-06-04"
 last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [gmail, google-calendar, outlook, quickbooks, slack]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: cash_buffer
     description: "Minimum bank balance the owner never wants to drop below when scheduling payments (e.g., '5000')"
@@ -25,7 +25,7 @@ inputs:
     type: string
     required: false
     default: "08:00"
-checksum: "sha256:dc36306864ca7dd84b7e56359470dee6c5b036f081dd0ac7ed45dd1101cefbda"
+checksum: "sha256:b7ec4dfe580c3ecb72af4e89d4b243ff0325ec7df5cd004d50712bfa42fd9cd6"
 ---
 
 ## Overview

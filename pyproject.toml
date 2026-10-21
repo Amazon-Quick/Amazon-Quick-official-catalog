@@ -23,6 +23,7 @@ category-check = "scripts.category_check:main"
 docs-build = "scripts.build:docs"
 docs-serve = "scripts.build:docs_serve"
 help = "scripts.help:help"
+icon-sync = "scripts.icon_sync:main"
 
 [dependency-groups]
 dev = [

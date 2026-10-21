@@ -1,9 +1,9 @@
 ---
 name: retail-merchant-briefing
 display_name: Merchant Monday Briefing
-icon: "📊"
+icon: assets/clipboard-list.svg
 description: "Automated weekly performance intelligence that replaces dashboard reviews with synthesized insights and recommended actions for retail merchandising leaders. Use when asked to 'give me my Monday briefing', 'weekly performance summary', 'what needs attention this week', 'category performance review', 'merchandising dashboard', or 'what happened last week in [category]'."
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-10"
 last_updated: "2026-09-13"
 license: "MIT-0"
@@ -40,7 +40,7 @@ inputs:
     type: number
     required: false
     default: 5
-checksum: "sha256:3d5353d546bfe8200cc5598154272ec42ee9ceb62644a5ac13d645ad800a9797"
+checksum: "sha256:4a66bc9e4b6492ed6472e4c74f9acd3bfd2031bf2f1db6092eefe2f6fcc705bf"
 ---
 
 ## Overview

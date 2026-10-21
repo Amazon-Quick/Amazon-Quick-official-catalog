@@ -1,7 +1,7 @@
 ---
 name: content-recycler
 display_name: Content Recycler
-icon: "♻️"
+icon: assets/recycle.svg
 description: "Repurposes a single piece of long-form content (blog post, whitepaper, talk transcript) into multiple platform-specific formats in one pass: LinkedIn posts, X/Twitter threads, newsletter blurbs, email summaries, slide talking points, and short-form video scripts. Adapts tone, length, and structure per platform. Use when asked to 'repurpose this content', 'turn this blog into social posts', 'create a content package', 'adapt this for LinkedIn', 'multi-platform from this article', or 'content atomization'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -29,7 +29,7 @@ inputs:
   description: "Free-text guidance on brand voice, terminology preferences, or style constraints to apply across all variants."
   type: string
   required: false
-checksum: "sha256:969727e372ac9abfe1b0e2242dba5a580d185a26a3164b3a6c45bb6c6ae808bb"
+checksum: "sha256:a127c1bce42cdc5cfc24108e23215cbe35a2ee40cce558231d503c25d5c640de"
 ---
 
 ## Overview

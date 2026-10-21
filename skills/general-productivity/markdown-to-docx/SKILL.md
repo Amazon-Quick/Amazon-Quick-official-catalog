@@ -1,7 +1,7 @@
 ---
 name: markdown-to-docx
 display_name: Markdown to DOCX
-icon: "📄"
+icon: assets/file-text.svg
 description: "Convert markdown documents to professionally formatted Word (.docx) files. Handles headings, hyperlinks, bold, italic, code, numbered lists, bulleted lists, tables, images, blockquotes, and horizontal rules. Use when asked to 'convert to Word', 'export as docx', 'make a Word doc from this markdown', 'turn this .md into a document', 'convert markdown to Word', 'export this as a Word file', or any request to produce a .docx from markdown source."
 created_date: "2026-08-26"
 last_updated: "2026-08-29"
@@ -22,7 +22,7 @@ inputs:
     description: Optional document title (overrides the first H1 heading)
     type: string
     required: false
-checksum: "sha256:57a2c5b3ea145a066e5c4b346b9d90e38d5ac42b91402c79e0b8a04e4875f9f2"
+checksum: "sha256:6252d7fd03c3fba54130de47dc6d04d05cdae2d5f22429487949a4fa25e14b45"
 ---
 
 ## Overview

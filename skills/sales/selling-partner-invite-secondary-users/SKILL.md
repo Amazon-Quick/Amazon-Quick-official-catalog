@@ -1,13 +1,13 @@
 ---
 name: selling-partner-invite-secondary-users
 display_name: Selling Partner Invite Secondary Users
-icon: "👥"
+icon: assets/user-plus.svg
 description: "Helps the primary user (account owner or administrator) of a Selling Partner API (SP-API) Seller Central account invite their secondary users onto the Selling Partner plugin. Confirms the person is the primary/administrator, asks whom they want to invite, and walks them through granting each user AI-agent access on the Manage Agents page in Seller Central; when running in Amazon Quick, it adds a second step to invite that user as a collaborator on the Quick account. Advisory and read-only: it guides the human through UI grants and performs no write action. Use when asked to invite users, add a secondary user, manage agents, grant agent access, let my team use the plugin, onboard my team, or give access to another user. Do NOT use for setting up your own account or marketplace, taking selling actions, or user permissions unrelated to AI agents."
 created_date: "2026-09-15"
 last_updated: "2026-09-15"
 license: "Apache-2.0"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
-checksum: "sha256:b57726db73ab6af5b8a72fe2b65ab21211db89d7e68b45b50cd79f1890eb387b"
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
+checksum: "sha256:a43f30fed593b5f665d43986737d89320c30a4478de739b37f922584f3443c7e"
 ---
 
 ## Overview

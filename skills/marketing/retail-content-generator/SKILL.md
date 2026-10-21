@@ -1,7 +1,7 @@
 ---
 name: retail-content-generator
 display_name: Product Content Generator
-icon: "✍️"
+icon: assets/type.svg
 description: "Generates SEO, GEO, and AEO-optimized product titles, descriptions, and attributes from product data at scale while maintaining brand voice consistency. Optimizes for traditional search engines, generative AI engines (AI-powered search engines), and answer engines (voice assistants, featured snippets). Use when asked to 'generate product descriptions', 'write product content', 'create listings for new SKUs', 'product copywriting', 'bulk content generation', 'optimize for AI search', or 'write in our brand voice'."
 created_date: "2026-06-10"
 last_updated: "2026-09-13"
@@ -47,7 +47,7 @@ inputs:
     type: number
     required: false
     default: 10
-checksum: "sha256:d38c5817be83964f1a088623bce2d4f16797b766a27db3a95de371a898942089"
+checksum: "sha256:05859403ebe999e580827462e8986a0f9bdb6839ada92b40c43d27691afabc04"
 ---
 
 ## Overview

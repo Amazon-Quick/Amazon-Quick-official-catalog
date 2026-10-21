@@ -1,9 +1,9 @@
 ---
 name: business-case-builder
 display_name: Business Case Builder
-icon: "📋"
+icon: assets/briefcase.svg
 description: "Build a decision-ready business case document for any initiative. Combines stakeholder inputs with market research to produce executive-ready deliverables including problem statement, solution options, cost/benefit analysis, risk assessment, and recommendation. Use when asked to 'build a business case', 'justify this project', 'ROI analysis for', 'make the case for', or 'get approval for'."
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-04"
 last_updated: "2026-09-13"
 license: "MIT-0"
@@ -37,7 +37,7 @@ inputs:
     options: [docx, html, md, both]
     required: false
     default: "both"
-checksum: "sha256:098a6e210d913a9804d1eac96ae1b2230a741f41e2c1ad81755dabdb3e350fb2"
+checksum: "sha256:653aad525f7d21b2e1a10416fac1ed775112f259a6d51471e710ed61e7ba0369"
 ---
 
 ## Overview

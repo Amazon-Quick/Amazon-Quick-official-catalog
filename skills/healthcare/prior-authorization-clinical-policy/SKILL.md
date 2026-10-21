@@ -1,13 +1,13 @@
 ---
 name: prior-authorization-clinical-policy
 display_name: Prior Authorization Clinical Policy Reasoning
-icon: "🩺"
+icon: assets/shield-check.svg
 description: "Evaluate prior authorization (PA) clinical policies, coverage determinations, step therapy protocols, and appeal strategy. Use when asked to 'evaluate a prior authorization request', 'assess medical necessity', 'check step therapy requirements', 'determine Medicare LCD or NCD coverage', 'plan a PA appeal', 'prepare for a peer-to-peer review', or any request involving payer authorization criteria, denial reason codes, formulary exceptions, or Da Vinci PAS submissions"
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [file_read, web_search, url_fetch, get_current_time]
-checksum: "sha256:29961be3ca776e59c881c30ee953aa5127f93fab53efcbdb04d39ef440e83b9e"
+checksum: "sha256:cbb73459d6e6444d2c65f0ff7a34e2c6ad7bf4261c700a18dcef4c38c0572158"
 ---
 
 ## Overview

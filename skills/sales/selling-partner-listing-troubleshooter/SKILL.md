@@ -1,13 +1,13 @@
 ---
 name: selling-partner-listing-troubleshooter
 display_name: SP-API Listing Troubleshooter
-icon: "🧭"
+icon: assets/circle-question-mark.svg
 description: "Top-level entry point for any 'something's wrong with my listing' question in the Selling Partner API (SP-API). Does a quick read of the listing's status and issues, identifies the symptom, and routes the seller to the right specialist skill. Use when the complaint is non-specific: 'something's wrong with my listing', 'troubleshoot my listing', 'my product has a problem', 'listing not working', or 'where do I start'. Routes to selling-partner-listing-issues, selling-partner-listing-buyability, selling-partner-listing-searchability, or selling-partner-listing-compliance. Do NOT use when the seller already names the symptom; go straight to that specialist skill."
 created_date: "2026-09-15"
 last_updated: "2026-09-16"
 license: "Apache-2.0"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector; verify it is connected and stop if it is missing."
-checksum: "sha256:e9dd27d242976e03563f7c5de16143e2525ecec66d56a8a68b91a83ad5a62710"
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector; verify it is connected and stop if it is missing."
+checksum: "sha256:e7291f4c9f4fdf2e002c17b723aa7312a53f80cc740b52cd92e2b303682f52b2"
 ---
 
 ## Overview

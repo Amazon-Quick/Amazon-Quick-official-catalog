@@ -1,7 +1,7 @@
 ---
 name: data-classification-assistant
 display_name: Data Classification Assistant
-icon: "🏷️"
+icon: assets/tags.svg
 description: "Classifies data assets by sensitivity level (Public, Internal, Confidential, Restricted) and generates handling guidelines, retention policies, and access control recommendations. Validates classification against organizational policy and flags misclassifications. Use when asked to 'classify this data', 'what sensitivity level', 'data handling requirements', 'classification review', or 'label this dataset'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -22,7 +22,7 @@ inputs:
   description: "The existing classification label on the data asset, if any. Used for reclassification reviews."
   type: string
   required: false
-checksum: "sha256:65dc43cee8d4a0f8ff8611a608d52b990c3159a56175aa4f366fd547dcaa8b10"
+checksum: "sha256:d982ab04f903800d40020b4e794142d6b4f460ca6b0d4152c1cbf3bf1aa4fd4f"
 ---
 
 ## Overview

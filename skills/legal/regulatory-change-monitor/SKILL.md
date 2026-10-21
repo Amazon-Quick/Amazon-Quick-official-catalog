@@ -1,7 +1,7 @@
 ---
 name: regulatory-change-monitor
 display_name: Regulatory Change Monitor
-icon: "📡"
+icon: assets/bell.svg
 description: "Monitors regulatory feeds (SEC, GDPR enforcement, EU AI Act, NIST, FDA, FTC) for changes relevant to the user's industry and compliance scope. Deduplicates findings, classifies by impact level and urgency, and produces plain-language alerts with compliance action recommendations. Use when asked to 'check for regulatory changes', 'what's new in GDPR', 'regulatory update', 'compliance news', 'any new SEC rules', or 'monitor regulations for us'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -28,7 +28,7 @@ inputs:
   type: string
   required: false
   default: "7 days"
-checksum: "sha256:528de7b17989b4bfc61299abdcb74b35dae4244fdf71532c040f519c6a31d77b"
+checksum: "sha256:471a241a164aec933f5eee673ed1ea8613d8c2d6dd0ec63c1fbae535291df103"
 ---
 
 ## Overview

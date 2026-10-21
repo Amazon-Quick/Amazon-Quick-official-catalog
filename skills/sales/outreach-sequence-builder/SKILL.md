@@ -2,13 +2,13 @@
 
 name: outreach-sequence-builder
 display_name: Outreach Sequence Builder
-icon: "📧"
+icon: assets/mail-open.svg
 description: "Creates multi-touch sales outreach sequences (email, LinkedIn, phone scripts) personalized to each prospect. Generates complete cadences with timing, subject lines, body copy, and follow-up logic. Use when user says 'write outreach emails', 'create a sales sequence', 'help me follow up with prospects', 'draft cold emails', 'build a cadence', 'write LinkedIn messages', 'create touchpoints', or 'cold outreach for [product/audience]'."
 created_date: "2026-05-15"
 last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [web_search, url_fetch, run_python, file_write, open_in_session_tab]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 
 - name: prospect_info
@@ -24,7 +24,7 @@ inputs:
   type: number
   required: false
   default: 7
-checksum: "sha256:225db52e31aff187eceb00982c5916d58aed80a2cf2b33602b7cee7b65657332"
+checksum: "sha256:32c32b57c676cb52fa9a4e40e9773b640a44b2e0c29a8130a6df612abeda5a4e"
 ---
 
 ## Overview

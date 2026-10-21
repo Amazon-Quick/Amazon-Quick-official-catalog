@@ -1,10 +1,10 @@
 ---
 name: microgrid-design
 display_name: Microgrid Design
-icon: "🔌"
+icon: assets/plug-zap.svg
 license: MIT-0
 description: "Optimize sizing, dispatch, resilience, and financials for grid-connected or islanded microgrids. Use when asked to 'design a microgrid', 'size solar plus storage', 'optimize a hybrid energy system', 'run a microgrid feasibility study', 'model dispatch for a distributed energy resource', 'calculate levelized cost of energy for a microgrid', 'analyze backup resilience and hours of autonomy', or any distributed-energy techno-economic sizing request"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 tools: [get_current_time, web_search, url_fetch, file_read, run_python, run_python_with_write, open_in_session_tab]
@@ -25,7 +25,7 @@ inputs:
     description: "Directory where deliverables (report, charts, equipment schedule) are written."
     type: path
     required: false
-checksum: "sha256:bc0038ebbd26f79b35655638500241a2f8faeda553f00d7d56f4076a06768d67"
+checksum: "sha256:5a035f6b6c0c684f92760aa732d1a2dea62ceda9416e46e5ab5d016c8849eae4"
 ---
 
 ## Overview

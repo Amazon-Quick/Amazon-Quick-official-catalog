@@ -2,12 +2,13 @@
 name: agent-to-quick-skill
 display_name: Agent To Quick Skill
 description: "Convert a declarative chat agent from another assistant platform into an Amazon Quick desktop skill. Interviews one question at a time, maps each field to its Quick equivalent, remaps knowledge sources and capabilities, and writes a spec-correct SKILL.md folder. Use when: 'convert my agent', 'port my chat agent', 'rebuild my agent in Quick', 'migrate an assistant agent', 'turn my agent config into a skill', or 'convert an agent definition file'. On-demand only, not scheduled."
-icon: "🔁"
-trigger: convert my agent
+icon: assets/repeat-2.svg
+trigger: convert
+readme: "Read assets/README.md for an overview and getting started. This skill uses only built-in tools and needs no external connectors."
 created_date: "2026-06-04"
 last_updated: "2026-09-08"
 tools: [file_read, file_write, file_edit, folder_create, folder_list, run_python, open_in_session_tab, get_current_time]
-checksum: "sha256:2813afa95d8fb276a9417faf6892b2fb90b95878bea60cb045ff3f4c9658c0ef"
+checksum: "sha256:0e623e9bb9ebbb5cc31ad2a91408c68ece1f19f8aae1a8fedaf8e7f2af931c34"
 ---
 
 # Agent To Quick Skill

@@ -1,14 +1,14 @@
 ---
 name: carbon-footprint-calculator
 display_name: Carbon Footprint Calculator
-icon: "🌍"
+icon: assets/leaf.svg
 license: MIT-0
 description: "Calculate an organization's greenhouse gas emissions across Scopes 1, 2, and 3 following the GHG Protocol Corporate Standard, then produce an interactive dashboard and an audit-ready workbook. Use when asked to 'calculate our carbon footprint', 'build a GHG inventory', 'measure Scope 1 2 3 emissions', 'create an emissions report', 'run corporate carbon accounting', or model 'emissions reduction scenarios', or any organizational greenhouse gas accounting request"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
 last_updated: "2026-07-16"
 tools: [get_current_time, web_search, url_fetch, file_read, file_write, run_python, open_in_session_tab]
-checksum: "sha256:d8942e858ebe9b67aad4fa775cf3b1729784c8f6177278db4638084936c5ed1c"
+checksum: "sha256:d563c5d05f7f14c78752d530be69835bdaaee4a0ede0466ac6516adaf04c4fe2"
 ---
 
 ## Overview

@@ -1,7 +1,7 @@
 ---
 name: teach-me
 display_name: Teach Me
-icon: "🧠"
+icon: assets/graduation-cap.svg
 description: "Generate interactive click-through quizzes from documents, web pages, or web research. Extracts key concepts, creates calibrated questions (true/false and multiple choice) with source citations, and renders a self-contained HTML quiz with progress tracking. Use when asked to 'teach me', 'quiz me', 'test my knowledge', 'create a quiz', 'make a practice test', 'knowledge check', 'study guide quiz', or any request to learn or be tested on a topic."
 created_date: "2026-06-08"
 last_updated: "2026-09-13"
@@ -43,7 +43,7 @@ inputs:
   type: choice
   options: [soft-pastel, ocean-breeze, warm-earth, minimal-clean, amazon-quick]
   required: false
-checksum: "sha256:157911fa0ab618ed77c41078b5c9f96d1099536c94260bc559021e1908dd878e"
+checksum: "sha256:2a81c47f623fa89fdaff99f5bd30afceb8de89a4b6b346f87cb438a74fcd1acb"
 ---
 
 ## Overview

@@ -1,7 +1,7 @@
 ---
 name: fsi-product-management
 display_name: FSI Product Management
-icon: "🏦"
+icon: assets/landmark.svg
 description: "Product management companion tuned for financial services (banking, payments, insurance, capital markets). Activate for FS product work: writing a vision/PRFAQ, creating requirements/BRD/PRD, prioritizing backlogs, mapping roadmap to strategy, scaffolding a prototype spec, or planning sprints. Trigger on: 'FSI PM skill', 'write a PRD for a payments product', 'prioritize my banking backlog', 'write a vision doc', 'map roadmap to strategy', 'plan my sprint'."
 created_date: "2026-06-25"
 last_updated: "2026-08-07"
@@ -16,7 +16,7 @@ inputs:
     description: "Brief description of the financial-services product, initiative, or problem the PM is working on (e.g., payments, lending, deposits, wealth, insurance, capital markets). Used to tailor guidance and outputs."
     type: string
     required: false
-checksum: "sha256:3da0fd0f8ec4ac0fda962d4d5c916415f706a5f879bcf6f4d9797e5593f36aca"
+checksum: "sha256:5f52a49c09d63420b8d8be63f174f3ffc3eaaa2bb791c5f0f6583ab840e7d6d8"
 ---
 
 ## Overview

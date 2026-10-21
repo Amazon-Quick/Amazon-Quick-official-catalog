@@ -1,13 +1,13 @@
 ---
 name: selling-partner-listing-issues
 display_name: SP-API Listing Issue Fixer
-icon: "🛠️"
+icon: assets/wrench.svg
 description: "Fixes Selling Partner API (SP-API) listing problems that surface as reported issues on a listing: missing or invalid attributes, and suppressions tied to an issue. Reads the listing's issues (severity and enforcement), prioritizes by impact, and previews every fix before it goes live. Use when asked to fix listing issues, listing errors, attribute errors, a listing suppressed because of an issue, or 'what's wrong with this listing'. Do NOT use for why a listing isn't buyable when there is no issue (use selling-partner-listing-buyability), search visibility or optimization (use selling-partner-listing-searchability), creating new listings, inventory or stockout, advertising, or orders."
 created_date: "2026-09-15"
 last_updated: "2026-09-16"
 license: "Apache-2.0"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required Selling Partner API connector; verify it is available and stop if it is missing."
-checksum: "sha256:93f11d1a8032986a74ce1e77fa79377566100650f6cbae2348a8c679cd3eacd0"
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Selling Partner API connector; verify it is available and stop if it is missing."
+checksum: "sha256:469c02ac246a5d290a02bebd82970820f93d46d08096b8d4f6ae72fcc62947d9"
 ---
 
 ## Overview

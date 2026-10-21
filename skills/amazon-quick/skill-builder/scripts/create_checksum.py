@@ -14,7 +14,9 @@ import re
 import sys
 from pathlib import Path
 
-INCLUDE_ROOT_FILES = ("SKILL.md", "README.md")
+# README.md is not a root file; the canonical location is assets/README.md,
+# which the "assets" entry of INCLUDE_DIRS already captures.
+INCLUDE_ROOT_FILES = ("SKILL.md",)
 INCLUDE_DIRS = ("scripts", "references", "assets")
 EXCLUDE_DIR_NAMES = frozenset({"evals", "tests", "__pycache__", ".git"})
 EXCLUDE_SUFFIXES = frozenset({".pyc"})

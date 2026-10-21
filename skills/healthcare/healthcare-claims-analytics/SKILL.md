@@ -1,13 +1,13 @@
 ---
 name: healthcare-claims-analytics
 display_name: Healthcare Claims Analytics
-icon: "🩺"
+icon: assets/file-heart.svg
 description: "Provide deterministic, copy-paste-ready Python and SQL for healthcare claims processing and billing-integrity screening. Use when asked to 'parse X12 837/835 claims', 'profile provider E&M billing', 'detect upcoding', 'validate NCCI edits', 'find duplicate claims', 'run Benford's Law on charges', 'flag impossible billing days', or any claims analytics or outlier-detection task"
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [file_read, run_python]
-checksum: "sha256:a403253585e73c600811dd37c46f4b9a7188b59a6f85fcf3f4b8cb8c062e73d5"
+checksum: "sha256:d5cb7f2eec6bcac2cb739c55471e45a51578b73a6c88515a7201d9e305cfc1a4"
 ---
 
 ## Overview

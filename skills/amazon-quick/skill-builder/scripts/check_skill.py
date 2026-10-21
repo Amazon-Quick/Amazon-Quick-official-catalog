@@ -108,7 +108,9 @@ CHECKSUM_LINE_RE = re.compile(r"^checksum\s*:\s*.*$", re.M)
 LAST_UPDATED_VALUE_RE = re.compile(r'^last_updated\s*:\s*"?(\d{4}-\d{2}-\d{2})', re.M)
 SKILL_FILENAME = "SKILL.md"
 # Digest inputs; must mirror create_checksum.py, which a standalone script cannot import.
-DIGEST_ROOT_FILES = (SKILL_FILENAME, "README.md")
+# README.md is not a root file; its canonical location is assets/README.md,
+# already captured by the "assets" entry of DIGEST_DIRS.
+DIGEST_ROOT_FILES = (SKILL_FILENAME,)
 DIGEST_DIRS = ("scripts", "references", "assets")
 DIGEST_EXCLUDE_DIRS = frozenset({"evals", "tests", "__pycache__", ".git"})
 DIGEST_EXCLUDE_SUFFIXES = frozenset({".pyc"})
@@ -128,7 +130,7 @@ HEADER_FILE_GROUPS = (("references", "*.md"), ("scripts", "*.py"))
 class CheckStatus(StrEnum):
     """Outcome category for a single check result."""
 
-    PASS = "PASS"  # nosec B105 - enum status label, not a credential
+    PASS = "PASS"  # nosec B105  # enum status label, not a credential
     FAIL = "FAIL"
     WARNING = "WARNING"
 
@@ -836,15 +838,15 @@ class FileHeaderValidator:
 
 
 class HeaderFileFinder:
-    """Lists every file that must carry a header: README.md, references/*.md,
-    scripts/*.py (I/O)."""
+    """Lists every file that must carry a header: assets/README.md,
+    references/*.md, scripts/*.py (I/O)."""
 
     def __init__(self, skill_dir: Path) -> None:
         self.skill_dir = skill_dir
 
     def find(self) -> list[Path]:
         found: list[Path] = []
-        readme = self.skill_dir / "README.md"
+        readme = self.skill_dir / "assets" / "README.md"
         if readme.is_file():
             found.append(readme)
         for sub, pattern in HEADER_FILE_GROUPS:
@@ -860,7 +862,7 @@ class HeaderFileFinder:
 
 
 class _FileHeadersCheck:
-    """Every README.md, references/*.md, and scripts/*.py carries the required
+    """Every assets/README.md, references/*.md, and scripts/*.py carries the required
     header fields.
 
     Enforces the reference-file header standard across the skill's files, not

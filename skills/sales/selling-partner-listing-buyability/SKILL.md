@@ -1,13 +1,13 @@
 ---
 name: selling-partner-listing-buyability
 display_name: SP-API Listing Buyability Troubleshooter
-icon: "🛒"
+icon: assets/shopping-cart.svg
 description: "Diagnoses why a Selling Partner API (SP-API) listing isn't buyable and relays the specific reason plus the next step. Checks the three things that make a listing buyable: a complete product, a valid purchasable offer, and available inventory, then fixes the offer (preview then approve) or routes inventory elsewhere. Use when asked why a listing can't be purchased, 'why can't customers buy this', no buy box, listing inactive, or missing price or offer. Do NOT use for search or discoverability (use selling-partner-listing-searchability), fixing reported listing issues (use selling-partner-listing-issues), or inventory replenishment (use selling-partner-stockout-prevention)."
 created_date: "2026-09-15"
 last_updated: "2026-09-16"
 license: "Apache-2.0"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector; verify it is connected and stop if it is missing."
-checksum: "sha256:4b855be28a4fe827b3599ca577ab18f11f6863034757f0cf821f14948a19d38c"
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector; verify it is connected and stop if it is missing."
+checksum: "sha256:e45ee3c34bcb51b5e463920531f3bec0653cef30336cbdaffb42f854885ccb8f"
 ---
 
 ## Overview

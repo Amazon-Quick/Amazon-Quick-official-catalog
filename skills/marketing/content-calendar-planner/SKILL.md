@@ -2,7 +2,7 @@
 
 name: content-calendar-planner
 display_name: "Content Calendar Planner"
-icon: "📅"
+icon: assets/calendar.svg
 description: "Plans and manages content calendars for small business marketing. Creates strategic content plans across blog, social media, email, and video channels aligned to business goals. Use when user says 'plan my content', 'create a content calendar', 'what should I post this month', 'content strategy', 'editorial calendar', 'plan my blog posts', 'social media schedule', 'content ideas for [topic/month]', or 'quarterly content plan'."
 created_date: "2026-06-04"
 last_updated: "2026-07-03"
@@ -22,7 +22,7 @@ inputs:
   description: "Hours available per week for content creation"
   type: string
   required: false
-checksum: "sha256:001b47fceeb587dd876ae1741d67bbb51f13542c8523e7e53916f3cf04b83015"
+checksum: "sha256:92ef0e1698596d6a5208d8fbe3f0cb35be17db13de13e19a860c005ce726fbc9"
 ---
 
 ## Overview

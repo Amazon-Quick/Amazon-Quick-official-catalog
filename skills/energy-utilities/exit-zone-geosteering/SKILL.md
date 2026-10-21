@@ -1,7 +1,7 @@
 ---
 name: exit-zone-geosteering
 display_name: Exit Zone Geosteering
-icon: "🧭"
+icon: assets/compass.svg
 description: "Verify geosteering observations, calculate deterministic price impact, project zone exits, produce a provenance-checked handover, render a Highcharts dashboard, run a full decision review, replay SYN1 one tick at a time, and offer an opt-in exit-zone watch once. Use when asked to 'verify well SYN1', 'price impact for SYN1', 'check zone exit', 'run the geosteering decision review for SYN1', 'what should the geosteerer look at right now', 'full exit-zone check', 'replay SYN1', 'show geosteering dashboard', or any exit-zone risk review."
 license: MIT-0
 created_date: "2026-09-14"
@@ -9,9 +9,9 @@ last_updated: "2026-09-16"
 preferred_model: fast
 preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time, start_task, create_task_group, get_task_group_result, inspect_task, agent_management, memory_management]
-readme: "Read README.md ## Pre-requisites before running. Verify every required built-in tool is available, note optional capability fallbacks, and stop the affected workflow if a required tool is missing."
+readme: "Read assets/README.md ## Pre-requisites before running. Verify every required built-in tool is available, note optional capability fallbacks, and stop the affected workflow if a required tool is missing."
 scripts: [create_synthetic_well.py, run_verification.py, run_price_impact.py, run_zone_exit.py, create_handover.py, create_dashboard.py]
-checksum: "sha256:57e5ca8295fb939b8e4825f9dcdbf737702497311bae6d1e297d2e9f90521a3c"
+checksum: "sha256:8aeace451f019f9429f4c3cda2ac205e069c260ab0b00660c74037db78260fd6"
 ---
 
 ## Overview

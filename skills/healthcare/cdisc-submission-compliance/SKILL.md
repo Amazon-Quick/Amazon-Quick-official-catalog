@@ -1,13 +1,13 @@
 ---
 name: cdisc-submission-compliance
 display_name: "Clinical Data Interchange Standards Consortium (CDISC) Submission Compliance"
-icon: "🧬"
+icon: assets/flask-conical.svg
 description: "Apply Clinical Data Interchange Standards Consortium (CDISC) decision frameworks for regulatory submission compliance across the Study Data Tabulation Model (SDTM), the Analysis Data Model (ADaM), define.xml, and controlled terminology. Use when asked to 'check SDTM compliance', 'map data to an SDTM domain', 'decide what goes in SUPPQUAL', 'plan define.xml value-level metadata', 'triage Pinnacle 21 findings', 'prioritize data queries', 'compare FDA and PMDA submission requirements', or any CDISC submission data standards question"
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [file_read]
-checksum: "sha256:e5be4b1a9c555a110108eb00ffabe27cbd2d4f456e1892e681cd4feaad99d259"
+checksum: "sha256:4123d1455d0c841a32f57c9e39950b977515516ad30b3904762c480049c2e5c2"
 ---
 
 ## Overview

@@ -1,13 +1,13 @@
 ---
 name: well-completion-optimization
 display_name: Well Completion Optimization
-icon: "🛢️"
+icon: assets/cylinder.svg
 description: "Quantitative hydraulic fracturing and completion analysis: Nolte-Smith treatment-pressure diagnostics, Diagnostic Fracture Injection Test (DFIT) G-function closure analysis, completion economics, and matched-pair design comparison. Use when asked to analyze treatment pressure, identify fracture propagation mode, run a G-function or DFIT analysis, find closure pressure, compare completion designs, optimize stage or cluster spacing, calculate Estimated Ultimate Recovery (EUR) per dollar or Net Present Value (NPV), or track frac fleet efficiency"
 license: MIT-0
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, web_search, url_fetch, get_current_time]
-checksum: "sha256:3587ee307268d3119b5be075527f75a84a25c5a9b321bd09b0d168aa83576dfc"
+checksum: "sha256:9d6ba9503caf2ce591b4f5bc70b6443ad57ae3efc53654dd4217b673b9ac3828"
 ---
 
 ## Overview

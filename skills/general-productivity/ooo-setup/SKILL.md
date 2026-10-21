@@ -1,13 +1,13 @@
 ---
 name: ooo-setup
 display_name: OOO Setup
-icon: "🏖️"
+icon: assets/plane.svg
 description: "Automates full out-of-office setup: meeting conflict resolution, calendar invites with smart recipient discovery, messaging status, email auto-reply drafts, and signature updates. Use when asked to 'set up out of office', 'going on PTO', 'set OOO', 'taking time off', 'going on leave', 'block my calendar for vacation', 'notify team about time off', or any request to prepare for upcoming leave."
 created_date: "2026-06-02"
 last_updated: "2026-09-13"
 license: "MIT-0"
 tools: [outlook, slack, teams]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
 
 - name: start_date
@@ -31,7 +31,7 @@ inputs:
   description: "Name(s) of the person(s) covering while you're out. Supports multiple contacts, e.g., 'Alex for urgent, Sam for project X'"
   type: string
   required: false
-checksum: "sha256:f949ace9f4c6dac392c214f977ff5657ec04ed14024cf7c5fbe691480611f001"
+checksum: "sha256:a34341d5243c9b63feb7fa1f44f5703f4be9e2804297b65459c77b34aace9fc2"
 ---
 
 ## Overview

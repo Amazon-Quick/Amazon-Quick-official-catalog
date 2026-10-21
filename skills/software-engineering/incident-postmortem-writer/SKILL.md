@@ -1,7 +1,7 @@
 ---
 name: incident-postmortem-writer
 display_name: Incident Postmortem Writer
-icon: "🔥"
+icon: assets/flame.svg
 description: "Drafts blameless incident postmortems from communication channel timelines, alert data, status page updates, and verbal debriefs. Structures the narrative into timeline, impact assessment, root cause analysis (RCA), contributing factors, and action items with owners. Use when asked to 'write a postmortem', 'draft incident report', 'document this outage', 'create a post-incident review', 'root cause analysis for the incident', or 'RCA for the incident'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -27,7 +27,7 @@ inputs:
   description: "Date the incident occurred (e.g., '2026-06-20' or 'last Friday')"
   type: string
   required: true
-checksum: "sha256:68a014dc17fbe026749baa9db7b3794fcf9dda8a024db7a79d6eb502d0618a03"
+checksum: "sha256:0c06674b14a93bc1f405d0ac5b935769edfcd1a30079d371874d6270b74f5843"
 ---
 
 ## Overview

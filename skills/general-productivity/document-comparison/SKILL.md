@@ -1,9 +1,9 @@
 ---
 name: document-comparison
 display_name: Document Comparison
-icon: "🔄"
+icon: assets/git-compare.svg
 description: "Compare two documents side-by-side, highlighting differences and generating a structured change summary. Use when the user says 'compare these docs', 'what changed between versions', 'diff these files', 'document comparison', or 'show differences between [file A] and [file B]'."
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-05"
 last_updated: "2026-09-13"
 license: "MIT-0"
@@ -23,7 +23,7 @@ inputs:
     options: [html, markdown, both]
     required: false
     default: "both"
-checksum: "sha256:c0f93c74728b41d94dbf0c99285ddf4bee290a6881f18ac8da91797025801a3d"
+checksum: "sha256:f46d2097e67590edd28ddb6a76f3edc0e413d3ea480a1b443efd8620e2bd770e"
 ---
 
 ## Overview

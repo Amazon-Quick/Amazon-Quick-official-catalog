@@ -1,9 +1,9 @@
 ---
 name: renewable-energy-assessment
 display_name: Renewable Energy Assessment
-icon: "☀️"
+icon: assets/sun.svg
 description: "Assess solar and wind project potential with resource characterization, energy yield estimation, and financial analysis including levelized cost of energy (LCOE). Use when asked to 'assess a solar project', 'estimate wind energy yield', 'calculate LCOE', 'run a renewable feasibility study', 'model PV production', 'size a wind farm', or to evaluate any solar or wind project economics"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 license: MIT-0
@@ -18,7 +18,7 @@ inputs:
     description: "Directory where the report and dashboard files should be written"
     type: path
     required: false
-checksum: "sha256:eec57ebf9a0f0142f0a3d241a569243cb25c53d39d1bde068e1982dfff26d69d"
+checksum: "sha256:1752bf678b07edde4aefbbb13d59a4317aa492d28e78e09fcce0f315e47f30f6"
 ---
 
 ## Overview

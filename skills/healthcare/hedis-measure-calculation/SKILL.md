@@ -1,13 +1,13 @@
 ---
 name: hedis-measure-calculation
 display_name: HEDIS Measure Calculation
-icon: "🩺"
+icon: assets/calculator.svg
 description: "Provide deterministic Python and SQL for calculating Healthcare Effectiveness Data and Information Set (HEDIS) quality measures from claims and clinical data. Use when asked to 'calculate a HEDIS measure', 'check continuous enrollment', 'detect care gaps', 'compute utilization rates', 'identify high-cost claimants', 'score a risk index', or any healthcare quality measure calculation task."
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [file_read, get_current_time]
-checksum: "sha256:253ec00bf56574b4f082ec56656b79f80afcfdaa2c64449416cd249270cc16e9"
+checksum: "sha256:f2e2deef7fdff94165a0bfef7616818a35f20b1e726b890c3d86905f2f0aa3f6"
 ---
 
 ## Overview

@@ -1,13 +1,13 @@
 ---
 name: hedis-measure-specification
 display_name: HEDIS Measure Specification Reasoning
-icon: "🩺"
+icon: assets/clipboard.svg
 license: MIT-0
 description: "Interpret Healthcare Effectiveness Data and Information Set (HEDIS) quality measure logic: denominator, numerator, exclusions, continuous enrollment, audit readiness, and Star Rating care gap prioritization. Use when asked to 'interpret a HEDIS measure', 'evaluate continuous enrollment', 'apply HEDIS exclusions', 'check NCQA audit readiness', 'calculate a measure rate', 'prioritize care gaps', or any HEDIS specification reasoning"
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 tools: [get_current_time, file_read]
-checksum: "sha256:d5c429e950630644f8ec4b19240eaf51c052733ab7f9be9dc9c984d40c00d804"
+checksum: "sha256:b7b43a192525856f26058bf1ed104b20f50ae6c62bb7ed4285997394eef0cbfa"
 ---
 
 ## Overview

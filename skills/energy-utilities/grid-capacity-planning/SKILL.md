@@ -1,14 +1,14 @@
 ---
 name: grid-capacity-planning
 display_name: Grid Capacity Planning
-icon: "⚡"
+icon: assets/network.svg
 description: "Perform long-range transmission and distribution capacity planning: load growth forecasting, distributed energy resource hosting capacity, N-1 contingency screening, transfer capability, substation loading, and capital investment plans. Use when asked to 'forecast load growth', 'run a hosting capacity analysis', 'screen N-1 contingencies', 'calculate ATC or transfer capability', 'assess substation loading', or 'build a capital investment plan' for a power grid"
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 license: MIT-0
 created_date: "2026-07-15"
 last_updated: "2026-07-15"
 tools: [get_current_time, run_python, file_read, file_write, web_search, url_fetch, open_in_session_tab, start_task, get_task_result]
-checksum: "sha256:15fc06225b52674bbcada7190580b28e4ba8174de6ad33e69a4002668effc514"
+checksum: "sha256:f1b1c7aca8403058b769f7ceefbae6ba113413a16af1d806014b350daf718de0"
 ---
 
 ## Overview

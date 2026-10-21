@@ -1,7 +1,7 @@
 ---
 name: conversation-manager
 display_name: Conversation Manager
-icon: "📂"
+icon: assets/message-square.svg
 description: "Conversation organizer that manages folders, archives old chats, exports conversations with full tool call history, and uses knowledge graph context to suggest personalized categories. Presents a help menu on activation. Use when asked to 'organize', 'organize my conversations', 'cm help', 'cm --help', 'cm', 'cm rename', 'export this conversation', 'export conversation', 'archive old chats', 'conversation cleanup', or any request to tidy, categorize, back up, or export chat history."
 created_date: "2026-08-13"
 last_updated: "2026-08-13"
@@ -17,7 +17,7 @@ inputs:
     description: Local filesystem path where conversation exports and backups are saved. User must supply this on first use.
     type: path
     required: true
-checksum: "sha256:d966a37761b332d545e810f8b618f7ec21eca5341cb73bdbd25011636f543340"
+checksum: "sha256:796de720e5e4ea9a5c6a1a4345a4f0523530b934e8bd5f24a66f986307ffde3b"
 ---
 
 ## Overview

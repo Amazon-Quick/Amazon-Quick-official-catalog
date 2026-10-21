@@ -1,5 +1,6 @@
 """
-description: Scaffold a skill's README.md with a standard-conforming frontmatter header (description, last_updated, and exactly one of source_url or origin) and the section skeleton the Quick Skills Standard expects (Overview, Pre-requisites, Installation, Getting started). Run as: python create_readme.py <skill_dir> --description "..." (--source-url "..." | --origin original).
+description: Scaffold a skill's README.md with a standard-conforming frontmatter header (description, last_updated, and exactly one of source_url or origin) and the section skeleton the Quick Skills Standard expects (Overview, Pre-requisites, Installation, Getting started). The README is written to assets/README.md under the skill directory. Run as: python create_readme.py <skill_dir> --description "..." (--source-url "..." | --origin original).
+The README is written to assets/README.md under the skill directory (not the skill root).
 last_updated: 2026-09-13
 origin: original
 
@@ -73,23 +74,28 @@ class ReadmeRenderer:
             "List each dependency (type, which connector, runtime, required or optional), "
             "or state that the skill uses only built-in tools.\n\n"
             "## Installation\n\n"
-            "1. Download the skill and add it in Customize > Skills.\n"
-            "2. Install and enable any connectors listed above.\n\n"
+            "1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more,"
+            " select the Official tab, and search for the skill by name. Choose Install.\n"
+            "2. Install and enable any connectors listed in Pre-requisites above."
+            " For connector setup, see"
+            " https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html\n\n"
             "## Getting started\n\n"
             "Start with the help menu by saying: `<prefix> help`.\n"
         )
 
 
 class ReadmeGenerator:
-    """Facade: render a README from a spec and write it to the skill root (I/O)."""
+    """Facade: render a README from a spec and write it to assets/ (I/O)."""
 
     def __init__(self, skill_dir: Path, spec: ReadmeSpec) -> None:
         self.skill_dir = skill_dir
         self.spec = spec
 
     def generate(self) -> Path:
-        """Write README.md to the skill root and return its path."""
-        target = self.skill_dir / "references" / "README.md"
+        """Write README.md to assets/ and return its path."""
+        assets_dir = self.skill_dir / "assets"
+        assets_dir.mkdir(exist_ok=True)
+        target = assets_dir / "README.md"
         target.write_text(
             ReadmeRenderer(self.spec).render(), encoding="utf-8", newline="\n"
         )

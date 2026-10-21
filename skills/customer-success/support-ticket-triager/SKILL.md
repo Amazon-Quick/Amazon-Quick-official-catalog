@@ -1,7 +1,7 @@
 ---
 name: support-ticket-triager
 display_name: Support Ticket Triager
-icon: "🎟️"
+icon: assets/ticket.svg
 description: "Classifies incoming support tickets by category, urgency, and complexity. Applies routing rules to assign teams, generates initial response drafts, and flags escalation candidates based on customer tier, issue severity, and Service Level Agreement (SLA) proximity. Use when asked to 'triage these tickets', 'classify support requests', 'route this ticket', 'prioritize the queue', 'which tickets need escalation', or 'auto-categorize support inbox'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -21,7 +21,7 @@ inputs:
   description: "File path to SLA definitions (JSON or YAML). Maps priority levels to response and resolution time targets. If not provided, the agent uses standard defaults from the Priority Levels definition."
   type: string
   required: false
-checksum: "sha256:6499367af5b7908a5333003a304d8668ab34efa26172f128d8b6d33644233d24"
+checksum: "sha256:d51dbcb70bd43e8dd108f0fd13d7c93125d3fbc677c89b942ed7e96e8727cfba"
 ---
 
 ## Overview

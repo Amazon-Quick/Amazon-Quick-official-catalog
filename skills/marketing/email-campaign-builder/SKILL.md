@@ -2,7 +2,7 @@
 
 name: email-campaign-builder
 display_name: "Email Campaign Builder"
-icon: "✉️"
+icon: assets/mail.svg
 description: "Designs and writes email marketing campaigns for small businesses: welcome sequences, newsletters, promotions, re-engagement, and drip campaigns. Use when user says 'write an email campaign', 'create a newsletter', 'welcome sequence', 'email marketing', 'drip campaign', 'promotional email', 're-engage my list', 'write an email blast', 'nurture sequence', 'email automation', or 'email series for [purpose]'."
 created_date: "2026-06-04"
 last_updated: "2026-07-03"
@@ -22,7 +22,7 @@ inputs:
   description: "Desired action: buy, book, reply, click, register"
   type: string
   required: false
-checksum: "sha256:b58b2d0ac59780bc8a569b2ebe2c1de6e72ac3ac636a56d2a74978231081f93d"
+checksum: "sha256:a44aabf8c06b7993392b0c3b4d76429c572db43b3ad6a1d4a23810fe3e60651b"
 ---
 
 ## Overview

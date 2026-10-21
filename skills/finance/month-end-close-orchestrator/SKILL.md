@@ -1,7 +1,7 @@
 ---
 name: month-end-close-orchestrator
 display_name: Month-End Close Orchestrator
-icon: "📊"
+icon: assets/calendar-check.svg
 description: "Guides finance teams through the month-end close process with structured checklists, reconciliation task tracking, journal entry templates, variance analysis with commentary, and close status dashboards. Adapts to the organization's chart of accounts and close calendar. Use when asked to 'start month-end close', 'close checklist', 'reconciliation status', 'variance analysis', 'journal entry template', or 'where are we on the close'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -26,7 +26,7 @@ inputs:
   description: "Prior month actuals for variance comparison. Accepts: a file path (CSV or Excel export from your ERP/accounting system), pasted summary data, or a Quick dataset containing period financials. Required for variance analysis workflow."
   type: string
   required: false
-checksum: "sha256:c6e74cef93f63898162f7da1b71bca8a60d81c520749c45e552912547dc1b91b"
+checksum: "sha256:e61966e1441ca293c7b92ad7d446ceaafbefc8b82b2b4620eba32baa43d34672"
 ---
 
 ## Overview

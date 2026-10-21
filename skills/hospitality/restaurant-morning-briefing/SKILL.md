@@ -1,7 +1,7 @@
 ---
 name: restaurant-morning-briefing
 display_name: Restaurant Morning Briefing
-icon: "🍽️"
+icon: assets/utensils.svg
 description: "Generate a daily morning briefing for a restaurant manager covering a 7-day demand outlook with staffing and prep recommendations. Combines live weather data, local event schedules, and competitor activity to calculate demand multipliers, then derives actionable labor and inventory guidance. Use when the user asks for 'morning briefing', 'daily briefing', 'restaurant briefing', 'staffing recommendations', 'labor plan', 'prep guidance', 'prep checklist', 'what should I expect this week'."
 created_date: "2026-06-11"
 last_updated: "2026-07-03"
@@ -42,7 +42,7 @@ inputs:
     options: [text, dashboard, both]
     required: false
     default: "dashboard"
-checksum: "sha256:43c5086f255c67e338e32947951906c7a30467216da6274684240b5c1533bb4f"
+checksum: "sha256:2b9d9b7196df8d272250e5cf0727580c4a680a0e5dde68b01a6f71f46e5b0f5f"
 ---
 
 ## Overview

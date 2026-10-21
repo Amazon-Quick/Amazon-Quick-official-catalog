@@ -1,7 +1,7 @@
 ---
 name: second-opinion
 display_name: Second Opinion Council
-icon: "⚖️"
+icon: assets/scale.svg
 description: "Run a structured, multi-model council review of any document, artifact, or analysis using Amazon Quick's parallel task system. Spawns independent reviewer agents across model tiers (smart, balanced, fast), orchestrates anonymized cross-review with peer ranking, and synthesizes a chair verdict with tiered accept/deny decisions. Use when asked to 'get a second opinion', 'council review', 'multi-model review', 'cross-check this', 'red-team this', 'stress-test this', 'what would other models think', 'peer review this', 'independent review', or any request to review material with multiple independent perspectives."
 created_date: "2026-06-04"
 last_updated: "2026-08-03"
@@ -32,7 +32,7 @@ inputs:
     type: boolean
     required: false
     default: false
-checksum: "sha256:c2577c6db513628ab22dcffcaf4eeb8551369da13aa6aad3655daa58d5ca06c6"
+checksum: "sha256:e5a30542fb379aea5221c24ce32adffb81dc7f28155ccfec0cc21c443f7a2b54"
 ---
 
 ## Overview

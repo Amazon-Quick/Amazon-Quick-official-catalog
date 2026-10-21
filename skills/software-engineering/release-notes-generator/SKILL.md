@@ -1,7 +1,7 @@
 ---
 name: release-notes-generator
 display_name: Release Notes Generator
-icon: "📋"
+icon: assets/tag.svg
 description: "Generates human-readable release notes from merged pull requests, commits, or changelogs between version references or date ranges. Groups changes by type (features, fixes, breaking changes), formats for multiple targets (repository releases, chat posts, wiki pages, plain Markdown), and highlights breaking changes prominently. Works with any version control platform or accepts data via file or paste. Use when asked to 'generate release notes', 'write changelog', 'summarize what shipped', 'create release summary', or 'what merged since last release'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -29,7 +29,7 @@ inputs:
   required: false
   default: "markdown"
   enum: ["platform_release", "chat_post", "wiki", "markdown"]
-checksum: "sha256:83501d34b55c706673a2f4b3438d7ee5f62173e6082419ed3e5c1fa13b47366b"
+checksum: "sha256:8fc1531531884cd170d37f4c620abfab49edb72e539709dea82003c7c68c84be"
 ---
 
 ## Overview

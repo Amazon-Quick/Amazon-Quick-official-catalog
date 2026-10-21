@@ -1,7 +1,7 @@
 ---
 name: compliance-automation
 display_name: Compliance Automation
-icon: "🛡️"
+icon: assets/shield-check.svg
 description: "Generates draft compliance policies for SOC 2 Type I/II, ISO 27001, and HIPAA frameworks. Produces evidence collection checklists, control mapping matrices, and gap analysis reports from existing documentation. Use when asked to 'prepare for SOC 2 audit', 'generate compliance policies', 'map controls to framework', 'audit prep', 'compliance gap analysis', or 'ISO 27001 readiness'."
 created_date: "2026-06-22"
 last_updated: "2026-06-22"
@@ -23,7 +23,7 @@ inputs:
   description: "Description of the systems, services, or organizational boundaries in scope for the compliance effort (e.g., 'SaaS platform hosted on AWS serving enterprise customers')."
   type: string
   required: true
-checksum: "sha256:5b73900a7bca649f08c85e4c84e1eb34abe14342957fbd39656373b78933630f"
+checksum: "sha256:5028371b551a02535f5b9484965a6bc316a7b1c74e961f0314ac6c719df95797"
 ---
 
 ## Overview

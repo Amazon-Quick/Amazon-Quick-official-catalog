@@ -1,9 +1,9 @@
 ---
 name: retail-supply-chain-pulse
 display_name: Supply Chain Morning Pulse
-icon: "🚨"
+icon: assets/truck.svg
 description: "Daily supply chain exception digest with severity scoring, root cause analysis, and recommended resolutions. Surfaces inbound delays, stockout risks, demand spikes, and carrier issues before they impact customers. Use when asked to 'what is on fire today', 'supply chain pulse', 'morning exceptions', 'logistics issues', 'inventory alerts', 'carrier problems', 'stockout risk', or 'supply chain briefing'."
-readme: "Read README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-10"
 last_updated: "2026-09-13"
 license: "MIT-0"
@@ -40,7 +40,7 @@ inputs:
     type: number
     required: false
     default: 10000
-checksum: "sha256:f5f3be74d2d3665c27a4a1eccc60bdc8e9dbace88fdbc02b3cb1740ed6253397"
+checksum: "sha256:87234f1e963e2ffdab00aeb33cc745b7a4e6998e06952b90473397da97339ee1"
 ---
 
 ## Overview

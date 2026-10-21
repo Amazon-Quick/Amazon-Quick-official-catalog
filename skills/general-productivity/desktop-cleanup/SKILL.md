@@ -2,13 +2,13 @@
 name: desktop-cleanup
 display_name: Desktop Cleanup
 description: "Activate when the user says 'clean up my desktop', 'organise my desktop', 'tidy desktop', 'declutter desktop', 'sort my desktop', or asks to reorganise/clean files on their Desktop. Scans the Desktop folder, categorises loose files, proposes a folder architecture for approval, and moves files with user sign-off."
-icon: "\U0001F9F9"
+icon: assets/trash.svg
 created_date: "2025-12-01"
 last_updated: "2026-07-24"
 tools: [folder_list, folder_create, file_move, file_delete, run_python, create_scheduled_agent]
 preferred_model: fast
 preferred_thinking: "off"
-checksum: "sha256:b2c3e46156db61d8b14d9a11875ed6b00432c55d2753517e865170662721953f"
+checksum: "sha256:3d2a1462b9ce8dfb4b977fb4a217c02a52a4be5a8349a48255f698ac18ceea70"
 ---
 
 <Identity>

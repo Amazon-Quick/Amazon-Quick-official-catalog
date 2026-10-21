@@ -1,13 +1,13 @@
 ---
 name: prior-authorization-decision-automation
 display_name: Prior Authorization Decision Automation
-icon: "🩺"
+icon: assets/shield-plus.svg
 description: "Generate deterministic code and pipeline recipes for automating prior authorization (PA) workflows: parsing X12 278 and FHIR PAS requests, extracting clinical features, rules-based adjudication, training machine learning classifiers, and analyzing denial patterns. Use when asked to 'parse a prior authorization request', 'build a PA adjudication engine', 'train a PA decision model', 'explain a PA denial', 'analyze denial patterns', or any prior authorization automation task"
 license: MIT-0
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 tools: [file_read, file_write, run_python]
-checksum: "sha256:9af355e94f8ff27b8834f24a10b475277b4e0841da90e96921023d514b0ac8c8"
+checksum: "sha256:5e73dbd7e77f5ceef007792d16b09d0ffe2d84d35a9c3ccca68045c20dc8293a"
 ---
 
 ## Overview

@@ -1,13 +1,13 @@
 ---
 name: business-pulse
 display_name: Business Pulse
-icon: "☀️"
+icon: assets/activity.svg
 description: "Delivers a plain-language business health briefing for owner-operators by synthesizing cash position, receivables, payables, schedule, and anomalies from QuickBooks. Use when asked 'how's my business doing', 'business pulse', 'what's my cash position', 'who owes me money', 'what do I owe this week', 'give me my morning briefing', 'daily summary', 'where do we stand financially', or any request for a quick financial health snapshot."
 created_date: "2026-06-04"
 last_updated: "2026-07-03"
 license: "MIT-0"
 tools: [agent_management, gmail, google-calendar, memory_management, outlook, quickbooks, slack]
-readme: "Read README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
   - name: cash_buffer
     description: "Minimum cash balance the owner wants to maintain, used to frame whether cash covers obligations (e.g., '5000')"
@@ -30,7 +30,7 @@ inputs:
     type: number
     required: false
     default: 0.4
-checksum: "sha256:e55d88e6f6704f983dfddfe071044ece5752bab09aef198e8c5ebb28b4823c93"
+checksum: "sha256:8b3103200d0453312dc17aa0e4e9d96dc6c47b9645f9524eab68aa861139b9fd"
 ---
 
 ## Overview

@@ -11,7 +11,7 @@ two places, plus a catalog-wide roll-up:
   - ``catalog.json`` top-level ``skillsChecksum``: a roll-up hash over the
     published set (``path\\tchecksum`` lines), a one-line whole-catalog signal.
 
-The per-skill algorithm matches the skill-builder skill's create_checksum.py
+The per-skill algorithm matches the skill-architect skill's create_checksum.py
 exactly, so a skill authored there produces the same digest the catalog expects:
 files are keyed by POSIX relative path, each contributes a ``relpath\\tsha256``
 line to a manifest, and the manifest is hashed. ``evals/``, ``tests/``, caches,
@@ -56,7 +56,7 @@ SKILL_ASSET_TYPE = "skill"
 DIGEST_PREFIX = "sha256"
 INDENT = 2
 
-# Per-skill manifest surface — identical to skill-builder's create_checksum.py.
+# Per-skill manifest surface — identical to skill-architect's create_checksum.py.
 INCLUDE_ROOT_FILES = ("SKILL.md", "README.md")
 INCLUDE_DIRS = ("scripts", "references", "assets")
 EXCLUDE_DIR_NAMES = frozenset({"evals", "tests", "__pycache__", ".git"})
@@ -66,7 +66,7 @@ TEST_FILE_RE = re.compile(r"^test_.*\.py$")
 
 # The checksum line's content is stripped from SKILL.md before hashing so writing
 # the digest back never changes it (idempotent). The line's newline is preserved,
-# matching skill-builder's create_checksum.py exactly, so the catalog and the
+# matching skill-architect's create_checksum.py exactly, so the catalog and the
 # validator compute the identical digest.
 CHECKSUM_LINE_RE = re.compile(r"^checksum\s*:\s*.*$", re.M)
 # Removes the whole line, newline included, so a SKILL.md hashes the same before

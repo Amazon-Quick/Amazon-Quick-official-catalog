@@ -1,0 +1,46 @@
+# Amazon Quick Python sandbox packages.
+# Names only, no version pins: the packaged sandbox is the source of truth for
+# versions, and pinning here would drift the moment the sandbox updates.
+# A package absent from this list is not available in the sandbox.
+
+# Office and documents
+Pillow
+defusedxml
+lxml
+openpyxl
+XlsxWriter
+python-docx
+python-pptx
+pandas
+
+# PDF
+pypdf
+pdfplumber
+
+# Document conversion
+markdown
+reportlab
+htmldocx
+mammoth
+
+# Agent and API clients
+anthropic
+mcp
+
+# Media
+imageio
+numpy
+resvg-py
+ffmpeg-python
+
+# Data visualization
+matplotlib
+plotly
+kaleido
+
+# Data modeling and SQL
+pydantic
+duckdb
+
+# Serialization
+PyYAML

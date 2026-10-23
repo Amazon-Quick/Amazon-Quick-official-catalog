@@ -7,7 +7,7 @@ created_date: "2026-09-24"
 last_updated: "2026-09-24"
 tools: [get_current_time, recall_memories, kg_search, search_conversations, list_user_created_skills, find_relevant_chat_agents, create_chat_agent, update_chat_agent, create_space, write_quick_suite_file, save_engram, get_engram, list_engrams, save_skill, start_task, load_skill]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the skills this composes and the optional messaging/email connector used for voice and role signal; verify each and continue with reduced capability if an optional one is missing."
-checksum: "sha256:6257316e64033c8b0cca42e599ee734d4f8a5c8bb6bc401468e0750b3e91136e"
+checksum: "sha256:eb9d5012b0e612b3083c1f7805ce16e65354bad1478eda326320aaef974d7bb1"
 ---
 
 ## Overview

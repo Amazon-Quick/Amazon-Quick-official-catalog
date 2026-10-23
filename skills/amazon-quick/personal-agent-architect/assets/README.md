@@ -1,6 +1,6 @@
 ---
 description: "Human-facing overview, pre-requisites, and getting-started for the personal-agent-architect skill."
-last_updated: "2026-09-24"
+last_updated: "2026-10-22"
 origin: original
 ---
 
@@ -18,7 +18,7 @@ This skill composes other built-in skills and one optional connector category. I
   - Writing-style / voice cloning (currently engram_builder)
   - Agent creation (currently chat_agent_builder)
   - Space creation and document upload (currently quick_suite__spaces)
-  - Skill authoring (currently skill-builder)
+  - Skill authoring (currently skill-architect)
   - Past-conversation search (currently conversation_management)
   - Knowledge-graph search (currently knowledge_graph)
 - Type: cloud connector. Runtime: cloud agent runtime (no local machine needed). Optional. A messaging or email connector (for example Slack, Outlook, or Gmail), used to build the voice engram and extract role signal. Without one, the run continues with a reduced voice and role profile.

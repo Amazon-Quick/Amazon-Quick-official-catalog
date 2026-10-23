@@ -6,12 +6,13 @@ description: "Build agent skills for Amazon Quick following skill construction b
 created_date: "2026-05-21"
 last_updated: "2026-10-22"
 origin: original
+deprecation_message: "skill-builder is deprecated and renamed to skill-architect. Install skill-architect from the Official catalog and use it instead. skill-builder will be removed."
 license: "MIT-0"
 preferred_model: smart
 preferred_thinking: high
 tools: [get_current_time, file_read, file_write, folder_create, save_skill, extract_session_data, file_rag_search, web_search, url_fetch, run_python, start_task, create_task_group, get_task_group_result]
 readme: "Read assets/README.md for an overview, installation, and getting started. This skill uses only built-in tools and needs no external connectors."
-checksum: "sha256:15dc94c6f29a1420a88544ab99b3a630516e73ffa79a6d40a9936e41c3c56d03"
+checksum: "sha256:ef7d52ee31b47b25c8e1ab1c6cf55f0492a520b12ac14dbb2a85aeb6da16d8a9"
 ---
 
 ## Overview

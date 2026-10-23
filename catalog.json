@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:6d8b415ab8bd08313819c7eae2e8c0f040445bffc09804360890c1cb7b3ee33b",
+  "skillsChecksum": "sha256:d0cf5b1858fa6add035440a90151fc51a03f2f78ddd8305b4680697308cdc845",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -12,9 +12,14 @@
           "checksum": "sha256:f2e77b9fcdafbc5da38fb755135ecb417da67f6946dad4b1b2309f7038756ddd"
         },
         {
+          "path": "skills/amazon-quick/skill-architect",
+          "type": "skill",
+          "checksum": "sha256:92f0998987aa40c1478ce5b931b06f85587fc597fea0428e072d0ec41296049e"
+        },
+        {
           "path": "skills/amazon-quick/skill-builder",
           "type": "skill",
-          "checksum": "sha256:15dc94c6f29a1420a88544ab99b3a630516e73ffa79a6d40a9936e41c3c56d03"
+          "checksum": "sha256:ef7d52ee31b47b25c8e1ab1c6cf55f0492a520b12ac14dbb2a85aeb6da16d8a9"
         },
         {
           "path": "skills/amazon-quick/agent-to-quick-skill",
@@ -24,7 +29,7 @@
         {
           "path": "skills/amazon-quick/personal-agent-architect",
           "type": "skill",
-          "checksum": "sha256:6257316e64033c8b0cca42e599ee734d4f8a5c8bb6bc401468e0750b3e91136e"
+          "checksum": "sha256:eb9d5012b0e612b3083c1f7805ce16e65354bad1478eda326320aaef974d7bb1"
         }
       ]
     },

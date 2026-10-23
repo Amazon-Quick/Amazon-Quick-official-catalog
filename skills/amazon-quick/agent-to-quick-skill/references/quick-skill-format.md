@@ -182,7 +182,7 @@ Manually authored folders dropped on disk are picked up on the next restart:
 Skills **can** be shared on the desktop - three ways:
 
 1. **Publish / Share to teammates** - from **Agents & skills → Skills**, open the skill's detail pane
-   and use Publish/Share. Recipients add it from **Browse more → "Shared with you"** (curated
+   and use Publish/Share. Recipients add it from **Browse all → "Shared with me"** (curated
    first-party skills appear under **"Official"**). This installs an editable local copy they own.
 2. **Export the folder** - as a `.zip` or bundle it into a `.qplugin` and send it; the recipient
    imports via **+ Create → Import from file** (or double-clicks the `.qplugin`).

@@ -25,7 +25,7 @@ inputs:
   options: [liability, termination, ip, payment, confidentiality, indemnification, all]
   required: false
   default: "all"
-checksum: "sha256:9dd5717857d6abbbfeb833cf228b7dffd19055f206d2f9d3945a0f8ab9ee1ed3"
+checksum: "sha256:cda914287b9bb9a5741a848fa8617373a25a5d7141d14d408be2a3934d076f7d"
 ---
 
 ## Overview

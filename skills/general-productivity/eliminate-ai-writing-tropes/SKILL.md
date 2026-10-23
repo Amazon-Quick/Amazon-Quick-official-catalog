@@ -8,7 +8,7 @@ last_updated: "2026-09-13"
 license: "MIT-0"
 tools: []
 
-checksum: "sha256:7122d357609edb3a88ef024cc11d37497e6909d1983d2eed2d44e061214dd665"
+checksum: "sha256:e3e05b62d95e437ea583d7e797f98521871254d329fd8446409e53a09e58b43b"
 ---
 
 ## Overview

@@ -9,7 +9,7 @@ Run from the skill root (scripts/ on the path, no in-code sys.path edits):
 
 import unittest
 
-from create_checksum import ChecksumRenderer, ManifestDigest
+from create_checksum import CHECKSUM_STRIP_RE, ChecksumRenderer, ManifestDigest
 
 
 class TestManifestDigest(unittest.TestCase):
@@ -46,6 +46,11 @@ class TestChecksumRenderer(unittest.TestCase):
         once = ChecksumRenderer("---\nname: demo\n---\nbody\n", "sha256:abc").render()
         twice = ChecksumRenderer(once, "sha256:abc").render()
         self.assertEqual(once, twice)
+
+    def test_strip_after_first_insert_restores_original_text(self) -> None:
+        original = "---\nname: demo\n---\nbody\n"
+        rendered = ChecksumRenderer(original, "sha256:abc").render()
+        self.assertEqual(CHECKSUM_STRIP_RE.sub("", rendered, count=1), original)
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ inputs:
   description: "Free-text guidance on brand voice, terminology preferences, or style constraints to apply across all variants."
   type: string
   required: false
-checksum: "sha256:a127c1bce42cdc5cfc24108e23215cbe35a2ee40cce558231d503c25d5c640de"
+checksum: "sha256:d9b4a2c0931fe69155f1a1646380426769de9c3a8407ed5cf1de93ee6f1be4b1"
 ---
 
 ## Overview

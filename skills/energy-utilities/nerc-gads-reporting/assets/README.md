@@ -24,7 +24,7 @@ This skill builds on the following built-in Amazon Quick system skills. They are
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. In Customize > Skills, confirm the built-in system skills listed above are enabled (they carry a System badge and are on by default).
 
 ## Getting started

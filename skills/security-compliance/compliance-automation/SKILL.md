@@ -23,7 +23,7 @@ inputs:
   description: "Description of the systems, services, or organizational boundaries in scope for the compliance effort (e.g., 'SaaS platform hosted on AWS serving enterprise customers')."
   type: string
   required: true
-checksum: "sha256:5028371b551a02535f5b9484965a6bc316a7b1c74e961f0314ac6c719df95797"
+checksum: "sha256:f7babb6bb80ea8a86c2ea1ff8d11ef1dd64a9a44560db0975ce793a798592aec"
 ---
 
 ## Overview

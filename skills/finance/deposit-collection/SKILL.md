@@ -32,7 +32,7 @@ inputs:
     options: [request, confirm, final]
     required: false
     default: request
-checksum: "sha256:ef72b4c90664895177f63c4b94b152a5489133e0262c3d3bc1b3809ebfbc4482"
+checksum: "sha256:b4fbd66631c7c422c84dcb416d06590db509584ba6ddae05e08d256f4cbfd1eb"
 ---
 
 ## Overview

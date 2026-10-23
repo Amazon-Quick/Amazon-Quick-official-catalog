@@ -218,7 +218,7 @@ are really converting:
 | **Skill** | On-demand instructions the agent loads by relevance | Becomes one Quick skill, nearly one-to-one. |
 | **Connector** | A link to an external tool or data source | Becomes a Quick connection: Settings → Capabilities → Connections. |
 | **Plugin** | A bundle of skills, connectors and sub-agents installed together | **No Quick equivalent.** Decomposes into several separate installs. Say so before starting. |
-| **Marketplace** | Where plugins are browsed and installed | Quick has a comparable path: skills are published/shared to teammates and browsed under **Agents & skills → Skills → Browse more** ("Shared with you" / "Official"), or shared as `.zip`/`.qplugin` files, or through an org catalog. |
+| **Marketplace** | Where plugins are browsed and installed | Quick has a comparable path: skills are published/shared to teammates and browsed under **Customize → Skills → Browse all** ("Shared with me" / "Official"), or shared as `.zip`/`.qplugin` files, or through an org catalog. |
 
 **Why this shape is easier.** A markdown definition is already the same kind of object as a Quick
 skill - frontmatter plus a body written for an agent that loads it on demand. There is no instruction

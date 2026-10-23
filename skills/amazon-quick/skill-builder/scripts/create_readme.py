@@ -1,7 +1,7 @@
 """
 description: Scaffold a skill's README.md with a standard-conforming frontmatter header (description, last_updated, and exactly one of source_url or origin) and the section skeleton the Quick Skills Standard expects (Overview, Pre-requisites, Installation, Getting started). The README is written to assets/README.md under the skill directory. Run as: python create_readme.py <skill_dir> --description "..." (--source-url "..." | --origin original).
 The README is written to assets/README.md under the skill directory (not the skill root).
-last_updated: 2026-09-13
+last_updated: 2026-10-22
 origin: original
 
 """
@@ -74,8 +74,10 @@ class ReadmeRenderer:
             "List each dependency (type, which connector, runtime, required or optional), "
             "or state that the skill uses only built-in tools.\n\n"
             "## Installation\n\n"
-            "1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more,"
-            " select the Official tab, and search for the skill by name. Choose Install.\n"
+            "1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all,"
+            " select the Official tab, and search for the skill by name. Choose Install."
+            " See [Browsing for more skills]"
+            "(https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).\n"
             "2. Install and enable any connectors listed in Pre-requisites above."
             " For connector setup, see"
             " https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html\n\n"

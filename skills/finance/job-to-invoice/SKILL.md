@@ -34,7 +34,7 @@ inputs:
     description: "How this business's customers pay (a payment-page or invoice-pay URL, PayPal.me/Stripe link, Venmo/Zelle/Cash App handle, bank/ACH details, or a check mailing address / pay-by-phone contact). Used as the pay option in the invoice email when QuickBooks does not return its own pay link. Captured once on first use and remembered across ALL invoicing skills (Job-to-Invoice, Invoice Chaser, Deposit Collection). Never fabricated."
     type: string
     required: false
-checksum: "sha256:b9c2a4e6d8c12b0d1b07ddbfde40a1773108fe4731d9cda75800b208545b7c41"
+checksum: "sha256:1b60049d9870e0486067b80782ae0b7799df247e101cdcdc22b0ef9e316e86fb"
 ---
 
 ## Overview

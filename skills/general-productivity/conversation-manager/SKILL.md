@@ -17,7 +17,7 @@ inputs:
     description: Local filesystem path where conversation exports and backups are saved. User must supply this on first use.
     type: path
     required: true
-checksum: "sha256:796de720e5e4ea9a5c6a1a4345a4f0523530b934e8bd5f24a66f986307ffde3b"
+checksum: "sha256:9dbb09a99f20ffa17d544718fa6d7906516457dfd74c08ca709d9525cb951500"
 ---
 
 ## Overview

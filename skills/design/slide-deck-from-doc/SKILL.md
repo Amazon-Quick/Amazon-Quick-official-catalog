@@ -23,7 +23,7 @@ inputs:
     type: number
     required: false
     default: 15
-checksum: "sha256:8321b67956585e908eb43ac73b493a7072d522b4b28ec38e331a6831eeb17f5f"
+checksum: "sha256:b922190fdd79a7e27ab0629fb7cd62dff48d86bc3b39e46ac0812453fc3d5711"
 ---
 
 ## Overview

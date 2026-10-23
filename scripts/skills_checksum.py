@@ -69,6 +69,9 @@ TEST_FILE_RE = re.compile(r"^test_.*\.py$")
 # matching skill-builder's create_checksum.py exactly, so the catalog and the
 # validator compute the identical digest.
 CHECKSUM_LINE_RE = re.compile(r"^checksum\s*:\s*.*$", re.M)
+# Removes the whole line, newline included, so a SKILL.md hashes the same before
+# and after the checksum line is first inserted.
+CHECKSUM_STRIP_RE = re.compile(r"^checksum\s*:.*\n?", re.M)
 CHECKSUM_VALUE_RE = re.compile(r'^checksum\s*:\s*"?(sha256:[0-9a-f]{64})"?\s*$', re.M)
 
 
@@ -98,7 +101,7 @@ class SkillManifest:
 
     def _content_for(self, relpath: str, path: Path) -> bytes:
         if relpath == SKILL_FILE:
-            stripped = CHECKSUM_LINE_RE.sub(
+            stripped = CHECKSUM_STRIP_RE.sub(
                 "", path.read_text(encoding="utf-8"), count=1
             )
             return stripped.encode("utf-8")

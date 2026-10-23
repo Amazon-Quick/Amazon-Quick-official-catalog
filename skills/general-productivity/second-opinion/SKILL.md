@@ -32,7 +32,7 @@ inputs:
     type: boolean
     required: false
     default: false
-checksum: "sha256:e5a30542fb379aea5221c24ce32adffb81dc7f28155ccfec0cc21c443f7a2b54"
+checksum: "sha256:cc275ae0efd5d7baf0508b78be91abd74e3933ff398f37c81daee53d3526b201"
 ---
 
 ## Overview

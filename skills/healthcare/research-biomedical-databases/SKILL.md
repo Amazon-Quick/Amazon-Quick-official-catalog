@@ -18,7 +18,7 @@ inputs:
   options: [variant-interpretation, drug-target-analysis, gene-expression, protein-analysis, discovery]
   required: false
   default: discovery
-checksum: "sha256:2f4660a8125a1992d7247e46f70ba7260fcb16d54be3dc3859b026bd828b3e01"
+checksum: "sha256:92aa818c868f596d6ec129fb69e9f7d76c2f99f5afd3faa50e1b42a5239d6fb5"
 ---
 
 ## Overview

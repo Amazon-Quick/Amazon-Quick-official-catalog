@@ -34,7 +34,7 @@ inputs:
   description: "Name of the assigned onboarding buddy. If not provided, the skill will suggest one based on team composition."
   type: string
   required: false
-checksum: "sha256:c471465d0e712203e7421815551f0080be2b0a8e942a9e940db01fc9d01bf144"
+checksum: "sha256:369ca7096b989317e1c95e97f6d845a692cf050ba5ed034366db342a397ef506"
 ---
 
 ## Overview

@@ -1,11 +1,6 @@
 ---
-inclusion: fileMatch
-fileMatchPattern: ["**/*.js", "**/*.mjs", "**/*.cjs"]
-name: javascript-sandbox-code-standards
 description: "Readable, correct JavaScript for the Amazon Quick sandbox: const/let over var, named exports, allowed modules only, structured data, disciplined async and errors, no dynamic code evaluation. Companion to quick-sandbox-code-standards."
-scope: typescript
-created_date: 2026-09-13
-last_updated: 2026-09-13
+last_updated: 2026-10-22
 origin: original
 ---
 

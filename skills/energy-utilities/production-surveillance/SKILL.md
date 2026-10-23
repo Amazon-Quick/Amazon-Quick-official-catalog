@@ -11,7 +11,7 @@ preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time, start_task, create_task_group, get_task_group_result, inspect_task, agent_management, memory_management, list_scheduled_agents, create_scheduled_agent, recall_memories, save_to_memory]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Python system tool and optional dashboard, scheduling, memory, and local LAS/DLIS conversion capabilities; verify availability, stop if the required tool is missing, and note reduced capability when an optional prerequisite is missing."
 scripts: [run_tiger_fixture.py, run_petrophysics.py, run_economics.py, run_las_reader.py]
-checksum: "sha256:544655bf342150af18592bb337fa9013328218d9d50d139889564fa962a354fa"
+checksum: "sha256:cc9c55f7672692a408a9e0326bdf4b55ca385daa46c4180f2d74f6dddd9119a7"
 ---
 
 ## Overview

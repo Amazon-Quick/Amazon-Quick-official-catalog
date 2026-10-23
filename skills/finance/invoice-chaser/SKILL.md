@@ -152,7 +152,7 @@ inputs:
     type: number
     required: false
     default: 3
-checksum: "sha256:98a23faee088753f43f2977afc76555cb46e6fec457fac3ee80026a6db168c93"
+checksum: "sha256:577874e7aea5c353e093a78703c6c3e1433da807c4b6c627df0645a51d7a4e9c"
 ---
 
 ## Overview

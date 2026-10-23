@@ -18,7 +18,7 @@ inputs:
   description: "Source for HR policy documents. Accepts: a local folder path containing indexed HR handbooks and policy documents, a Quick Space name (documents in the space will be searched semantically), or leave empty to use the default indexed documents."
   type: string
   required: false
-checksum: "sha256:5bd0ef61030d2b3c9940522dd55411d1242aff5559d45f300b0a25da1d35ae3d"
+checksum: "sha256:b56036d830a0a44bd788ef4551356b9759b37e7ecf71e3cffca195d1cebc1f31"
 ---
 
 ## Overview

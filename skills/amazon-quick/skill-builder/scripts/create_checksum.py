@@ -23,6 +23,9 @@ EXCLUDE_SUFFIXES = frozenset({".pyc"})
 EXCLUDE_NAMES = frozenset({".DS_Store"})
 TEST_FILE_RE = re.compile(r"^test_.*\.py$")
 CHECKSUM_LINE_RE = re.compile(r"^checksum\s*:\s*.*$", re.M)
+# Removes the whole line, newline included, so a SKILL.md hashes the same before
+# and after the checksum line is first inserted.
+CHECKSUM_STRIP_RE = re.compile(r"^checksum\s*:.*\n?", re.M)
 SKILL_FILE = "SKILL.md"
 DIGEST_PREFIX = "sha256"
 
@@ -73,7 +76,7 @@ class SkillManifest:
 
     def _content_for(self, relpath: str, path: Path) -> bytes:
         if relpath == SKILL_FILE:
-            stripped = CHECKSUM_LINE_RE.sub(
+            stripped = CHECKSUM_STRIP_RE.sub(
                 "", path.read_text(encoding="utf-8"), count=1
             )
             return stripped.encode("utf-8")

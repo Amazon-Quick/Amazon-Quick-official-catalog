@@ -1,6 +1,6 @@
 """
 description: Scaffold a new scripts/*.py file with a standard-conforming header (description, last_updated, and exactly one of source_url or origin) and a one-public-method class plus main()/argparse skeleton, so a new script starts compliant with the Python sandbox code standard. Run as: python create_script.py scripts <file_name> --description "..." --class-name "..." --method-name "..." (--source-url "..." | --origin original).
-last_updated: 2026-09-13
+last_updated: 2026-10-22
 origin: original
 
 """
@@ -73,6 +73,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
+
 
 class _PrintStream:
     """Routes log records to stdout via print (the sandbox only returns stdout)."""

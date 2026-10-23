@@ -33,7 +33,7 @@ If a DLIS converter is unavailable, continue with the bundled synthetic fixtures
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 1. Confirm the built-in Python capability is enabled.
 1. Confirm the optional `html_design`, `highcharts`, `agent_management`, and `memory_management` capabilities are enabled for dashboards and scheduled surveillance.
 1. For external LAS 2.0 data, keep the unwrapped text file within the confirmed workspace. For DLIS, preprocess it locally into JSON and validate units and curve names before upload.

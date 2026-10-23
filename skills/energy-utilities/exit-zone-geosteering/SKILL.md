@@ -11,7 +11,7 @@ preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time, start_task, create_task_group, get_task_group_result, inspect_task, agent_management, memory_management]
 readme: "Read assets/README.md ## Pre-requisites before running. Verify every required built-in tool is available, note optional capability fallbacks, and stop the affected workflow if a required tool is missing."
 scripts: [create_synthetic_well.py, run_verification.py, run_price_impact.py, run_zone_exit.py, create_handover.py, create_dashboard.py]
-checksum: "sha256:8aeace451f019f9429f4c3cda2ac205e069c260ab0b00660c74037db78260fd6"
+checksum: "sha256:c1188ca070915a28d623f8793e6a26b780e211910288db0f888dbd6c06deec9c"
 ---
 
 ## Overview

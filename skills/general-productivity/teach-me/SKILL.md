@@ -43,7 +43,7 @@ inputs:
   type: choice
   options: [soft-pastel, ocean-breeze, warm-earth, minimal-clean, amazon-quick]
   required: false
-checksum: "sha256:2a81c47f623fa89fdaff99f5bd30afceb8de89a4b6b346f87cb438a74fcd1acb"
+checksum: "sha256:d096f9b30bb43c85b7c8cb1c9b5a60b249e22b0bb347bad71c0f4a68e810384f"
 ---
 
 ## Overview

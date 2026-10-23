@@ -8,7 +8,7 @@ created_date: "2026-07-15"
 last_updated: "2026-07-15"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, file_read_pdf, file_read_docx, file_read_image, run_python, open_in_session_tab, start_task, get_task_result]
-checksum: "sha256:ae76933f767d7e3ee32ae22ef7d9a81d6589046efdcc24f39a5808267891ab07"
+checksum: "sha256:0bb9760a6d1c45dc7992a92652ae2b51cb9fd5e8349e6461fa28001a7f9a2a43"
 ---
 
 ## Overview

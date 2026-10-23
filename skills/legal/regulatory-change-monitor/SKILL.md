@@ -28,7 +28,7 @@ inputs:
   type: string
   required: false
   default: "7 days"
-checksum: "sha256:471a241a164aec933f5eee673ed1ea8613d8c2d6dd0ec63c1fbae535291df103"
+checksum: "sha256:6e9a4d6ef1aa2d0573f6c5047b4f51487ec3ac4a59c57541cbc020023e49d6ea"
 ---
 
 ## Overview

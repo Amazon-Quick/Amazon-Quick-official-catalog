@@ -38,7 +38,7 @@ If a required built-in tool is unavailable, stop the affected workflow. If `high
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. In Customize > Skills, confirm `highcharts` and `html_design` are enabled; they carry a System badge and are on by default.
 3. In Customize > Connectors, confirm the built-in system tools are available if you want Decision Review fan-out or the scheduled watch: https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html
 4. No external connector setup is needed.

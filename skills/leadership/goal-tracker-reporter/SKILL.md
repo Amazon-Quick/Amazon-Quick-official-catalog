@@ -33,7 +33,7 @@ inputs:
   description: "Team or org name the goals belong to (e.g., 'Platform Engineering', 'Customer Success'). Defaults to the user's team if detectable."
   type: string
   required: false
-checksum: "sha256:58a7ac5662828df3747f965bc2241a70903dabc963fc17205919f6fcc91cf38d"
+checksum: "sha256:95d5e4618b0d8488a43e61db7f8e86f1e0e412de4dd648e58b6905a80d7e0acd"
 ---
 
 ## Overview

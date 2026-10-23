@@ -32,7 +32,7 @@ inputs:
   options: ["Weekly", "Monthly", "Quarterly", "Annual"]
   default: "Monthly"
   required: false
-checksum: "sha256:acccb8953b03dc152c49d49a1626f6caf18349fa94a528dc3a0681733e9fdb57"
+checksum: "sha256:5ae736ac13ed152dfc341ee6be6340140b8546950a3b190c52fb3fba3ce12fa6"
 ---
 
 ## Overview

@@ -25,7 +25,7 @@ inputs:
     type: string
     required: false
     default: "08:00"
-checksum: "sha256:b7ec4dfe580c3ecb72af4e89d4b243ff0325ec7df5cd004d50712bfa42fd9cd6"
+checksum: "sha256:fa1abef92061967d8f7367b6ca65fd71cfe1f66af6e1f5bd44d61875a6a7abd1"
 ---
 
 ## Overview

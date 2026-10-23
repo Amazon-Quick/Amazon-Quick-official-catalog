@@ -22,7 +22,7 @@ inputs:
     description: Primary brand color hex code to override the default palette
     type: string
     required: false
-checksum: "sha256:826cd12be02217063223a3e67b5e6482186fb92e405abb1d402cb8b439dca721"
+checksum: "sha256:647a5822cc2fba24a667105dc4149e137e0b13f036c7a265b5eb19388b453019"
 ---
 
 ## Overview

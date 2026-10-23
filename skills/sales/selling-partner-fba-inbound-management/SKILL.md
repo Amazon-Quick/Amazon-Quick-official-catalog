@@ -7,7 +7,7 @@ created_date: "2026-09-15"
 last_updated: "2026-09-15"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
-checksum: "sha256:df7bc83cd1fd1a726eee91f8301e6784410413391b6b2a79100265a6fcde4ec3"
+checksum: "sha256:7a412c8c8691f20740595aa51614c127525fdda26f2bafc8ddb788059547abe5"
 ---
 
 ## Overview

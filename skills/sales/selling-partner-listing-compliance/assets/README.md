@@ -25,7 +25,7 @@ Establishing the active seller account and marketplace is handled by the session
 The issue fixer, buyability, and searchability skills each carry a rule that a change must comply with Amazon's policies and that a non-compliant change is flagged and pointed to the policy. This skill is where they point. A sibling calls this gate before its preview step whenever the proposed change touches product claims, ingredients, category, condition, images, or identifiers (for example a title that adds "FDA approved", a bullet that adds an antimicrobial claim, a new main image for a children's product, a condition change, or a new GTIN). Plain price, quantity, or typo fixes do not need the gate. On a go, control returns to the sibling and its own preview-approve-verify triad runs.
 
 ## Installation
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. If you added this skill manually from the catalog, add it in Customize > Skills, then confirm the connector above is connected and that its tool search returns the Seller Assistant tools.
 
 ## Getting started

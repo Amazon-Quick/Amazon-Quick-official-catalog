@@ -28,7 +28,7 @@ inputs:
     description: "Directory where deliverables (pro-forma, charts, summary) are written."
     type: path
     required: false
-checksum: "sha256:6ce800dc22cf0e20496dfdd28bc21ff54dfba15115730aef11f97219d5a711b1"
+checksum: "sha256:a6f927d6f533498e04bb834668869b4c12470062cc6dd247a20adad5925e22e1"
 ---
 
 ## Overview

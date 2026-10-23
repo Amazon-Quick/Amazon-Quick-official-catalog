@@ -18,7 +18,7 @@ This skill orchestrates multi-database biomedical research by selecting the righ
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 
 2. Deploy the `biomni-research` MCP server on your own AWS account first, following its deployment and connection guide (AWS prerequisites, deployment, authentication, and token refresh): https://github.com/aws-samples/amazon-bedrock-agents-healthcare-lifesciences/blob/main/mcp-servers/agentcore-gateway/biomni-research-tools/README.md
 3. Connect the deployed server to Amazon Quick as a remotely hosted MCP server. The path depends on your surface:

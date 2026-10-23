@@ -21,7 +21,7 @@ Both MCP servers must be connected to Amazon Quick before use. Without them, the
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 
 2. Deploy the two MCP servers listed above from their source repositories.
 3. Connect each deployed server to Amazon Quick as a remotely hosted MCP server. The path depends on your surface:

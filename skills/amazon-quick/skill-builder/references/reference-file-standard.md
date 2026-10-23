@@ -1,6 +1,6 @@
 ---
 description: "The header standard every skill file must carry: SKILL.md frontmatter, references/*.md frontmatter, and scripts/*.py module docstrings. Defines required and conditional fields and the staleness rule."
-last_updated: 2026-09-13
+last_updated: 2026-10-22
 origin: original
 ---
 
@@ -28,7 +28,7 @@ Exactly one of `source_url` or `origin: original` is present on every file, so "
 </fields>
 
 <staleness>
-A file is stale when its `last_updated` is more than six calendar months before today (UTC). Audit every skill on this six-month cadence. A stale file, or a stale `SKILL.md`, produces a WARNING (not a failure): the skill still runs, but the audit flags it. On a stale result, run a full re-evaluation (the skill-builder `<Workflow - Eval>`) and refresh what is out of date: regenerate a derived file from its `source_url`, review an `origin: original` file by hand, and re-check `SKILL.md` against the current standard. After refreshing, bump each file's `last_updated` and regenerate the checksum. `check_skill.py` enforces this, emitting the staleness WARNING for `SKILL.md` and every `README.md`, `references/*.md`, and `scripts/*.py` header.
+A file is stale when its `last_updated` is more than six calendar months before today (UTC). Audit every skill on this six-month cadence. A stale file, or a stale `SKILL.md`, produces a WARNING (not a failure): the skill still runs, but the audit flags it. `check_skill.py` emits the staleness WARNING for `SKILL.md` and every `README.md`, `references/*.md`, and `scripts/*.py` header. The skill-builder `<Workflow - Audit>` says how to refresh a stale file.
 </staleness>
 
 <generating>

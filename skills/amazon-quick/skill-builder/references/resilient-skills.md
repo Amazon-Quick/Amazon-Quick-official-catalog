@@ -1,6 +1,6 @@
 ---
 description: "How to author a skill that survives long conversations, a weaker model tier, and execution limits."
-last_updated: 2026-09-13
+last_updated: 2026-10-22
 origin: original
 ---
 
@@ -23,7 +23,7 @@ Three conditions can degrade a skill at runtime. Design against each rather than
 <patterns>
 Each pattern counters one or more of the failure modes. Design for them from the start, because retrofitting resilience into a finished skill is harder than building it in.
 
-**Checkpoint to disk.** Write progress to a file as the workflow advances, not only at the end. A run that is interrupted, or a fresh session resuming after context got too long, can read the checkpoint and see what is done. The eval loop's per-iteration directories and incremental `metrics.json` are an example: each run's result lands on disk the moment it finishes.
+**Checkpoint to disk.** Write progress to a file as the workflow advances, not only at the end. A run that is interrupted, or a fresh session resuming after context got too long, can read the checkpoint and see what is done. The eval workspace's per-run folders are an example: each run's result lands on disk the moment it finishes.
 
 **Make steps idempotent and resumable.** Begin a step by checking whether its output already exists. If it does, skip to the next. This lets a re-run or a new session pick up exactly where the last one stopped, instead of redoing work or double-writing. State the resume check explicitly in the step rather than assuming the model will infer it.
 
@@ -31,7 +31,7 @@ Each pattern counters one or more of the failure modes. Design for them from the
 
 **Break long work into units.** Split a large operation into pieces small enough to each finish well inside any execution limit. This applies to code (long loops belong in bounded chunks) and to workflows (a self-contained step that finishes and checkpoints beats one sprawling step that may be cut off).
 
-**Author for the weakest likely model.** Apply the explicitness the standard already requires (explicit actions, no reliance on unstated rules, and the validation and failure paths from Rule 12). When a step genuinely needs smart-level judgment, spawn it as a background task with the model set to smart via start_task's model parameter.
+**Author for the weakest likely model.** Apply the explicitness the standard already requires (explicit actions, no reliance on unstated rules, and the validation and failure paths from Rule 10). When a step genuinely needs smart-level judgment, spawn it as a background task with the model set to smart via start_task's model parameter.
 
 **Re-anchor in long workflows.** For a workflow with many steps, have the agent restate where it is and what remains at natural checkpoints. A brief "completed steps 1 to 4, now on step 5" keeps a long run from losing its place.
 </patterns>

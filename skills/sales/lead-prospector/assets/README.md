@@ -20,7 +20,7 @@ Lead Prospector researches companies that match your ideal customer profile, ide
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

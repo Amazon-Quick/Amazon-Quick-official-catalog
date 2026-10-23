@@ -31,7 +31,7 @@ inputs:
   description: "Your company or agency name. Auto-resolved from user identity if not provided."
   type: string
   required: false
-checksum: "sha256:3b3cac16d040ed72eec8fa92104f7805e62db768be2c78e275f5f92be316dfbc"
+checksum: "sha256:726b904c0f4b106e137843cfc4d0fbe5c2c9e41773a13e58a453f65d4c57c2aa"
 ---
 
 ## Overview

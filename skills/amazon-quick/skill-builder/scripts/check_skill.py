@@ -1,6 +1,6 @@
 """
 description: Run the mechanical, objective pass/fail schema checks on a SKILL.md (frontmatter fields, naming, character and line limits, XML tag balance, block ordering, em dashes and body emojis, rule numbering, a well-formed checksum field, and checksum integrity by recomputing the content digest and comparing it to the stored checksum), plus non-blocking staleness WARNINGs when SKILL.md or a header file is over six months old; qualitative review is done by reading, not here. Run as: python check_skill.py <path/to/SKILL.md>.
-last_updated: 2026-09-13
+last_updated: 2026-10-22
 origin: original
 
 Usage:
@@ -41,7 +41,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 MAX_DESCRIPTION = 1024
-MAX_BODY_LINES = 1024
+# Anthropic's skill guidance: keep the SKILL.md body under 500 lines.
+MAX_BODY_LINES = 500
 MAX_NAME = 64
 
 # Six calendar months, per the staleness rule in references/reference-file-standard.md.
@@ -51,21 +52,16 @@ REQUIRED_FRONTMATTER = ("name", "description", "created_date", "last_updated")
 DATE_FIELDS = ("created_date", "last_updated")
 HEADINGS = ("## Overview", "## Workflow")
 BLOCK_ORDER = (
-    "Identity",
     "Goal",
     "Definitions",
     "Rules",
     "Agent Annotations",
     "Gotchas",
     "Instructions",
-    "Templates",
     "Resources",
 )
-VALID_MODELS = ("fast", "balanced", "smart")
+VALID_MODELS = ("fast", "balanced", "smart", "auto")
 VALID_THINKING = ("off", "low", "medium", "high")
-DEFAULT_THINKING = "high"
-# Fast mode does not support thinking effort, so it pairs only with "off".
-FAST_MODEL = "fast"
 
 # Compiled once, named for intent, referenced wherever needed.
 FENCE_RE = re.compile(r"```.*?```", re.S)
@@ -89,8 +85,6 @@ FRONTMATTER_TOOLS_RE = re.compile(r"^tools\s*:\s*\[([^\]]*)\]", re.M)
 WORKFLOW_TOOLS_RE = re.compile(r"tools=\[([^\]]*)\]")
 INPUT_NAME_RE = re.compile(r"^\s*-\s*name:\s*([A-Za-z0-9_]+)", re.M)
 PLACEHOLDER_RE = re.compile(r"\{\{([A-Za-z0-9_]+)\}\}")
-PREFERRED_MODEL_RE = re.compile(r"preferred_model=([A-Za-z]+)")
-PREFERRED_THINKING_RE = re.compile(r"preferred_thinking=([A-Za-z]+)")
 INPUT_SPLIT_RE = re.compile(r"\n\s*-\s*name\s*:")
 # Emoji live across several Unicode blocks. Each range is named so a human
 # reviewer reads the intent instead of decoding raw code points.
@@ -104,7 +98,8 @@ EMOJI_RE = re.compile(
 EM_DASH = "\u2014"  # the em dash character, rendered "—"
 CHECKSUM_VALUE_RE = re.compile(r'^checksum\s*:\s*"?sha256:[0-9a-f]{64}"?\s*$', re.M)
 CHECKSUM_CAPTURE_RE = re.compile(r'^checksum\s*:\s*"?(sha256:[0-9a-f]{64})"?', re.M)
-CHECKSUM_LINE_RE = re.compile(r"^checksum\s*:\s*.*$", re.M)
+# Removes the whole line, newline included; must match create_checksum.py.
+CHECKSUM_STRIP_RE = re.compile(r"^checksum\s*:.*\n?", re.M)
 LAST_UPDATED_VALUE_RE = re.compile(r'^last_updated\s*:\s*"?(\d{4}-\d{2}-\d{2})', re.M)
 SKILL_FILENAME = "SKILL.md"
 # Digest inputs; must mirror create_checksum.py, which a standalone script cannot import.
@@ -567,8 +562,7 @@ class _InputPlaceholderCheck:
 
 
 class _WorkflowAttributesCheck:
-    """Every workflow opener carries description=, tools=, triggers=, and any
-    advisory hints hold valid enum values."""
+    """Every workflow opener carries description=, tools=, and triggers=."""
 
     def run(self, document: SkillDocument) -> CheckResult | None:
         openers = WORKFLOW_OPENER_RE.findall(document.body_without_fences())
@@ -578,12 +572,6 @@ class _WorkflowAttributesCheck:
             for attr in ("description=", "tools=", "triggers="):
                 if attr not in opener:
                     missing.append(f"'{name}' missing {attr.rstrip('=')}")
-            hm = PREFERRED_MODEL_RE.search(opener)
-            if hm and hm.group(1) not in VALID_MODELS:
-                missing.append(f"'{name}' preferred_model={hm.group(1)} invalid")
-            ht = PREFERRED_THINKING_RE.search(opener)
-            if ht and ht.group(1) not in VALID_THINKING:
-                missing.append(f"'{name}' preferred_thinking={ht.group(1)} invalid")
         if missing:
             return CheckResult.failed("workflow attribute gaps: " + "; ".join(missing))
         return CheckResult.passed(
@@ -738,7 +726,7 @@ class SkillContentManifest:
 
     def _content_for(self, relpath: str, path: Path) -> bytes:
         if relpath == SKILL_FILENAME:
-            stripped = CHECKSUM_LINE_RE.sub(
+            stripped = CHECKSUM_STRIP_RE.sub(
                 "", path.read_text(encoding="utf-8"), count=1
             )
             return stripped.encode("utf-8")

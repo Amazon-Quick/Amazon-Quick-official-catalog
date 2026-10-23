@@ -1,11 +1,6 @@
 ---
-inclusion: fileMatch
-fileMatchPattern: "**/*.py"
-name: python-sandbox-code-standards
 description: "Readable, correct, testable Python for the Amazon Quick sandbox: type hints, enums, Pydantic data models, one-public-method classes (SRP), constructor dependency injection, pure-vs-I/O separation, DRY via shared classes, facade and builder patterns, timestamped logging, cross-platform writes, and one dependency-injected unit test per file. Companion to quick-sandbox-code-standards."
-scope: python
-created_date: 2026-09-13
-last_updated: 2026-09-13
+last_updated: 2026-10-22
 origin: original
 ---
 
@@ -28,7 +23,7 @@ runtime rules live in quick-sandbox-code-standards.
 10. Put business logic in a class with exactly ONE public method, named for its action (SkillDigest.compute, ChecksumWriter.write). Every other method is private (leading underscore). This is the Single Responsibility Principle: one class, one reason to change. Data carriers are exempt from the one-method rule: a Pydantic model or frozen dataclass holds data and may expose fields, validators, and computed properties, but no action methods.
 11. Inject collaborators and configuration that varies through __init__ (constructor dependency injection). __init__ only assigns its arguments to attributes: no I/O, parsing, or other fallible work. Do the reading and parsing inside the public method. Reference static module constants directly rather than injecting them.
 12. Separate pure logic from I/O so the logic is unit-testable without a filesystem or network. A pure class receives already-loaded data (a string, a list, a manifest) through __init__ and returns a result. An I/O class only reads or writes. The I/O class depends on the pure class, never the reverse (Dependency Inversion).
-13. State shared logic once (DRY): put it in one class and have the other classes in the same file use it. Because each runnable script is a single self-contained file that cannot import another (Rule 17), avoid cross-script sharing by giving each concern a single owner, never by duplicating logic across scripts. For example, create_checksum.py owns computing and writing the checksum; the validator does not recompute it, it only checks that the frontmatter carries a well-formed checksum field.
+13. State shared logic once (DRY): put it in one class and have the other classes in the same file use it. Because each runnable script is a single self-contained file that cannot import another (Rule 17), avoid cross-script sharing by giving each concern a single owner, never by duplicating logic across scripts.
 14. When an action composes several collaborators, expose a facade: one class with a single public method that wires the collaborators together and returns the result. Callers depend on the facade, not on its internal parts.
 15. Assemble a complex artifact with a builder: a dedicated class whose single public method combines the parts and returns the finished model. Keep reading (an I/O class), assembling (the builder, pure), and writing (an I/O class) as separate single-purpose classes.
 16. Emit progress, diagnostics, and any human-readable result through the logging module with timestamps. The sandbox returns only stdout (a script's stderr is discarded), so route logging to stdout through a small `_PrintStream` adapter and configure it once at module top with `logging.basicConfig(stream=_PrintStream(), force=True)`. Write durable output to files (Rule 9) rather than hand-printing it, and keep bare `print()` out of the code except inside the stream adapter.

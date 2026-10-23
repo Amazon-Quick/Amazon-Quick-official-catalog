@@ -22,7 +22,7 @@ The connector is offered during Amazon Quick onboarding. If the seller connected
 Establishing the active seller account and marketplace is handled by the session's account context (the connected Amazon Selling Partner connector); this skill reuses it.
 
 ## Installation
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Connect and authenticate the Amazon Selling Partner connector. Under Customize > Connectors, find Amazon Selling Partner and choose Install.
 
 ## Getting started

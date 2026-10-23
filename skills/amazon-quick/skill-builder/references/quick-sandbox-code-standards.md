@@ -1,10 +1,6 @@
 ---
-inclusion: always
-name: quick-sandbox-code-standards
 description: "Runtime rules for code generated to run in the Amazon Quick sandbox (run_python and run_javascript): manifest-only dependencies, no network, time and memory limits, workspace persistence, read-only vs write execution, result handling, imports, regexes, and filtering. Applies to both languages."
-scope: language-agnostic
-created_date: 2026-09-13
-last_updated: 2026-09-13
+last_updated: 2026-10-22
 origin: original
 ---
 
@@ -35,6 +31,7 @@ Runtime and hygiene rules every snippet generated for the Amazon Quick sandbox m
 import json
 import os
 import re
+from pathlib import Path
 
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")  # compiled once, anchored (Rules 9, 11)
 
@@ -43,7 +40,9 @@ def is_active(record: dict) -> bool:  # named predicate (Rule 12)
     return record.get("status") == "active"
 
 
-records = json.load(open(os.path.join(os.environ["WORKSPACE_DIR"], "in.json")))
+records = json.loads(
+    (Path(os.environ["WORKSPACE_DIR"]) / "in.json").read_text(encoding="utf-8")
+)
 active = [r for r in records if is_active(r) and ISO_DATE.match(r["date"])]
 print(f"{len(active)} active records")  # print the result (Rule 5)
 ```
@@ -52,7 +51,7 @@ print(f"{len(active)} active records")  # print the result (Rule 5)
 <example type="incorrect">
 ```python
 # import mid-function (7), regex for a plain substring (8), nested quantifier (9),
-# needless capture (10), recompiled per item (12), dense filter (12).
+# needless capture (10), recompiled per item (11), dense filter (12).
 def filter_rows(records):
     import re
 

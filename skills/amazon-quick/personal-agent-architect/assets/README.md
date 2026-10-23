@@ -24,7 +24,7 @@ This skill composes other built-in skills and one optional connector category. I
 - Type: cloud connector. Runtime: cloud agent runtime (no local machine needed). Optional. A messaging or email connector (for example Slack, Outlook, or Gmail), used to build the voice engram and extract role signal. Without one, the run continues with a reduced voice and role profile.
 
 ## Installation
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse more, select the Official tab, and search for the skill by name. Choose Install.
+1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

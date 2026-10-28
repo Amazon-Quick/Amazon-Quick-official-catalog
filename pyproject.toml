@@ -17,6 +17,7 @@ packages = ["scripts"]
 build = "scripts.build:cli"
 fix = "scripts.build:fix"
 release = "scripts.release:release"
+embargo = "scripts.embargo:cli"
 skill-security = "scripts.build:skill_security"
 skills-checksum = "scripts.skills_checksum:main"
 category-check = "scripts.category_check:main"
@@ -39,12 +40,11 @@ dev = [
     "pydantic>=2,<3",
     "pyyaml>=6,<7",
     "ruff>=0.15,<1",
-    "safety>=3,<4",
     "zensical",
 ]
 
 [tool.uv]
-constraint-dependencies = ["onnxruntime<=1.23.2", "cryptography<49"]
+constraint-dependencies = ["onnxruntime<=1.23.2"]
 
 [tool.ruff]
 target-version = "py313"

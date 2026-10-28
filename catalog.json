@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:d0cf5b1858fa6add035440a90151fc51a03f2f78ddd8305b4680697308cdc845",
+  "skillsChecksum": "sha256:0cfea484d8a105fc2cb9212b2cc09566660d123cd808adc46103a2ec36c7597d",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -299,6 +299,11 @@
           "path": "skills/general-productivity/markdown-to-docx",
           "type": "skill",
           "checksum": "sha256:fcad912b2f64550e9a1a7c051ec27db572536b9e9b27486bd364a294f378d6ee"
+        },
+        {
+          "path": "skills/general-productivity/click-through-demo",
+          "type": "skill",
+          "checksum": "sha256:4b7a6607b2cb9b47839ab3f2e4527bb08669f1886d1cedd21a733512c0751bac"
         }
       ]
     },

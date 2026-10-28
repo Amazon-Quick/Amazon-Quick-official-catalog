@@ -19,6 +19,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.repository == 'Amazon-Quick/Amazon-Quick-official-catalog'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

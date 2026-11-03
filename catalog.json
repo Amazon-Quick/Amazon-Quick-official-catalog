@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:0cfea484d8a105fc2cb9212b2cc09566660d123cd808adc46103a2ec36c7597d",
+  "skillsChecksum": "sha256:092722c223c4c78fba5be96e3cc97ef28e15387bc79c82d13c338beaa6b048b9",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -607,6 +607,17 @@
           "path": "skills/sales/selling-partner-listing-compliance",
           "type": "skill",
           "checksum": "sha256:187cfb893e462ada805ad8ec00e83fe1416c39ed16f076c144a871687552c060"
+        },
+        {
+          "path": "skills/sales/catalog-poc-test-skill",
+          "type": "skill",
+          "checksum": "sha256:f67b4b1a5898377053bae9f8d8cb8c18ea8da6938e558dbbac3f7307b412109e"
+        },
+        {
+          "path": "plugins/sales/catalog-poc-test",
+          "type": "plugin",
+          "displayName": "Catalog POC Test",
+          "kind": "solution"
         }
       ]
     },

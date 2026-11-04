@@ -1,0 +1,27 @@
+{
+  "name": "catalog-poc-test",
+  "displayName": "Catalog POC Test",
+  "description": "Test plugin for the salesforce-catalog-poc branch. One dummy skill plus a Salesforce connector slot.",
+  "author": {
+    "name": "Amazon Quick"
+  },
+  "version": "0.1.0",
+  "kind": "solution",
+  "categories": [
+    "Sales"
+  ],
+  "skills": [
+    "sales/catalog-poc-test-skill"
+  ],
+  "connectors": [
+    {
+      "key": "salesforce",
+      "label": "Your Salesforce",
+      "description": "The Salesforce org this test plugin connects to.",
+      "types": [
+        "SALESFORCE_CRM"
+      ],
+      "required": true
+    }
+  ]
+}

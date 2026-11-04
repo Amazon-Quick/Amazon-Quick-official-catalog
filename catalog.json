@@ -618,6 +618,12 @@
           "type": "plugin",
           "displayName": "Catalog POC Test",
           "kind": "solution"
+        },
+        {
+          "path": "plugins/sales/salesforce-for-sales",
+          "type": "plugin",
+          "displayName": "Salesforce for Sales",
+          "kind": "solution"
         }
       ]
     },

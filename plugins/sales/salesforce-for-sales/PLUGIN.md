@@ -28,7 +28,7 @@ skills:
   - sales/draft-outreach
   - sales/expansion-whitespace
   - sales/find-internal-answer
-  - sales/salesforce-forecast-narrative
+  - sales/forecast-narrative
   - sales/handle-objection
   - sales/inbox-sweep
   - sales/lead-triage

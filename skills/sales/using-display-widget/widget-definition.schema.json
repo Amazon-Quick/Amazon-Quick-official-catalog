@@ -1,0 +1,2409 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://salesforce.com/headless-360/widget-definition.schema.json",
+  "title": "Widget definition for display_widget dynamic mode",
+  "description": "The declarative renderer envelope an agent authors and passes to the display_widget tool in dynamic mode. The server echoes it to the native Mosaic renderer, which reads renderer.componentOverrides.$ : a tile/widget root whose children are the tile blocks rendered top to bottom. Author fully-hydrated literals; there is no expression compilation on this path. This schema documents the recommended full-envelope form (the server also accepts shorthands: a bare mosaic root, a plain array of blocks, or a single block).",
+  "type": "object",
+  "required": [
+    "renderer"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "renderer": {
+      "type": "object",
+      "description": "The renderer envelope. Supply componentOverrides.$ (a tile/widget root); body is an accepted alternative slot for a tile tree.",
+      "anyOf": [
+        {
+          "required": [
+            "componentOverrides"
+          ]
+        },
+        {
+          "required": [
+            "body"
+          ]
+        }
+      ],
+      "properties": {
+        "componentOverrides": {
+          "type": "object",
+          "description": "Holds the render root under the $ key.",
+          "required": [
+            "$"
+          ],
+          "properties": {
+            "$": {
+              "$ref": "#/$defs/mosaicRoot"
+            }
+          }
+        },
+        "body": {
+          "$ref": "#/$defs/mosaicRoot",
+          "description": "Alternative slot for the render root."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "mosaicRoot": {
+      "type": "object",
+      "description": "The tile/widget root. Its children are the top-level tile blocks, rendered in order.",
+      "required": [
+        "definition",
+        "children"
+      ],
+      "properties": {
+        "type": {
+          "const": "mosaic",
+          "description": "Root type discriminator. Set to mosaic."
+        },
+        "definition": {
+          "enum": [
+            "tile/widget",
+            "tile/mosaic"
+          ],
+          "description": "Root definition. Set to tile/widget. tile/mosaic is the legacy spelling, still accepted (the server emits it when normalizing the shorthand input forms)."
+        },
+        "children": {
+          "type": "array",
+          "description": "The tile blocks to render, top to bottom.",
+          "items": {
+            "$ref": "#/$defs/block"
+          }
+        }
+      }
+    },
+    "block": {
+      "type": "object",
+      "description": "One tile block: a definition naming the tile, an attributes object of block-specific props, and (for layout/container blocks) children. tile/table is the exception: its data lives in attributes.columns and attributes.rows, not in children.",
+      "required": [
+        "definition"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "definition": {
+          "type": "string",
+          "enum": [
+            "tile/text",
+            "tile/markdown",
+            "tile/badge",
+            "tile/link",
+            "tile/callout",
+            "tile/separator",
+            "tile/column",
+            "tile/row",
+            "tile/list",
+            "tile/listItem",
+            "tile/container",
+            "tile/table",
+            "tile/image",
+            "tile/icon",
+            "tile/avatar",
+            "tile/button",
+            "tile/buttonMenu",
+            "tile/menuItem",
+            "tile/code",
+            "tile/progress",
+            "tile/spinner",
+            "tile/spacer",
+            "tile/accordion",
+            "tile/accordionItem",
+            "tile/textField",
+            "tile/textarea",
+            "tile/numberField",
+            "tile/select",
+            "tile/checkbox",
+            "tile/radio",
+            "tile/switch",
+            "tile/chart",
+            "tile/sparkline",
+            "tile/meter",
+            "tile/piechart",
+            "tile/waterfall",
+            "tile/heatmap",
+            "tile/datagrid",
+            "tile/scatter",
+            "tile/timeline",
+            "tile/rangeband",
+            "tile/tabSet",
+            "tile/tab",
+            "tile/richText"
+          ],
+          "description": "Which tile to render, e.g. tile/text. See the per-definition attribute rules under allOf."
+        },
+        "type": {
+          "type": "string",
+          "description": "Optional type discriminator; usually omitted for non-root blocks."
+        },
+        "attributes": {
+          "type": "object",
+          "description": "Block-specific properties. Use each block's real attribute name (tile/text uses text, tile/badge uses label, tile/markdown uses source). Extra attributes a host understands are allowed."
+        },
+        "children": {
+          "type": "array",
+          "description": "Nested blocks, for layout/container blocks (tile/container, tile/row, tile/column, tile/list, tile/listItem, tile/accordion, tile/tabSet, tile/tab).",
+          "items": {
+            "$ref": "#/$defs/block"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/text"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/textAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/markdown"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/markdownAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/badge"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/badgeAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/link"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/linkAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/callout"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/calloutAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/separator"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/separatorAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/container"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/containerAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/column"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/columnAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/row"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/rowAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/list"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/listAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/table"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/tableAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/button"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/buttonAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/icon"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/iconAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/chart"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/chartAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/sparkline"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/sparklineAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/meter"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/meterAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/piechart"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/piechartAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/waterfall"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/waterfallAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/heatmap"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/heatmapAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/datagrid"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/datagridAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/scatter"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/scatterAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/timeline"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/timelineAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/rangeband"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/rangebandAttributes"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "buttonAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/button block: a real, clickable call to action. Every button must carry an actions.click action; there are no decorative buttons.",
+      "required": [
+        "label",
+        "actions"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "The button text. Required. Write the resolved action label (e.g. \"Draft the plan\", \"View in Salesforce\")."
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "secondary",
+            "outline",
+            "ghost",
+            "destructive"
+          ],
+          "description": "Button style. Defaults to secondary. Use primary for the single lead action in a callout; secondary for supporting actions."
+        },
+        "iconName": {
+          "$ref": "#/$defs/iconName",
+          "description": "Optional icon name shown before the label (e.g. send, link)."
+        },
+        "actions": {
+          "type": "object",
+          "description": "The actions fired by the button, keyed by event. Required. Currently only the click event is supported; its value is a non-empty array of actions run in order when the button is clicked.",
+          "required": [
+            "click"
+          ],
+          "properties": {
+            "click": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/buttonAction"
+              },
+              "description": "Actions fired on click, in order. Each is either a sendMessage (post a chat message back to the agent) or an openLink (navigate to a URL in a new tab)."
+            }
+          }
+        }
+      }
+    },
+    "buttonAction": {
+      "type": "object",
+      "description": "A tile/button click action. Discriminated by definition: action/sendMessage posts a chat message back to the agent; action/openLink opens a URL. Author fully-resolved literals in attributes (no {{token}} placeholders remain after hydration).",
+      "required": [
+        "definition",
+        "attributes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "definition": {
+          "type": "string",
+          "enum": [
+            "action/sendMessage",
+            "action/openLink"
+          ],
+          "description": "Which action to fire. action/sendMessage sends attributes.content to the chat as the user (a draft/ask CTA). action/openLink navigates to attributes.url (a View-in-Salesforce / Open-in-CRM CTA)."
+        },
+        "attributes": {
+          "type": "object",
+          "description": "Action payload. For action/sendMessage, supply content. For action/openLink, supply url (and optionally target)."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "action/sendMessage"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "content"
+                ],
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "description": "The message text sent to the chat as the user when the button is clicked. Required. Write it as a first-person request the rep sends back to the agent (e.g. \"Draft a next step for the Acme renewal\"). The host inserts it into the composer; whether it auto-sends is host-controlled."
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "action/openLink"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "description": "The URL to open in a new tab when the button is clicked. Required. For a Salesforce record, build the Lightning URL https://<myDomain>/lightning/r/<SObjectType>/<Id>/view (never a REST API path). Allowed schemes: http, https, mailto, tel — other schemes are rejected. Omit the button entirely if you lack the record Id."
+                  },
+                  "target": {
+                    "type": "string",
+                    "enum": [
+                      "_blank",
+                      "_self"
+                    ],
+                    "description": "Where to open the link. Defaults to _blank (new tab)."
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "iconName": {
+      "type": "string",
+      "description": "An icon name drawn by the renderer. The full set of icons the shipped renderer can draw (Lucide glyphs plus Salesforce aliases). A name outside this set renders nothing.",
+      "enum": [
+        "activity",
+        "alert-circle",
+        "alert-triangle",
+        "align-center",
+        "align-horizontal-space-between",
+        "align-left",
+        "align-right",
+        "align-vertical-space-between",
+        "bell",
+        "bookmark",
+        "box",
+        "braces",
+        "briefcase",
+        "building",
+        "calculator",
+        "calendar",
+        "caret-down",
+        "caret-left",
+        "caret-right",
+        "caret-up",
+        "check",
+        "check-circle",
+        "chevron-down",
+        "chevron-left",
+        "chevron-right",
+        "chevron-up",
+        "circle",
+        "circle-dot",
+        "clock",
+        "cloud",
+        "code",
+        "component",
+        "copy",
+        "credit-card",
+        "crown",
+        "dashboard",
+        "database",
+        "divide",
+        "dollar-sign",
+        "dot",
+        "download",
+        "edit",
+        "equal",
+        "equal-not",
+        "eye",
+        "eye-off",
+        "file",
+        "file-edit",
+        "file-text",
+        "filter",
+        "folder",
+        "gauge",
+        "git-branch",
+        "git-compare",
+        "globe",
+        "grid",
+        "hash",
+        "headset",
+        "heart",
+        "help-circle",
+        "home",
+        "image",
+        "inbox",
+        "info",
+        "layers",
+        "layout",
+        "lightbulb",
+        "lightning",
+        "link",
+        "list",
+        "list-checks",
+        "list-checks-rtl",
+        "loader",
+        "lock",
+        "mail",
+        "map",
+        "map-pin",
+        "maximize",
+        "megaphone",
+        "message",
+        "microphone",
+        "minus",
+        "minus-circle",
+        "mouse-pointer-click",
+        "open-in-new",
+        "package",
+        "palette",
+        "pencil",
+        "phone",
+        "plane",
+        "plug",
+        "plus",
+        "plus-circle",
+        "refresh",
+        "repeat",
+        "rotate-ccw",
+        "rotate-cw",
+        "search",
+        "send",
+        "server",
+        "settings",
+        "share",
+        "shield",
+        "shield-alert",
+        "shield-check",
+        "shopping-cart",
+        "space",
+        "square",
+        "square-dashed",
+        "star",
+        "sticky-note",
+        "table",
+        "tag",
+        "target",
+        "television",
+        "thumb-down",
+        "thumb-up",
+        "ticket",
+        "toggle-left",
+        "trash",
+        "trending-up",
+        "upload",
+        "user",
+        "user-circle",
+        "users",
+        "video",
+        "wifi",
+        "x-circle"
+      ]
+    },
+    "iconAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/icon block: a single glyph. Set alt to a short description, or \"\" when the icon is decorative and the adjacent text already carries the meaning.",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/iconName",
+          "description": "Which glyph to draw. Required."
+        },
+        "size": {
+          "type": "string",
+          "description": "Icon size, as a size token (xs, sm, md, lg, xl) or a CSS length. Defaults to md."
+        },
+        "alt": {
+          "type": "string",
+          "description": "Accessible label. Use \"\" for a decorative icon whose meaning is already in the adjacent text."
+        }
+      }
+    },
+    "tableColumn": {
+      "type": "object",
+      "description": "One tile/table column definition.",
+      "required": [
+        "key",
+        "header"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Property name looked up in each row object. Required."
+        },
+        "header": {
+          "type": "string",
+          "description": "Column header label. Required."
+        },
+        "align": {
+          "type": "string",
+          "enum": [
+            "left",
+            "center",
+            "right"
+          ],
+          "description": "Cell alignment. Defaults to left; use right for numeric columns."
+        }
+      }
+    },
+    "textAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/text block: a single run of styled text.",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The literal, fully-resolved text to display. Required. Write the final string here; Mosaic {!...} expressions are not compiled on this path and are stripped."
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "body",
+            "caption",
+            "code",
+            "eyebrow",
+            "page-title",
+            "section-title",
+            "display",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6"
+          ],
+          "description": "Typographic role. Defaults to body. h1-h6 are headings; caption is small/secondary; code is monospace. Editorial variants: page-title (large serif title, renders as h1), section-title (serif section heading, renders as h2), eyebrow (small uppercase label above a title), display (oversized serif stat number for KPI values)."
+        },
+        "weight": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "medium",
+            "semibold",
+            "bold"
+          ],
+          "description": "Font weight. Defaults to normal."
+        },
+        "color": {
+          "type": "string",
+          "enum": [
+            "default",
+            "error",
+            "muted",
+            "primary",
+            "success",
+            "warning"
+          ],
+          "description": "Semantic text color. Defaults to default."
+        },
+        "isItalic": {
+          "type": "boolean",
+          "description": "Render the text italic. Defaults to false."
+        },
+        "isStrikethrough": {
+          "type": "boolean",
+          "description": "Strike through the text. Defaults to false."
+        }
+      }
+    },
+    "markdownAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/markdown block: a formatted markdown string. Use for multi-paragraph or richly formatted prose.",
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "The markdown source string to render. Required."
+        }
+      }
+    },
+    "badgeAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/badge block: a small status pill.",
+      "required": [
+        "label"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "The pill text. Required. Note this is label, not text."
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "secondary",
+            "outline",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "description": "Pill style. Defaults to primary. Use success/warning/error/info to convey status."
+        }
+      }
+    },
+    "linkAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/link block: a hyperlink.",
+      "required": [
+        "href"
+      ],
+      "properties": {
+        "href": {
+          "type": "string",
+          "description": "The destination URL. Required."
+        },
+        "text": {
+          "type": "string",
+          "description": "Visible link text. Falls back to the href when omitted."
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "default",
+            "muted",
+            "primary"
+          ],
+          "description": "Link color. Defaults to default."
+        },
+        "underline": {
+          "type": "string",
+          "enum": [
+            "always",
+            "hover",
+            "none"
+          ],
+          "description": "When to underline the link. Defaults to hover."
+        }
+      }
+    },
+    "calloutAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/callout block: a boxed notice with a title and optional body.",
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "eyebrow": {
+          "type": "string",
+          "description": "Optional small uppercase kicker shown above the title (e.g. \"RECOMMENDED MOVE\", \"THE PLAY\"). Use to name the callout's role."
+        },
+        "title": {
+          "type": "string",
+          "description": "The callout heading. Required."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional body text under the title."
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "default",
+            "error",
+            "info",
+            "note",
+            "success",
+            "tip",
+            "warning",
+            "recommended",
+            "blocker"
+          ],
+          "description": "Notice style. Defaults to default. Editorial variants: recommended (blue, star icon — the lead synthesis/next-move callout, place first and give it a button); blocker (red-bordered, alert-triangle icon — a critical blocker)."
+        },
+        "iconName": {
+          "$ref": "#/$defs/iconName",
+          "description": "Optional icon name shown next to the title, overriding the variant's default icon (e.g. star, alert-triangle)."
+        }
+      }
+    },
+    "separatorAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/separator block: a divider rule.",
+      "properties": {
+        "orientation": {
+          "type": "string",
+          "enum": [
+            "horizontal",
+            "vertical"
+          ],
+          "description": "Divider direction. Defaults to horizontal."
+        }
+      }
+    },
+    "containerAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/container block: a panel with a rounded border. Put content blocks in children. Takes no width/padding of its own — to make a container fill or share a wrapped row, wrap it in a tile/column carrying width (and, for reflow control, minWidth).",
+      "properties": {
+        "borderless": {
+          "type": "boolean",
+          "description": "Omit the container's rounded border. Defaults to false."
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "default",
+            "emphasis",
+            "info",
+            "warning",
+            "error",
+            "success"
+          ],
+          "description": "Container surface style. \"default\" matches the background; \"emphasis\" is a subtle neutral shade; the semantic variants (info/warning/error/success) tint the fill and border. Defaults to default."
+        }
+      }
+    },
+    "columnAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/column block: a vertical stack of its children.",
+      "properties": {
+        "gap": {
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ],
+          "description": "Space between children. Defaults to md."
+        },
+        "align": {
+          "type": "string",
+          "description": "Cross-axis (horizontal) alignment of children, e.g. start, center, end, stretch."
+        },
+        "width": {
+          "type": "string",
+          "description": "Column width, as a size token or a CSS length."
+        }
+      }
+    },
+    "rowAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/row block: a horizontal layout of its children.",
+      "properties": {
+        "gap": {
+          "type": "string",
+          "enum": [
+            "none",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ],
+          "description": "Space between children. Defaults to md."
+        },
+        "align": {
+          "type": "string",
+          "description": "Cross-axis (vertical) alignment of children, e.g. start, center, end, stretch."
+        },
+        "justify": {
+          "type": "string",
+          "enum": [
+            "start",
+            "center",
+            "end",
+            "between",
+            "around",
+            "evenly"
+          ],
+          "description": "Main-axis (horizontal) distribution of children."
+        },
+        "isWrapped": {
+          "type": "boolean",
+          "description": "Allow children to wrap onto multiple lines. Defaults to false."
+        }
+      }
+    },
+    "listAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/list block. Its children are tile/listItem blocks.",
+      "properties": {
+        "marker": {
+          "type": "string",
+          "enum": [
+            "none",
+            "bullet",
+            "number"
+          ],
+          "description": "List marker style. Defaults to bullet."
+        }
+      }
+    },
+    "tableAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/table block. columns, rows, and caption are all required. Table data lives here in attributes, not in children.",
+      "required": [
+        "columns",
+        "rows",
+        "caption"
+      ],
+      "properties": {
+        "caption": {
+          "type": "string",
+          "description": "A short table title/summary. Required."
+        },
+        "columns": {
+          "type": "array",
+          "description": "Ordered column definitions. Required. Column order is display order.",
+          "items": {
+            "$ref": "#/$defs/tableColumn"
+          }
+        },
+        "rows": {
+          "type": "array",
+          "description": "Row data. Required. Each row is an object whose keys match column keys; every cell VALUE is a string, so format numbers and dates into display-ready strings yourself (for example a currency string or an ISO date). A missing key renders as an empty cell.",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "appearance": {
+          "type": "string",
+          "enum": [
+            "default",
+            "bordered",
+            "striped"
+          ],
+          "description": "Table styling. Defaults to default."
+        },
+        "size": {
+          "type": "string",
+          "enum": [
+            "sm",
+            "md"
+          ],
+          "description": "Row density. Defaults to md."
+        },
+        "isStickyHeader": {
+          "type": "boolean",
+          "description": "Keep the header row visible while scrolling. Defaults to false."
+        }
+      }
+    },
+    "valueFormat4": {
+      "type": "string",
+      "enum": [
+        "number",
+        "percent",
+        "currency",
+        "compact"
+      ],
+      "description": "Value display format. number (default), percent, currency, or compact (e.g. 1.2M)."
+    },
+    "valueFormat3": {
+      "type": "string",
+      "enum": [
+        "number",
+        "percent",
+        "currency"
+      ],
+      "description": "Value display format. number (default), percent, or currency."
+    },
+    "vizSize": {
+      "type": "string",
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "description": "Rendered size. Defaults to md."
+    },
+    "chartAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/chart block: a multi-point, multi-series bar/line/area/column chart. Author numeric data as numbers (not strings). Every series is named and values can be labelled on the marks so the read never depends on color.",
+      "required": [
+        "chartType",
+        "categories",
+        "series",
+        "caption"
+      ],
+      "properties": {
+        "chartType": {
+          "type": "string",
+          "enum": [
+            "bar",
+            "line",
+            "area",
+            "column"
+          ],
+          "description": "Chart geometry. Required. bar is horizontal, column vertical."
+        },
+        "categories": {
+          "type": "array",
+          "description": "Ordered x-axis category labels. Required.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "series": {
+          "type": "array",
+          "description": "One or more data series. Required.",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "data"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Series label (shown in the legend). Required."
+              },
+              "data": {
+                "type": "array",
+                "description": "Data points aligned to categories. Required. Use null for a gap.",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "bar",
+                  "line",
+                  "area"
+                ],
+                "description": "Overrides chartType for this series (combo charts)."
+              }
+            }
+          }
+        },
+        "caption": {
+          "type": "string",
+          "description": "Accessible description / summary of the chart. Required."
+        },
+        "stackMode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "stacked",
+            "normalized"
+          ],
+          "description": "How series stack. Defaults to none. normalized stacks to 100%."
+        },
+        "baseline": {
+          "type": "string",
+          "enum": [
+            "zero",
+            "center"
+          ],
+          "description": "Baseline position. Defaults to zero."
+        },
+        "valueFormat": {
+          "$ref": "#/$defs/valueFormat4"
+        },
+        "showValues": {
+          "type": "boolean",
+          "description": "Label the value on each mark. Defaults to false."
+        },
+        "showLegend": {
+          "type": "boolean",
+          "description": "Show the series legend. Defaults to true."
+        },
+        "showGrid": {
+          "type": "boolean",
+          "description": "Show gridlines. Defaults to true."
+        },
+        "title": {
+          "type": "string",
+          "description": "Chart title."
+        },
+        "xAxisLabel": {
+          "type": "string",
+          "description": "X-axis label."
+        },
+        "yAxisLabel": {
+          "type": "string",
+          "description": "Y-axis label."
+        },
+        "size": {
+          "$ref": "#/$defs/vizSize"
+        }
+      }
+    },
+    "sparklineAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/sparkline block: a compact inline trend for a single KPI. Data are numbers.",
+      "required": [
+        "data",
+        "label"
+      ],
+      "properties": {
+        "data": {
+          "type": "array",
+          "description": "The trend data points. Required. Use null for a gap.",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "label": {
+          "type": "string",
+          "description": "The sparkline label. Required."
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "line",
+            "bar",
+            "area"
+          ],
+          "description": "Visual form. Defaults to line."
+        },
+        "baseline": {
+          "type": "number",
+          "description": "A reference-line value drawn across the sparkline."
+        },
+        "showEndpoint": {
+          "type": "boolean",
+          "description": "Mark and label the last point. Defaults to true."
+        },
+        "highlightExtremes": {
+          "type": "boolean",
+          "description": "Mark and label the min and max points. Defaults to false."
+        },
+        "valueFormat": {
+          "$ref": "#/$defs/valueFormat4"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "neutral",
+            "positive",
+            "negative",
+            "emphasis"
+          ],
+          "description": "Color tone. Defaults to neutral."
+        },
+        "size": {
+          "type": "string",
+          "enum": [
+            "sm",
+            "md"
+          ],
+          "description": "Rendered size. Defaults to sm."
+        }
+      }
+    },
+    "meterAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/meter block: a bounded bullet graph for goal/attainment. value is a number; valueLabel is the formatted read shown to the user.",
+      "required": [
+        "value",
+        "valueLabel"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "The current value. Required."
+        },
+        "valueLabel": {
+          "type": "string",
+          "description": "The formatted value label (e.g. '$1.3M — 130% of target'). Required."
+        },
+        "min": {
+          "type": "number",
+          "description": "Scale minimum. Defaults to 0."
+        },
+        "max": {
+          "type": "number",
+          "description": "Scale maximum. Defaults to 100."
+        },
+        "target": {
+          "type": "number",
+          "description": "Target tick position on the scale."
+        },
+        "bands": {
+          "type": "array",
+          "description": "Qualitative ranges drawn behind the value bar.",
+          "items": {
+            "type": "object",
+            "required": [
+              "from",
+              "to",
+              "variant",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "from": {
+                "type": "number",
+                "description": "Band start. Required."
+              },
+              "to": {
+                "type": "number",
+                "description": "Band end. Required."
+              },
+              "variant": {
+                "type": "string",
+                "enum": [
+                  "error",
+                  "success",
+                  "info",
+                  "warning"
+                ],
+                "description": "Band color tone. Required."
+              },
+              "label": {
+                "type": "string",
+                "description": "Band label. Required."
+              }
+            }
+          }
+        },
+        "label": {
+          "type": "string",
+          "description": "The meter label."
+        },
+        "targetLabel": {
+          "type": "string",
+          "description": "Label for the target tick."
+        },
+        "status": {
+          "type": "string",
+          "description": "Short status text (e.g. 'on track')."
+        },
+        "overAttainment": {
+          "type": "boolean",
+          "description": "Show a marker when value exceeds max. Defaults to true."
+        },
+        "orientation": {
+          "type": "string",
+          "enum": [
+            "horizontal",
+            "vertical"
+          ],
+          "description": "Layout direction. Defaults to horizontal."
+        },
+        "size": {
+          "$ref": "#/$defs/vizSize"
+        },
+        "showValue": {
+          "type": "boolean",
+          "description": "Show the value label. Defaults to true."
+        }
+      }
+    },
+    "piechartAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/piechart block: a part-to-whole pie or donut. Slice values are numbers; every slice prints its share on the wedge and in the legend.",
+      "required": [
+        "slices",
+        "caption"
+      ],
+      "properties": {
+        "slices": {
+          "type": "array",
+          "description": "The slices, in order. Required.",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Slice label. Required."
+              },
+              "value": {
+                "type": "number",
+                "description": "Slice value. Required."
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "highlight"
+                ],
+                "description": "Emphasis. highlight draws a thicker stroke. Defaults to normal."
+              }
+            }
+          }
+        },
+        "caption": {
+          "type": "string",
+          "description": "Accessible description / summary. Required."
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "pie",
+            "donut"
+          ],
+          "description": "Chart form. Defaults to pie."
+        },
+        "valueFormat": {
+          "$ref": "#/$defs/valueFormat3"
+        },
+        "showValues": {
+          "type": "boolean",
+          "description": "Print the percentage on each wedge. Defaults to true."
+        },
+        "showLegend": {
+          "type": "boolean",
+          "description": "Show the legend with value and percentage. Defaults to true."
+        },
+        "maxSlices": {
+          "type": "number",
+          "description": "Bucket slices beyond this count into a single 'Other'."
+        },
+        "centerLabel": {
+          "type": "string",
+          "description": "Center label. Donut only."
+        },
+        "centerValue": {
+          "type": "string",
+          "description": "Center value string. Donut only."
+        },
+        "size": {
+          "$ref": "#/$defs/vizSize"
+        }
+      }
+    },
+    "waterfallAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/waterfall block: a running-total bridge from a start value through signed steps to an end. Each step is signed so increase/decrease reads without color.",
+      "required": [
+        "start",
+        "steps",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "object",
+          "description": "The starting bar. Required.",
+          "required": [
+            "label",
+            "value"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "Start label. Required."
+            },
+            "value": {
+              "type": "number",
+              "description": "Start value. Required."
+            }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "description": "The signed steps, applied in order. Required.",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "delta"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Step label. Required."
+              },
+              "delta": {
+                "type": "number",
+                "description": "Signed change amount. Required."
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "increase",
+                  "decrease"
+                ],
+                "description": "Direction. Defaults to auto (inferred from the sign of delta)."
+              }
+            }
+          }
+        },
+        "end": {
+          "type": "object",
+          "description": "The ending bar. Required. Omit value to have it computed from start + steps.",
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "End label. Required."
+            },
+            "value": {
+              "type": "number",
+              "description": "End value. Computed from start + steps when omitted."
+            }
+          }
+        },
+        "valueFormat": {
+          "$ref": "#/$defs/valueFormat3"
+        },
+        "showConnectors": {
+          "type": "boolean",
+          "description": "Draw connector lines between bars. Defaults to true."
+        },
+        "showValues": {
+          "type": "boolean",
+          "description": "Label the value on each bar. Defaults to true."
+        },
+        "caption": {
+          "type": "string",
+          "description": "Accessible description / summary."
+        },
+        "size": {
+          "$ref": "#/$defs/vizSize"
+        }
+      }
+    },
+    "heatmapAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/heatmap block: a matrix or calendar of a single measure. Provide cells (+ xLabels/yLabels) for matrix layout, or days for calendar layout. Every cell prints its value so the read never rests on color.",
+      "required": [
+        "caption",
+        "domain"
+      ],
+      "properties": {
+        "caption": {
+          "type": "string",
+          "description": "Accessible description / summary. Required."
+        },
+        "domain": {
+          "type": "array",
+          "description": "Value range [min, max] the color/size scale maps. Required.",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "layout": {
+          "type": "string",
+          "enum": [
+            "matrix",
+            "calendar"
+          ],
+          "description": "Grid layout. Defaults to matrix."
+        },
+        "xLabels": {
+          "type": "array",
+          "description": "Column labels (matrix layout).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "yLabels": {
+          "type": "array",
+          "description": "Row labels (matrix layout).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cells": {
+          "type": "array",
+          "description": "Matrix cells. x and y match an xLabel/yLabel.",
+          "items": {
+            "type": "object",
+            "required": [
+              "x",
+              "y",
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "x": {
+                "type": "string",
+                "description": "X coordinate; matches an xLabel. Required."
+              },
+              "y": {
+                "type": "string",
+                "description": "Y coordinate; matches a yLabel. Required."
+              },
+              "value": {
+                "type": "number",
+                "description": "Cell value. Required."
+              },
+              "valueLabel": {
+                "type": "string",
+                "description": "Custom display label for the cell."
+              }
+            }
+          }
+        },
+        "days": {
+          "type": "array",
+          "description": "Calendar cells (calendar layout).",
+          "items": {
+            "type": "object",
+            "required": [
+              "date",
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "date": {
+                "type": "string",
+                "description": "ISO date (YYYY-MM-DD). Required."
+              },
+              "value": {
+                "type": "number",
+                "description": "Day value. Required."
+              }
+            }
+          }
+        },
+        "encode": {
+          "type": "string",
+          "enum": [
+            "color",
+            "size"
+          ],
+          "description": "Visual encoding of magnitude. Defaults to color."
+        },
+        "scale": {
+          "type": "string",
+          "enum": [
+            "sequential",
+            "diverging"
+          ],
+          "description": "Color scale type. Defaults to sequential."
+        },
+        "midpoint": {
+          "type": "number",
+          "description": "Neutral midpoint (diverging scale only). Defaults to the domain center."
+        },
+        "valueFormat": {
+          "$ref": "#/$defs/valueFormat4"
+        },
+        "size": {
+          "$ref": "#/$defs/vizSize"
+        }
+      }
+    },
+    "datagridAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/datagrid block: a typed, sortable table with per-row status. Unlike tile/table (all-string cells), datagrid cells carry the raw typed value and the column type formats them.",
+      "required": [
+        "caption",
+        "columns",
+        "rows"
+      ],
+      "properties": {
+        "caption": {
+          "type": "string",
+          "description": "Table caption. Required."
+        },
+        "columns": {
+          "type": "array",
+          "description": "Ordered column definitions. Required.",
+          "items": {
+            "type": "object",
+            "required": [
+              "key",
+              "header"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "Column key; matches a property in each row. Required."
+              },
+              "header": {
+                "type": "string",
+                "description": "Column header label. Required."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "text",
+                  "number",
+                  "currency",
+                  "percent",
+                  "date",
+                  "datetime",
+                  "boolean",
+                  "link",
+                  "badge",
+                  "avatar",
+                  "rating",
+                  "databar",
+                  "sparkline"
+                ],
+                "description": "How to render/format the cell. Defaults to text."
+              },
+              "align": {
+                "type": "string",
+                "enum": [
+                  "left",
+                  "center",
+                  "right"
+                ],
+                "description": "Cell alignment. Right-align numerics."
+              },
+              "sortable": {
+                "type": "boolean",
+                "description": "Allow sorting by this column. Defaults to true."
+              },
+              "width": {
+                "type": "string",
+                "description": "CSS width for the column."
+              },
+              "priority": {
+                "type": "number",
+                "description": "Responsive visibility priority (higher = kept longer as width shrinks)."
+              },
+              "target": {
+                "type": "number",
+                "description": "Target value for a databar-type column."
+              }
+            }
+          }
+        },
+        "rows": {
+          "type": "array",
+          "description": "Row records. Required. Each row maps column keys to a raw typed value (number for currency/percent, ISO string for date, number[] for sparkline) OR a cell object; plus optional _status and _tone to tint the whole row.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_status": {
+                "type": "string",
+                "description": "Status label for the row (shown as a status chip)."
+              },
+              "_tone": {
+                "type": "string",
+                "enum": [
+                  "error",
+                  "success",
+                  "info",
+                  "warning",
+                  "default"
+                ],
+                "description": "Row background tone; pair with _status."
+              }
+            },
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": [
+                        "string",
+                        "number"
+                      ],
+                      "description": "The cell value."
+                    },
+                    "display": {
+                      "type": "string",
+                      "description": "Custom display text overriding the formatted value."
+                    },
+                    "href": {
+                      "type": "string",
+                      "description": "Link URL (link/avatar cell types)."
+                    },
+                    "badgeVariant": {
+                      "type": "string",
+                      "enum": [
+                        "neutral",
+                        "primary",
+                        "secondary",
+                        "outline",
+                        "error",
+                        "success",
+                        "info",
+                        "warning"
+                      ],
+                      "description": "Badge color (badge cell type). Status colors (success/warning/error/info) plus the neutral/primary/secondary/outline pill styles shared with the standalone tile/badge."
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "error",
+                        "success",
+                        "info",
+                        "warning",
+                        "default"
+                      ],
+                      "description": "Cell tone."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "defaultSort": {
+          "type": "object",
+          "description": "Initial sort.",
+          "required": [
+            "key",
+            "direction"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "Column key to sort by. Required."
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "description": "Sort direction. Required."
+            }
+          }
+        },
+        "footer": {
+          "type": "array",
+          "description": "Footer cells (e.g. totals), keyed to columns.",
+          "items": {
+            "type": "object",
+            "required": [
+              "key",
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "Column key this footer cell sits under. Required."
+              },
+              "label": {
+                "type": "string",
+                "description": "Prefix label (e.g. 'Total')."
+              },
+              "value": {
+                "type": "string",
+                "description": "Footer value. Required."
+              }
+            }
+          }
+        },
+        "totalRows": {
+          "type": "number",
+          "description": "Total row count, for a pagination/summary line."
+        },
+        "emptyText": {
+          "type": "string",
+          "description": "Message shown when rows is empty."
+        },
+        "appearance": {
+          "type": "string",
+          "enum": [
+            "default",
+            "bordered",
+            "striped"
+          ],
+          "description": "Table styling. Defaults to default."
+        },
+        "size": {
+          "type": "string",
+          "enum": [
+            "sm",
+            "md"
+          ],
+          "description": "Row density. Defaults to md."
+        },
+        "isStickyHeader": {
+          "type": "boolean",
+          "description": "Keep the header row visible while scrolling. Defaults to false."
+        }
+      }
+    },
+    "scatterAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/scatter block: labeled (x, y) points on two continuous axes, with an optional third magnitude driving bubble size and an optional quadrant crosshair. Use for a two-variable relationship or portfolio map; author x/y/size as numbers. Every point is labeled so the read never depends on color or position.",
+      "required": [
+        "points",
+        "caption"
+      ],
+      "properties": {
+        "points": {
+          "type": "array",
+          "description": "The plotted points. Required, at least one.",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "x",
+              "y"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Point name, e.g. an account or rep. Required."
+              },
+              "x": {
+                "type": "number",
+                "description": "Value on the x axis, in the axis' own units. Required."
+              },
+              "y": {
+                "type": "number",
+                "description": "Value on the y axis, in the axis' own units. Required."
+              },
+              "size": {
+                "type": "number",
+                "description": "Optional third magnitude; drives bubble AREA."
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "highlight"
+                ],
+                "description": "Emphasis. Defaults to normal."
+              }
+            }
+          }
+        },
+        "caption": {
+          "type": "string",
+          "description": "Accessible description / summary of the plot. Required."
+        },
+        "xLabel": {
+          "type": "string",
+          "description": "X-axis title. Defaults to 'x'."
+        },
+        "yLabel": {
+          "type": "string",
+          "description": "Y-axis title. Defaults to 'y'."
+        },
+        "xMin": {
+          "type": "number",
+          "description": "Fix the x-axis minimum."
+        },
+        "xMax": {
+          "type": "number",
+          "description": "Fix the x-axis maximum."
+        },
+        "yMin": {
+          "type": "number",
+          "description": "Fix the y-axis minimum."
+        },
+        "yMax": {
+          "type": "number",
+          "description": "Fix the y-axis maximum."
+        },
+        "splitX": {
+          "type": "number",
+          "description": "X of a quadrant crosshair; pair with splitY to split the plane into four named quadrants."
+        },
+        "splitY": {
+          "type": "number",
+          "description": "Y of a quadrant crosshair; pair with splitX."
+        },
+        "quadrants": {
+          "type": "object",
+          "description": "Names for the four corners when a splitX/splitY crosshair is drawn.",
+          "additionalProperties": false,
+          "properties": {
+            "topLeft": {
+              "type": "string",
+              "description": "Top-left quadrant label."
+            },
+            "topRight": {
+              "type": "string",
+              "description": "Top-right quadrant label."
+            },
+            "bottomLeft": {
+              "type": "string",
+              "description": "Bottom-left quadrant label."
+            },
+            "bottomRight": {
+              "type": "string",
+              "description": "Bottom-right quadrant label."
+            }
+          }
+        },
+        "sizeLabel": {
+          "type": "string",
+          "description": "Names the bubble magnitude (e.g. 'open pipeline')."
+        },
+        "sizeFormat": {
+          "$ref": "#/$defs/valueFormat4"
+        },
+        "showLabels": {
+          "type": "boolean",
+          "description": "Print point labels on the plot. Defaults to true."
+        },
+        "size": {
+          "$ref": "#/$defs/vizSize"
+        }
+      }
+    },
+    "timelineAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/timeline block: dated rows on a calendar axis (a Gantt). Each item spans start->end ISO dates; a today line auto-flags past-due bars. Use for dated intervals, not a value over a category.",
+      "required": [
+        "items",
+        "caption"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "The dated rows. Required, at least one.",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "start",
+              "end"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Row name. Required."
+              },
+              "sublabel": {
+                "type": "string",
+                "description": "Optional secondary line (owner, stage, amount)."
+              },
+              "start": {
+                "type": "string",
+                "description": "Bar start, ISO date YYYY-MM-DD. Required."
+              },
+              "end": {
+                "type": "string",
+                "description": "Bar end, ISO date YYYY-MM-DD. Required."
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "highlight"
+                ],
+                "description": "Emphasis. Defaults to normal."
+              }
+            }
+          }
+        },
+        "caption": {
+          "type": "string",
+          "description": "Accessible description / summary. Required."
+        },
+        "subCaption": {
+          "type": "string",
+          "description": "Secondary caption naming the bars' encoding."
+        },
+        "today": {
+          "type": "string",
+          "description": "ISO date drawing the dashed now-line; bars ending before it are flagged past-due."
+        },
+        "rangeStart": {
+          "type": "string",
+          "description": "ISO date pinning the left edge of the axis. Pair with rangeEnd for a fixed window."
+        },
+        "rangeEnd": {
+          "type": "string",
+          "description": "ISO date pinning the right edge of the axis."
+        },
+        "labelWidth": {
+          "type": "number",
+          "description": "Width of the left label gutter, in px."
+        },
+        "showDates": {
+          "type": "boolean",
+          "description": "Print end dates on the bars. Defaults to true."
+        },
+        "pastDueNote": {
+          "type": "string",
+          "description": "Overrides the auto past-due footer rollup."
+        },
+        "size": {
+          "$ref": "#/$defs/vizSize"
+        }
+      }
+    },
+    "rangebandAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/rangeband block: a shaded low->high band over ordered steps with an optional central line (a fan chart). Use for a range over an ordered axis, not a single value per category.",
+      "required": [
+        "points",
+        "caption"
+      ],
+      "properties": {
+        "points": {
+          "type": "array",
+          "description": "The ordered band points. Required, at least one.",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "low",
+              "high"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Step label. Required."
+              },
+              "low": {
+                "type": "number",
+                "description": "Band lower bound. Required."
+              },
+              "high": {
+                "type": "number",
+                "description": "Band upper bound. Required."
+              },
+              "mid": {
+                "type": "number",
+                "description": "Optional central call drawn as a line."
+              }
+            }
+          }
+        },
+        "caption": {
+          "type": "string",
+          "description": "Accessible description / summary. Required."
+        },
+        "subCaption": {
+          "type": "string",
+          "description": "Secondary caption naming the encoding."
+        },
+        "valueFormat": {
+          "$ref": "#/$defs/valueFormat4"
+        },
+        "yMin": {
+          "type": "number",
+          "description": "Fix the value-axis minimum."
+        },
+        "yMax": {
+          "type": "number",
+          "description": "Fix the value-axis maximum."
+        },
+        "target": {
+          "type": "number",
+          "description": "Draws a dashed reference line (plan/quota)."
+        },
+        "targetLabel": {
+          "type": "string",
+          "description": "Names the target line."
+        },
+        "lowLabel": {
+          "type": "string",
+          "description": "Names the band's lower edge. Defaults to 'worst'."
+        },
+        "midLabel": {
+          "type": "string",
+          "description": "Names the central line. Defaults to 'commit'."
+        },
+        "highLabel": {
+          "type": "string",
+          "description": "Names the band's upper edge. Defaults to 'best'."
+        },
+        "xAxisLabel": {
+          "type": "string",
+          "description": "X-axis title."
+        },
+        "showEndLabels": {
+          "type": "boolean",
+          "description": "Print the landing spread at the right edge. Defaults to true."
+        },
+        "size": {
+          "$ref": "#/$defs/vizSize"
+        }
+      }
+    }
+  }
+}

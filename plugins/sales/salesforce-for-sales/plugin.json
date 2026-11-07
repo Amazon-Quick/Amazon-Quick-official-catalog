@@ -6,11 +6,7 @@
     "name": "Salesforce"
   },
   "version": "2.0.0",
-  "kind": "solution",
   "icon": "assets/icon.svg",
-  "categories": [
-    "Sales"
-  ],
   "skills": [
     "sales/account-context",
     "sales/account-plan",

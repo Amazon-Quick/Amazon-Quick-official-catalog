@@ -6,6 +6,9 @@
     "name": "Amazon Quick"
   },
   "version": "0.1.0",
+  "roles": [
+    "role/sales"
+  ],
   "skills": [
     "sales/catalog-poc-test-skill"
   ],

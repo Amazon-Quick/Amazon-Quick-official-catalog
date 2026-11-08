@@ -2,7 +2,7 @@
 name: forecast-narrative
 description: "Build a forecast-call brief from Salesforce opportunity aggregates, top-deal samples and field history, covering the number, bucket movement, risks and asks. Use to explain a rep or team's forecast; for a broader pipeline and coaching view, use team-pipeline."
 icon: assets/salesforce.svg
-checksum: "sha256:536e19738d02466fa9462619fa20ad53cf94162fda6aa56b894be21b10f885f5"
+checksum: "sha256:27155300dc9322ea4c8ed1bf0025b108c55fd6ee3d09029345adb5e76e5fa0eb"
 ---
 <!-- global-rules-bootstrap -->
 **IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
@@ -99,6 +99,10 @@ When the data is assembled, call `display_widget`; a single one-line "Displaying
 ### Self-verification (before calling display_widget)
 
 - [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+
+**Widget payload — Quick/Kiro adaptation:** pass the hydrated widget to `display_widget` as an object, never as JSON text. If you assembled it as text, parse it into an object before the call.
+- ❌ WRONG: `widgetDefinition: "{\"renderer\":{...}}"` (stringified with escaped quotes)
+- ✅ RIGHT: `widgetDefinition: {"renderer":{...}}` (native object, no quotes around opening brace)
 
 The widget template is embedded below — resolve its tokens and call `display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated> })` once (see the `widgetDefinition` param for token-resolution rules).
 

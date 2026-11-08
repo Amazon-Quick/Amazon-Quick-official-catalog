@@ -2,7 +2,7 @@
 name: deal-signals
 description: "Build a deal-risk digest from Salesforce close dates, activity, next steps and forecast fields plus email, documents and Slack. Use to find quiet or overdue deals, close-date danger, renewal windows, competitor mentions or other risks needing attention."
 icon: assets/salesforce.svg
-checksum: "sha256:67c88be96ed16234650c331838631159160660761f2ce451b9dfcfed768020cf"
+checksum: "sha256:9b0bac86bfeb3327caa18bfcc9c9d7ee6afe83f9aa393ff039f5f945b8411164"
 ---
 <!-- global-rules-bootstrap -->
 **IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
@@ -53,8 +53,10 @@ If `pageInfo.hasNextPage` is true, say that the returned first 100 by CloseDate 
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(scope: MINE, where: { IsClosed: { eq: false }, <CLOSE_DATE_FILTER>Account: { OwnerId: { eq: \\\"<UID>\\\" } } }, orderBy: { CloseDate: { order: ASC } }, first: 100) { pageInfo { hasNextPage } totalCount edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } <NEXTSTEP> { value } LastActivityDate { value } LastModifiedDate { value } ForecastCategory { value } <OPP_CUSTOM> Account { Name { value } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(scope: MINE, where: { IsClosed: { eq: false }, <CLOSE_DATE_FILTER>Account: { OwnerId: { eq: \\\"<UID>\\\" } } }, orderBy: { CloseDate: { order: ASC } }, first: 100) { pageInfo { hasNextPage } totalCount edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } <NEXTSTEP> { value } LastActivityDate { value } LastModifiedDate { value } ForecastCategoryName { value } <OPP_CUSTOM> Account { Name { value } } } } } } } }\"}" })
 ```
+
+**Forecast category — local correction:** The read returns `ForecastCategoryName` (Pipeline, Best Case, Commit, Closed, Omitted), the category reps see. `ForecastCategory` returns internal values, such as `Forecast` for Commit, that are not labels.
 
 ## 2b. Evidence (same turn, only for CRM-flagged accounts — keeps the sweep fast)
 
@@ -62,7 +64,7 @@ After threshold checks flag accounts, in ONE turn fire (parallel, if tools prese
 
 **Email evidence — Quick/Kiro adaptation:** When an email tool is available, run the 2b email search for the flagged accounts; it is part of the sweep, not optional. If no email tool is available or the search fails, add one line saying email was not checked (under the ✅ line in the digest, or in the widget callout), so inbound-waiting, champion-risk, and competitor signals are not implied clear.
 
-**No extra Salesforce reads.** Step 2 already returned every CRM field the thresholds need (LastActivityDate, CloseDate, LastModifiedDate, NextStep, ForecastCategory, `__c` signals). Do NOT dispatch per-opp SF follow-ups (EmailMessage / Task / OpportunityFieldHistory / activity queries) — each is a serial round-trip. Evidence here is ONLY the external email/doc/slack connectors above; if those aren't present, skip.
+**No extra Salesforce reads.** Step 2 already returned every CRM field the thresholds need (LastActivityDate, CloseDate, LastModifiedDate, NextStep, ForecastCategoryName, `__c` signals). Do NOT dispatch per-opp SF follow-ups (EmailMessage / Task / OpportunityFieldHistory / activity queries) — each is a serial round-trip. Evidence here is ONLY the external email/doc/slack connectors above; if those aren't present, skip.
 
 ## 3. Check thresholds (compute explicit dates from the one frozen as-of instant and timezone — never quarter-relative or host-current)
 

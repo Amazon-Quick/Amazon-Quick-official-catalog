@@ -2,7 +2,7 @@
 name: deal-slip-scenario
 description: "Model the impact of a deal slipping, shrinking or being lost from Salesforce pipeline and forecast data plus an available quota, including the gap and substitutes. Use to test downside scenarios, plan a backfill or judge whether the number still holds."
 icon: assets/salesforce.svg
-checksum: "sha256:a075d4470a6d49000cd5eed2267178ab35e1b944c87355786ff9afb3e6a65229"
+checksum: "sha256:fff07a485eca6772eb669ab4b6e25b3ce1cdb0f2001438f3957f4ee9cf7c1449"
 ---
 <!-- global-rules-bootstrap -->
 **IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
@@ -53,8 +53,10 @@ Fire these as tool calls in **one turn** (independent). Insert `<OPP_CUSTOM>` = 
 **Open opps this quarter (ordered by forecast category then amount):**
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(scope: MINE, where: { IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, orderBy: { Amount: { order: DESC } }, first: 200) { pageInfo { hasNextPage } totalCount edges { node { Id Name { value } StageName { value displayValue } ForecastCategory { value } Amount { value displayValue } CloseDate { value } Probability { value } NextStep { value } LastActivityDate { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(scope: MINE, where: { IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, orderBy: { Amount: { order: DESC } }, first: 200) { pageInfo { hasNextPage } totalCount edges { node { Id Name { value } StageName { value displayValue } ForecastCategoryName { value } Amount { value displayValue } CloseDate { value } Probability { value } NextStep { value } LastActivityDate { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } } } } } } }\"}" })
 ```
+
+**Forecast category — local correction:** The read returns `ForecastCategoryName` (Pipeline, Best Case, Commit, Closed, Omitted), the category reps see. `ForecastCategory` returns internal values, such as `Forecast` for Commit, that are not labels.
 
 **Closed-won this period (for booked baseline):**
 ```
@@ -79,8 +81,8 @@ A zero-row closed-won result is a valid booked baseline of zero; it does not tri
 
 Compute baseline only after the hard gate passes:
 - **Booked** = Σ closed-won `Amount.value`
-- **Commit total** = Booked + Σ open opps where `ForecastCategory.value = "Commit"`
-- **Best case total** = Commit total + Σ `ForecastCategory.value = "BestCase"`
+- **Commit total** = Booked + Σ open opps where `ForecastCategoryName.value = "Commit"`
+- **Best case total** = Commit total + Σ `ForecastCategoryName.value = "Best Case"`
 - **Open pipeline total** = Σ all open opps `Amount.value`
 - **Coverage ratio** = Open pipeline total ÷ (Quota − Booked)
 

@@ -2,7 +2,7 @@
 name: team-pipeline
 description: "Build a team pipeline brief from Salesforce users and opportunities, showing closed revenue, forecast, swing deals and coaching needs by rep. Use for a manager's team, two or more named reps, a named rep list, or a multi-rep pipeline comparison. Exactly one rep or one owner's book: pipeline-review."
 icon: assets/salesforce.svg
-checksum: "sha256:a6cb12e2f2e640e45d05e9f773885054faab7ce4c998157fd19c0bea00396b15"
+checksum: "sha256:8ef44cb8df5a1f8fd21f55aa3e2f7d9fe25793f597230d35387119d82da855c6"
 ---
 <!-- global-rules-bootstrap -->
 **IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
@@ -74,7 +74,7 @@ Fire these as tool calls in **one turn** (independent, all filtered by the team-
 
 **Date filters take a `DateInput` object, never a bare string** (`gte: \"2026-07-01\"` fails `WrongType … must be an object type`). For the current-quarter bounds below, use the exact-date form on both ends: `{ value: \"YYYY-MM-DD\" }`. Multiple ops on one field (`gte`/`lte`) AND automatically — no `and: [...]` wrapper needed around them.
 
-**Rollup by forecast category (GraphQL aggregate — folded into the team-wide first-60 sample request below).** `ExpectedRevenue` (Amount × Probability, a standard field) sums straight to the Weighted column — no client-side probability math. This rollup rides in the sample query (below) as an `aggregate` sibling of the detail read — one dispatch returns both. It yields one row per rep × actual returned forecast category. Per rep: Commit $ = that rep's returned `Commit`-category `Amount.sum`; Best-case $ = the returned `BestCase` row; Weighted = Σ `ExpectedRevenue.sum` across that rep's aggregate rows.
+**Rollup by forecast category (GraphQL aggregate — folded into the team-wide first-60 sample request below).** `ExpectedRevenue` (Amount × Probability, a standard field) sums straight to the Weighted column — no client-side probability math. This rollup rides in the sample query (below) as an `aggregate` sibling of the detail read — one dispatch returns both. It yields one row per rep × actual returned forecast category. Per rep: Commit $ = that rep's returned `Commit`-category `Amount.sum`; Best-case $ = the returned `Best Case` row; Weighted = Σ `ExpectedRevenue.sum` across that rep's aggregate rows.
 
 **Closed-won this period, per rep (GraphQL aggregate).** Feeds the scoreboard's Closed column:
 ```
@@ -86,19 +86,21 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, orderBy: { Amount: { order: DESC } }, first: 60) { edges { node { Id Name { value } StageName { value displayValue } ForecastCategory { value } Amount { value displayValue } CloseDate { value } NextStep { value } LastActivityDate { value } CreatedDate { value } Probability { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } } } } } aggregate { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, groupBy: { OwnerId: { group: true }, ForecastCategory: { group: true } }) { edges { node { aggregate { OwnerId { value } ForecastCategory { value } Id { count { value } } Amount { sum { value } } ExpectedRevenue { sum { value } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, orderBy: { Amount: { order: DESC } }, first: 60) { edges { node { Id Name { value } StageName { value displayValue } ForecastCategoryName { value } Amount { value displayValue } CloseDate { value } NextStep { value } LastActivityDate { value } CreatedDate { value } Probability { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } } } } } aggregate { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, groupBy: { OwnerId: { group: true }, ForecastCategoryName: { group: true } }) { edges { node { aggregate { OwnerId { value } ForecastCategoryName { value } Id { count { value } } Amount { sum { value } } ExpectedRevenue { sum { value } } } } } } } } }\"}" })
 ```
+
+**Forecast category — local correction:** The read returns `ForecastCategoryName` (Pipeline, Best Case, Commit, Closed, Omitted), the category reps see. `ForecastCategory` returns internal values, such as `Forecast` for Commit, that are not labels, so a rollup grouped by it has no `Commit` row.
 
 Map each aggregate `OwnerId` → rep name using the User list from step 2; associate each detail row by its returned `Owner.Name` — no extra lookup needed.
 
 **Team-wide sample scope — Quick/Kiro correction:** Let `R` be the number of returned detail rows and `C` be the sum of `Id.count.value` across the matching in-period forecast-category aggregate rows. Only when `R == C` may the detail rows be called complete for exactly the selected owners and period. Otherwise describe every row-derived deal, Account, stage, activity, risk, hygiene overlap, Monday question, average, and swing claim as "among the team-wide top R by Amount"; never generalize it per rep or to the complete in-period/full-open book. The aggregate remains authoritative for complete in-period count, Amount, Commit, Best Case, and Weighted totals.
 
-**If a GraphQL `aggregate` query errors** (some orgs throw grouping a picklist/Id field), don't retry the same shape — fall to the SOQL `GROUP BY` equivalent, which groups cleanly. **For the combined sample request specifically**, the grouped `aggregate` sibling (`OwnerId`/`ForecastCategory`) can take the whole request down with it — re-fire the sample as the detail `query` alone (drop the `aggregate` block) to keep the named deals, and get the per-rep rollup from this SOQL:
+**If a GraphQL `aggregate` query errors** (some orgs throw grouping a picklist/Id field), don't retry the same shape — fall to the SOQL `GROUP BY` equivalent, which groups cleanly. **For the combined sample request specifically**, the grouped `aggregate` sibling (`OwnerId`/`ForecastCategoryName`) can take the whole request down with it — re-fire the sample as the detail `query` alone (drop the `aggregate` block) to keep the named deals, and get the per-rep rollup from this SOQL:
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v63.0/query",
-  queryParams: { "q": "SELECT OwnerId, ForecastCategory, COUNT(Id) cnt, SUM(Amount) amt, SUM(ExpectedRevenue) weighted FROM Opportunity WHERE OwnerId IN (<TEAM_USER_IDS>) AND IsClosed = false AND CloseDate >= <Q_START> AND CloseDate <= <Q_END> GROUP BY OwnerId, ForecastCategory" })
+  queryParams: { "q": "SELECT OwnerId, ForecastCategoryName, COUNT(Id) cnt, SUM(Amount) amt, SUM(ExpectedRevenue) weighted FROM Opportunity WHERE OwnerId IN (<TEAM_USER_IDS>) AND IsClosed = false AND CloseDate >= <Q_START> AND CloseDate <= <Q_END> GROUP BY OwnerId, ForecastCategoryName" })
 ```
-(Closed-won the same way: swap `IsClosed = false` for `IsWon = true` and drop the `ForecastCategory` group.)
+(Closed-won the same way: swap `IsClosed = false` for `IsWon = true` and drop the `ForecastCategoryName` group.)
 
 **Hygiene counts (GraphQL aggregate, full book — feeds step 6, not detail-sample-limited).** The team-wide top-60 sample above skews toward the biggest deals; these three reads return per-rep numerators across the full open book so stale/past-close/blank-NextStep flags are not limited to that sample. They do not return a matching full-open denominator. `<STALE_CUTOFF>` = today − 14 days, `<TODAY>` = today, both as `DateInput` (`{ value: "YYYY-MM-DD" }`):
 ```
@@ -133,7 +135,7 @@ Use whatever email, document, and Slack search tools are available. If none are 
 |---|---|---|---|---|---|---|
 
 - **Closed** = that rep's `Amount.sum.value` from the closed-won aggregate; a missing owner row is zero only when the aggregate succeeded for the complete requested roster.
-- **Commit** = that rep's `Amount.sum.value` for the actual returned `ForecastCategory.value == "Commit"`; if the complete category aggregate has no Commit row for that rep, use zero.
+- **Commit** = that rep's `Amount.sum.value` for the actual returned `ForecastCategoryName.value == "Commit"`; if the complete category aggregate has no Commit row for that rep, use zero.
 - **Weighted** = the sum of that rep's returned `ExpectedRevenue.sum.value` values across all actual forecast-category aggregate rows; do not recompute it from sampled rows.
 - For a positive sourced or user-supplied quota, **gap = Closed + Commit − quota**. A negative gap is a shortfall; disclose that sign convention anywhere Gap is shown.
 - For a positive quota, **attainment = 100 × Closed / quota**. State the rounding used for display.
@@ -181,12 +183,12 @@ When the data is assembled, call `display_widget`; a single one-line "Displaying
 
 The widget template is embedded below — resolve its tokens and call `display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated> })` once (see the `widgetDefinition` param for token-resolution rules).
 
-Chart series are actual returned forecast categories, not sales stages: create one `{name, data}` object for each distinct `ForecastCategory.value` present in the complete aggregate (for example `Pipeline`, `BestCase`, or `Commit`), using that category's raw `Amount.sum.value` per rep in `chartCategories` order and zero only for a missing rep/category row in a successful complete aggregate. Never bucket or relabel `StageName`, and never force Proposal / Negotiation / Closing. Datagrid `plan`/`closed`/`commit`/`gap` values are raw currency numbers, `attain` is the formula-defined 0–100+ percentage, and `status` is omitted unless an attributable policy defines it. Build `recordLinkButtons` with one complete User button per displayed rep followed by one complete Opportunity button per displayed swing deal, using each exact returned Name/Id and type-specific Lightning URL.
+Chart series are actual returned forecast categories, not sales stages: create one `{name, data}` object for each distinct `ForecastCategoryName.value` present in the complete aggregate (for example `Pipeline`, `Best Case`, or `Commit`), using that category's raw `Amount.sum.value` per rep in `chartCategories` order and zero only for a missing rep/category row in a successful complete aggregate. Never bucket or relabel `StageName`, and never force Proposal / Negotiation / Closing. Datagrid `plan`/`closed`/`commit`/`gap` values are raw currency numbers, `attain` is the formula-defined 0–100+ percentage, and `status` is omitted unless an attributable policy defines it. Build `recordLinkButtons` with one complete User button per displayed rep followed by one complete Opportunity button per displayed swing deal, using each exact returned Name/Id and type-specific Lightning URL.
 
 Two blocks below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}`'s type + a worked example, use it to compute each value; then the **widget template** to hydrate. Substitute your computed values into the template's `{{token}}`s (see the token-typing rules above), leaving no `{{…}}`/`{!…}`.
 ```json
 {
-  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate display_widget call — it names every {{token}} in the template with its type and a worked example so you compute the right value for each. Workflow: build a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — arrays stay arrays, numbers stay numbers; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Realistic values: sample-data.json (sibling). Worked examples provide shape only, never runtime values, formulas, thresholds, or labels. Authoring guidance (from the skill): `title` uses the user-supplied period label exactly · `headerStatus` and `headerStatusVariant` carry a policy-grounded badge or the neutral PIPELINE SNAPSHOT/info pair · `subtitle` is a factual, cohort-qualified one-line summary · `chartCaption chartCategories chartSeries` describe rep names plus one raw-Amount series per actual returned ForecastCategory value · `meterLabel meterValue meterMax meterTarget meterValueLabel meterTargetLabel meterStatus meterBands` use factual sourced values; `meterBands` is optional and omitted/empty without an attributable policy · `datagridCaption datagridRows` describe one row per rep with `{rep, plan, closed, commit, gap, attain, status?}` where names are exact `User.Name.value`, gap is Closed + Commit − quota, attainment is 100 × Closed / quota, and status is omitted without an attributable policy · `recordLinkButtons` contains one exact User link per displayed rep followed by one exact Opportunity link per displayed swing deal · `calloutTitle calloutDescription ctaPrimaryLabel ctaPrimaryMsg ctaSecondaryLabel ctaSecondaryMsg` carry sample-qualified synthesis and the two retained sendMessage actions.",
+  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate display_widget call — it names every {{token}} in the template with its type and a worked example so you compute the right value for each. Workflow: build a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — arrays stay arrays, numbers stay numbers; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Realistic values: sample-data.json (sibling). Worked examples provide shape only, never runtime values, formulas, thresholds, or labels. Authoring guidance (from the skill): `title` uses the user-supplied period label exactly · `headerStatus` and `headerStatusVariant` carry a policy-grounded badge or the neutral PIPELINE SNAPSHOT/info pair · `subtitle` is a factual, cohort-qualified one-line summary · `chartCaption chartCategories chartSeries` describe rep names plus one raw-Amount series per actual returned ForecastCategoryName value · `meterLabel meterValue meterMax meterTarget meterValueLabel meterTargetLabel meterStatus meterBands` use factual sourced values; `meterBands` is optional and omitted/empty without an attributable policy · `datagridCaption datagridRows` describe one row per rep with `{rep, plan, closed, commit, gap, attain, status?}` where names are exact `User.Name.value`, gap is Closed + Commit − quota, attainment is 100 × Closed / quota, and status is omitted without an attributable policy · `recordLinkButtons` contains one exact User link per displayed rep followed by one exact Opportunity link per displayed swing deal · `calloutTitle calloutDescription ctaPrimaryLabel ctaPrimaryMsg ctaSecondaryLabel ctaSecondaryMsg` carry sample-qualified synthesis and the two retained sendMessage actions.",
   "props": {
     "title": {
       "description": "Page title using the user-supplied period label exactly; do not invent fiscal or week labels.",
@@ -239,13 +241,13 @@ Two blocks below: first the **variable contract** (`renderer.props.schema.json`)
       ]
     },
     "chartSeries": {
-      "description": "One series per actual returned ForecastCategory value, with raw Opportunity Amount per rep in chartCategories order; never derive series from StageName.",
+      "description": "One series per actual returned ForecastCategoryName value, with raw Opportunity Amount per rep in chartCategories order; never derive series from StageName.",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "name": {
-            "description": "Exact returned ForecastCategory value, such as Pipeline, BestCase, or Commit.",
+            "description": "Exact returned ForecastCategoryName value, such as Pipeline, Best Case, or Commit.",
             "type": "string"
           },
           "data": {
@@ -270,7 +272,7 @@ Two blocks below: first the **variable contract** (`renderer.props.schema.json`)
           ]
         },
         {
-          "name": "BestCase",
+          "name": "Best Case",
           "data": [
             500000,
             700000,
@@ -776,7 +778,7 @@ Two blocks below: first the **variable contract** (`renderer.props.schema.json`)
 
 Self-verification before calling:
 - [ ] One attainment meter only; `value`, `max`, and `target` are raw currency numbers. `target` may equal `max` when both are the team plan. `meterBands` is empty/omitted unless an attributable threshold policy supplies every bound and label.
-- [ ] Chart has a visible forecast-category caption, `stackMode: "stacked"`, and exactly one series per actual returned `ForecastCategory.value`, with one raw-dollar value per rep matching `chartCategories` order. No series comes from StageName or a worked example.
+- [ ] Chart has a visible forecast-category caption, `stackMode: "stacked"`, and exactly one series per actual returned `ForecastCategoryName.value`, with one raw-dollar value per rep matching `chartCategories` order. No series comes from StageName or a worked example.
 - [ ] Every datagrid currency cell is a raw number (not `{ value, display }` — the type annotation handles formatting); each gap equals Closed + Commit − quota, and each attainment value equals 100 × Closed / positive quota.
 - [ ] Without an attributable status policy, the header is `PIPELINE SNAPSHOT`/`info` and every row omits `status`. With a policy, every badge and band cites and follows that same policy.
 - [ ] `recordLinkButtons` contains one exact User link per displayed rep followed by one exact Opportunity link per displayed swing deal; labels and Ids come from the same returned records. Neither action is clicked during rendering.

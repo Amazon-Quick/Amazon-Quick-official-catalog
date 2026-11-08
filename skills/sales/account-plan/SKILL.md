@@ -2,7 +2,7 @@
 name: account-plan
 description: "Build or retrieve an account plan from Salesforce Account, AccountPlan, pipeline, activity, and relationship data, covering vision, priorities, competition, KPIs, and relationship risks. Use to review an existing plan or create one for a customer account."
 icon: assets/salesforce.svg
-checksum: "sha256:f8476c6793d2e2198925330fa46da9870dcec3e9a8a36c0a462d9a8fa81e7ee4"
+checksum: "sha256:fe757a6f88e4bff849abeabeec87d0b119c218de9459f462bcf3fff08e2b7602"
 ---
 <!-- global-rules-bootstrap -->
 **IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
@@ -97,12 +97,16 @@ Run V1 first. **Plan exists** → render it (Step R) and ask the user to confirm
 
 ## C2. Gather context (one turn — batch the SF read with any web research)
 
-**One GraphQL read** pulls open pipeline + recent activity together as children of the account (replaces two SOQL calls):
+**One GraphQL read** pulls open pipeline (a child of the account) and recent activity together (replaces two SOQL calls):
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Account(where: { Id: { eq: \\\"<ID>\\\" } }, first: 1) { edges { node { Opportunities(where: { IsClosed: { eq: false } }, first: 10, orderBy: { CloseDate: { order: ASC } }) { edges { node { Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } } } } Tasks(first: 10, where: { ActivityDate: { gte: { literal: LAST_90_DAYS } } }, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Account(where: { Id: { eq: \\\"<ID>\\\" } }, first: 1) { edges { node { Opportunities(where: { IsClosed: { eq: false } }, first: 10, orderBy: { CloseDate: { order: ASC } }) { edges { node { Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } } } } } } } Task(where: { AccountId: { eq: \\\"<ID>\\\" }, ActivityDate: { gte: { literal: LAST_90_DAYS } } }, first: 10, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Status { value } IsClosed { value } } } } } } }\"}" })
 ```
+
+**Account tasks — local correction:** The `Task` root filters on `AccountId`, so it returns the account's tasks logged on its opportunities and contacts as well as on the account. The Account `Tasks` child returns only tasks logged directly on the account, so it missed most activity.
+
+**Task status — local correction:** The `Task` rows include open tasks. A task's `ActivityDate` is its due date, so the window also returns open tasks due later. Count only rows with `IsClosed` true as recent activity, and judge whether the account's Tasks are quiet from those rows alone. Show an open task as a follow-up with its due date, overdue when that date is before today. Meetings logged as events aren't in this read, so don't report the days since the latest completed task as days without contact.
 
 Open opps inform `RelationshipOpportunities`/`RelationshipStrengths`; quiet Tasks inform `RelationshipThreats`. In the same turn, do web research (if a tool is present) to ground the competitive picture, industry trends, and strategic priorities. **Only write claims you can trace to a source** — `[needs validation]` for anything thin, general/inferential phrasing over invented specifics ("likely prioritizing cost reduction given industry headwinds", not "cutting costs 20%"). If the user dictated field values, use them verbatim and generate only the rest.
 

@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:1078485bd81c078d788cba4b4d59d2e7a36d46f54ef735a521c0e5156e4fd2e6",
+  "skillsChecksum": "sha256:1b1d04c38d868f9476528c007a0c69043a38855e1d9a66d8e4b786913c3c7b5a",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -609,11 +609,6 @@
           "checksum": "sha256:187cfb893e462ada805ad8ec00e83fe1416c39ed16f076c144a871687552c060"
         },
         {
-          "path": "skills/sales/catalog-poc-test-skill",
-          "type": "skill",
-          "checksum": "sha256:f67b4b1a5898377053bae9f8d8cb8c18ea8da6938e558dbbac3f7307b412109e"
-        },
-        {
           "path": "skills/sales/account-context",
           "type": "skill",
           "checksum": "sha256:49ff215655f8b0bac34b8f31c239587833e035f9cc4b605dd04b8e52aca857e8"
@@ -812,10 +807,6 @@
           "path": "skills/sales/win-loss-review",
           "type": "skill",
           "checksum": "sha256:a2c7fb05d2922f90e2a22e7a2b346c52c959ecc7d8f0b79c45a9509e2cc54ef3"
-        },
-        {
-          "path": "plugins/sales/catalog-poc-test",
-          "type": "plugin"
         },
         {
           "path": "plugins/sales/salesforce-for-sales",

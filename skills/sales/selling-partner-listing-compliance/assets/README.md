@@ -13,11 +13,11 @@ Classifies the product against a regulatory map (FDA, EPA, CPSC, FCC, FTC, requi
 
 ## Pre-requisites
 - Type: built-in cloud connector
-- Which: the "Amazon Selling Partner" connector in Amazon Quick. This skill needs three of its operations: the Seller Assistant create and get tools (`sellerAssistant_sellerAssistantCreate`, `sellerAssistant_sellerAssistantGet`) for confirming current rules, and the listings restrictions operation (`listings_getListingsRestrictions`) for the account-side gating check. The connector authenticates as the seller.
+- Which: the "Amazon Selling Partner" connector in AWS Quick. This skill needs three of its operations: the Seller Assistant create and get tools (`sellerAssistant_sellerAssistantCreate`, `sellerAssistant_sellerAssistantGet`) for confirming current rules, and the listings restrictions operation (`listings_getListingsRestrictions`) for the account-side gating check. The connector authenticates as the seller.
 - Runtime: cloud
 - Required or optional: required. Without Seller Assistant the gate can still run on the reference map alone, but the skill must say the live check was unavailable.
 
-The connector is offered during Amazon Quick onboarding. If the seller connected and authenticated it, this skill is available. If they skipped connector setup and later added this skill manually, they must connect and authenticate the "Amazon Selling Partner" connector before it can run.
+The connector is offered during AWS Quick onboarding. If the seller connected and authenticated it, this skill is available. If they skipped connector setup and later added this skill manually, they must connect and authenticate the "Amazon Selling Partner" connector before it can run.
 
 Establishing the active seller account and marketplace is handled by the session's account context (the connected Amazon Selling Partner connector); this skill reuses it.
 
@@ -25,7 +25,7 @@ Establishing the active seller account and marketplace is handled by the session
 The issue fixer, buyability, and searchability skills each carry a rule that a change must comply with Amazon's policies and that a non-compliant change is flagged and pointed to the policy. This skill is where they point. A sibling calls this gate before its preview step whenever the proposed change touches product claims, ingredients, category, condition, images, or identifiers (for example a title that adds "FDA approved", a bullet that adds an antimicrobial claim, a new main image for a children's product, a condition change, or a new GTIN). Plain price, quantity, or typo fixes do not need the gate. On a go, control returns to the sibling and its own preview-approve-verify triad runs.
 
 ## Installation
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. If you added this skill manually from the catalog, add it in Customize > Skills, then confirm the connector above is connected and that its tool search returns the Seller Assistant tools.
 
 ## Getting started

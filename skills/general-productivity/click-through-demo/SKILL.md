@@ -4,9 +4,9 @@ display_name: Click-Through Demo
 icon: assets/pointer.svg
 description: "Turn a website into a self-contained click-through HTML demo captured from the user's own logged-in browser. It reads the site, proposes tours, and builds one file with a spotlight on each click, captions, chapters, zoom, blur, and embedded videos or images. Use when asked to 'make a click-through demo of this site', 'build an interactive product tour', 'record a guided walkthrough of this page', 'create an interactive demo from my browser', 'turn this site into a clickable demo', 'rebuild my demo after I edited demo.json', 'show me an example click-through demo', or 'ctd help'."
 created_date: "2026-10-26"
-last_updated: "2026-10-27"
+last_updated: "2026-11-05"
 tools: [load_skill, run_python, file_read, file_write, file_edit, file_copy, file_delete, folder_create, file_read_image, open_in_session_tab]
-readme: "Read assets/README.md before running. Its ## Pre-requisites section lists the Amazon Quick Web Browser skill as a required local dependency. Confirm it is available and stop if it is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites section lists the AWS Quick Web Browser skill as a required local dependency. Confirm it is available and stop if it is missing."
 preferred_model: smart
 preferred_thinking: medium
 inputs:
@@ -28,7 +28,7 @@ inputs:
     type: number
     required: false
     default: 8
-checksum: "sha256:4b7a6607b2cb9b47839ab3f2e4527bb08669f1886d1cedd21a733512c0751bac"
+checksum: "sha256:b7bd9e85ec1536fd7fbbacdb70f873bff936a8dc43ad6e077847df7cd183742c"
 id: ae0d8dc5ca614079bb3c7aab5a14cb48
 ---
 
@@ -56,7 +56,7 @@ The delivery message names any personal or account information in the screenshot
 </Definition - Work folder>
 
 <Definition - Trusted folder>
-A folder on the user's computer that Amazon Quick can read and write. Listing the allowed folders with no path returns them.
+A folder on the user's computer that AWS Quick can read and write. Listing the allowed folders with no path returns them.
 </Definition - Trusted folder>
 
 <Definition - Skill folder>
@@ -99,7 +99,7 @@ Any action that is not look-only. Submitting a form other than a search, sending
 12. Never hardcode or guess where a demo goes. List the user's available folders on every run and offer each <Definition - Trusted folder> by name, with a trusted folder recommended first. Working files go only to the work folder, and the finished demo goes only to {{output_folder}}.
 13. When the user chose blur, blur every personal-information match before building. Every delivery names the personal or account information the screenshots show and what was blurred.
 14. Stop at {{max_steps}} screens. If the tour needs more, say so and offer to split it into two demos or raise the limit.
-15. Open demos in the user's browser. The Amazon Quick side panel has no internet access, so https images and video links do not load there. Use a session tab only when the user asks for one or no browser is available, and say what will not load.
+15. Open demos in the user's browser. The AWS Quick side panel has no internet access, so https images and video links do not load there. Use a session tab only when the user asks for one or no browser is available, and say what will not load.
 </Rules>
 
 <Agent Annotations>
@@ -189,7 +189,7 @@ triggers=["ctd build", "User asks to make a click-through demo, product tour, or
 
 1. [Agent] Check the pre-requisites per Rule 1. Load the Web Browser skill, list the user's open browser tabs, open {{url}}, and run the quick check from <Resource key="wait-for-ready">. Tell the user to choose Allow on the permission prompts for running page scripts and for typing into the page. The first check opens the page-script prompt, and the first typed search term opens the typing prompt.
    Validate: the browser tools load, the tab list comes back, and the quick check returns a result.
-   If fails: stop. If only the page-script permission was declined, explain that measuring needs it and ask whether to retry. Otherwise tell the user the skill needs the Amazon Quick desktop app open and awake with a browser chosen in its settings, and link <Resource key="connections-desktop">.
+   If fails: stop. If only the page-script permission was declined, explain that measuring needs it and ask whether to retry. Otherwise tell the user the skill needs the AWS Quick desktop app open and awake with a browser chosen in its settings, and link <Resource key="connections-desktop">.
 
 1. [Decide] Is {{url}} known, and does it start with `http://` or `https://`?
    Validate: one branch is chosen.

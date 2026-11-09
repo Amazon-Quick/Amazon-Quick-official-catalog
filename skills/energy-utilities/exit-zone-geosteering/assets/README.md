@@ -10,7 +10,7 @@ Verifies live synthetic logging-while-drilling data, prices the measured gap, wa
 
 ## Overview
 
-The skill is self-contained and runs deterministic Python in the Amazon Quick workspace. It ships a synthetic `SYN1` dataset, three reference datasets, six calculation and projection scripts, a plain-HTML fallback, and unit tests. Every observation contains confidence, reasoning, and source citations. Dollar figures come only from code and reference data, never generated narrative.
+The skill is self-contained and runs deterministic Python in the AWS Quick workspace. It ships a synthetic `SYN1` dataset, three reference datasets, six calculation and projection scripts, a plain-HTML fallback, and unit tests. Every observation contains confidence, reasoning, and source citations. Dollar figures come only from code and reference data, never generated narrative.
 
 New workflows add:
 
@@ -23,11 +23,11 @@ New workflows add:
 
 No external connector, local service, network access, or credentials are required.
 
-- Amazon Quick built-in tools (cloud runtime, required): `run_python`, `run_python_with_write`, `file_read`, `open_in_session_tab`, and `get_current_time` must be available.
-- Amazon Quick parallel task tools (cloud runtime, required for Decision Review): `start_task`, `create_task_group`, and `get_task_group_result` must be available.
-- Amazon Quick Python sandbox (cloud runtime, required): Python standard-library support is required. The scripts do not install packages or call a network.
+- AWS Quick built-in tools (cloud runtime, required): `run_python`, `run_python_with_write`, `file_read`, `open_in_session_tab`, and `get_current_time` must be available.
+- AWS Quick parallel task tools (cloud runtime, required for Decision Review): `start_task`, `create_task_group`, and `get_task_group_result` must be available.
+- AWS Quick code sandbox (cloud runtime, required): Python standard-library support is required. The scripts do not install packages or call a network.
 
-This skill also uses built-in Amazon Quick system skills and tools. They are pre-installed; make sure they are enabled in Customize > Skills or Customize > Connectors:
+This skill also uses built-in AWS Quick system skills and tools. They are pre-installed; make sure they are enabled in Customize > Skills or Customize > Connectors:
 
 - `highcharts`: builds interactive charts and data visualizations (built-in system skill, optional because a plain-HTML fallback is included).
 - `html_design`: builds formatted self-contained HTML views and artifacts (built-in system skill, optional because a plain-HTML fallback is included).
@@ -38,7 +38,7 @@ If a required built-in tool is unavailable, stop the affected workflow. If `high
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. In Customize > Skills, confirm `highcharts` and `html_design` are enabled; they carry a System badge and are on by default.
 3. In Customize > Connectors, confirm the built-in system tools are available if you want Decision Review fan-out or the scheduled watch: https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html
 4. No external connector setup is needed.
@@ -61,5 +61,5 @@ All data remains under the skill data root inside `WORKSPACE_DIR`. Wellbore iden
 
 ## Runtime notes
 
-- The Amazon Quick sandbox environment is read-only, so every script request carries `workspace_dir` explicitly; see `references/script-interface.md` for the exec-and-`run(request)` recipe.
+- The code sandbox environment is read-only, so every script request carries `workspace_dir` explicitly; see `references/script-interface.md` for the exec-and-`run(request)` recipe.
 - The default 19-record `SYN1` seed already sits in Escalate range. Ask to `replay SYN1 from the start` to reseed with 12 ticks and watch the Watch, Warn, Escalate progression over seven appended ticks.

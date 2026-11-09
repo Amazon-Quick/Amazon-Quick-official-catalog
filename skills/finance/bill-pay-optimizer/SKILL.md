@@ -4,7 +4,7 @@ display_name: Bill Pay Optimizer
 icon: assets/credit-card.svg
 description: "Shows all upcoming bills from QuickBooks, optimizes payment timing against cash position, flags early-pay discounts, and prepares a prioritized, ready-to-pay plan for the owner to action. Read-only: it never moves money or changes anything in QuickBooks. Use when asked 'what bills do I need to pay', 'what's due this week', 'which bills can wait', 'can I afford my bills', 'optimize my payments', 'what's my cash position after bills', 'bill pay', 'vendor payments', or any request to plan accounts payable."
 created_date: "2026-06-04"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [gmail, google-calendar, outlook, quickbooks, slack]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -25,7 +25,7 @@ inputs:
     type: string
     required: false
     default: "08:00"
-checksum: "sha256:fa1abef92061967d8f7367b6ca65fd71cfe1f66af6e1f5bd44d61875a6a7abd1"
+checksum: "sha256:24ca15831ae579b7168ab21aadb18a190361763e64fa97e61f82a5f268fe9d11"
 ---
 
 ## Overview
@@ -106,7 +106,7 @@ Workflow steps use these prefixes:
 - Not every bill carries a SalesTermRef. A missing term means no discount, not an error. Default to the DueDate.
 - Vendors may send invoices the owner has not yet entered in QuickBooks. When the email connector finds an invoice with no matching bill, flag it as "new, not in QuickBooks" rather than assuming it is already tracked.
 - This skill does not pay anyone. The owner pays through their own bank or each vendor's channel; the skill only prepares the prioritized list and (optionally) sets reminders.
-- Scheduled bill-due alerts run as a local Quick scheduled task: they fire only when the owner's machine is on and Quick is running. Hands-off, not machine-off, so do not promise alerts while the laptop is closed. Never attach a condition to the fixed-time watch, which can silently suppress it.
+- Scheduled bill-due alerts run as a local AWS Quick scheduled task: they fire only when the owner's machine is on and Quick is running. Hands-off, not machine-off, so do not promise alerts while the laptop is closed. Never attach a condition to the fixed-time watch, which can silently suppress it.
 </Gotchas>
 
 <Instructions>

@@ -3,9 +3,9 @@ name: presentation-theme-creator
 display_name: Presentation Theme Creator
 icon: assets/palette.svg
 description: "Create a custom PowerPoint theme with consistent colors, fonts, and slide layouts from style preferences. Use when the user says 'create a presentation theme', 'design my slide template', 'build a deck theme', 'custom PowerPoint template', 'presentation style', 'branded slide deck', or any request to generate a reusable slide template with custom visual identity."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-16"
-last_updated: "2026-06-16"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [run_python, file_write, open_in_session_tab]
 inputs:
@@ -27,7 +27,7 @@ inputs:
     type: integer
     required: false
     default: 15
-checksum: "sha256:62dc158e957384c054aa9b3f627ff6768f7585f2dd336753964cd90fdae2f4e6"
+checksum: "sha256:d7ae42e521e4b46bb95937d6e8cc4a4d6e362d6d572901a68b29f62bd70af5e8"
 ---
 
 ## Overview

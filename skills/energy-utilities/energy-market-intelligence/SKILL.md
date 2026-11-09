@@ -3,9 +3,9 @@ name: energy-market-intelligence
 display_name: Energy Market Intelligence
 icon: assets/zap.svg
 description: "Conduct multi-source energy market research and produce cited intelligence briefings on commodities, policy, regulation, technology, and competitive dynamics. Use when asked to 'research energy markets', 'produce an energy market briefing', 'analyze oil, gas, power, or carbon markets', 'assess energy policy or regulation', 'forecast commodity prices', or any request for sourced energy market intelligence"
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
-last_updated: "2026-07-15"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, file_read_pdf, run_python, file_write, open_in_session_tab, start_task, create_task_group, get_task_group_result]
 inputs:
@@ -25,7 +25,7 @@ inputs:
     options: [executive, technical, regulatory, investor]
     required: false
     default: executive
-checksum: "sha256:727bf5382a8b562b19eed02d9dc6e61183ef538a5eedb7f0089d284d3b75c7f1"
+checksum: "sha256:46c0417cec74e97eb19ff6466ba236d0b74dc523707b5794183190b46fa5564d"
 ---
 
 ## Overview

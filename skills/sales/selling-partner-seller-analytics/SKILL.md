@@ -4,10 +4,10 @@ display_name: Selling Partner Seller Analytics
 icon: assets/chart-bar.svg
 description: "Answers a Fulfillment by Amazon (FBA) seller's business-performance questions (inventory health, traffic, and sales) by querying the Selling Partner API (SP-API) analytics operations. Discovers the real metric IDs first (never guesses metric names), retrieves the data with the correct filters, grouping, and time range, and explains the result in plain language. Read-only: it reports numbers, it never changes anything. Use when asked how are my sales or sessions or traffic, am I at risk of a stockout, how much inventory do I have, what is my days of supply, show me page views by ASIN, when should I restock, seller analytics, or business report. Do NOT use for changing prices or listings, creating shipments (use selling-partner-fba-inbound-management), tax or financial-settlement reports, or establishing which account and marketplace to use."
 created_date: "2026-09-15"
-last_updated: "2026-09-15"
+last_updated: "2026-11-05"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
-checksum: "sha256:20594d07f25abb6d4e1ef678a49988db4e147ecdef50c2f3540eb3d62c4a60ab"
+checksum: "sha256:2e7f199335a69dd14888d325875eb4d87cd26ff2f61b8083b9212d084936d9bc"
 ---
 
 ## Overview

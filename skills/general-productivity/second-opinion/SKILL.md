@@ -2,9 +2,9 @@
 name: second-opinion
 display_name: Second Opinion Council
 icon: assets/scale.svg
-description: "Run a structured, multi-model council review of any document, artifact, or analysis using Amazon Quick's parallel task system. Spawns independent reviewer agents across model tiers (smart, balanced, fast), orchestrates anonymized cross-review with peer ranking, and synthesizes a chair verdict with tiered accept/deny decisions. Use when asked to 'get a second opinion', 'council review', 'multi-model review', 'cross-check this', 'red-team this', 'stress-test this', 'what would other models think', 'peer review this', 'independent review', or any request to review material with multiple independent perspectives."
+description: "Run a structured, multi-model council review of any document, artifact, or analysis using the AWS Quick parallel task system. Spawns independent reviewer agents across model tiers (smart, balanced, fast), orchestrates anonymized cross-review with peer ranking, and synthesizes a chair verdict with tiered accept/deny decisions. Use when asked to 'get a second opinion', 'council review', 'multi-model review', 'cross-check this', 'red-team this', 'stress-test this', 'what would other models think', 'peer review this', 'independent review', or any request to review material with multiple independent perspectives."
 created_date: "2026-06-04"
-last_updated: "2026-08-03"
+last_updated: "2026-11-05"
 license: "MIT-0"
 preferred_model: smart
 preferred_thinking: high
@@ -28,16 +28,16 @@ inputs:
     required: false
     default: 3
   - name: include_orchestrator
-    description: "Whether to include Quick's own review in the council bundle (judged but not voting)"
+    description: "Whether to include a review by Quick itself in the council bundle (judged but not voting)"
     type: boolean
     required: false
     default: false
-checksum: "sha256:cc275ae0efd5d7baf0508b78be91abd74e3933ff398f37c81daee53d3526b201"
+checksum: "sha256:900962efb0d3b5b456b5a1476b0d16da57e5aeef558d300a9175097b60d5764e"
 ---
 
 ## Overview
 
-Independent, multi-model review of any material the user provides, turned into tiered decisions. Uses Amazon Quick's parallel task system to spawn diverse reviewer agents, orchestrate anonymized cross-review, and synthesize peer-validated findings into a chair verdict.
+Independent, multi-model review of any material the user provides, turned into tiered decisions. Uses the AWS Quick parallel task system to spawn diverse reviewer agents, orchestrate anonymized cross-review, and synthesize peer-validated findings into a chair verdict.
 
 ## Workflow
 
@@ -71,7 +71,7 @@ A reviewer's rolling average rank position across judges' FINAL RANKING blocks. 
 </Definition - Street Cred>
 
 <Definition - Model Tiers>
-Quick's built-in model selection:
+The built-in Quick model selection:
 - smart: deep reasoning, 120s timeout
 - balanced: practical all-rounder, 90s timeout
 - fast: quick pattern-matching, 60s timeout

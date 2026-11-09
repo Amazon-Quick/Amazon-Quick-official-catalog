@@ -7,7 +7,7 @@ ASTM E1049-85 four-point rainflow cycle counting for state-of-charge series.
 
 Extracts charge and discharge cycles from an irregular state-of-charge (SOC)
 time series so cycle-aging damage can be computed per depth-of-discharge (DoD).
-Uses only the Python standard library so it runs inside the Amazon Quick
+Uses only the Python standard library so it runs inside the AWS Quick code
 sandbox, which does not provide the third-party `rainflow` package.
 
 Usage:

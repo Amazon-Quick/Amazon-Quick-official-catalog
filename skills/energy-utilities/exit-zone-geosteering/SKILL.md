@@ -5,18 +5,18 @@ icon: assets/compass.svg
 description: "Verify geosteering observations, calculate deterministic price impact, project zone exits, produce a provenance-checked handover, render a Highcharts dashboard, run a full decision review, replay SYN1 one tick at a time, and offer an opt-in exit-zone watch once. Use when asked to 'verify well SYN1', 'price impact for SYN1', 'check zone exit', 'run the geosteering decision review for SYN1', 'what should the geosteerer look at right now', 'full exit-zone check', 'replay SYN1', 'show geosteering dashboard', or any exit-zone risk review."
 license: MIT-0
 created_date: "2026-09-14"
-last_updated: "2026-09-16"
+last_updated: "2026-11-05"
 preferred_model: fast
 preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time, start_task, create_task_group, get_task_group_result, inspect_task, agent_management, memory_management]
 readme: "Read assets/README.md ## Pre-requisites before running. Verify every required built-in tool is available, note optional capability fallbacks, and stop the affected workflow if a required tool is missing."
 scripts: [create_synthetic_well.py, run_verification.py, run_price_impact.py, run_zone_exit.py, create_handover.py, create_dashboard.py]
-checksum: "sha256:c1188ca070915a28d623f8793e6a26b780e211910288db0f888dbd6c06deec9c"
+checksum: "sha256:23d7cbb25599661ba4401bb7fb503d2d01dbb2eb31566006f380c1c869ebcff1"
 ---
 
 ## Overview
 
-Exit Zone Geosteering turns a deterministic logging-while-drilling stream into auditable verification, economics, exit-warning, handover, decision-review, replay, and dashboard outputs. It stores JSONL observations below the Amazon Quick workspace. Every observation carries confidence, reasoning, and source citations. Quick reports evidence and projections. It does not interpret the geology or generate a steer.
+Exit Zone Geosteering turns a deterministic logging-while-drilling stream into auditable verification, economics, exit-warning, handover, decision-review, replay, and dashboard outputs. It stores JSONL observations below the AWS Quick workspace. Every observation carries confidence, reasoning, and source citations. Quick reports evidence and projections. It does not interpret the geology or generate a steer.
 
 ## Workflow
 
@@ -51,7 +51,7 @@ A tuple of boundary zone, boundary measured depth, and Warn or Escalate tier fro
 </Definition - Crossing key>
 
 <Definition - Canonical script input>
-The request object passed to every script. For SYN1 it is `{"workspace_dir":"{workspace_dir}","wellbore_id":"SYN1","data_root":"exit-zone-geosteering-data"}`, where `{workspace_dir}` is replaced with the workspace directory supplied by Amazon Quick. For another validated well, replace only the wellbore value. See `references/script-interface.md`.
+The request object passed to every script. For SYN1 it is `{"workspace_dir":"{workspace_dir}","wellbore_id":"SYN1","data_root":"exit-zone-geosteering-data"}`, where `{workspace_dir}` is replaced with the workspace directory supplied by AWS Quick. For another validated well, replace only the wellbore value. See `references/script-interface.md`.
 </Definition - Canonical script input>
 
 </Definitions>
@@ -177,7 +177,7 @@ tools=[file_read, run_python_with_write, start_task, create_task_group, get_task
 triggers=["run the geosteering decision review for SYN1", "what should the geosteerer look at right now", "full exit-zone check"]
 >
 
-1. [Agent] Read `README.md` `## Pre-requisites` and `references/script-interface.md`; confirm every required Decision Review tool is available; validate the wellbore_id; capture the workspace directory supplied by Amazon Quick as `workspace_dir`; set the relative data_root; and serialize the exact <Definition - Canonical script input> object.
+1. [Agent] Read `README.md` `## Pre-requisites` and `references/script-interface.md`; confirm every required Decision Review tool is available; validate the wellbore_id; capture the workspace directory supplied by AWS Quick as `workspace_dir`; set the relative data_root; and serialize the exact <Definition - Canonical script input> object.
    Validate: Tools are available, identifier matches Rule 3, workspace_dir is a non-empty string, data_root is relative, and the input JSON parses to exactly workspace_dir, wellbore_id, and data_root.
    If fails: Stop before Verify and report the missing tool or invalid input.
 1. [Agent] Run <Workflow - Verify> in the parent context before creating any task group.
@@ -307,7 +307,7 @@ triggers=["Called after an interactive Decision Review", "Called after an intera
 1. [Decide] If declined, state `Noted: the owner declined the Exit Zone Geosteering watch for {wellbore_id} on the current date.` so memory_management records the decline. If accepted, create a recurring scheduled agent with no condition. Its prompt must: validate the same wellbore_id and data_root; read persisted `exit_alert` observations before running; form the existing Warn/Escalate <Definition - Crossing key> set; run <Workflow - Zone-Exit Warning>; remain silent for no alert, Watch, or a key already in the pre-run set; surface one cited card only for a new Warn or Escalate key; preserve `steer: null`; and never alter source data or operational systems. Then state `Noted: the owner accepted the Exit Zone Geosteering watch for {wellbore_id} on the current date.` so memory_management records acceptance.
    Validate: Decline or acceptance is recorded; acceptance also returns a schedule id, has no condition, and contains the complete dedupe prompt.
    If fails: Report that the watch could not be created, record no acceptance, and leave on-demand checks available.
-1. [Agent] On acceptance, confirm cadence, wellbore, delivery behavior, the machine-on and Quick-running caveat, and how to cancel under Settings, Scheduled tasks.
+1. [Agent] On acceptance, confirm cadence, wellbore, delivery behavior, the caveat that it runs only while the machine is on and Quick is running, and how to cancel under Settings, Scheduled tasks.
    Validate: Confirmation matches the created schedule and does not promise machine-off delivery.
    If fails: Re-read the schedule result and correct the confirmation.
 
@@ -359,5 +359,5 @@ Sources: {{price_and_zone_sources_or_UNKNOWN}}
 - `assets/dashboard.html`: self-contained no-chart fallback used only when Highcharts or html_design is unavailable or fails.
 - Unit tests: `scripts/tests/unit/test_create_synthetic_well.py`, `scripts/tests/unit/test_run_verification.py`, `scripts/tests/unit/test_run_price_impact.py`, `scripts/tests/unit/test_run_zone_exit.py`, `scripts/tests/unit/test_create_handover.py`, and `scripts/tests/unit/test_create_dashboard.py`. They provide filesystem-free coverage for all six scripts.
 - `evals/evals.json`: behavioral evals for all workflows, gating, degraded parallel results, dashboard fallback, replay stopping, and offer-once scheduling.
-- `evals/eval_result_2026-09-15.md`: recorded Amazon Quick Desktop clean-session run with the bundled scripts executed; all 20 evals PASS.
+- `evals/eval_result_2026-09-15.md`: recorded clean-session run in AWS Quick on desktop with the bundled scripts executed; all 20 evals PASS.
 </Resources>

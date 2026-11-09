@@ -11,7 +11,7 @@ capability workflows. All linear algebra runs in run_python with numpy.
 
 ## Sandbox reality for power flow
 
-There is no dedicated power-system solver in the Quick sandbox. `pandapower`,
+There is no dedicated power-system solver in the AWS Quick code sandbox. `pandapower`,
 `PyPSA`, and `scipy` are NOT available, and `pip install` is blocked. Build the
 DC network matrices and sensitivity factors directly with numpy:
 

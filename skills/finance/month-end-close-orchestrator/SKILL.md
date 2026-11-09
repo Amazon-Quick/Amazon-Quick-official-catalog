@@ -4,7 +4,7 @@ display_name: Month-End Close Orchestrator
 icon: assets/calendar-check.svg
 description: "Guides finance teams through the month-end close process with structured checklists, reconciliation task tracking, journal entry templates, variance analysis with commentary, and close status dashboards. Adapts to the organization's chart of accounts and close calendar. Use when asked to 'start month-end close', 'close checklist', 'reconciliation status', 'variance analysis', 'journal entry template', or 'where are we on the close'."
 created_date: "2026-06-22"
-last_updated: "2026-06-22"
+last_updated: "2026-11-05"
 license: "MIT-0"
 
 tools: [file_read, file_write, run_python, open_in_session_tab, query_dataset, list_qa_resources, search_relevant_content, read_quick_suite_file]
@@ -15,7 +15,7 @@ inputs:
   type: string
   required: true
 - name: chart_of_accounts
-  description: "Chart of accounts data. Accepts: a file path (CSV or Excel export from your ERP/accounting system), pasted account list, a Quick dataset or document from a Quick Space, or leave empty for a generic CoA structure."
+  description: "Chart of accounts data. Accepts: a file path (CSV or Excel export from your ERP/accounting system), pasted account list, an AWS Quick dataset or document from a Quick space, or leave empty for a generic CoA structure."
   type: string
   required: false
 - name: close_calendar
@@ -26,7 +26,7 @@ inputs:
   description: "Prior month actuals for variance comparison. Accepts: a file path (CSV or Excel export from your ERP/accounting system), pasted summary data, or a Quick dataset containing period financials. Required for variance analysis workflow."
   type: string
   required: false
-checksum: "sha256:17be14bbcaad7f99ee47ec35532e7c74e936327f244b227e1abbfd9c601573cf"
+checksum: "sha256:12d04ab77d58101042913e8f3006d78e5250683a950b4b95002197b45a749fa2"
 ---
 
 ## Overview

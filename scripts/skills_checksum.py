@@ -1,4 +1,4 @@
-"""Per-skill checksums for the Amazon Quick Official Catalog.
+"""Per-skill checksums for the AWS Quick Official Catalog.
 
 Computes a deterministic SHA-256 content digest for each skill and records it in
 two places, plus a catalog-wide roll-up:

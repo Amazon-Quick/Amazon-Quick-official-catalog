@@ -20,12 +20,12 @@ Deposit Collection creates a deposit request in QuickBooks for a configurable pe
 - PayPal (cloud connector, cloud runtime, optional): ensure it is installed, you are signed in, and it is enabled. Offered only as an additional payment link when the customer accepts it; otherwise the QuickBooks payment link is used.
 
 
-This skill also uses built-in Amazon Quick system tools. These are available by default (no install); manage them under Customize > Connectors (see https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html):
+This skill also uses built-in AWS Quick system tools. These are available by default (no install); manage them under Customize > Connectors (see https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html):
 - `memory_management`: Knowledge and memory (built-in system tool) to recall the owner's preferences and prior decisions across runs.
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

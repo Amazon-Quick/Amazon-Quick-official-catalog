@@ -4,7 +4,7 @@ display_name: Research Biomedical Databases
 icon: assets/dna.svg
 description: "Query biomedical databases via the Biomni AgentCore Gateway MCP server for protein lookup, variant interpretation, pathway analysis, drug-target associations, and genomic annotations. Use when asked to 'find protein info', 'check variant pathogenicity', 'look up a gene in ClinVar', 'find drug targets for a disease', 'search clinical trials', 'get population frequency', 'find protein structure', 'query UniProt', 'look up pathways in Reactome', or any biomedical database research question."
 created_date: "2026-07-20"
-last_updated: "2026-07-20"
+last_updated: "2026-11-05"
 license: "MIT-0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
@@ -18,7 +18,7 @@ inputs:
   options: [variant-interpretation, drug-target-analysis, gene-expression, protein-analysis, discovery]
   required: false
   default: discovery
-checksum: "sha256:92aa818c868f596d6ec129fb69e9f7d76c2f99f5afd3faa50e1b42a5239d6fb5"
+checksum: "sha256:66c9c7d49ed9620e78f7c2daa8e9ccf401ef0d195d8df29395ea953a6c4cd02e"
 ---
 
 ## Overview
@@ -29,7 +29,7 @@ Orchestrates queries across the Biomni biomedical database tools (UniProt, ClinV
 
 This skill does nothing on its own. It requires the `biomni-research` MCP server (an Amazon Bedrock AgentCore Gateway) to be deployed on your own AWS account and connected to your AI assistant first. This server is **not** built into any assistant. If it is not connected, none of the tools referenced below exist and no workflow can run.
 
-**Before using this skill, complete the setup in `<Resource - MCP Server Setup>` at the bottom of this file.** It works with any MCP-capable assistant (Claude Code, Cursor, Kiro, Amazon Quick, or a programmatic Strands/MCP client).
+**Before using this skill, complete the setup in `<Resource - MCP Server Setup>` at the bottom of this file.** It works with any MCP-capable assistant (Claude Code, Cursor, Kiro, AWS Quick, or a programmatic Strands/MCP client).
 
 ## Workflow
 

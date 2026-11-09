@@ -3,12 +3,12 @@ name: grid-capacity-planning
 display_name: Grid Capacity Planning
 icon: assets/network.svg
 description: "Perform long-range transmission and distribution capacity planning: load growth forecasting, distributed energy resource hosting capacity, N-1 contingency screening, transfer capability, substation loading, and capital investment plans. Use when asked to 'forecast load growth', 'run a hosting capacity analysis', 'screen N-1 contingencies', 'calculate ATC or transfer capability', 'assess substation loading', or 'build a capital investment plan' for a power grid"
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 license: MIT-0
 created_date: "2026-07-15"
-last_updated: "2026-07-15"
+last_updated: "2026-11-05"
 tools: [get_current_time, run_python, file_read, file_write, web_search, url_fetch, open_in_session_tab, start_task, get_task_result]
-checksum: "sha256:69cbc181f119b16b60bf360633fc70a16e826220f61df81bf5c74eff271702ee"
+checksum: "sha256:7872e223b2abfc4b98cd15f81eacd29067704568bc43ca748e6da0b5de9a9a5a"
 ---
 
 ## Overview
@@ -116,7 +116,7 @@ Workflow steps are annotated with prefixes:
 </Agent Annotations>
 
 <Gotchas>
-- pandapower, PyPSA, and scipy are NOT available in the Quick sandbox, and
+- pandapower, PyPSA, and scipy are NOT available in the AWS Quick code sandbox, and
   `pip install` is blocked. Build DC network matrices and sensitivity factors
   directly with numpy (`numpy.linalg.inv` / `numpy.linalg.solve`). See
   `references/power-system-analysis.md`. When a full power-system solver is

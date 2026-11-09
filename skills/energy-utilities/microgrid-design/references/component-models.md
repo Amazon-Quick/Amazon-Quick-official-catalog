@@ -18,7 +18,7 @@ are for sanity checks, not values to plug in unverified.
 pvlib is not available in the sandbox. Either implement the geometry below with
 numpy, or fetch a production profile from an authoritative solar-resource
 service (see `references/data-sources.md`). When full pvlib fidelity is required,
-use a coding agent such as Kiro via ACP in Quick on desktop to install pvlib and
+use a coding agent such as Kiro via ACP in AWS Quick on desktop to install pvlib and
 execute the code outside the sandbox.
 
 ```

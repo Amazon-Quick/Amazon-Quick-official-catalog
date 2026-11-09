@@ -13,7 +13,7 @@ Gathers a few case details, resolves the Marketplace ID (seller input > session 
 
 ## Pre-requisites
 - Type: built-in cloud connector
-- Which: the "Amazon Selling Partner" connector in Amazon Quick. This skill calls no SP-API tools by default; the connector provides the account/session context (Marketplace ID) it reuses. If or when the connector exposes a Seller Support / case-creation tool, the skill can use it after explicit seller confirmation.
+- Which: the "Amazon Selling Partner" connector in AWS Quick. This skill calls no SP-API tools by default; the connector provides the account/session context (Marketplace ID) it reuses. If or when the connector exposes a Seller Support / case-creation tool, the skill can use it after explicit seller confirmation.
 - Required or optional: optional for the advisory (summary + Help Center link) path; the connector's session context improves identifier fill.
 
 Establishing the active seller account and marketplace is handled by the session's account context (the connected Amazon Selling Partner connector); this skill reuses it.

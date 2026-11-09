@@ -9,7 +9,7 @@ Formula and code reference for the cycle modeling and heat rate workflows.
 
 ## Steam property availability (read this first)
 
-The Amazon Quick Python sandbox does NOT include CoolProp or an IAPWS steam
+The AWS Quick code sandbox does NOT include CoolProp or an IAPWS steam
 table library, and pip install is blocked. You cannot compute water/steam
 enthalpy and entropy from pressure and temperature inside the sandbox. For any
 Rankine or bottoming-cycle calculation you must obtain state-point properties

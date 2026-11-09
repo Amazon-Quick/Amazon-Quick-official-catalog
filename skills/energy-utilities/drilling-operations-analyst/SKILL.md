@@ -3,12 +3,12 @@ name: drilling-operations-analyst
 display_name: Drilling Operations Analyst
 icon: assets/drill.svg
 description: "Quantitative drilling performance analysis across the well lifecycle covering wellbore positioning, drilling efficiency, and economics. Use when asked to 'calculate a wellbore survey', 'run minimum curvature', 'compute MSE', 'analyze drilling efficiency', 'parse a daily drilling report', 'plot a mud weight window', 'track cost per foot', 'classify NPT', or 'benchmark wells against offsets', or any drilling optimization, trajectory, or well-planning analysis request"
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
-last_updated: "2026-07-15"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, file_read_pdf, file_read_docx, file_read_image, run_python, open_in_session_tab, start_task, get_task_result]
-checksum: "sha256:0bb9760a6d1c45dc7992a92652ae2b51cb9fd5e8349e6461fa28001a7f9a2a43"
+checksum: "sha256:8b402ea4611e7242042d6a09b109f4fcd9bded3c3fe3e7dd1eb1ca1587745725"
 ---
 
 ## Overview

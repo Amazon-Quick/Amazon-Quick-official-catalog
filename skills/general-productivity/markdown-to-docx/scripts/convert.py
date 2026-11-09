@@ -10,7 +10,7 @@ Handles headings, inline formatting (bold, italic, code, hyperlinks), lists (bul
 and numbered with nesting), horizontal rules, blockquotes, tables, images, and
 paragraph continuation.
 
-Dependencies: python-docx, lxml, Pillow (all pre-installed in Amazon Quick sandbox).
+Dependencies: python-docx, lxml, Pillow (all pre-installed in the AWS Quick code sandbox).
 """
 
 import argparse

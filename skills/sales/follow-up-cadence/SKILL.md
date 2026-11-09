@@ -5,7 +5,7 @@ display_name: Follow-Up Cadence
 icon: assets/send.svg
 description: "Creates and manages follow-up sequences for small business sales. Handles post-meeting recaps, post-proposal check-ins, conference lead follow-ups, re-engagement of cold leads, and batch follow-up reviews. Use when user says 'follow up with', 'write a follow-up email', 'what follow-ups do I owe', 'post-meeting email', 'check in with [client]', 'they haven't responded', 'send a recap', 'follow-up sequence', or 'meeting recap for [person]'."
 created_date: "2026-05-15"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, open_in_session_tab]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -23,7 +23,7 @@ inputs:
   description: "Type: post-meeting, post-proposal, post-event, re-engagement, post-purchase, referral-request"
   type: string
   required: false
-checksum: "sha256:100f82645f3a0a4bcae4ee4a40a3e9215aa8cff4ad73ba2019727fddcd1bc2c5"
+checksum: "sha256:fc1909fd45b502b403265cf18f37237f22de8f6414dd677b8c29b065efcecfe8"
 ---
 
 ## Overview

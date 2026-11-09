@@ -13,14 +13,14 @@ Searches the SP-API docs first, fetches full content, routes by question shape (
 
 ## Pre-requisites
 - Type: built-in cloud connector
-- Which: the "Amazon Selling Partner" connector in Amazon Quick, which exposes the read-only SP-API knowledge operations this skill uses (documentation search, full-document fetch, section browse, and operation-spec lookup).
+- Which: the "Amazon Selling Partner" connector in AWS Quick, which exposes the read-only SP-API knowledge operations this skill uses (documentation search, full-document fetch, section browse, and operation-spec lookup).
 - Runtime: cloud
 - Required or optional: required. Without it connected, the skill cannot retrieve documentation, and it must not answer SP-API questions from general knowledge.
 
-The connector is offered during Amazon Quick onboarding. If the developer connected and authenticated it, this skill is available. If they skipped connector setup and later added this skill manually, they must connect and authenticate the "Amazon Selling Partner" connector before it can run.
+The connector is offered during AWS Quick onboarding. If the developer connected and authenticated it, this skill is available. If they skipped connector setup and later added this skill manually, they must connect and authenticate the "Amazon Selling Partner" connector before it can run.
 
 ## Installation
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Connect and authenticate the Amazon Selling Partner connector. Under Customize > Connectors, find Amazon Selling Partner and choose Install.
 
 ## Getting started

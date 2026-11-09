@@ -8,8 +8,8 @@ origin: original
 
 Two inbound formats carry prior authorization (PA) requests: X12 278 (pipe-delimited
 EDI segments) and the FHIR Da Vinci PAS Bundle (JSON with resource-typed entries).
-Both parsers below use only the Python standard library, so they run in the Amazon
-Quick `run_python` sandbox as well as in an external environment.
+Both parsers below use only the Python standard library, so they run in the AWS Quick
+code sandbox as well as in an external environment.
 
 ## Parse X12 278 Transaction
 

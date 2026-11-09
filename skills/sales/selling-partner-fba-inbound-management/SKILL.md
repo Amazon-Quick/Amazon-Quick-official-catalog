@@ -4,10 +4,10 @@ display_name: Selling Partner FBA Inbound Management
 icon: assets/package.svg
 description: "Guides a Fulfillment by Amazon (FBA) seller through the Selling Partner API (SP-API) inbound pipeline: create an inbound plan, set packing, choose placement, book transportation, confirm a delivery window, and confirm the shipment, then check status, add tracking, modify, or cancel. Runs the sequential create, pack, place, transport, deliver, ship flow, polls each asynchronous operation to completion, and pauses at every decision gate. Use when asked to send inventory to Amazon, create an inbound plan, ship to FBA, check inbound shipment status, cancel an inbound plan, add tracking, get FNSKU labels, see prep requirements, or schedule a fulfillment center drop-off. Do NOT use for stockout or replenishment forecasting (use selling-partner-stockout-prevention), listing issues, advertising, or orders."
 created_date: "2026-09-15"
-last_updated: "2026-09-15"
+last_updated: "2026-11-05"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
-checksum: "sha256:7a412c8c8691f20740595aa51614c127525fdda26f2bafc8ddb788059547abe5"
+checksum: "sha256:9203c815fd92667f9806dc5949e226f826f85095b53004022f5de1542d7b88d8"
 ---
 
 ## Overview

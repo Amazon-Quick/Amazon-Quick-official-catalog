@@ -4,7 +4,7 @@ display_name: "Instant Invoice"
 icon: assets/file-text.svg
 description: "Create and send an invoice as soon as a job is complete. Use when the user says 'invoice the job', 'send invoice', 'bill the customer', 'get me paid', or describes completing work and needing to invoice. Built for field service businesses (plumbers, HVAC, landscapers, consultants) that need to invoice promptly after finishing work."
 created_date: "2026-06-02"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [recall_memories, save_to_memory, run_python]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -34,7 +34,7 @@ inputs:
     description: "How this business's customers pay (a payment-page or invoice-pay URL, PayPal.me/Stripe link, Venmo/Zelle/Cash App handle, bank/ACH details, or a check mailing address / pay-by-phone contact). Used as the pay option in the invoice email when QuickBooks does not return its own pay link. Captured once on first use and remembered across ALL invoicing skills (Job-to-Invoice, Invoice Chaser, Deposit Collection). Never fabricated."
     type: string
     required: false
-checksum: "sha256:1b60049d9870e0486067b80782ae0b7799df247e101cdcdc22b0ef9e316e86fb"
+checksum: "sha256:6d9ef0b38e2057ebbfe3197de675c8d44f476e648aa2b1d3179d96256ef3abd5"
 ---
 
 ## Overview
@@ -256,7 +256,7 @@ This runs in the SAME response as the send (Step 8), driven by the owner's Step 
 
 Create a one-time scheduled agent for [due date + 3 days]:
 "Invoice #[number] for {{customer}} ($[amount]) was due [3 days ago]. Check QuickBooks; if still unpaid, follow up."
-Scheduled agents run locally - they fire only when the machine is on and Quick is running; say so when confirming.
+Scheduled agents run locally - they fire only when the machine is on and AWS Quick is running; say so when confirming.
 
 - **Validate**: A reminder/scheduled agent was created with the correct fire date, OR the owner chose "Send only". Never reach Step 10 with this unresolved.
 - **On failure**: If the scheduled-agent tool fails, fall back to a calendar event. If that also fails, tell the owner the exact date to follow up manually and treat the step as resolved.

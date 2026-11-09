@@ -5,7 +5,7 @@ origin: original
 ---
 # Optimization Methodology and Dispatch Strategies
 
-This file holds the three-stage optimization method and the two dispatch strategies referenced by the main workflow. Implement all math in `run_python` using numpy and pandas. There is no HOMER, SAM, or pvlib package in the Amazon Quick sandbox; these names describe methodology, not tools you can import.
+This file holds the three-stage optimization method and the two dispatch strategies referenced by the main workflow. Implement all math in `run_python` using numpy and pandas. There is no HOMER, SAM, or pvlib package in the AWS Quick code sandbox; these names describe methodology, not tools you can import.
 
 ## Three-Stage Optimization: Enumerate, Simulate, Rank
 

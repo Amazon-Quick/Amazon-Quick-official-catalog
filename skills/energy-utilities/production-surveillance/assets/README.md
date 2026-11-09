@@ -14,13 +14,13 @@ This skill supports six operationally read-only analysis workflows: Well Log Ing
 
 ## Pre-requisites
 
-The bundled synthetic scenarios have no external connector dependency. Amazon Quick runs the included scripts with built-in Python tooling.
+The bundled synthetic scenarios have no external connector dependency. AWS Quick runs the included scripts with built-in Python tooling.
 
-- Python sandbox (system tool, Amazon Quick cloud runtime, required): use `run_python` for the included read-only scripts and `run_python_with_write` only when the user explicitly asks to save an analysis artifact.
-- LAS 2.0 parsing (included Python standard-library script, Amazon Quick sandbox): unwrapped LAS 2.0 text files are parsed directly within `WORKSPACE_DIR`; no lasio, pyarrow, package installation, or network access is required. Wrapped LAS and LAS 3.0 return documented errors.
+- AWS Quick code sandbox (system tool, cloud runtime, required): use `run_python` for the included read-only scripts and `run_python_with_write` only when the user explicitly asks to save an analysis artifact.
+- LAS 2.0 parsing (included Python standard-library script, code sandbox): unwrapped LAS 2.0 text files are parsed directly within `WORKSPACE_DIR`; no lasio, pyarrow, package installation, or network access is required. Wrapped LAS and LAS 3.0 return documented errors.
 - DLIS conversion (user-selected system tool or local preprocessing utility, user's local machine, optional): DLIS still requires external conversion to validated JSON arrays because the sandbox does not include dlisio.
 
-This skill also uses built-in Amazon Quick system capabilities. They are available by default; ensure they are enabled in Customize:
+This skill also uses built-in AWS Quick system capabilities. They are available by default; ensure they are enabled in Customize:
 
 - `agent_management`: Agent management (built-in system tool, optional) creates the opt-in recurring surveillance watch.
 - `memory_management`: Knowledge and memory (built-in system tool, optional) recalls and records the user's scheduling decision so the offer appears only once.
@@ -33,12 +33,12 @@ If a DLIS converter is unavailable, continue with the bundled synthetic fixtures
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 1. Confirm the built-in Python capability is enabled.
 1. Confirm the optional `html_design`, `highcharts`, `agent_management`, and `memory_management` capabilities are enabled for dashboards and scheduled surveillance.
 1. For external LAS 2.0 data, keep the unwrapped text file within the confirmed workspace. For DLIS, preprocess it locally into JSON and validate units and curve names before upload.
 
-Amazon Quick skill installation guidance: https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html
+AWS Quick skill installation guidance: https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html
 
 ## Getting started
 
@@ -62,5 +62,5 @@ Any extension must preserve the safety veto, isolated-task `UNKNOWN` failure pat
 
 ## Runtime notes
 
-- The Amazon Quick sandbox environment is read-only. Every script exposes `run(request)`; execute it with the recipe in `references/script-interface.md` and pass `workspace_dir` to the LAS reader explicitly.
+- The code sandbox environment is read-only. Every script exposes `run(request)`; execute it with the recipe in `references/script-interface.md` and pass `workspace_dir` to the LAS reader explicitly.
 - `references/script-interface.md` lists every operation's argument names and response keys. Read it before the first script call so no key is guessed.

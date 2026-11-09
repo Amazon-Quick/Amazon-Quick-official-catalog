@@ -10,7 +10,7 @@ Creates platform-native social media posts for small businesses across LinkedIn,
 
 ## Overview
 
-This skill solves the problem of generic copy reformatted across channels by writing a genuinely different angle, hook, and format for each platform. It provides visual direction, hashtag strategy, optimal posting times, and a posting brief for team handoff, and can repurpose a blog post from the SEO Content Writer skill when one exists in the session. It is for small business owners and social marketers, and it extends Amazon Quick by producing a complete, ready-to-post package from a single topic.
+This skill solves the problem of generic copy reformatted across channels by writing a genuinely different angle, hook, and format for each platform. It provides visual direction, hashtag strategy, optimal posting times, and a posting brief for team handoff, and can repurpose a blog post from the SEO Content Writer skill when one exists in the session. It is for small business owners and social marketers, and it extends AWS Quick by producing a complete, ready-to-post package from a single topic.
 
 ## Pre-requisites
 
@@ -19,7 +19,7 @@ This skill solves the problem of generic copy reformatted across channels by wri
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

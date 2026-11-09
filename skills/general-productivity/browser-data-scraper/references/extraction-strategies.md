@@ -6,7 +6,7 @@ origin: original
 
 # Extraction Strategies (fetch-based)
 
-These strategies work on content retrieved with url_fetch. Quick provides no
+These strategies work on content retrieved with url_fetch. AWS Quick provides no
 headless browser, so anything that requires clicking, scrolling, or intercepting
 network requests is out of scope. Check strategies in priority order and use the
 first one whose detection signal is present.

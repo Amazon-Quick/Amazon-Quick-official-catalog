@@ -4,10 +4,10 @@ display_name: HEDIS Measure Calculation
 icon: assets/calculator.svg
 description: "Provide deterministic Python and SQL for calculating Healthcare Effectiveness Data and Information Set (HEDIS) quality measures from claims and clinical data. Use when asked to 'calculate a HEDIS measure', 'check continuous enrollment', 'detect care gaps', 'compute utilization rates', 'identify high-cost claimants', 'score a risk index', or any healthcare quality measure calculation task."
 created_date: "2026-07-14"
-last_updated: "2026-07-14"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [file_read, get_current_time]
-checksum: "sha256:100942abb78e714655a563ae58f4c89a29ab4c9b2054f99b90a0d6f36909de21"
+checksum: "sha256:278a9cd09da55c765ac6787b6b5112f1ea9f7582e670871aaee0e2070cd4eb2a"
 ---
 
 ## Overview
@@ -38,7 +38,7 @@ The user receives one complete, working code example for their chosen task, in t
 1. Lead with the command or code the user needs; explain after. Structure the response as: confirm inputs, then working code, then key parameters explained, then gotchas.
 2. Deliver one complete working example per task. Do not show every alternative approach in one response.
 3. Keep code comments minimal and functional (what the code does, not why it exists). Target 50 to 100 lines of code with brief surrounding explanation.
-4. Use only libraries available in the Amazon Quick Python sandbox (pandas and numpy are available). Never write code that requires `pip install` or a package outside the sandbox inventory.
+4. Use only libraries available in the AWS Quick code sandbox (pandas and numpy are available). Never write code that requires `pip install` or a package outside the sandbox inventory.
 5. Do not invent HEDIS value sets, procedure codes, or measure specifications. The code sets in the reference files are illustrative examples; tell the user to confirm the authoritative value sets for their measurement year against current NCQA specifications.
 6. Resolve any relative date reference (for example "this year") to a concrete measurement year using get_current_time before writing date-based logic.
 7. Liability disclaimer: this skill produces code for informational and engineering purposes only. It is not certified HEDIS reporting logic and does not constitute clinical, actuarial, compliance, or legal advice. Direct the user to validate results with a certified HEDIS auditor or NCQA-certified measure specifications before using output for official quality reporting or regulatory submission.
@@ -52,7 +52,7 @@ The user receives one complete, working code example for their chosen task, in t
 </Agent Annotations>
 
 <Gotchas>
-- The Python sandbox provides pandas 3.0.2 and numpy 2.5.0 but does NOT provide an importable pyarrow, so Arrow-backed pandas dtypes are unavailable. Write code that stays on the default NumPy-backed dtypes.
+- The code sandbox provides pandas 3.0.2 and numpy 2.5.0 but does NOT provide an importable pyarrow, so Arrow-backed pandas dtypes are unavailable. Write code that stays on the default NumPy-backed dtypes.
 - HEDIS specifications and value sets are republished by NCQA every year. The code sets in the reference files are illustrative, not authoritative for any specific measurement year.
 - The calculation pitfalls that most often produce wrong rates (gap off-by-one, anchor-date age, inpatient date selection, numerator deduplication, diagnosis lookback) are documented in `references/common-pitfalls.md`. Read it before delivering any measure code.
 </Gotchas>

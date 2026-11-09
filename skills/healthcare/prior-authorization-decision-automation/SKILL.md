@@ -5,9 +5,9 @@ icon: assets/shield-plus.svg
 description: "Generate deterministic code and pipeline recipes for automating prior authorization (PA) workflows: parsing X12 278 and FHIR PAS requests, extracting clinical features, rules-based adjudication, training machine learning classifiers, and analyzing denial patterns. Use when asked to 'parse a prior authorization request', 'build a PA adjudication engine', 'train a PA decision model', 'explain a PA denial', 'analyze denial patterns', or any prior authorization automation task"
 license: MIT-0
 created_date: "2026-07-14"
-last_updated: "2026-07-14"
+last_updated: "2026-11-05"
 tools: [file_read, file_write, run_python]
-checksum: "sha256:64cdf7bb3f54fbe3910c15c288eaeb299616091d817ad815686846b66dc2a351"
+checksum: "sha256:7e3f7f7246a90e7c4915a4112500455a1e2fc3670f72e1634a94ac4261801f4b"
 ---
 
 ## Overview
@@ -56,7 +56,7 @@ production.
 5. Deliver one complete working example per task. Do not enumerate every alternative.
    Target 50 to 100 lines of code with brief surrounding explanation, and keep code
    comments minimal and functional.
-6. Never present the ML training or SHAP code as runnable inside the Amazon Quick
+6. Never present the ML training or SHAP code as runnable inside the AWS Quick code
    sandbox. It depends on packages the sandbox does not provide (see <Gotchas>). Label
    it as code for the user's own training environment.
 7. Recommend the rules engine as the auditable core and position the ML classifier only
@@ -73,7 +73,7 @@ production.
 </Agent Annotations>
 
 <Gotchas>
-- The Amazon Quick `run_python` sandbox package set is a closed allowlist that includes
+- The code sandbox package set is a closed allowlist that includes
   pandas and numpy but NOT `xgboost`, `scikit-learn`, or `shap`. Parsing, feature
   extraction, and the rules engine run in the sandbox; the ML training and SHAP code
   does not. Deliver the ML code for the user's own environment and do not attempt to run

@@ -6,18 +6,18 @@ origin: original
 
 # Automated Log Analysis
 
-Deterministic petrophysical evaluation of LAS 2.0 well logs inside Amazon Quick. Bundled scripts parse the file with vendor curve-alias resolution, compute Vshale, density porosity, Archie water saturation, effective porosity, net pay, pay zones, and OOIP, render a five-track composite log, and write a Word report with a Markdown twin. The email workflow reads a vendor delivery from Outlook and drafts, never sends, the results reply. A synthetic well (`SYN-LAS-1`) with locked golden values exercises the entire pipeline without any email.
+Deterministic petrophysical evaluation of LAS 2.0 well logs inside AWS Quick. Bundled scripts parse the file with vendor curve-alias resolution, compute Vshale, density porosity, Archie water saturation, effective porosity, net pay, pay zones, and OOIP, render a five-track composite log, and write a Word report with a Markdown twin. The email workflow reads a vendor delivery from Outlook and drafts, never sends, the results reply. A synthetic well (`SYN-LAS-1`) with locked golden values exercises the entire pipeline without any email.
 
 ## Pre-requisites
 
 | Dependency | Type | Runtime | Required |
 |---|---|---|---|
-| `file_read`, `run_python_with_write` | Built-in tools | Amazon Quick sandbox | Required |
-| `open_in_session_tab`, `get_current_time` | Built-in tools | Amazon Quick sandbox | Optional; plot and report still save without them |
-| Outlook | Cloud connector | Amazon Quick | Optional; needed only for the email pipeline |
-| `numpy`, `pandas` | Sandbox Python libraries | Amazon Quick sandbox | Required by parser and evaluator |
-| `matplotlib` | Sandbox Python library | Amazon Quick sandbox | Required by the plotter |
-| `python-docx` | Sandbox Python library | Amazon Quick sandbox | Optional; Markdown report is written when absent |
+| `file_read`, `run_python_with_write` | Built-in tools | AWS Quick code sandbox | Required |
+| `open_in_session_tab`, `get_current_time` | Built-in tools | code sandbox | Optional; plot and report still save without them |
+| Outlook | Cloud connector | AWS Quick | Optional; needed only for the email pipeline |
+| `numpy`, `pandas` | Sandbox Python libraries | code sandbox | Required by parser and evaluator |
+| `matplotlib` | Sandbox Python library | code sandbox | Required by the plotter |
+| `python-docx` | Sandbox Python library | code sandbox | Optional; Markdown report is written when absent |
 
 No local MCP servers, package installation, or network access. Each script exposes `run(request)` and is executed by importing it by file stem inside `run_python_with_write` with `workspace_dir` passed explicitly; see `references/script-interface.md`. The sandbox blocks `__file__`, `__dict__`, `exec`, and `compile`, so the scripts never rely on them.
 
@@ -25,7 +25,7 @@ DLIS attachments are not supported (`dlisio` is not in the sandbox); ask the ven
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

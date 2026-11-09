@@ -3,9 +3,9 @@ name: battery-storage-analyst
 display_name: Battery Storage Analyst
 icon: assets/battery-charging.svg
 description: "Size battery energy storage systems, model lithium-ion degradation, co-optimize revenue streams, and build degradation-adjusted financial pro-formas. Use when asked to 'size a battery', 'model BESS degradation', 'optimize battery dispatch', 'run a storage pro-forma', 'evaluate peak shaving', 'analyze energy arbitrage', 'model solar plus storage', or any battery energy storage sizing, dispatch, or investment analysis."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-14"
-last_updated: "2026-07-14"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, run_python, run_python_with_write, open_in_session_tab]
 scripts: [rainflow.py, degradation.py, financial.py]
@@ -28,7 +28,7 @@ inputs:
     description: "Directory where deliverables (pro-forma, charts, summary) are written."
     type: path
     required: false
-checksum: "sha256:a6f927d6f533498e04bb834668869b4c12470062cc6dd247a20adad5925e22e1"
+checksum: "sha256:dd0f100c7125b6aea68c282a48fd2a855be079880645cec7b067f91317ae31f5"
 ---
 
 ## Overview
@@ -84,7 +84,7 @@ Steps carry a Validate line (the success condition) and an If fails line (the re
 </Agent Annotations>
 
 <Gotchas>
-- The Python sandbox has no linear-programming solver (no scipy.optimize, pulp, cvxpy, or ortools) and no numpy_financial, rainflow, or pvlib package, and pip install is blocked. Size, dispatch, and finance run on numpy plus the bundled scripts. See references/sizing-and-dispatch.md. For higher-fidelity dispatch co-optimization with a true solver, use a coding agent such as Kiro via ACP in Quick on desktop to install pulp, cvxpy, or scipy.optimize and run the optimization outside the sandbox.
+- The AWS Quick code sandbox has no linear-programming solver (no scipy.optimize, pulp, cvxpy, or ortools) and no numpy_financial, rainflow, or pvlib package, and pip install is blocked. Size, dispatch, and finance run on numpy plus the bundled scripts. See references/sizing-and-dispatch.md. For higher-fidelity dispatch co-optimization with a true solver, use a coding agent such as Kiro via ACP in Quick on desktop to install pulp, cvxpy, or scipy.optimize and run the optimization outside the sandbox.
 - Round-trip efficiency compounds: 86 percent means 14 percent lost every cycle, which over hundreds of cycles a year is a real energy cost.
 - Calendar aging at high SOC is severe for NMC: 100 percent SOC at 35 C can fade 3 to 4 times faster than 50 percent SOC at 25 C.
 - Manufacturer cycle-life numbers assume lab conditions; real-world fade is commonly 20 to 40 percent faster. Carry an explicit uncertainty band.

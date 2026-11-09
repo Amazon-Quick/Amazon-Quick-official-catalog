@@ -6,12 +6,12 @@ origin: original
 
 # Script interface
 
-## Executing a script in Amazon Quick
+## Executing a script in AWS Quick
 
 The sandbox process environment is read-only: `os.environ` cannot be changed, so `WORKSPACE_DIR` cannot be set by the agent, and scripts are never run as a subprocess. Every script exposes `run(request: dict) -> dict`. Execute a script like this:
 
 1. Read the complete script source with `file_read`.
-2. In `run_python` (or `run_python_with_write` when a file is written), import the script by its file stem, which Amazon Quick places on the sandbox import path, and call its `run(request)`: `import run_las_reader as script; result = script.run(request)`. Do not read or assign `__file__`, `__dict__`, or any other dunder attribute; the sandbox attribute checker blocks those and the import already registers the module in `sys.modules`, which the dataclass postponed annotations need. Do not compile or `exec` the source yourself.
+2. In `run_python` (or `run_python_with_write` when a file is written), import the script by its file stem, which AWS Quick places on the sandbox import path, and call its `run(request)`: `import run_las_reader as script; result = script.run(request)`. Do not read or assign `__file__`, `__dict__`, or any other dunder attribute; the sandbox attribute checker blocks those and the import already registers the module in `sys.modules`, which the dataclass postponed annotations need. Do not compile or `exec` the source yourself.
 3. Never mutate `os.environ`, modify `sys.path`, import one bundled script from another, or spawn a subprocess.
 
 The command-line form `python scripts/<name>.py --request-json '<json>'` (plus `--fixture` for the fixture script) remains available outside the sandbox and behaves identically.
@@ -68,7 +68,7 @@ Golden checks with `gas_price_per_mmbtu: 3.5`, `btu_per_scf: 1050`: `constrained
 
 ## run_las_reader.py
 
-Top-level request key: `workspace_dir` (required in Amazon Quick; the skill directory or a confirmed local folder). Paths in `arguments.path` must stay inside it; absolute paths outside it and parent traversal return `PARENT_TRAVERSAL` or `PATH_OUTSIDE_WORKSPACE` errors.
+Top-level request key: `workspace_dir` (required in AWS Quick; the skill directory or a confirmed local folder). Paths in `arguments.path` must stay inside it; absolute paths outside it and parent traversal return `PARENT_TRAVERSAL` or `PATH_OUTSIDE_WORKSPACE` errors.
 
 | Operation | Arguments | Response keys |
 | --- | --- | --- |

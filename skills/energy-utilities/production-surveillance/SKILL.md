@@ -5,13 +5,13 @@ icon: assets/eye.svg
 description: "Analyze synthetic production surveillance data with deterministic field, well-log, flow-assurance, reservoir, safety, petrophysics, and economics checks. Use when asked to 'generate a morning field report', 'run production surveillance', 'read this LAS file', 'ingest well logs', 'what curves are in SK-14', 'investigate the RED alarm', 'run a full investigation on a well', 'check flow assurance', 'calculate hydrate margin', 'assess reservoir constraints', 'run a safety compliance check', or 'create a production surveillance watch'."
 license: MIT-0
 created_date: "2026-09-14"
-last_updated: "2026-09-16"
+last_updated: "2026-11-05"
 preferred_model: balanced
 preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time, start_task, create_task_group, get_task_group_result, inspect_task, agent_management, memory_management, list_scheduled_agents, create_scheduled_agent, recall_memories, save_to_memory]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Python system tool and optional dashboard, scheduling, memory, and local LAS/DLIS conversion capabilities; verify availability, stop if the required tool is missing, and note reduced capability when an optional prerequisite is missing."
 scripts: [run_tiger_fixture.py, run_petrophysics.py, run_economics.py, run_las_reader.py]
-checksum: "sha256:cc9c55f7672692a408a9e0326bdf4b55ca385daa46c4180f2d74f6dddd9119a7"
+checksum: "sha256:45a5c3957088315f4ee9c83c5b6c9f37d2fde80b12b668547e2ab269b958d934"
 ---
 
 ## Overview
@@ -55,7 +55,7 @@ A report labeled `PARTIAL` contains only completed calculations, names every fai
 \</Definition - Partial report>
 
 \<Definition - Production Surveillance watch>
-An opt-in recurring local Quick scheduled task that runs the bundled `well_deviations` and `alarms` operations. A RED alarm invokes Anomaly Investigation and stops at the human decision boundary. The watch never auto-approves or executes an operational action.
+An opt-in recurring local AWS Quick scheduled task that runs the bundled `well_deviations` and `alarms` operations. A RED alarm invokes Anomaly Investigation and stops at the human decision boundary. The watch never auto-approves or executes an operational action.
 \</Definition - Production Surveillance watch>
 
 </Definitions>

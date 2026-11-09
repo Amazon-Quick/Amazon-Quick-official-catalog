@@ -3,12 +3,12 @@ name: power-plant-performance
 display_name: Power Plant Performance
 icon: assets/gauge.svg
 description: "Analyze thermal power plant performance: heat rate, NERC GADS availability metrics, thermodynamic cycle modeling, ambient corrections, degradation trending, and fleet benchmarking. Use when asked to 'calculate heat rate', 'compute EFOR or availability', 'model a Rankine or Brayton cycle', 'apply ambient corrections', 'trend plant degradation', 'benchmark against the NERC fleet', or analyze thermal generation efficiency"
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-14"
-last_updated: "2026-07-14"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, file_read, file_write, run_python, web_search, url_fetch, open_in_session_tab]
-checksum: "sha256:23d817e4f4707bdbcc494ad2c79b0bd6c7f35bce15ebd36291b2613b99ab5a2a"
+checksum: "sha256:dc5cb9b3d98c6840450093f2ec56de5ef23020661c344e5441859793076236c2"
 ---
 
 ## Overview
@@ -107,7 +107,7 @@ recommendations name the physical action and whether it is recoverable.
 </Agent Annotations>
 
 <Gotchas>
-- The Amazon Quick Python sandbox does not include CoolProp, an IAPWS steam
+- The AWS Quick code sandbox does not include CoolProp, an IAPWS steam
   table library, or scipy, and pip install is blocked. You cannot compute
   water/steam enthalpy and entropy from pressure and temperature in the sandbox.
   Obtain steam state-point properties from user-uploaded data, user input, or an

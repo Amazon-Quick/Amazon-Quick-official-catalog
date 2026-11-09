@@ -4,10 +4,10 @@ display_name: SP-API Stockout Prevention
 icon: assets/package-check.svg
 description: "Monitors Selling Partner API (SP-API) Fulfillment by Amazon (FBA) inventory health, finds stockout risk from sales velocity, and orchestrates prevention actions: days-of-cover per SKU, inbound-shipment gap analysis, and restocking. It can also draft a seller-requested, previewed-and-approved temporary price change to slow demand if the seller asks. Reads inventory and sales read-only and previews every price change before it goes live. Use when asked to check inventory health, stockout risk, FBA stock levels, days of cover, days of supply, replenishment timing, or 'am I going to run out'. Do NOT use for creating or fixing listings (use the selling-partner-listing skills), inbound shipment creation and placement (use selling-partner-fba-inbound-management), advertising, or order fulfillment."
 created_date: "2026-09-15"
-last_updated: "2026-09-15"
+last_updated: "2026-11-05"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
-checksum: "sha256:b2cc99c20bf4358ca73a366c1b55d7ec04b692f866884e0a383e59c40f75b82b"
+checksum: "sha256:d313fc3a8f54558ddc222f5bd37b5ae8a3695fcb62e42135dfeae1d67d7b2c21"
 ---
 
 ## Overview
@@ -177,7 +177,7 @@ Sibling skills in the Selling Partner API (SP-API) seller family, route to these
 - selling-partner-listing-searchability: why a listing is not found, plus search optimization.
 - selling-partner-listing-troubleshooter: the router that picks among the listing skills by symptom.
 
-This skill depends on the built-in Amazon Selling Partner connector in Amazon Quick (see README.md ## Pre-requisites). The connector is offered during onboarding; if the seller skipped it, they connect and authenticate it from Settings > Capabilities.
+This skill depends on the built-in Amazon Selling Partner connector in AWS Quick (see README.md ## Pre-requisites). The connector is offered during onboarding; if the seller skipped it, they connect and authenticate it from Settings > Capabilities.
 
 Reference files in this skill:
 - references/reports-vs-ordermetrics.md: why sales velocity uses the synchronous order-metrics operation, not an asynchronous report, and the sku/asin and interval rules.

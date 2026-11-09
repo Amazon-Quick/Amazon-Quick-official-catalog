@@ -4,10 +4,10 @@ display_name: SP-API Listing Buyability Troubleshooter
 icon: assets/shopping-cart.svg
 description: "Diagnoses why a Selling Partner API (SP-API) listing isn't buyable and relays the specific reason plus the next step. Checks the three things that make a listing buyable: a complete product, a valid purchasable offer, and available inventory, then fixes the offer (preview then approve) or routes inventory elsewhere. Use when asked why a listing can't be purchased, 'why can't customers buy this', no buy box, listing inactive, or missing price or offer. Do NOT use for search or discoverability (use selling-partner-listing-searchability), fixing reported listing issues (use selling-partner-listing-issues), or inventory replenishment (use selling-partner-stockout-prevention)."
 created_date: "2026-09-15"
-last_updated: "2026-09-16"
+last_updated: "2026-11-05"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector; verify it is connected and stop if it is missing."
-checksum: "sha256:d40b84cac002f8dde886ab9dae19918907f251e3403cd3f847d4b6965969f31b"
+checksum: "sha256:5c5040c603fb70bc15d1bff03bf58a46a408fddfcb02270321b6b762bd0051d4"
 ---
 
 ## Overview
@@ -135,7 +135,7 @@ Sibling skills in the SP-API listing troubleshooter family, route to these when 
 - selling-partner-stockout-prevention and selling-partner-fba-inbound-management: inventory replenishment and inbound shipments.
 - selling-partner-listing-compliance: the pre-flight compliance gate run before a condition change or a product-data change touching claims, ingredients, category, images, or identifiers.
 
-This skill depends on the built-in Amazon Selling Partner connector in Amazon Quick (see README.md ## Pre-requisites). The connector is offered during onboarding; if the seller skipped it, they connect and authenticate it from Settings > Capabilities.
+This skill depends on the built-in Amazon Selling Partner connector in AWS Quick (see README.md ## Pre-requisites). The connector is offered during onboarding; if the seller skipped it, they connect and authenticate it from Settings > Capabilities.
 
 Amazon Selling Partner API and Seller Central references (public):
 - Amazon selling policies: https://sellercentral.amazon.com/help/hub/reference/GSNV3657R94YP9DZ

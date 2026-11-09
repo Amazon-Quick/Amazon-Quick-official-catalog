@@ -5,7 +5,7 @@ origin: original
 
 Project-finance metrics for battery storage: NPV, IRR, payback, and LCOS.
 
-numpy_financial is not available in the Amazon Quick sandbox, so these are
+numpy_financial is not available in the AWS Quick code sandbox, so these are
 implemented directly with the standard library. Cash flows are a list in nominal
 dollars indexed by year, with year 0 as the capital outlay (negative). See
 references/financial-model.md for how the cash flow series is assembled.

@@ -4,7 +4,7 @@ display_name: Teach Me
 icon: assets/graduation-cap.svg
 description: "Generate interactive click-through quizzes from documents, web pages, or web research. Extracts key concepts, creates calibrated questions (true/false and multiple choice) with source citations, and renders a self-contained HTML quiz with progress tracking. Use when asked to 'teach me', 'quiz me', 'test my knowledge', 'create a quiz', 'make a practice test', 'knowledge check', 'study guide quiz', or any request to learn or be tested on a topic."
 created_date: "2026-06-08"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [get_current_time, file_read, file_read_pdf, file_read_docx, file_read_pptx, file_write, open_in_session_tab, run_javascript, run_python, web_search, url_fetch, deep_analysis_execute, generate_image]
 inputs:
@@ -41,9 +41,9 @@ inputs:
 - name: theme
   description: "Visual theme for the quiz UI. If not provided, user selects from options on the title screen."
   type: choice
-  options: [soft-pastel, ocean-breeze, warm-earth, minimal-clean, amazon-quick]
+  options: [soft-pastel, ocean-breeze, warm-earth, minimal-clean, aws-quick]
   required: false
-checksum: "sha256:d096f9b30bb43c85b7c8cb1c9b5a60b249e22b0bb347bad71c0f4a68e810384f"
+checksum: "sha256:f2ef8c09ed6d3c85a58b07dd10e10210d5bca0adef5ebc6fcf85c1ae903df063"
 ---
 
 ## Overview
@@ -77,7 +77,7 @@ Deliver a self-contained interactive HTML quiz file that: (1) contains well-form
 14. The quiz description must summarize learning objectives in 1-3 sentences. If user provides one, use it. Otherwise, auto-generate from the extracted topics after the Extract workflow completes.
 15. Images are optional. Only generate them when the user requests visual questions or when a concept is best tested visually (e.g., architecture diagrams, flowcharts, infographics). Default: no images unless requested.
 16. The quiz must display a pass/fail result based on the user's pass_rate. Default is 80%. Show a clear "Passed" or "Needs Review" indicator on the results screen.
-17. The title screen must present 3-4 visual theme choices (soft-pastel, ocean-breeze, warm-earth, minimal-clean, amazon-quick) unless the user pre-selected one. Use soft natural gradients, never forced dark mode. Let the user choose.
+17. The title screen must present 3-4 visual theme choices (soft-pastel, ocean-breeze, warm-earth, minimal-clean, aws-quick) unless the user pre-selected one. Use soft natural gradients, never forced dark mode. Let the user choose.
 18. Study guide and certificate use window.print() with @media print CSS. Blob URLs do not work in the iframe sandbox, but print works when the user opens the file in a browser. Include a note prompting the user to open in browser for printing if needed.
 </Rules>
 
@@ -343,7 +343,7 @@ These demonstrate how users invoke this skill. Use them to understand expected i
 
 **Sitemap-based quiz (primary pattern). User provides the sitemap URL directly:**
 
-> Using this sitemap, create me an L200 quiz on Amazon Quick. Cover all major features and capabilities for users. 20 questions, 30/70 T/F to MC split.
+> Using this sitemap, create me an L200 quiz on AWS Quick. Cover all major features and capabilities for users. 20 questions, 30/70 T/F to MC split.
 > Sitemap: https://docs.aws.amazon.com/quicksuite/latest/userguide/sitemap.xml
 
 **Single document, expert depth:**

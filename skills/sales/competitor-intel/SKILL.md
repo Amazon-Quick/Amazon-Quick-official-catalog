@@ -5,7 +5,7 @@ display_name: Competitor Intel
 icon: assets/radar.svg
 description: "Researches and analyzes competitors for small businesses. Builds competitive intelligence reports with pricing, positioning, marketing strategies, strengths/weaknesses, and actionable differentiation recommendations. Use when asked to 'research my competitors', 'competitive analysis', 'what are my competitors doing', 'how do I differentiate', 'competitor pricing', 'who am I competing with', 'market landscape', 'SWOT analysis', 'spy on [competitor]', or 'compare us to [company]'."
 created_date: "2026-05-15"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [web_search, url_fetch, run_python, file_write, open_in_session_tab]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -28,7 +28,7 @@ inputs:
   type: string
   required: false
   default: "full"
-checksum: "sha256:971433b082085878b4bc60225404a1a39061d6f292a112b478d7a0589f46e8ed"
+checksum: "sha256:3b0fd1b9b152198906b7a53ac4ecb8cb723e35229d81a20aa777ad9a7d22f2d9"
 ---
 
 ## Overview

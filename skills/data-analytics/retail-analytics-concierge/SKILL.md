@@ -3,9 +3,9 @@ name: retail-analytics-concierge
 display_name: Self-Service Analytics Concierge
 icon: assets/chart-bar.svg
 description: "Translates natural language questions into SQL queries, executes against the connected data warehouse, and presents results with visualizations. Enables non-technical retail users to self-serve analytics without writing SQL. Use when asked to 'how many units did we sell', 'show me returns by category', 'what is our revenue trend', 'top selling products', 'compare regions', 'query the data', or any analytical question about retail metrics."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-10"
-last_updated: "2026-07-03"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, open_in_session_tab]
 inputs:
@@ -34,7 +34,7 @@ inputs:
     description: "Comma-separated list of schema/table names the user is allowed to query. If set, queries against other tables are blocked."
     type: string
     required: false
-checksum: "sha256:fb0f52c0be334f1d5d0c20a6edc758d2ca246da94d90521df4471b44d7831be7"
+checksum: "sha256:17c4feeeaed97b5ce0e56a1b944b6aef6b068be07e7d0ceb5ba19a2cf5d093b0"
 ---
 
 ## Overview
@@ -55,7 +55,7 @@ Enable non-technical retail users to self-serve analytics without writing SQL or
 
 <Definition - Data Source Cascade>
 Try in order, stop at first success:
-1. Amazon Quick Dataset Q&A (if a QuickSight dataset is configured): ask questions directly in natural language against the full dataset with automatic SQL generation and security enforcement.
+1. AWS Quick Dataset Q&A (if an AWS Quick Sight dataset is configured): ask questions directly in natural language against the full dataset with automatic SQL generation and security enforcement.
 2. SQL-compatible MCP connector detected (any database connector): use for live queries.
 3. Local SQLite or DuckDB file: query directly with run_python.
 4. CSV or Excel file provided: load into in-memory DuckDB via run_python for SQL querying.

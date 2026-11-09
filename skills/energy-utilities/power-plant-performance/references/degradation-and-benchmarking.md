@@ -46,7 +46,7 @@ hours, for GT and combined-cycle degradation trending.
 6. Fit a linear regression and read the slope as the degradation rate.
 7. Compare to the expected rate for the technology and vintage.
 
-Regression without scipy (scipy is not in the Quick sandbox; use numpy):
+Regression without scipy (scipy is not in the AWS Quick code sandbox; use numpy):
 ```python
 import numpy as np
 

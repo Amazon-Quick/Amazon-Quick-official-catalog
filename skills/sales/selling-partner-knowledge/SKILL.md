@@ -4,10 +4,10 @@ display_name: Selling Partner Knowledge
 icon: assets/library.svg
 description: "Answers Selling Partner API (SP-API) developer questions and guides developers from idea to working code, grounded strictly in the SP-API documentation knowledge base, never from general knowledge. Searches the docs first, fetches full content, routes by question shape, and pairs every answer with a visual such as a mermaid diagram, table, or design-proposal artifact. Read-only: it explains and designs, it never changes a seller account. Use for SP-API developer questions: how do I, which SP-API to use, does SP-API support X, rate limits, error codes, auth, getting started, build an integration, design or brainstorm, show me a schema or workflow, across Orders, Feeds, Listings, FBA, Reports, Notifications, Catalog, Pricing, and Vendor. Do NOT use for account actions (price, listing, inventory, shipment changes), live account analytics (use selling-partner-seller-analytics), or non-SP-API topics."
 created_date: "2026-09-15"
-last_updated: "2026-09-15"
+last_updated: "2026-11-05"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
-checksum: "sha256:1086dd1aa6a552cc40e8bb28a1f59ba076c93d7f70f52ac4ac6cd9c7d513458c"
+checksum: "sha256:67a29185e46cf625209fbfb9eefc4faf91d7c29e3b1266a5d09ffbcef972dd58"
 ---
 
 ## Overview

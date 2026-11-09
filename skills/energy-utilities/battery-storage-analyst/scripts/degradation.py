@@ -11,7 +11,7 @@ damage from rainflow-counted depth-of-discharge (DoD). All model parameters
 from a cell datasheet, published literature, or measured test data, never from
 assumption. See references/degradation-model.md for the equations and citations.
 
-Uses only the Python standard library so it runs inside the Amazon Quick sandbox.
+Uses only the Python standard library so it runs inside the AWS Quick code sandbox.
 """
 
 from __future__ import annotations

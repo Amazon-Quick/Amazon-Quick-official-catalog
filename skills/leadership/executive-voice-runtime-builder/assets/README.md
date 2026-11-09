@@ -10,7 +10,7 @@ Analyzes how a person writes and encodes it into a portable, machine-readable vo
 
 ## Overview
 
-This skill studies a person's writing structure, tone, rhythm, register routing, and vocabulary and captures them in a portable engram file the user owns, with calibration gates and a governance log. It is for leaders, ICs, and executive assistants who want drafts that sound like them without handing over business judgment or authority to act. It extends Amazon Quick by mining connected sources for writing samples when available, and falling back to guided elicitation or pasted samples when they are not.
+This skill studies a person's writing structure, tone, rhythm, register routing, and vocabulary and captures them in a portable engram file the user owns, with calibration gates and a governance log. It is for leaders, ICs, and executive assistants who want drafts that sound like them without handing over business judgment or authority to act. It extends AWS Quick by mining connected sources for writing samples when available, and falling back to guided elicitation or pasted samples when they are not.
 
 ## Pre-requisites
 
@@ -21,7 +21,7 @@ This skill studies a person's writing structure, tone, rhythm, register routing,
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

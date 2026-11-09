@@ -4,14 +4,14 @@ display_name: Customer Health Scorer
 icon: assets/heart-pulse.svg
 description: "Computes multi-dimensional customer health scores across usage, engagement, support, and relationship dimensions. Classifies accounts as Healthy/At-Risk/Critical with segment-aware benchmarking and produces actionable intervention recommendations. Use when asked to 'score customer health', 'account health check', 'which customers are at risk', 'customer health report', 'renewal risk assessment', or 'portfolio health overview'."
 created_date: "2026-06-22"
-last_updated: "2026-06-22"
+last_updated: "2026-11-05"
 license: "MIT-0"
 
 tools: [file_read, file_write, run_python, open_in_session_tab, query_dataset, list_qa_resources, search_relevant_content, read_quick_suite_file]
 inputs:
 
 - name: customer_data
-  description: "Customer metrics data. Accepts: a file path (CSV, Excel, or JSON export from your CRM or analytics platform), pasted tabular data, a Quick dataset name or ARN (for direct SQL query against structured data), a document from a Quick Space, or a description of available metrics and their source system so the skill can guide you on what to provide."
+  description: "Customer metrics data. Accepts: a file path (CSV, Excel, or JSON export from your CRM or analytics platform), pasted tabular data, an AWS Quick dataset name or ARN (for direct SQL query against structured data), a document from a Quick space, or a description of available metrics and their source system so the skill can guide you on what to provide."
   type: string
   required: true
 - name: segment
@@ -26,7 +26,7 @@ inputs:
   options: [usage, engagement, support, relationship, commercial]
   required: false
   default: [usage, engagement, support, relationship, commercial]
-checksum: "sha256:08851bbd7afd0e68fc8ca016fdf94b933fa4608b29f927ccf1b0a3dba2b9b1aa"
+checksum: "sha256:9a521dd1be55a75422c4ae1dbfd488aa2cb14a8a2703c3ce52b6189c2fc96a19"
 ---
 
 ## Overview

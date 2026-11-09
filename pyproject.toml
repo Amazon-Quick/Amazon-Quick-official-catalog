@@ -1,7 +1,7 @@
 [project]
 name = "amazon-quick-official-catalog"
 version = "1.0.0"
-description = "Official catalog for Amazon Quick skills, plugins, and integrations"
+description = "Official catalog for AWS Quick skills, plugins, and integrations"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
@@ -38,6 +38,7 @@ dev = [
     "mkdocs-macros-plugin>=1,<2",
     "pathspec>=1,<2",
     "pydantic>=2,<3",
+    "pytest>=9,<10",
     "pyyaml>=6,<7",
     "ruff>=0.15,<1",
     "zensical",

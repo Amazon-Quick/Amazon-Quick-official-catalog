@@ -3,9 +3,9 @@ name: slide-deck-from-doc
 display_name: Slide Deck from Document
 icon: assets/layout-dashboard.svg
 description: "Convert any document (DOCX, PDF, or Markdown) into a professional PowerPoint presentation with smart layout selection and visual hierarchy. Use when asked to 'turn this into slides', 'make a deck from this doc', 'convert to presentation', 'document to powerpoint', 'create slides from this file', 'slide deck from this', 'present this as a deck', or any request to transform a written document into a slide presentation."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-15"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [file_read_docx, file_read_pdf, file_read, pptx_plan, open_in_session_tab]
 inputs:
@@ -23,7 +23,7 @@ inputs:
     type: number
     required: false
     default: 15
-checksum: "sha256:b922190fdd79a7e27ab0629fb7cd62dff48d86bc3b39e46ac0812453fc3d5711"
+checksum: "sha256:bc17c0d7f19fac58aa4eea85d1e26ca1d1e490c338b7b5fb56298aa4f50375df"
 ---
 
 ## Overview

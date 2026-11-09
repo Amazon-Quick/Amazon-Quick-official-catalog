@@ -42,7 +42,7 @@ from docx import Document
 from docx.oxml.ns import qn
 from pptx import Presentation
 
-# try/except avoids F821 lint errors in Quick's script concatenation mode.
+# try/except avoids F821 lint errors in the AWS Quick script concatenation mode.
 try:
     from extract import _get_all_runs_in_order
     from state import _STATE

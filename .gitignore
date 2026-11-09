@@ -6,6 +6,8 @@ dist/
 build/
 .venv/
 .ruff_cache/
+.mypy_cache/
+.pytest_cache/
 
 # MkDocs
 site/

@@ -10,7 +10,7 @@ Automates full out-of-office setup: meeting conflict resolution, calendar invite
 
 ## Overview
 
-This skill solves the chore of bouncing between apps to prepare for leave. It reads your calendar history to discover who to notify, groups them into tiers, resolves meeting conflicts, and walks through each action with explicit confirmation before anything sends. It is for anyone taking PTO or leave, and it extends Amazon Quick by coordinating calendar, messaging, and email actions from one guided workflow.
+This skill solves the chore of bouncing between apps to prepare for leave. It reads your calendar history to discover who to notify, groups them into tiers, resolves meeting conflicts, and walks through each action with explicit confirmation before anything sends. It is for anyone taking PTO or leave, and it extends AWS Quick by coordinating calendar, messaging, and email actions from one guided workflow.
 
 ## Pre-requisites
 
@@ -21,7 +21,7 @@ This skill solves the chore of bouncing between apps to prepare for leave. It re
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

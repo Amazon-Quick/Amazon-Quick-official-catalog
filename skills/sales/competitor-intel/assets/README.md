@@ -10,7 +10,7 @@ Adds competitive intelligence research that turns competitor pricing, positionin
 
 ## Overview
 
-Competitor Intel researches a small business's competitive set and produces an evidence-based intelligence report: positioning maps, SWOT analysis, review mining, and prioritized recommendations. It is for small business owners and operators who need to understand who they compete with and how to stand apart. It extends Amazon Quick by combining web research with your own email context and delivering skill-ready outputs that feed other sales skills.
+Competitor Intel researches a small business's competitive set and produces an evidence-based intelligence report: positioning maps, SWOT analysis, review mining, and prioritized recommendations. It is for small business owners and operators who need to understand who they compete with and how to stand apart. It extends AWS Quick by combining web research with your own email context and delivering skill-ready outputs that feed other sales skills.
 
 ## Pre-requisites
 
@@ -20,7 +20,7 @@ Competitor Intel researches a small business's competitive set and produces an e
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

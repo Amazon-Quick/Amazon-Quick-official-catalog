@@ -3,9 +3,9 @@ name: retail-supply-chain-pulse
 display_name: Supply Chain Morning Pulse
 icon: assets/truck.svg
 description: "Daily supply chain exception digest with severity scoring, root cause analysis, and recommended resolutions. Surfaces inbound delays, stockout risks, demand spikes, and carrier issues before they impact customers. Use when asked to 'what is on fire today', 'supply chain pulse', 'morning exceptions', 'logistics issues', 'inventory alerts', 'carrier problems', 'stockout risk', or 'supply chain briefing'."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-10"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, open_in_session_tab, web_search]
 inputs:
@@ -40,7 +40,7 @@ inputs:
     type: number
     required: false
     default: 10000
-checksum: "sha256:3115571340183b9ba931523cb4ae6cf4b150880044e7afa43a409d95371f18b7"
+checksum: "sha256:974d483150970c1ff7dafd471951835f18ad78cc534415e82232aca2c8af64e2"
 ---
 
 ## Overview
@@ -74,7 +74,7 @@ Produce a severity-ranked exception dashboard that answers: "What needs my atten
 
 <Definition - Data Source Cascade>
 Try in order, stop at first success:
-1. Amazon Quick Dataset Q&A (if a QuickSight dataset is configured): ask questions directly in natural language against the full dataset with automatic SQL generation and security enforcement.
+1. AWS Quick Dataset Q&A (if an AWS Quick Sight dataset is configured): ask questions directly in natural language against the full dataset with automatic SQL generation and security enforcement.
 2. WMS/TMS/OMS MCP connector detected (any SQL-compatible or logistics API connector): query for order/shipment/inventory data.
 3. Data source input provided as file path (.csv, .xlsx): parse with run_python.
 4. Spreadsheet connector available (Google Sheets, OneDrive): search for "exceptions", "shipments", or "inventory" files.

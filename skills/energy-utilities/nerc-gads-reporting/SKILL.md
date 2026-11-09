@@ -3,12 +3,12 @@ name: nerc-gads-reporting
 display_name: NERC GADS Reporting
 icon: assets/file-chart-column.svg
 description: "Convert raw generator operational data into validated North American Electric Reliability Corporation (NERC) Generating Availability Data System (GADS) event reports and IEEE 762 performance indexes. Use when asked to 'prepare a GADS report', 'calculate EFOR/EAF', 'classify generating unit events', 'validate GADS data for eGADS submission', 'check GADS submission readiness', 'run generator availability metrics', 'analyze outage cause codes', or benchmark fleet reliability against NERC averages."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
-last_updated: "2026-07-15"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, file_read, file_read_pdf, run_python, web_search, url_fetch, open_in_session_tab]
-checksum: "sha256:7baa76db376d97bfc308277a205b019ab37ceaebb01099b4c9e3c3b2b6aab43e"
+checksum: "sha256:4e6adea7b19cfd4b051f29d19288d5e7965f514f4864268c483c70a751c37744"
 ---
 
 ## Overview
@@ -101,7 +101,7 @@ the user chose and flagged clearly if any validation item fails.
   cap combined equivalent derated hours at the unit maximum for any hour.
 - GADS reports on a NET generation basis. If input is gross, subtract station
   service before calculating capacity factors.
-- pandas Arrow-backed dtypes are unavailable in the run_python sandbox (pyarrow
+- pandas Arrow-backed dtypes are unavailable in the AWS Quick code sandbox (pyarrow
   does not import). Use default NumPy-backed dtypes when parsing with pandas.
 - run_python has a 60-second timeout. For large event sets, process in bounded
   chunks per unit and write intermediate results rather than one long loop.

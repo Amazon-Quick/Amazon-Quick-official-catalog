@@ -10,7 +10,7 @@ Adds multi-touch outreach sequences that combine email, LinkedIn, and phone scri
 
 ## Overview
 
-Outreach Sequence Builder writes complete cadences with timing, subject lines, body copy, A/B variants for the first touch, and conditional branching logic. It is for small business sellers who want personalized sequences that read like a knowledgeable peer, not mass-market spam. It extends Amazon Quick by loading lead-prospector context when present, staging drafts for sending, and falling back to formatted text when no connector is available.
+Outreach Sequence Builder writes complete cadences with timing, subject lines, body copy, A/B variants for the first touch, and conditional branching logic. It is for small business sellers who want personalized sequences that read like a knowledgeable peer, not mass-market spam. It extends AWS Quick by loading lead-prospector context when present, staging drafts for sending, and falling back to formatted text when no connector is available.
 
 ## Pre-requisites
 
@@ -20,7 +20,7 @@ Outreach Sequence Builder writes complete cadences with timing, subject lines, b
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

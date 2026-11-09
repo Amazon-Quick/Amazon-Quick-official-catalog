@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Amazon Quick Official Catalog",
-  "description": "Schema for the Amazon Quick Official Catalog used to list skills and assets.",
+  "title": "AWS Quick Official Catalog",
+  "description": "Schema for the AWS Quick Official Catalog used to list skills and assets.",
   "type": "object",
   "required": [
     "skillsChecksum",
@@ -66,7 +66,7 @@
           "type": "string",
           "minLength": 3,
           "maxLength": 192,
-          "pattern": "^(skills|plugins|mcps|agents|acps)/[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9-]*[a-z0-9]$",
+          "pattern": "^(skills|plugins|mcps|agents)/[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9-]*[a-z0-9]$",
           "description": "Relative path in the format '{type_dir}/{category}/{kebab-case-name}'."
         },
         "type": {
@@ -75,8 +75,7 @@
             "skill",
             "plugin",
             "mcp",
-            "agent",
-            "acp"
+            "agent"
           ]
         },
         "checksum": {
@@ -97,6 +96,26 @@
           "minLength": 1,
           "maxLength": 128,
           "description": "Display name of the publishing company. Required when publisher_type is THIRD_PARTY."
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Plugin assets only. Overrides the plugin.json displayName."
+        },
+        "icon": {
+          "type": "string",
+          "pattern": "^assets/[a-z0-9][a-z0-9._-]*\\.svg$",
+          "description": "Plugin assets only. Overrides the plugin.json icon."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "solution",
+            "package",
+            "partner"
+          ],
+          "description": "Plugin assets only. Overrides the plugin.json kind."
         }
       },
       "allOf": [
@@ -132,6 +151,41 @@
             "required": [
               "company"
             ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "not": {
+                  "const": "plugin"
+                }
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "displayName"
+                  ]
+                },
+                {
+                  "required": [
+                    "icon"
+                  ]
+                },
+                {
+                  "required": [
+                    "kind"
+                  ]
+                }
+              ]
+            }
           }
         }
       ]

@@ -4,7 +4,7 @@ display_name: "Payday Cash Projection"
 icon: assets/wallet.svg
 description: "Project whether you can cover payroll on an upcoming payday using only the cash you actually control. Use when the user says 'payday cash check', 'project cash for payday', 'cash flow projection', 'will I make payroll', 'can I make payroll this week', or asks about cash runway before a payroll date. Computes a conservative cash floor (cleared bank cash minus a buffer minus every must-pay obligation due before payday) and shows expected invoice collections only as separately labeled upside, never as part of the verdict."
 created_date: "2026-06-02"
-last_updated: "2026-07-03"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [quickbooks, agent_management, memory_management, quickbooks__QueryAccount, quickbooks__QueryEntities, list_scheduled_agents, create_scheduled_agent, recall_memories]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -23,7 +23,7 @@ inputs:
     type: number
     required: false
     default: 5
-checksum: "sha256:d4c6782454746c204199497a33c8fc37520122f5d5794e436f87ce28e15e8c0b"
+checksum: "sha256:256e71d2304c821b3276c92b86c55629c719a3777675f448dd2d77d9d0df790f"
 ---
 
 ## Overview
@@ -69,7 +69,7 @@ Within a set of comparable figures (expected invoices, bills due), any value at 
 </Definition - Order-of-Magnitude Outlier>
 
 <Definition - Proactive Alert>
-A standing payroll-forecast skill is reactive. To meet a pre-payday warning, the skill may offer to schedule a recurring check via agent_management that fires alert_lead_days before each payday and re-runs this read-only projection, alerting only on a projected shortfall. Offer it only when no such scheduled check exists AND the owner has no recorded decision in memory. On accept, create the task; on decline, record the decision so it is not re-asked. When a shortfall is already projected, actively recommend the alert rather than offering it neutrally. Scheduled tasks run locally and fire only while the machine is on and Quick is running.
+A standing payroll-forecast skill is reactive. To meet a pre-payday warning, the skill may offer to schedule a recurring check via agent_management that fires alert_lead_days before each payday and re-runs this read-only projection, alerting only on a projected shortfall. Offer it only when no such scheduled check exists AND the owner has no recorded decision in memory. On accept, create the task; on decline, record the decision so it is not re-asked. When a shortfall is already projected, actively recommend the alert rather than offering it neutrally. Scheduled tasks run locally and fire only while the machine is on and AWS Quick is running.
 </Definition - Proactive Alert>
 
 </Definitions>

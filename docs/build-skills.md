@@ -1,9 +1,9 @@
 ---
-title: Build reliable skills for Amazon Quick
-description: Apply dependency, validation, versioning, security, and evaluation practices when you build reusable skills for Amazon Quick.
+title: Build reliable skills for AWS Quick
+description: Apply dependency, validation, versioning, security, and evaluation practices when you build reusable skills for AWS Quick.
 ---
 
-# Build skills with software engineering practices in Amazon Quick
+# Build skills with software engineering practices in AWS Quick
 
 When you build a skill for yourself, it works because everything it depends on is already set up in your account. When you share it, the people you share it with need those same things. For example, your skill might use the Microsoft Outlook connector or a specific Microsoft SharePoint knowledge base. If the person you share it with doesn't have access to that connector or knowledge base, the steps that use it fail. Other dependencies are harder to see, such as the response mode, which tools are available, whether the skill still works months later, and whether code the skill generates can run.
 
@@ -11,17 +11,17 @@ Software engineers deal with the same problem every time their code runs on some
 
 ## Prerequisites
 
-To follow along, you need Amazon Quick on desktop with the Skill Architect skill installed, which [Install a skill](install.md) walks through. Skill Architect uses only tools that are built into Amazon Quick, so you don't need to set up any connectors. Once it's installed, enter `sa help` in a conversation to see its commands. This post also assumes you know how a skill's files are laid out, which [What is a skill?](getting-started.md) covers.
+To follow along, you need AWS Quick on desktop with the Skill Architect skill installed, which [Install a skill](install.md) walks through. Skill Architect uses only tools that are built into AWS Quick, so you don't need to set up any connectors. Once it's installed, enter `sa help` in a conversation to see its commands. This post also assumes you know how a skill's files are laid out, which [What is a skill?](getting-started.md) covers.
 
 ## Getting started with Skill Architect
 
 You don't have to start from nothing. Skill Architect can turn a multi-step task you just finished in a conversation into a skill, convert a runbook, process document, or agent prompt you already use, or plan a skill from a description of the task, asking clarifying questions when the description is too vague to plan from.
 
-The examples in this post use a weekly status update skill that reads your notes for the week, adds the emails you sent, and posts a summary to your team's channel. Skill Architect starts each step with a label for who acts, such as `[Agent]` for a step Amazon Quick does without asking you. Below the step, a `Validate:` line says how to confirm the step worked, and an `If fails:` line says what to do when it didn't.
+The examples in this post use a weekly status update skill that reads your notes for the week, adds the emails you sent, and posts a summary to your team's channel. Skill Architect starts each step with a label for who acts, such as `[Agent]` for a step AWS Quick does without asking you. Below the step, a `Validate:` line says how to confirm the step worked, and an `If fails:` line says what to do when it didn't.
 
 ## Write the description for someone who has never seen the skill
 
-Amazon Quick decides which skill to use from each skill's name and description, so someone who doesn't know your skill exists only gets it when the description matches the words they use. The following description works for you, because you know to ask for the skill by name, but it gives Amazon Quick little to match against anyone else's request:
+AWS Quick decides which skill to use from each skill's name and description, so someone who doesn't know your skill exists only gets it when the description matches the words they use. The following description works for you, because you know to ask for the skill by name, but it gives AWS Quick little to match against anyone else's request:
 
 ```yaml
 description: "Status update helper."
@@ -37,7 +37,7 @@ Other developers decide whether to use a function from its name and documentatio
 
 ## Keep values that change out of the steps
 
-A step that names your folder or your channel works for you and breaks for everyone else. When a teammate runs the following step, Amazon Quick looks for notes in a folder that only exists on your computer and posts to your team's channel instead of theirs:
+A step that names your folder or your channel works for you and breaks for everyone else. When a teammate runs the following step, AWS Quick looks for notes in a folder that only exists on your computer and posts to your team's channel instead of theirs:
 
 ```markdown
 1. [Agent] Read the notes in /Users/me/notes and post the update to #my-team.
@@ -94,7 +94,7 @@ This is why software projects list their dependencies in one place, so whoever r
 
 ## Say how each step can fail
 
-An agent can't tell that a step failed if the step never says what success looks like. Nothing in the following step tells Amazon Quick to stop when there are no notes for the week, so the skill can post an empty update to your team:
+An agent can't tell that a step failed if the step never says what success looks like. Nothing in the following step tells AWS Quick to stop when there are no notes for the week, so the skill can post an empty update to your team:
 
 ```markdown
 2. [Agent] Summarize the notes.
@@ -138,13 +138,13 @@ This one tells them where to rebuild the file from:
 
 ```yaml
 ---
-description: "Amazon Quick Python sandbox package names, grouped by use."
+description: "AWS Quick code sandbox Python package names, grouped by use."
 last_updated: 2026-09-13
 source_url: <URL of the documentation page the list came from>
 ---
 ```
 
-When someone writes a file from scratch, the header records `origin: original` instead, so the maintainer knows there's no source to compare against and reviews the file by hand. Developers keep a note of where they copied code from, so they can pull in updates later. Skill Architect creates every reference file and script from a generator that requires exactly one of `source_url` or `origin: original`, and the [reference file header standard](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/skills/amazon-quick/skill-architect/references/reference-file-standard.md) lists every field.
+When someone writes a file from scratch, the header records `origin: original` instead, so the maintainer knows there's no source to compare against and reviews the file by hand. Developers keep a note of where they copied code from, so they can pull in updates later. Skill Architect creates every reference file and script from a generator that requires exactly one of `source_url` or `origin: original`, and the [reference file header standard](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/skills/aws-quick/skill-architect/references/reference-file-standard.md) lists every field.
 
 ## Fingerprint the files you checked
 
@@ -164,9 +164,9 @@ The audit works in two passes. First, a script checks what a program can check, 
 
 ## Test the skill against no skill at all
 
-A skill that worked once on your own request hasn't shown that it does better than Amazon Quick does without it, and a skill that adds nothing still takes up space in every conversation where it loads. Enter `sa eval` to find out. Skill Architect drafts a few realistic requests, including at least one unusual one, and you review them before anything runs.
+A skill that worked once on your own request hasn't shown that it does better than AWS Quick does without it, and a skill that adds nothing still takes up space in every conversation where it loads. Enter `sa eval` to find out. Skill Architect drafts a few realistic requests, including at least one unusual one, and you review them before anything runs.
 
-Each request then runs twice, once with the skill and once without it. For the status update skill, that comparison shows whether Amazon Quick already follows your template without the skill. If it does, you don't need the skill.
+Each request then runs twice, once with the skill and once without it. For the status update skill, that comparison shows whether AWS Quick already follows your template without the skill. If it does, you don't need the skill.
 
 Each run happens in a separate session that can't see the conversation where you built the skill, because the people you share it with can't see that conversation either. Software teams test on a clean computer, since a test on the developer's own computer can pass because of something only that computer has. The runs also use the model tier set in the skill's `preferred_model` field (fast, balanced, or smart), so a skill meant for the fast tier is tested on the fast tier.
 

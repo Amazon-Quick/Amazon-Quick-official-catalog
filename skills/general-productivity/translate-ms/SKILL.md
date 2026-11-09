@@ -4,7 +4,7 @@ display_name: Microsoft Document Translator
 icon: assets/languages.svg
 description: "Translate Word docs and PowerPoint presentations to any supported language. Preserves all formatting, styles, layouts, tables, and hyperlinks with context-aware translation for natural, accurate results. Handles large documents quickly using logic over LLM reasoning for deterministic outcomes. Includes a custom translation glossary for your specific terminology. Use when the user says 'translate this document', 'translate this presentation', 'convert to French', 'translate word doc', 'translate slides', 'make a German version', 'translate this DOCX', 'translate this pptx', or any request to produce a translated version of a Word or PowerPoint file."
 created_date: "2026-06-17"
-last_updated: "2026-07-03"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [run_python, file_read, open_in_session_tab, start_task, create_task_group, get_task_group_result]
 scripts: [state.py, extract.py, glossary.py, reconstruct.py]
@@ -17,7 +17,7 @@ inputs:
     description: "Target language for translation (e.g. French, Japanese, German, Spanish)"
     type: string
     required: true
-checksum: "sha256:43d57905a03f6b5177e9b1ff9313752deea02b7333352aca1ccf0ed764580734"
+checksum: "sha256:aa938225f591e8afb85acf9ce6d7eb80722d9b395f47a8c9b85ae45eec3f0733"
 ---
 
 ## Overview

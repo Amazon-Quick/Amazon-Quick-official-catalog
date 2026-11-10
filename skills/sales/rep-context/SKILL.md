@@ -1,9 +1,10 @@
 ---
 name: rep-context
+display_name: Rep Context
 description: "Catch a manager up on one of their sales reps before a 1:1: the rep's pipeline, recent activity, what they are working on, and where they need help, with suggested questions. Use when the person named is an internal rep, not a customer contact."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:25610ecb82746d542ca976ec31a15d1dac1f1a81e5e1c13e0f8b5c64045b15c1"
+checksum: "sha256:e3e87550248f8d15c59e34ed61d73f94895bb9a8610cc16c9d7ece5b7cda07cd"
 ---
 <!-- global-rules-bootstrap -->
 **IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.

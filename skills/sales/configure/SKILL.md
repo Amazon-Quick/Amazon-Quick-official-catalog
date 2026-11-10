@@ -1,12 +1,13 @@
 ---
 name: configure
+display_name: Configure
 description: Set up the Sales Cloud plugin — show the "How I can help you sell" overview, offer a "Where do you want to start?" chooser, and (on request) build Your Sales Intelligence, a live view of the user's book of business, then offer to schedule the daily refresh. Use when the user says "configure", "configure salesforce", "set me up", "onboard me", "get me started", or on first run of the plugin.
 author: Salesforce
 icon: assets/salesforce.svg
 # Explicit-invocation only: the user runs this deliberately (/configure or by name).
 # Claude must not auto-trigger onboarding from ambient conversation.
 disable-model-invocation: true
-checksum: "sha256:5a90fc96b925fdfe308d263bffca08fb975093d23d6dc9e97a3a7cb7dd9f99ee"
+checksum: "sha256:6e48835ab4aaaf659ceb0630ca1b9a9c25eec39f2b8abae33561d3f057b73b33"
 ---
 <!-- global-rules-bootstrap -->
 

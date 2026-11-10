@@ -23,7 +23,8 @@ inputs:
   description: "Geographic focus for local SEO (city, state, region)"
   type: string
   required: false
-checksum: "sha256:4fb43c31b3e0236df7899c8e5bc80f5ecc34ac503b56e352f4195552c7ce3b7d"
+checksum: "sha256:c58fee3e6603c19bc72b013db9da247d730b2b7392ae463b21bc9b1f813c6189"
+id: "ski-e249c165f5b54b1d979f394ae814e0c0"
 ---
 
 ## Overview

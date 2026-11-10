@@ -20,9 +20,75 @@
       "items": {
         "$ref": "#/$defs/Category"
       }
+    },
+    "roles": {
+      "type": "array",
+      "description": "Role filter values. Each lists the assets tagged with it; an asset may appear under several values or none.",
+      "items": {
+        "$ref": "#/$defs/TagValue"
+      }
+    },
+    "industries": {
+      "type": "array",
+      "description": "Industry filter values. Each lists the assets tagged with it; an asset may appear under several values or none.",
+      "items": {
+        "$ref": "#/$defs/TagValue"
+      }
     }
   },
   "$defs": {
+    "TagValue": {
+      "type": "object",
+      "required": [
+        "slug",
+        "name",
+        "assets"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+          "description": "Kebab-case match key for the value (e.g. 'oil-gas')."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "Display name shown in the filter."
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetRef"
+          }
+        }
+      }
+    },
+    "AssetRef": {
+      "type": "object",
+      "required": [
+        "path",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Path of an asset listed in categories."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "skill",
+            "plugin",
+            "mcp",
+            "agent",
+            "acp"
+          ]
+        }
+      }
+    },
     "Category": {
       "type": "object",
       "required": [
@@ -58,10 +124,16 @@
       "type": "object",
       "required": [
         "path",
-        "type"
+        "type",
+        "id"
       ],
       "additionalProperties": false,
       "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z]{3}-[0-9a-f]{12}4[0-9a-f]{3}[89ab][0-9a-f]{15}$",
+          "description": "Stable asset ID: the asset type's 3-letter code, a hyphen, and a UUIDv4 as 32 lowercase hex. Assigned once and never changed."
+        },
         "path": {
           "type": "string",
           "minLength": 3,

@@ -31,7 +31,8 @@ inputs:
   description: "Name(s) of the person(s) covering while you're out. Supports multiple contacts, e.g., 'Alex for urgent, Sam for project X'"
   type: string
   required: false
-checksum: "sha256:a15e7212b857852bc47bdb624fc9a4e2d446eaee35bbd30136886a065f7dbc46"
+checksum: "sha256:17249be801132ee8a8073eb22ea923de7bbf4d6e607326c036e09c19242a7f38"
+id: "ski-9d9e44547e1747049c7041777cb206b4"
 ---
 
 ## Overview

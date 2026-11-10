@@ -15,7 +15,8 @@ description: >
   SKILL.md file — do not call the tool based on tool description alone.
 created_date: "2026-10-12"
 last_updated: "2026-10-12"
-checksum: "sha256:899d81f26318cde55984b5d3d64d19d2feda31bf51885455e89fb2e31e08f8ec"
+checksum: "sha256:e52334eb94f385aba39923fce7bb8a46fa6cc893a2b2fe836258729f07f0b7ee"
+id: "ski-6beb887f455c4f749495624d3e4b6f18"
 ---
 
 # PAAS Advisory Skill

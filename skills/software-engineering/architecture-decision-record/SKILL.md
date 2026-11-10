@@ -24,7 +24,8 @@ inputs:
   required: false
   default: "madr"
   choices: ["madr", "nygard", "custom"]
-checksum: "sha256:c39bf138a3dac5efdaf5c4c6f594996b53444a4dba330793fadf2bf3509a6aa5"
+checksum: "sha256:2426d10d767244b6608d10cb3b4cf81465ae15f4dcfae60010e78e918f156779"
+id: "ski-cefdbd42b5b2492989c3b9c8f3021cb3"
 ---
 
 ## Overview

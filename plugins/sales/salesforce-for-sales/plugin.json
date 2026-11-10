@@ -7,9 +7,6 @@
   },
   "version": "2.0.0",
   "icon": "assets/icon.svg",
-  "roles": [
-    "role/sales"
-  ],
   "skills": [
     "sales/account-context",
     "sales/account-plan",
@@ -62,5 +59,6 @@
       ],
       "required": true
     }
-  ]
+  ],
+  "id": "plu-23eb2f62365443a5a1953ab1be4388b5"
 }

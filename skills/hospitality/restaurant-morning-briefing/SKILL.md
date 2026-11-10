@@ -42,7 +42,8 @@ inputs:
     options: [text, dashboard, both]
     required: false
     default: "dashboard"
-checksum: "sha256:4783073e9485332d8fb2036478615f5b88ea784e9af6e0c51d9742f96b1f9b8b"
+checksum: "sha256:92f47196ecce8e869fd5209f57dad3edc0b467a6bbc48033b410bce66f9eec0d"
+id: "ski-b229ec22458e40fdaa03d59c15dcab66"
 ---
 
 ## Overview

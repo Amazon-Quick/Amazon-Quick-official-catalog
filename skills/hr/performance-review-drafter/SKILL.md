@@ -31,7 +31,8 @@ inputs:
   type: choice
   options: [self_assessment, manager_review, peer_feedback]
   required: true
-checksum: "sha256:78e33a26320d596adf94e25b4216dfd56a61bc9af57a0b0b4fa19cdc3bc9b430"
+checksum: "sha256:10abf2f07b53154d4c81cb4294f22209ecca15e9d3efe61ce8a5d5e42236702b"
+id: "ski-9b4be86600cc42189fde3964599619d8"
 ---
 
 ## Overview

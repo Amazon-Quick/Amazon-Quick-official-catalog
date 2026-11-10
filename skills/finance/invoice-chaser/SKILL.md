@@ -152,7 +152,8 @@ inputs:
     type: number
     required: false
     default: 3
-checksum: "sha256:577874e7aea5c353e093a78703c6c3e1433da807c4b6c627df0645a51d7a4e9c"
+checksum: "sha256:17eff8a0c0028533be10f21ba3dc64085a8a106dc3a7faaaf053106694b405c5"
+id: "ski-6cc80c13721c450f932fcdc6c999eb2b"
 ---
 
 ## Overview

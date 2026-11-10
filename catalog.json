@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:3112c87a9821ce8eaa86f1c89654513e51a50acff9decdb4893333513a70cf65",
+  "skillsChecksum": "sha256:e65eb25edd6c9c10db66d34478ddc95e5ec0364ebde45e5a9f7cdbf36c5de035",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -9,27 +9,32 @@
         {
           "path": "skills/amazon-quick/amazon-quick-community",
           "type": "skill",
-          "checksum": "sha256:f2e77b9fcdafbc5da38fb755135ecb417da67f6946dad4b1b2309f7038756ddd"
+          "checksum": "sha256:7f5dcb55c9beb76bf03578ab78c7a805501bd40d3e383c525f8378ad0c89a83b",
+          "id": "ski-19601b1c78754c5f9713ba835f572cfa"
         },
         {
           "path": "skills/amazon-quick/skill-architect",
           "type": "skill",
-          "checksum": "sha256:92f0998987aa40c1478ce5b931b06f85587fc597fea0428e072d0ec41296049e"
+          "checksum": "sha256:01f93615f3368ac94c8e8b8c4ae4b85fc2003d508e01162a43360737bc0989f4",
+          "id": "ski-72af9a52777249d0a2fa7bce118a8c9b"
         },
         {
           "path": "skills/amazon-quick/skill-builder",
           "type": "skill",
-          "checksum": "sha256:ef7d52ee31b47b25c8e1ab1c6cf55f0492a520b12ac14dbb2a85aeb6da16d8a9"
+          "checksum": "sha256:b827cddebb2364377fba858a37126581c2d3f5dbf2f3dfdb0a933a7b1ef025ed",
+          "id": "ski-4f42a742a97c40578ef8c80eca80e53b"
         },
         {
           "path": "skills/amazon-quick/agent-to-quick-skill",
           "type": "skill",
-          "checksum": "sha256:09e7c4c3a711df1ad0aee993b1d304d963228b98630ae5470e690cc6b2c1e06f"
+          "checksum": "sha256:fa4bb7a2ab8966fa788481312551ec29e2e8b821ded74634b05b40cc01af68d4",
+          "id": "ski-b3f7fa380f68428c82ec9c4ef426350f"
         },
         {
           "path": "skills/amazon-quick/personal-agent-architect",
           "type": "skill",
-          "checksum": "sha256:eb9d5012b0e612b3083c1f7805ce16e65354bad1478eda326320aaef974d7bb1"
+          "checksum": "sha256:48fecbce22c5b7574ecee18d5fc8649b6917d20a7a9c569225b9b24342016279",
+          "id": "ski-3d744ffb52624da287574f64c9ab30c4"
         }
       ]
     },
@@ -41,12 +46,14 @@
         {
           "path": "skills/customer-success/customer-health-scorer",
           "type": "skill",
-          "checksum": "sha256:08851bbd7afd0e68fc8ca016fdf94b933fa4608b29f927ccf1b0a3dba2b9b1aa"
+          "checksum": "sha256:a30dd2390bced963fd0a1250ef7c311271fd4d7c981f40238d4ab2d11e8ef5a5",
+          "id": "ski-14707aa74be04917b07038cac807bda6"
         },
         {
           "path": "skills/customer-success/support-ticket-triager",
           "type": "skill",
-          "checksum": "sha256:62e92939fb379918613b07e1a4e9f17dcc7c46ddb21e6a0a965a542cd019e8d0"
+          "checksum": "sha256:76548f028322d14bffa4f6c4c0d817687731bdd9ed66c4455676b02915e589f4",
+          "id": "ski-1797190aaf8c4e68a19dc2315a9c8391"
         }
       ]
     },
@@ -58,17 +65,20 @@
         {
           "path": "skills/data-analytics/ecommerce-conversion-insights",
           "type": "skill",
-          "checksum": "sha256:d94461aa8da8c9fa9b4d2bb31e55bad928c8985003df3a073ea2c4ee998b2a2b"
+          "checksum": "sha256:dda160566d5cae6f314f8869712c59b244a2c37a80f33b21dc1c74f5c3ec2321",
+          "id": "ski-2aecc6d966984c7ea483004c77565ebd"
         },
         {
           "path": "skills/data-analytics/retail-analytics-concierge",
           "type": "skill",
-          "checksum": "sha256:fb0f52c0be334f1d5d0c20a6edc758d2ca246da94d90521df4471b44d7831be7"
+          "checksum": "sha256:c6a35adc2e50cf29909a1ac6a614aa26dab2e334bdb4f8794f8d21a6c9b349e0",
+          "id": "ski-d7cafce14baf464086f8ac9ab15a4465"
         },
         {
           "path": "skills/data-analytics/retail-merchant-briefing",
           "type": "skill",
-          "checksum": "sha256:efbda6aa78fe21fa029668288cea3fd6b402f9a3711713f18a2a16ca058fc5e0"
+          "checksum": "sha256:79705a7223e1ca1656feba2c8ea71ab6f6fee03143759c7e3a7f2949ba35ee51",
+          "id": "ski-c5f435e2f10841c88e6c8886876d50d3"
         }
       ]
     },
@@ -80,22 +90,26 @@
         {
           "path": "skills/design/html-deck-builder",
           "type": "skill",
-          "checksum": "sha256:647a5822cc2fba24a667105dc4149e137e0b13f036c7a265b5eb19388b453019"
+          "checksum": "sha256:11656ea404b63ec99d6adb619c90afcc0280261ec02ef3c7e0fe56a3d65da792",
+          "id": "ski-1eb18750227944caa94102de9c5f822d"
         },
         {
           "path": "skills/design/presentation-theme-creator",
           "type": "skill",
-          "checksum": "sha256:62dc158e957384c054aa9b3f627ff6768f7585f2dd336753964cd90fdae2f4e6"
+          "checksum": "sha256:f17cce0abf8ad93b18d1084abbfdd476aa2f7fd08f4a4dc02db14a1fa7fd71ea",
+          "id": "ski-26eff92255ec4cc8b2556425b9c08e81"
         },
         {
           "path": "skills/design/slide-deck-from-doc",
           "type": "skill",
-          "checksum": "sha256:b922190fdd79a7e27ab0629fb7cd62dff48d86bc3b39e46ac0812453fc3d5711"
+          "checksum": "sha256:a74ef48f8da7e6ae4356cdbd79da30c7da5c1fef9d42fc7d4daf3c78c16d7691",
+          "id": "ski-2ed1533400cf4e32bb89d1c6fc2d0f71"
         },
         {
           "path": "skills/design/template-enforcer",
           "type": "skill",
-          "checksum": "sha256:1b7dcef8d1cd3494b776b9864a834145c80d83901e2b6dc9c8fa8ebdaa64cbd2"
+          "checksum": "sha256:d04c3b1dc1ef77a0a80a2dc136ecd3f68512b5f843e4ba6c0841ead10a9755c1",
+          "id": "ski-35c8a493713647f2a55d61b9b3e3a6bd"
         }
       ]
     },
@@ -107,72 +121,86 @@
         {
           "path": "skills/energy-utilities/automated-log-analysis",
           "type": "skill",
-          "checksum": "sha256:6acf8673a8a9384e957ac1bae5478e3dc856dbdd7681373f03287dbf22f1fb9d"
+          "checksum": "sha256:b83347d734a3b38a47df7940132e1b11ee52ca764a671aef215a003751b4d6a7",
+          "id": "ski-319198e0d0ac4393b3b15af4df14e853"
         },
         {
           "path": "skills/energy-utilities/battery-storage-analyst",
           "type": "skill",
-          "checksum": "sha256:a6f927d6f533498e04bb834668869b4c12470062cc6dd247a20adad5925e22e1"
+          "checksum": "sha256:ca87d642bb0fdefed20a5118c95eed739bb35183f3a38125e4c3e14b201b89c7",
+          "id": "ski-a47663ce8b124bd0894076bc9d910470"
         },
         {
           "path": "skills/energy-utilities/carbon-footprint-calculator",
           "type": "skill",
-          "checksum": "sha256:a480d3d2e4ed42dc7b472f84bcbf4382a2ff494c26dc61e43d450a46d55a2b50"
+          "checksum": "sha256:41c8b2e2df56e3455142cd53ff95ac1b8f83f97ca151aeaeb57765ceea356541",
+          "id": "ski-d2bc387e1c1a4546a8a5c02ca76cfc6d"
         },
         {
           "path": "skills/energy-utilities/drilling-operations-analyst",
           "type": "skill",
-          "checksum": "sha256:0bb9760a6d1c45dc7992a92652ae2b51cb9fd5e8349e6461fa28001a7f9a2a43"
+          "checksum": "sha256:3aa0685e0ec25ab4a5c7834a9a3bb947df2802826fcc33b29e680e8345d868ac",
+          "id": "ski-69e99dc1e89b4700b95cf7a66a91dcca"
         },
         {
           "path": "skills/energy-utilities/energy-market-intelligence",
           "type": "skill",
-          "checksum": "sha256:727bf5382a8b562b19eed02d9dc6e61183ef538a5eedb7f0089d284d3b75c7f1"
+          "checksum": "sha256:6d32759dad3f47717629790372f0ae5173ae92d4be00a713593d1e1fe4de1473",
+          "id": "ski-8aacee27693f440aacb217c2da5ed931"
         },
         {
           "path": "skills/energy-utilities/ev-fleet-planning",
           "type": "skill",
-          "checksum": "sha256:e1ce0c095a3a8e4a2d5eba641e9115c7b5dad88566324e5b65b0ef1be524f85d"
+          "checksum": "sha256:1dc91a847dc66980c9fcde4430d6f7a04704d875734b2b68f8d2f36922279301",
+          "id": "ski-385e703d255a43d79d7f34e2603d6303"
         },
         {
           "path": "skills/energy-utilities/exit-zone-geosteering",
           "type": "skill",
-          "checksum": "sha256:c1188ca070915a28d623f8793e6a26b780e211910288db0f888dbd6c06deec9c"
+          "checksum": "sha256:58693023317f98136c726af16ded4d53ff45a8ddded1b78bcc4b6f6bd55710bc",
+          "id": "ski-4725483874d748df82c64110dbefdaa8"
         },
         {
           "path": "skills/energy-utilities/grid-capacity-planning",
           "type": "skill",
-          "checksum": "sha256:69cbc181f119b16b60bf360633fc70a16e826220f61df81bf5c74eff271702ee"
+          "checksum": "sha256:99b06701f50e4c27defc6f70679e152f57d8c7da21cb2650eb215fccf10e5fe2",
+          "id": "ski-08e46480c1184316bcbd24585b34f52b"
         },
         {
           "path": "skills/energy-utilities/microgrid-design",
           "type": "skill",
-          "checksum": "sha256:e233fdb08f2d56d27d373e9974744f4d39b596f8d995646dc39865bab2a925d6"
+          "checksum": "sha256:5712a31f3b4bad50d5d6aee55992c4fde99e0fdf53bfe765ac674e5ebbc8a7f4",
+          "id": "ski-9830fbe945c742439cfb8d81245cdb1f"
         },
         {
           "path": "skills/energy-utilities/nerc-gads-reporting",
           "type": "skill",
-          "checksum": "sha256:7baa76db376d97bfc308277a205b019ab37ceaebb01099b4c9e3c3b2b6aab43e"
+          "checksum": "sha256:59102c219418bc4a1f058c99cd598ea7f4fbfb52db090a870c756366dc3e5a8a",
+          "id": "ski-0bf72162d55e40f986c3d8099a64a862"
         },
         {
           "path": "skills/energy-utilities/power-plant-performance",
           "type": "skill",
-          "checksum": "sha256:23d817e4f4707bdbcc494ad2c79b0bd6c7f35bce15ebd36291b2613b99ab5a2a"
+          "checksum": "sha256:b5df98789bdce9c5e11ad521d6b8284f98194c898484af655e309cac5c550232",
+          "id": "ski-4c33d28d336243f1a870a7fc988fdd55"
         },
         {
           "path": "skills/energy-utilities/production-surveillance",
           "type": "skill",
-          "checksum": "sha256:cc9c55f7672692a408a9e0326bdf4b55ca385daa46c4180f2d74f6dddd9119a7"
+          "checksum": "sha256:7adccde58595ccf56288cca606a0e16af683c16ecee3485d8438cf1d1f909e58",
+          "id": "ski-76fd71dbdda4440eb7c531e0a8afea8c"
         },
         {
           "path": "skills/energy-utilities/renewable-energy-assessment",
           "type": "skill",
-          "checksum": "sha256:720c64915b8e262e09fccb305717ec4a4f65ee1c787bf9c62c332248d9ba98e2"
+          "checksum": "sha256:c70cffe507e04c0f80b789a461adee97dcc598c46aa270aacd451ba965029fa0",
+          "id": "ski-770c28ade4a841bf8d8dbb8b07652e5d"
         },
         {
           "path": "skills/energy-utilities/well-completion-optimization",
           "type": "skill",
-          "checksum": "sha256:afa8563664b74ba537e664b4a392f71f9898807d48fd3a093ebabcdc3fc83cb0"
+          "checksum": "sha256:6b19f993423a7ca70853901d596fca64332c3aa85cbcccb9a2643fe601766aa8",
+          "id": "ski-44a716c8e0d14e1db27015d6bdb48e4c"
         }
       ]
     },
@@ -184,49 +212,58 @@
         {
           "path": "skills/finance/bill-pay-optimizer",
           "type": "skill",
-          "checksum": "sha256:fa1abef92061967d8f7367b6ca65fd71cfe1f66af6e1f5bd44d61875a6a7abd1"
+          "checksum": "sha256:19302712fa0e1b5a162deb9735559957571bcd9be0e5ae936a52c38b745be5b4",
+          "id": "ski-147f1d1e60d94dd4a86fcedfc0d24506"
         },
         {
           "path": "skills/finance/business-pulse",
           "type": "skill",
-          "checksum": "sha256:de2a215c460f432d31448ed6b233393b6eb6fd63595057b7789cd621f5f07ff8"
+          "checksum": "sha256:6558e5c1f29c37cf4e8ce1fbf5fab6c909ffccfe82123745bc8a03ab31e9dce1",
+          "id": "ski-9244e71b068e4ad29da928f73f98c0e5"
         },
         {
           "path": "skills/finance/deposit-collection",
           "type": "skill",
-          "checksum": "sha256:b4fbd66631c7c422c84dcb416d06590db509584ba6ddae05e08d256f4cbfd1eb"
+          "checksum": "sha256:622fb00390ff31a1bb733fcc49a5cf097451e890ca93d31828a8bfdd00d2a7e1",
+          "id": "ski-87dd908724d2400eaf8b952d28be9c4e"
         },
         {
           "path": "skills/finance/invoice-chaser",
           "type": "skill",
-          "checksum": "sha256:577874e7aea5c353e093a78703c6c3e1433da807c4b6c627df0645a51d7a4e9c"
+          "checksum": "sha256:17eff8a0c0028533be10f21ba3dc64085a8a106dc3a7faaaf053106694b405c5",
+          "id": "ski-6cc80c13721c450f932fcdc6c999eb2b"
         },
         {
           "path": "skills/finance/job-to-invoice",
           "type": "skill",
-          "checksum": "sha256:1b60049d9870e0486067b80782ae0b7799df247e101cdcdc22b0ef9e316e86fb"
+          "checksum": "sha256:3d4c6fe9345c28a7e1919501eea3b3107837f89feb39543f3894adb2ca8fd0c1",
+          "id": "ski-e60f746d9bd3468fbea603e775431bec"
         },
         {
           "path": "skills/finance/month-end-close-orchestrator",
           "type": "skill",
-          "checksum": "sha256:17be14bbcaad7f99ee47ec35532e7c74e936327f244b227e1abbfd9c601573cf"
+          "checksum": "sha256:8d0af006feb2a55e585832949404c5dd7b05a3751853adea4201a85f42d8646d",
+          "id": "ski-d30ce42328b84fc4b2a2664c348e983d"
         },
         {
           "path": "skills/finance/payroll-forecast",
           "type": "skill",
-          "checksum": "sha256:d4c6782454746c204199497a33c8fc37520122f5d5794e436f87ce28e15e8c0b"
+          "checksum": "sha256:7e733ed5dfa56df27b24561179a1f48dcd1bd4fd1e17d0741bb0dc148668546c",
+          "id": "ski-44d9b27b81a74825a2f57bbf4ab26134"
         },
         {
           "path": "skills/finance/fsi-product-management",
           "type": "skill",
-          "checksum": "sha256:5f4e3bfeef3cea59e33d1475db90f2da9fdd7ae37c865dbcc92609d0d1fc3872"
+          "checksum": "sha256:c3bae0ef58a0938ccba19992fa31fb9b9de5e51e76d5f2c989d11b683927b207",
+          "id": "ski-98178c8d2f104a4c8cd2d384f72870df"
         },
         {
           "path": "skills/finance/iso-premium-audit-advisory-get",
           "type": "skill",
-          "checksum": "sha256:899d81f26318cde55984b5d3d64d19d2feda31bf51885455e89fb2e31e08f8ec",
+          "checksum": "sha256:e52334eb94f385aba39923fce7bb8a46fa6cc893a2b2fe836258729f07f0b7ee",
           "publisher_type": "THIRD_PARTY",
-          "company": "Verisk Analytics"
+          "company": "Verisk Analytics",
+          "id": "ski-6beb887f455c4f749495624d3e4b6f18"
         }
       ]
     },
@@ -238,72 +275,86 @@
         {
           "path": "skills/general-productivity/browser-data-scraper",
           "type": "skill",
-          "checksum": "sha256:990b968b43eebbe49f4db80c46a045d23af7703a3a1d37b66fddc89ce7b08af0"
+          "checksum": "sha256:6b233c02fd39f9859d2026a6153f63b623cf7f5797e55fbb5f635837b0da86c7",
+          "id": "ski-079eb7f3cf914df0b5b7a19b0fb5022c"
         },
         {
           "path": "skills/general-productivity/document-comparison",
           "type": "skill",
-          "checksum": "sha256:fdfc2d4e54c637b792b7bae9c9b440eef0f04302e2b3604b2726331883654040"
+          "checksum": "sha256:9a157603b7cc8388c37c811908bc2df3fc1141f809f68b236999a018c6eddd86",
+          "id": "ski-24855477a404453dbbf07803f9f652af"
         },
         {
           "path": "skills/general-productivity/eliminate-ai-writing-tropes",
           "type": "skill",
-          "checksum": "sha256:e3e05b62d95e437ea583d7e797f98521871254d329fd8446409e53a09e58b43b"
+          "checksum": "sha256:8b3df6d1d9668b2b1db3b8ddb70ae280d7d9958762fe57aa5a1d54d0a30c493d",
+          "id": "ski-01ede8183f1b4c36bd781f82d4d0331b"
         },
         {
           "path": "skills/general-productivity/file-organizer",
           "type": "skill",
-          "checksum": "sha256:04c491d6466fec6996923290930bf58d393677f0e297c5a2087fd105e8dfeddb"
+          "checksum": "sha256:a66b6a56c4db621d172f13f9ccf38989b6d74113a9553eab8bdf212a2fe64a56",
+          "id": "ski-72ef72fb1e1d42cda06f42baf5114a63"
         },
         {
           "path": "skills/general-productivity/meeting-notes-to-actions",
           "type": "skill",
-          "checksum": "sha256:eeccab7aa6c47b80cdff05a062d82706b29a60f775b7e9e105561d92a75ac531"
+          "checksum": "sha256:dda7ed2b1d58e501946793d3bbe674b631331a5ee913cd04375cc341ebe6a649",
+          "id": "ski-f1ce64b375c0463faf981760ff49f073"
         },
         {
           "path": "skills/general-productivity/ooo-setup",
           "type": "skill",
-          "checksum": "sha256:a15e7212b857852bc47bdb624fc9a4e2d446eaee35bbd30136886a065f7dbc46"
+          "checksum": "sha256:17249be801132ee8a8073eb22ea923de7bbf4d6e607326c036e09c19242a7f38",
+          "id": "ski-9d9e44547e1747049c7041777cb206b4"
         },
         {
           "path": "skills/general-productivity/research-paper-digest",
           "type": "skill",
-          "checksum": "sha256:ead2066f7686b2d19c36f7a83f0857df2453b0f51d3b6ad5f7e35702a0706d4d"
+          "checksum": "sha256:ca695b2e140651688781b6025d418d589e440841f17f7b550bc90cf8ac3da560",
+          "id": "ski-481db3e9ef534795ba85b418ff659e59"
         },
         {
           "path": "skills/general-productivity/second-opinion",
           "type": "skill",
-          "checksum": "sha256:cc275ae0efd5d7baf0508b78be91abd74e3933ff398f37c81daee53d3526b201"
+          "checksum": "sha256:d89269d9b8d8def9b92ed83a2fdcf08f2ef9a98e6fa75661fc96ea7fc940d633",
+          "id": "ski-6f8d8f72cdbb48338c0b08f9c71fbeb6"
         },
         {
           "path": "skills/general-productivity/teach-me",
           "type": "skill",
-          "checksum": "sha256:d096f9b30bb43c85b7c8cb1c9b5a60b249e22b0bb347bad71c0f4a68e810384f"
+          "checksum": "sha256:c06ca54cfb35ae96a2bce8a172ba194473ca4d7c3255df2fa92bbc16a141cb92",
+          "id": "ski-a9616271f8e84003a3015ffecbb7b425"
         },
         {
           "path": "skills/general-productivity/translate-ms",
           "type": "skill",
-          "checksum": "sha256:43d57905a03f6b5177e9b1ff9313752deea02b7333352aca1ccf0ed764580734"
+          "checksum": "sha256:be1651321c261fce2470dc366a6c0540011b59299608923a97cb99e25d2cf3c6",
+          "id": "ski-52eb6ac36c634af5ad7eef01711fabc7"
         },
         {
           "path": "skills/general-productivity/desktop-cleanup",
           "type": "skill",
-          "checksum": "sha256:8477b34181ae4368e69dfba70eaa69d0c53d4c96d84299136f019e7ca4c7e720"
+          "checksum": "sha256:339dfe631d680d8680a198eaab6b4a306c3f756dfd304aa290e6341b00c90392",
+          "id": "ski-2a6b15557b2a45a29bd85dc5c8cdfae4"
         },
         {
           "path": "skills/general-productivity/conversation-manager",
           "type": "skill",
-          "checksum": "sha256:9dbb09a99f20ffa17d544718fa6d7906516457dfd74c08ca709d9525cb951500"
+          "checksum": "sha256:e6b2700e9f6aa0f3c88337b9e44b62cc24128a24bfa6b0cc37f42c68a2640589",
+          "id": "ski-89694d3823ce4ef891eda0dceeade108"
         },
         {
           "path": "skills/general-productivity/markdown-to-docx",
           "type": "skill",
-          "checksum": "sha256:fcad912b2f64550e9a1a7c051ec27db572536b9e9b27486bd364a294f378d6ee"
+          "checksum": "sha256:ae3b9223694abc6b37341ae967fccf39f4c0aef805325c73408c1e5caad3a2f6",
+          "id": "ski-01d32ff7342c4acc8c740074d88bf68a"
         },
         {
           "path": "skills/general-productivity/click-through-demo",
           "type": "skill",
-          "checksum": "sha256:4b7a6607b2cb9b47839ab3f2e4527bb08669f1886d1cedd21a733512c0751bac"
+          "checksum": "sha256:9c9d59b2e724d75257779ee852a34c0843bb2ca9248741609605e68ab2cf5fd2",
+          "id": "ski-a7285733e4e444d4a51220e5521a9a12"
         }
       ]
     },
@@ -315,42 +366,50 @@
         {
           "path": "skills/healthcare/cdisc-submission-compliance",
           "type": "skill",
-          "checksum": "sha256:5455df01e8404b1e58c2cdd6883913094f7a051920a359f8e2288f1e935ef3cd"
+          "checksum": "sha256:be15ece93f3824ce487f854de20f32adbede7d975c9ffa547d1a5a9521efe97f",
+          "id": "ski-ce3798250c9c4aefaa2bfdacea56b55e"
         },
         {
           "path": "skills/healthcare/healthcare-claims-analytics",
           "type": "skill",
-          "checksum": "sha256:eeb5ec42801907021b3e56c0935a5c6a9a2404c0ba549e99449dae2ee6e72ce9"
+          "checksum": "sha256:8c7e0697c96de516309a189291cc8598f8e54facd23e6c949acc4f94e92a2f85",
+          "id": "ski-8a2c79ed6a744654b23914a7c9ab3ca3"
         },
         {
           "path": "skills/healthcare/hedis-measure-calculation",
           "type": "skill",
-          "checksum": "sha256:100942abb78e714655a563ae58f4c89a29ab4c9b2054f99b90a0d6f36909de21"
+          "checksum": "sha256:2884fb8f0abf9930d7b7dbeb04a520f827a0ea2e9ad876719f3a7c194e933f5c",
+          "id": "ski-545bea25adf04d2592a8baecbf6ede2c"
         },
         {
           "path": "skills/healthcare/hedis-measure-specification",
           "type": "skill",
-          "checksum": "sha256:6b9e829b1a971c1be0a2ac57133d8b924e610171f1ea1a330820b9cb1cdbde01"
+          "checksum": "sha256:d4e32e5a6c97430ca94d225f5e5e654d5f7a3acc5372f09fe7021f7cad39fbc7",
+          "id": "ski-5d375adc30b24d83b0f908e5eaf7ef00"
         },
         {
           "path": "skills/healthcare/prior-authorization-clinical-policy",
           "type": "skill",
-          "checksum": "sha256:871ceaa79ff1efe12d193dd567011c2865aca983cbc756abc65837f343f7c301"
+          "checksum": "sha256:d6bb9117ae17938e0570036cdc8b4d5d5ce4e1b043530d3b4e36d05f1b9ed50e",
+          "id": "ski-08eb7d610c5b4aabafc206f2cbb039e6"
         },
         {
           "path": "skills/healthcare/prior-authorization-decision-automation",
           "type": "skill",
-          "checksum": "sha256:64cdf7bb3f54fbe3910c15c288eaeb299616091d817ad815686846b66dc2a351"
+          "checksum": "sha256:b30b8716cb728b8c6e7c35f7b4f4c4638a524f7c7081e80b173f9175ddc46c21",
+          "id": "ski-9d45709f6d2e43bb9e24849c5b09c927"
         },
         {
           "path": "skills/healthcare/protocol-drafting",
           "type": "skill",
-          "checksum": "sha256:5224e410904bceb592e4368e1266fc1ef05d9a2aa415c7d3c8a2a24ae5869546"
+          "checksum": "sha256:5e233fe7aa38938f43f06342bac937b904b2c130d18013bda840fe07a53a7be3",
+          "id": "ski-6bf9d2ad3d1d4f23b3e09c5a70b6a9d2"
         },
         {
           "path": "skills/healthcare/research-biomedical-databases",
           "type": "skill",
-          "checksum": "sha256:92aa818c868f596d6ec129fb69e9f7d76c2f99f5afd3faa50e1b42a5239d6fb5"
+          "checksum": "sha256:3dcc6d09aa1b7746afe11271c1aa7d0807fa3bfd658471769dd351095a07778f",
+          "id": "ski-aecafc702bfe4bc28adff9a752847b50"
         }
       ]
     },
@@ -362,7 +421,8 @@
         {
           "path": "skills/hospitality/restaurant-morning-briefing",
           "type": "skill",
-          "checksum": "sha256:4783073e9485332d8fb2036478615f5b88ea784e9af6e0c51d9742f96b1f9b8b"
+          "checksum": "sha256:92f47196ecce8e869fd5209f57dad3edc0b467a6bbc48033b410bce66f9eec0d",
+          "id": "ski-b229ec22458e40fdaa03d59c15dcab66"
         }
       ]
     },
@@ -374,17 +434,20 @@
         {
           "path": "skills/hr/hr-policy-agent",
           "type": "skill",
-          "checksum": "sha256:b56036d830a0a44bd788ef4551356b9759b37e7ecf71e3cffca195d1cebc1f31"
+          "checksum": "sha256:924e56d8d4e75f3d77be1b6b4d08e6eb85862fe6574b2e90b9bc116df0055c80",
+          "id": "ski-e2182d4408b54d61adcec1b3f5165333"
         },
         {
           "path": "skills/hr/onboarding-orchestrator",
           "type": "skill",
-          "checksum": "sha256:369ca7096b989317e1c95e97f6d845a692cf050ba5ed034366db342a397ef506"
+          "checksum": "sha256:6266a852a7ca262d170f8731d4ffe98e2404aa7430da7c944bd498b8705fb8e2",
+          "id": "ski-3e6ebb45c6e2436087c461ffc0177422"
         },
         {
           "path": "skills/hr/performance-review-drafter",
           "type": "skill",
-          "checksum": "sha256:78e33a26320d596adf94e25b4216dfd56a61bc9af57a0b0b4fa19cdc3bc9b430"
+          "checksum": "sha256:10abf2f07b53154d4c81cb4294f22209ecca15e9d3efe61ce8a5d5e42236702b",
+          "id": "ski-9b4be86600cc42189fde3964599619d8"
         }
       ]
     },
@@ -396,22 +459,26 @@
         {
           "path": "skills/leadership/business-case-builder",
           "type": "skill",
-          "checksum": "sha256:f41db3bb540d68316221f42076d577b30e4739a817310086f82c486fbf4a1a7d"
+          "checksum": "sha256:06fcd5eed52a6ecafca34ba823f6087b0be17112527ec512817b74c2b8baec9d",
+          "id": "ski-baccb3c418a241f294af960b7d864606"
         },
         {
           "path": "skills/leadership/executive-voice-runtime-builder",
           "type": "skill",
-          "checksum": "sha256:cd41003be5be3310bced576cdb6bed98be426c229bd1e5ab03424bc59a9233f6"
+          "checksum": "sha256:dcc6e0e2eb2bc03a9b4f987983ad8ce43f1e3f25cd4242eabbbbb4a48ebfa818",
+          "id": "ski-7f3e67d160b74517aa07b760b60bcfa6"
         },
         {
           "path": "skills/leadership/goal-tracker-reporter",
           "type": "skill",
-          "checksum": "sha256:95d5e4618b0d8488a43e61db7f8e86f1e0e412de4dd648e58b6905a80d7e0acd"
+          "checksum": "sha256:b296fcf3866c79ff3fb7c293b31389574c827531c5aaa224a18bdc1ab3f0b9ec",
+          "id": "ski-152e6b97716144adabf9bde8ddd19c77"
         },
         {
           "path": "skills/leadership/swot-analysis-generator",
           "type": "skill",
-          "checksum": "sha256:8240013dde063e9713124141fb868c27ead5f71df28bfe4e7431c149dc815798"
+          "checksum": "sha256:faff16b5fa086fdcf7a99863e731f89a3c8d826c7c9281ef096f1b6a96264d4b",
+          "id": "ski-37648980e6d74100a111bf5d29282734"
         }
       ]
     },
@@ -423,12 +490,14 @@
         {
           "path": "skills/legal/contract-clause-extractor",
           "type": "skill",
-          "checksum": "sha256:cda914287b9bb9a5741a848fa8617373a25a5d7141d14d408be2a3934d076f7d"
+          "checksum": "sha256:6a75249ddc2b3acc876a723f4866969c37368cd8f04f496cb8f9a6e65496ed1f",
+          "id": "ski-277876fa56a24166a7b3149d17b36c5a"
         },
         {
           "path": "skills/legal/regulatory-change-monitor",
           "type": "skill",
-          "checksum": "sha256:6e9a4d6ef1aa2d0573f6c5047b4f51487ec3ac4a59c57541cbc020023e49d6ea"
+          "checksum": "sha256:f8176a3c303cb104fce3e76251f5b03f47d09a5f70cc5e724baf95c8492ccfc6",
+          "id": "ski-8c6c4d0cbab04d8db58d09c245ab5e4e"
         }
       ]
     },
@@ -440,32 +509,38 @@
         {
           "path": "skills/marketing/content-calendar-planner",
           "type": "skill",
-          "checksum": "sha256:f8de1d4479d2dd84eb4b0500f3f86fbde4f9b6272b50224c1ee7276767a26d60"
+          "checksum": "sha256:18e1042f3a6fa87cf0bff83b0ddc1aab5a96a440a36e7253248424e65865d615",
+          "id": "ski-59b28b9e9d544beea4f74c362ebc882e"
         },
         {
           "path": "skills/marketing/content-recycler",
           "type": "skill",
-          "checksum": "sha256:d9b4a2c0931fe69155f1a1646380426769de9c3a8407ed5cf1de93ee6f1be4b1"
+          "checksum": "sha256:6e1dc4dc8dd503cb096b4ac5e5e2b80482a11067eedc2947ade149a0bd0122a6",
+          "id": "ski-b5ab715c5069408fb809496974724404"
         },
         {
           "path": "skills/marketing/email-campaign-builder",
           "type": "skill",
-          "checksum": "sha256:2d45f5e62f1b68b2e84a9cef4bda6b83961b4810a57c5b6d32b926e073f2d4f5"
+          "checksum": "sha256:e8b79b04c57667191971045d34a7d73286ed29809049105d4e48829e578eddd1",
+          "id": "ski-5a1757b8a14f499ab9487708cd4e9000"
         },
         {
           "path": "skills/marketing/retail-content-generator",
           "type": "skill",
-          "checksum": "sha256:14b388355506be0be67e09c67835a7c0acae622084534c269fe9e5fc7a004293"
+          "checksum": "sha256:9978f229b2b8e192a9abf6a43f196da23bc3ed2b7ccc5982583e3885b445cb72",
+          "id": "ski-561ae9cda5534bfd95496603cc7390f3"
         },
         {
           "path": "skills/marketing/seo-content-writer",
           "type": "skill",
-          "checksum": "sha256:4fb43c31b3e0236df7899c8e5bc80f5ecc34ac503b56e352f4195552c7ce3b7d"
+          "checksum": "sha256:c58fee3e6603c19bc72b013db9da247d730b2b7392ae463b21bc9b1f813c6189",
+          "id": "ski-e249c165f5b54b1d979f394ae814e0c0"
         },
         {
           "path": "skills/marketing/social-post-creator",
           "type": "skill",
-          "checksum": "sha256:37ef8280940be2783f6983406b9fc6fc2bd31726e9b875d84cfd0d9373e5bbe7"
+          "checksum": "sha256:434eda66674948c42bce6342573cc918d17c296e3d990730a7ce34b81559abb5",
+          "id": "ski-a77f305bc6c94dab93bb9f4d0a99ab96"
         }
       ]
     },
@@ -477,22 +552,26 @@
         {
           "path": "skills/software-engineering/architecture-decision-record",
           "type": "skill",
-          "checksum": "sha256:c39bf138a3dac5efdaf5c4c6f594996b53444a4dba330793fadf2bf3509a6aa5"
+          "checksum": "sha256:2426d10d767244b6608d10cb3b4cf81465ae15f4dcfae60010e78e918f156779",
+          "id": "ski-cefdbd42b5b2492989c3b9c8f3021cb3"
         },
         {
           "path": "skills/software-engineering/fsi-architecture-assessment",
           "type": "skill",
-          "checksum": "sha256:701db70ecfc06b966c4583ad8813aa8add31c6a80bc0e85bd7b51dd4401622b8"
+          "checksum": "sha256:98d374d23176db0491ac493aa61cdbb1a4726116b5c915b00e9fa29b5427f39d",
+          "id": "ski-23626101ec16491eaef28039941215dd"
         },
         {
           "path": "skills/software-engineering/incident-postmortem-writer",
           "type": "skill",
-          "checksum": "sha256:6b76b06cf3e2ec8ee5bc21f41326d0b4702d037afeb0a624a7df79089f41880e"
+          "checksum": "sha256:1071b463691a9d3f056dc8fdb28182720b491972ee43f640ae51fdf490e81349",
+          "id": "ski-393473d24e944e689e4ee2cdfc501e10"
         },
         {
           "path": "skills/software-engineering/release-notes-generator",
           "type": "skill",
-          "checksum": "sha256:eb2fc3f7f6663dc84d3c1fef2100e92ae4bd55d1c990065e88e8b4e3f931a496"
+          "checksum": "sha256:55803798baa2d1187f474cb5863f74affbbe2291b594a9a47e13a38d4e44cedd",
+          "id": "ski-6975ae9135f54ebd962a7d12e0bdcf2d"
         }
       ]
     },
@@ -504,17 +583,20 @@
         {
           "path": "skills/project-management/dependency-critical-path-analyzer",
           "type": "skill",
-          "checksum": "sha256:2c23b4ebae9a5366262f1bfa89bc73c7297736ec791025d5a97e8174d2a5b830"
+          "checksum": "sha256:aec41ac6659fea96f8e264b6b0bf03bb3fad04ce5a06bd960a72770ad3293dd0",
+          "id": "ski-6b2d719f12334a0484ee8eeac04655da"
         },
         {
           "path": "skills/project-management/risk-register-builder",
           "type": "skill",
-          "checksum": "sha256:67acf2b1ae7fdf0446f888eaa3b2e964751ff6f37a066fa8eb7b87d770781c05"
+          "checksum": "sha256:ca56fff3fc0ac8c7ad9236264e2f0e5ac4b1c17d196c536c4ab9536a5f12105c",
+          "id": "ski-370629429edd4d5ba5240af6e8019281"
         },
         {
           "path": "skills/project-management/standup-summarizer",
           "type": "skill",
-          "checksum": "sha256:8a2af31d1d9788e890808f1d9095640411d64fadf33f12c97c4089620f0429c1"
+          "checksum": "sha256:32fb95b76d2193b1f26888573ba68d15696ae1ab7cbdde84c133369fc0950f62",
+          "id": "ski-35f386609ebc44939a1320a95ab748af"
         }
       ]
     },
@@ -526,291 +608,349 @@
         {
           "path": "skills/sales/competitor-intel",
           "type": "skill",
-          "checksum": "sha256:971433b082085878b4bc60225404a1a39061d6f292a112b478d7a0589f46e8ed"
+          "checksum": "sha256:fc85c78c6609587d264306ee32b14579deadadf7a2485292b4aeae2c9fca4081",
+          "id": "ski-54e63ad2355f48dab1ce3b22df9af2a4"
         },
         {
           "path": "skills/sales/deal-pipeline-manager",
           "type": "skill",
-          "checksum": "sha256:5d3b5f1ed4ffe1b3c08cae1346212025226ec61226a982c5811625f2689d26e9"
+          "checksum": "sha256:b17b17586e8891546031a1d811de2171d0938e8a8adaacb994c433ebfe35f979",
+          "id": "ski-c545ee8573ac486fb40f217f11493db8"
         },
         {
           "path": "skills/sales/follow-up-cadence",
           "type": "skill",
-          "checksum": "sha256:100f82645f3a0a4bcae4ee4a40a3e9215aa8cff4ad73ba2019727fddcd1bc2c5"
+          "checksum": "sha256:41c1db79360d779fec90c5ee77573a8055be35d3df6701db77d66f271a2f8d6b",
+          "id": "ski-0326c698d1f0482eb8bb070edd5fdbb0"
         },
         {
           "path": "skills/sales/lead-prospector",
           "type": "skill",
-          "checksum": "sha256:d9b7500a5e374437d48d90df1debd342dcfac5975def0a61b1142ead264a2982"
+          "checksum": "sha256:f34648cdf42d89c4f2352f53360783653445a9c85abbd0f495507ca89afbe90b",
+          "id": "ski-8bbc862bf3514265a890a673fe31b2b3"
         },
         {
           "path": "skills/sales/outreach-sequence-builder",
           "type": "skill",
-          "checksum": "sha256:30b1f81f040074ca0390082d9bba11d864fd0e5f3e2d4a8be4f490231d47d9e1"
+          "checksum": "sha256:3de939344f78abd0e19e9be752750bc3ea137f619d852dcc63901fea5c197cce",
+          "id": "ski-607b87f8f1d54be1974dd7326a369f78"
         },
         {
           "path": "skills/sales/proposal-generator",
           "type": "skill",
-          "checksum": "sha256:726b904c0f4b106e137843cfc4d0fbe5c2c9e41773a13e58a453f65d4c57c2aa"
+          "checksum": "sha256:bfb240c3e6535b5708b6fe066f257c3b510294a9708337f43e5378deb5e24872",
+          "id": "ski-3ed9d198b4ba4de9a18ede8c96cc8dac"
         },
         {
           "path": "skills/sales/selling-partner-listing-issues",
           "type": "skill",
-          "checksum": "sha256:37e49772671a840e0887ea88c19b5177ce485a07d490794a30632e8fb302af13"
+          "checksum": "sha256:42640fe2a15c825fa0e10172893199db378c7802d4996e0fa45474938004858b",
+          "id": "ski-63008b92ef1748ffac7f79608e23303a"
         },
         {
           "path": "skills/sales/selling-partner-listing-buyability",
           "type": "skill",
-          "checksum": "sha256:d40b84cac002f8dde886ab9dae19918907f251e3403cd3f847d4b6965969f31b"
+          "checksum": "sha256:7daf121791fb4bd192675b99f343913e0d5c6f24162160911b08fbbecfd7cfb5",
+          "id": "ski-f8ddb304a61b48d89c7c74da5f23a4e0"
         },
         {
           "path": "skills/sales/selling-partner-listing-searchability",
           "type": "skill",
-          "checksum": "sha256:541c7f4ca18cef2c8d836540cc7dcf88cfd24f3f40fb9c10117497925ff643e7"
+          "checksum": "sha256:eb5acd51c51dd6ffd17d2eefd223105648e4997016296730dbb6553b5c11494e",
+          "id": "ski-737ee71785624aae9efcfa2f0bb3470c"
         },
         {
           "path": "skills/sales/selling-partner-listing-troubleshooter",
           "type": "skill",
-          "checksum": "sha256:1854ac6c3b651b747d4348da1c71bc6ef3d727e4c7fd4cc7d38087c645f5aee2"
+          "checksum": "sha256:0a77b525c3b8af1aed071647fec9a75a56a2d964518d6d140220b48ed9daac2c",
+          "id": "ski-22a8f16720144632ae87a1fb04bac78b"
         },
         {
           "path": "skills/sales/selling-partner-support-case-helper",
           "type": "skill",
-          "checksum": "sha256:199133c4469e925d6a374c587b504c2b07162cd27103625ef04d5f148ad35da4"
+          "checksum": "sha256:9eee0a8ac7b75e1df58db62be0b0ff2e5bbc13145c388e6ddb3e08b1f492029e",
+          "id": "ski-8a06fc11e6ab47d9adc063684ca09068"
         },
         {
           "path": "skills/sales/selling-partner-stockout-prevention",
           "type": "skill",
-          "checksum": "sha256:b2cc99c20bf4358ca73a366c1b55d7ec04b692f866884e0a383e59c40f75b82b"
+          "checksum": "sha256:9dca9ec14b6fa01111320e27839bf6675be4eb21ff77056490ca2e8d97370981",
+          "id": "ski-7698af493c514483b5cb87fd175058cc"
         },
         {
           "path": "skills/sales/selling-partner-fba-inbound-management",
           "type": "skill",
-          "checksum": "sha256:7a412c8c8691f20740595aa51614c127525fdda26f2bafc8ddb788059547abe5"
+          "checksum": "sha256:4ef2cdcd5038d3465fe60d82476b54994a8eb5183f96299cc91b5ceca663d0ce",
+          "id": "ski-4f4253dc8a584b9b8ef977ca484b3c1f"
         },
         {
           "path": "skills/sales/selling-partner-seller-analytics",
           "type": "skill",
-          "checksum": "sha256:20594d07f25abb6d4e1ef678a49988db4e147ecdef50c2f3540eb3d62c4a60ab"
+          "checksum": "sha256:dcb8190e415d22dd7f81c14f19c3130736c3a68f6c7288f0e421c4ca75b2466a",
+          "id": "ski-d88bfbfe66b04dd78e8a92a6b984da23"
         },
         {
           "path": "skills/sales/selling-partner-invite-secondary-users",
           "type": "skill",
-          "checksum": "sha256:230fc1917d79885714aac0cc03560c5cb4366ff9a9a00c88581d71180ca20ed9"
+          "checksum": "sha256:1ac242e5ab8b3bfb5c29b722e3e0595d9e655833cafa4d69c3a3b1c4bbf2f949",
+          "id": "ski-e9ae9eb0fdb5488abee3f22e62bc5e22"
         },
         {
           "path": "skills/sales/selling-partner-knowledge",
           "type": "skill",
-          "checksum": "sha256:1086dd1aa6a552cc40e8bb28a1f59ba076c93d7f70f52ac4ac6cd9c7d513458c"
+          "checksum": "sha256:2842f35fcfe9f6c53d5ad6f71ced15b7b81e69b039b305d448e6fed72d4a97dd",
+          "id": "ski-56179e3ba0f54aa4ab53fb17527cde4b"
         },
         {
           "path": "skills/sales/selling-partner-listing-compliance",
           "type": "skill",
-          "checksum": "sha256:187cfb893e462ada805ad8ec00e83fe1416c39ed16f076c144a871687552c060"
+          "checksum": "sha256:55b4c0e31421175215a847b6c1786f8be23ab6d9632d75955872289f13a19a1d",
+          "id": "ski-e792b82352df4e97be042796c361e151"
         },
         {
           "path": "skills/sales/account-context",
           "type": "skill",
-          "checksum": "sha256:32faac57c431229aa7aaa605e0c7133a145362336466ed1010a30f67f33f2377"
+          "checksum": "sha256:49ea704ace06c1f26df4b0160c48b9581714287495ccef40357d6bf2c5fd4659",
+          "id": "ski-7b5070dee5054b3db23139c5c85f4035"
         },
         {
           "path": "skills/sales/account-plan",
           "type": "skill",
-          "checksum": "sha256:d2d7e530f3f05dbe61ee7bd0f184da1ddedbd42593f0f579b2db3870bba3ff2b"
+          "checksum": "sha256:4eb46aa6310b607b67dad33bd1ac25dc9a0c9a7f5e4b68bd550d6972ea3e65cd",
+          "id": "ski-1d5f6459bb864913a63211ccf53cead3"
         },
         {
           "path": "skills/sales/account-tiering",
           "type": "skill",
-          "checksum": "sha256:f5687c556f657187ad8e5cf08935922110145c3b2bf5c23d79797228213fca96"
+          "checksum": "sha256:e371842aafeb12e315d26b689aa3e962f71b971728b93d11b08636361eb75c69",
+          "id": "ski-5092f512fe50475bac077bec904fc819"
         },
         {
           "path": "skills/sales/assign-target-to-sdr",
           "type": "skill",
-          "checksum": "sha256:534384cf0b1d0475b89f029fdb66390f1471a058ef4c54288ca5a8e50e8972b1"
+          "checksum": "sha256:57bbfea2e8b95ec4a968b2e920bb3c2d212001f410603db948d11dabc2719fdc",
+          "id": "ski-70da2230ac604b959b6737779d10e722"
         },
         {
           "path": "skills/sales/calendar-events",
           "type": "skill",
-          "checksum": "sha256:04b52e19505ed3d31b97fcb37e94e120f9a46bbfa2965b758b6e331b07baa935"
+          "checksum": "sha256:f3c3529b1d98a40d7545c10c4e2f7d0a58124662dab7d260bbed59acbcdb14c5",
+          "id": "ski-d985c1e118724ef492e8daaaf6f1c18a"
         },
         {
           "path": "skills/sales/call-follow-up",
           "type": "skill",
-          "checksum": "sha256:a4d8b3d5be6fd74aaaefeb3ae04504b4373e6da5dc1665308d06670ee37a8b72"
+          "checksum": "sha256:73c3e84509d98a247595e3ed222195f432686d8fd4c83b6d7cbe51cd428b7d1a",
+          "id": "ski-7053a4796a0a4e96b2c1b9ec242ac7d9"
         },
         {
           "path": "skills/sales/call-prep",
           "type": "skill",
-          "checksum": "sha256:c3c0c79eef873f7f8d1caeefad8ab776cf870079f52cf47df1602908e08a0bc1"
+          "checksum": "sha256:9be8f1b14ecf0775c5812168baadd65f96de939af56797fe6111b300553a754e",
+          "id": "ski-678ed34a9b8a44e69d4af4a2cd129040"
         },
         {
           "path": "skills/sales/close-plan",
           "type": "skill",
-          "checksum": "sha256:f4d4f07559d21f2d55f9d7de51685c7a72b3785f95649e59375b0c43b48f3a03"
+          "checksum": "sha256:93262702caf8ad1658e57b5da37a3af2524256359ecfaf49f3164188348b84db",
+          "id": "ski-4197dd884d80485183232be87085cd92"
         },
         {
           "path": "skills/sales/configure",
           "type": "skill",
-          "checksum": "sha256:a0e8580811d0d45155fe110652860a46f9bd1f6e97dc63d16a39499f3328d6f5"
+          "checksum": "sha256:a6dfaa08907870ffff160337bfd2ecb7aa457c9353c13d326a4d8f53efd17032",
+          "id": "ski-d3151f08f7e94b87969576cc7edede06"
         },
         {
           "path": "skills/sales/customer-health",
           "type": "skill",
-          "checksum": "sha256:25366e7d48a4f95be36f13571fdad5f90519afa0947edc6edcfa3d28c56a4304"
+          "checksum": "sha256:0c949efad921ea801c0f42dbc922ef61b62abe2d0ef663b9cb2cde4200b08981",
+          "id": "ski-f7053ede94e44fdea9d2db6aab218efd"
         },
         {
           "path": "skills/sales/customer-voice",
           "type": "skill",
-          "checksum": "sha256:64325e7b5e89cf2a7f759e977f1fda647970d02e2232a74bb73839c606cd1564"
+          "checksum": "sha256:9d6d3caff1eb1646741fa61c85dc2a9d6e08ab2589949254ac3d8d5eb342cfb7",
+          "id": "ski-ba0b24acd85f447eada8a73639729931"
         },
         {
           "path": "skills/sales/daily-briefing",
           "type": "skill",
-          "checksum": "sha256:5171784fb0d2acfa3aab5804b220c4a329d5c06585bbe61dd95f9f73e7e61e75"
+          "checksum": "sha256:c694bdebea9e21e80cdf003c36e4c04758e1f350e51f0190946d1812ec9b3273",
+          "id": "ski-5324fc41ff5d44679bba4d3fadb71ec8"
         },
         {
           "path": "skills/sales/deal-advance-gap",
           "type": "skill",
-          "checksum": "sha256:36a72ff770b8e1a7e5da8bc6794ce0d50eea26caf6610844189868c6d2a44afa"
+          "checksum": "sha256:bce1ccc823b82738b4892a3c57146b647e877ce4ed66d2ec1f6ecef9d343c082",
+          "id": "ski-1b930110e61c467798a2afeeea97cafe"
         },
         {
           "path": "skills/sales/deal-review",
           "type": "skill",
-          "checksum": "sha256:b2c0d3ee2ff598cf7be25f99d7983cf2c8f5a21d3f1642c5ed05b8c416199cf1"
+          "checksum": "sha256:f9329b9ea23f7a90e220472697deef20c30d9a7ca666bd832e1656e1a093748f",
+          "id": "ski-50ea00df55164263ae33dbd2e647a88a"
         },
         {
           "path": "skills/sales/deal-signals",
           "type": "skill",
-          "checksum": "sha256:7615739a88a2d462caf016a3396a83fe78b3184beb9722f8ae50b65e7d1b5fbf"
+          "checksum": "sha256:17ec272aca16e000406bcb475830c0f0a7f81fc3814d3da3fb98831a9d600414",
+          "id": "ski-71653933d2964c6fa15f1ab338e09738"
         },
         {
           "path": "skills/sales/deal-slip-scenario",
           "type": "skill",
-          "checksum": "sha256:f8bbb9ac3a75c4c69c74808d22a0cc05ec13eb9d76f450bbebaf116c8531af23"
+          "checksum": "sha256:b1fedb1c62c77dee98c0619d6dad6eba4894646f05c30e501646395fbf353f7b",
+          "id": "ski-15ffc699e5ea4d21a3106cdc45c1a51f"
         },
         {
           "path": "skills/sales/draft-outreach",
           "type": "skill",
-          "checksum": "sha256:95d885a618013350f485c8b9e918494cd4d2de5b3f37d3500243cae71866c610"
+          "checksum": "sha256:a9a833aef50c9390e434a80ee859a7e2c5ac0a091511827c80097d94544db9fb",
+          "id": "ski-1518588df489403fbf1bdabd08e12526"
         },
         {
           "path": "skills/sales/expansion-whitespace",
           "type": "skill",
-          "checksum": "sha256:929691d2d3dc7918c713b762990f30e0a02a33cbea90a692853da221a8468a1e"
+          "checksum": "sha256:3d78e20ebbd6047897acc946c288be1aa6ece9c4cc5111face311c8fbff5407e",
+          "id": "ski-d29a21ce1ded47528e8e768dfdd635b6"
         },
         {
           "path": "skills/sales/find-internal-answer",
           "type": "skill",
-          "checksum": "sha256:a0aee7b2da2d18281912d25d24d2eb04386acab7b4fec9048abc5fbe7e557383"
+          "checksum": "sha256:a6eb50439617650f509f44e20116fcb0546a27f9d14e59e66caf20e3b4b7f09f",
+          "id": "ski-dee7f51eeab24399a45fa03fc5de47df"
         },
         {
           "path": "skills/sales/forecast-narrative",
           "type": "skill",
-          "checksum": "sha256:6c5a24e239c1b873cee9d5f80a76d5b99abc13c99e9509b2f256cbba9e24ea71"
+          "checksum": "sha256:dbc3e3288d23feb81468f4509c7d2aea502b710eb17610872feddc148e69cea2",
+          "id": "ski-adef666ba672442fa597ef9fe7216901"
         },
         {
           "path": "skills/sales/handle-objection",
           "type": "skill",
-          "checksum": "sha256:d9dfa0fdef2534cbe0af2d9146036a6a87467c8f68cd9166e501ac92fbf644ce"
+          "checksum": "sha256:669811c28f417b72835c395bbd5abc488fbda5b0925daf420654d2fa9ababe3c",
+          "id": "ski-094d821d0d2d43e1b1a60427fabf6110"
         },
         {
           "path": "skills/sales/inbox-sweep",
           "type": "skill",
-          "checksum": "sha256:bfb1902e4538970f58dbe11a0f1f60980e4e8f0b3fa4699533489d73c7d9aff9"
+          "checksum": "sha256:77a40266314961f6566774da5ef06c391c84f53901f0ca84c2c58e88845041ec",
+          "id": "ski-3ead03da211a494a80b272a3818b946c"
         },
         {
           "path": "skills/sales/lead-triage",
           "type": "skill",
-          "checksum": "sha256:145a0c6a17b5d4e67ca30fe9414357cad48f4c72f942d9fcc5b5304bbbae21c3"
+          "checksum": "sha256:71b6d46c29ce35fca20a09e809c37779038f5539159c74c6cc61f3cd0de667d4",
+          "id": "ski-773aabeac93644ca84f80c80161e8e5d"
         },
         {
           "path": "skills/sales/log-activity",
           "type": "skill",
-          "checksum": "sha256:f487e3d3d2944c01d4308372b86cbf605e54fbac0a74cf10ede1a49766b7eed4"
+          "checksum": "sha256:f207022edced719b2f11f51f26a3e4e37976a034e2e7d3a6d079286964d2ab83",
+          "id": "ski-d8784ded681642b5a4d2897f657e44cf"
         },
         {
           "path": "skills/sales/pipeline-review",
           "type": "skill",
-          "checksum": "sha256:4b046755922d46d58d2d547619102ff76151597476448847d0fdbf7b04bf83cf"
+          "checksum": "sha256:b46a657140e83b0349745335dccf120fe4c8400e8e621ed5b591866543ab6e68",
+          "id": "ski-edaf42b78acc4f36a5d74ffa29cc14ed"
         },
         {
           "path": "skills/sales/query-activity-history",
           "type": "skill",
-          "checksum": "sha256:d2a9716d569244affcfd81592506b74e66fb0f0086dce89c6bb83f2db9ed7dd8"
+          "checksum": "sha256:b6dfbe298a2ed15b8cb3068f4624718c89e780b37da5cc7cbbc4e99d595a5950",
+          "id": "ski-47862f45e0184a89a570e750cd0fc117"
         },
         {
           "path": "skills/sales/renewal-radar",
           "type": "skill",
-          "checksum": "sha256:81e54a7b620a1cad2a6a7178d96b4992b5e1c02da769494a5e6f198a621e043b"
+          "checksum": "sha256:5058d6c793781e0366d40db19eaaa044cbffa8b05be63d5197cb4aa257d40479",
+          "id": "ski-77eb1c8e2bcc4c34a65588be3232fe44"
         },
         {
           "path": "skills/sales/rep-context",
           "type": "skill",
-          "checksum": "sha256:76a8c1db4477cc99fcd3d689f7461f73c12e03d72f22ca7968d9fa9846c28034"
+          "checksum": "sha256:80d3244da1d4cea420dbfb706f787a49ff573af6d0c1aebd1d13550d4b98e56d",
+          "id": "ski-0b8ed4f87abb4f10847607bb47cf043a"
         },
         {
           "path": "skills/sales/research-prospect",
           "type": "skill",
-          "checksum": "sha256:2e66b0a8088a484c4123ebfff60e6ea018e4d6fdc0a7985c8ce998ae34f4b64b"
+          "checksum": "sha256:b03b8d9f2d248f4726610b23d94962230e03b9bf622764c2103ebf6ed26302c2",
+          "id": "ski-64b8346c09b345738247ba4202ac1bb9"
         },
         {
           "path": "skills/sales/salesforce-hygiene-check",
           "type": "skill",
-          "checksum": "sha256:70be27bb880fb8c4b1619c7917713b6905705801322559e458344f2fdcc8e16f"
+          "checksum": "sha256:b3caab5e6fb268f98ccce6004971ad73e8dcdfc2e44df2ca330a05a7aed358fe",
+          "id": "ski-b2a132bca85b42a68333015564ce2cba"
         },
         {
           "path": "skills/sales/schedule-meeting",
           "type": "skill",
-          "checksum": "sha256:cabc2adc851b6bfabe3db3657381c7f817db19979efd17e5cb566ade89b47e2b"
+          "checksum": "sha256:90d180a9903748d134866db03a064739834d410d50f76160c5a085be452efb15",
+          "id": "ski-b7f87969989f4944a646edea89ee115d"
         },
         {
           "path": "skills/sales/stakeholder-map",
           "type": "skill",
-          "checksum": "sha256:4161f58f8a92e3cf12f38ac557eb956b3290e90666b57413ac6dc1383b5d1ecf"
+          "checksum": "sha256:7d6461ca40db566409a289f51e04dcf5703faec8d052d697f1650c82b3a4b2d2",
+          "id": "ski-ac061ae7478f4aafa68827427f778f47"
         },
         {
           "path": "skills/sales/summarize-conversation-transcript",
           "type": "skill",
-          "checksum": "sha256:2dd227f70cbe1ec489dd10c3159d6b12fdea7ec20014ffbf42bfb19ec54f5ecf"
+          "checksum": "sha256:3745ccc1b6ff9a9e775e8157402c37c108e198fd5367f7774a007fde72a70c68",
+          "id": "ski-093b1aa7a20f402eb6ecdac96eded814"
         },
         {
           "path": "skills/sales/team-pipeline",
           "type": "skill",
-          "checksum": "sha256:607cccd6b75b2662386bdc5cbd52d9ffd405840145156c69451a9c8aaa03adb1"
+          "checksum": "sha256:981890c2c0e1b1c57006aeb1cc9a8ad1c06abb140e5663bdfa8d8ac513f2e134",
+          "id": "ski-b11ae9343c6a44c5bacbb00ff81e4517"
         },
         {
           "path": "skills/sales/update",
           "type": "skill",
-          "checksum": "sha256:660836cc4c5b98fd55fa3d847342cbe09f982fbcd7ab4c8838c16c8e9f36fe83"
+          "checksum": "sha256:37f8e1ca4dc5a7d417ad804cfd22f13efa222ae2857f1498d501d9d28e7264ab",
+          "id": "ski-590c644f55214fbea72651b010136cac"
         },
         {
           "path": "skills/sales/update-opportunity",
           "type": "skill",
-          "checksum": "sha256:fbfbbca2c7c37d7089fb5dac043e8bf4f1c642857dc5e6fd124e76856ff2e6c3"
+          "checksum": "sha256:559c263deff45a52ee4cc717b83c49691d785df5c119788c35b07ecc8860296b",
+          "id": "ski-5940492c51bf49fe8433e35b7ec41dbc"
         },
         {
           "path": "skills/sales/using-display-widget",
           "type": "skill",
-          "checksum": "sha256:e6e8680d92bba08e4993bad39e5d7ecea53642602f8dc7774505bf5a5fd8cd41"
+          "checksum": "sha256:f8b7967f2d7150d0907d27b312ff873fb403c19f4b57f74c5361fdbdaf013813",
+          "id": "ski-d5babfdf1653476f9723e43896682105"
         },
         {
           "path": "skills/sales/voice-profile",
           "type": "skill",
-          "checksum": "sha256:db6bc2679320a8262d20741aa9465003ba6c7b9cfa1d1822c077e225b9c151b9"
+          "checksum": "sha256:518d29b4d4b50ed13e0cbdb095b95f839252662e45fb220aa174962a8a097e66",
+          "id": "ski-9358037bd3d945bcb10988d423a334ae"
         },
         {
           "path": "skills/sales/weekly-wrap",
           "type": "skill",
-          "checksum": "sha256:6ec5393392efe531253ea1f6bbd8afbdd11e90a5116529c0c2d8a24c86e40dd8"
+          "checksum": "sha256:7947b3f5aa51483cf43773389b383b9414608d553b7fb3f4bc5d4e363d3a3bb3",
+          "id": "ski-034f9b9b6a0e440587eb99e3deba2f7f"
         },
         {
           "path": "skills/sales/win-loss-review",
           "type": "skill",
-          "checksum": "sha256:6d032a9d06c9da7d649c816c33ca4cdabc74a815cfec974527832153122d8d71"
+          "checksum": "sha256:fd2b4531be2bbecf45001cf0f2ec9ef3350160c93adc710d74da24b4c643203e",
+          "id": "ski-d6b1464c325a4d8a9b5312dbb7b69319"
         },
         {
           "path": "plugins/sales/salesforce-for-sales",
-          "type": "plugin"
+          "type": "plugin",
+          "id": "plu-23eb2f62365443a5a1953ab1be4388b5"
         }
       ]
     },
@@ -822,17 +962,20 @@
         {
           "path": "skills/security-compliance/compliance-automation",
           "type": "skill",
-          "checksum": "sha256:f7babb6bb80ea8a86c2ea1ff8d11ef1dd64a9a44560db0975ce793a798592aec"
+          "checksum": "sha256:a472201de124a808933d1895254c6c1ae41c4fe01ce98fd54db823db7897f06d",
+          "id": "ski-ac426576fd8d4bf1996c08c87dbe86d3"
         },
         {
           "path": "skills/security-compliance/data-classification-assistant",
           "type": "skill",
-          "checksum": "sha256:a974171d819b6214d43c0776f9d916d4405efa87cc54f09cba301ef325471342"
+          "checksum": "sha256:11ec5d45fb5f88b12db22bcf92795b347f40fc643c021a52b776b4aba3afbe4d",
+          "id": "ski-7deafccfa1f7451dae50b6ed37cb5977"
         },
         {
           "path": "skills/security-compliance/vulnerability-report-summarizer",
           "type": "skill",
-          "checksum": "sha256:3835e0d7d14e99be8edb45c9649aa1db6a8ab86be3044d4d568acd694957d733"
+          "checksum": "sha256:780c862dba3b888a17cace52d31ce0e81b8aee674d36dc270772949dc39cc588",
+          "id": "ski-aa13c8fcc1134428862f0f02c02f3709"
         }
       ]
     },
@@ -844,12 +987,718 @@
         {
           "path": "skills/supply-chain/demand-forecast-explainer",
           "type": "skill",
-          "checksum": "sha256:5ae736ac13ed152dfc341ee6be6340140b8546950a3b190c52fb3fba3ce12fa6"
+          "checksum": "sha256:6ac2be355070d5c94d0bd5280fbfe640a343d8a8eb46db110aa61c74a879dfc4",
+          "id": "ski-3115d2057738411d9b44e61dbb3aa04d"
         },
         {
           "path": "skills/supply-chain/retail-supply-chain-pulse",
           "type": "skill",
-          "checksum": "sha256:3115571340183b9ba931523cb4ae6cf4b150880044e7afa43a409d95371f18b7"
+          "checksum": "sha256:32bfd3da681893f39ac459608476b91b7daed7317c9141ffb77aa0ffd79994d8",
+          "id": "ski-43ca2ee0c5c94bcb9936407cec429e8b"
+        }
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "slug": "general",
+      "name": "General",
+      "assets": [
+        {
+          "path": "skills/amazon-quick/agent-to-quick-skill",
+          "type": "skill"
+        },
+        {
+          "path": "skills/amazon-quick/amazon-quick-community",
+          "type": "skill"
+        },
+        {
+          "path": "skills/amazon-quick/personal-agent-architect",
+          "type": "skill"
+        },
+        {
+          "path": "skills/amazon-quick/skill-architect",
+          "type": "skill"
+        },
+        {
+          "path": "skills/amazon-quick/skill-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/browser-data-scraper",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/click-through-demo",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/conversation-manager",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/desktop-cleanup",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/document-comparison",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/eliminate-ai-writing-tropes",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/file-organizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/markdown-to-docx",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/meeting-notes-to-actions",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/ooo-setup",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/research-paper-digest",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/second-opinion",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/teach-me",
+          "type": "skill"
+        },
+        {
+          "path": "skills/general-productivity/translate-ms",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "customer-success",
+      "name": "Customer Success",
+      "assets": [
+        {
+          "path": "skills/customer-success/customer-health-scorer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/customer-success/support-ticket-triager",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "data-analytics",
+      "name": "Data Analysis",
+      "assets": [
+        {
+          "path": "skills/data-analytics/ecommerce-conversion-insights",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/retail-analytics-concierge",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/retail-merchant-briefing",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "design",
+      "name": "Design",
+      "assets": [
+        {
+          "path": "skills/design/html-deck-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/design/presentation-theme-creator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/design/slide-deck-from-doc",
+          "type": "skill"
+        },
+        {
+          "path": "skills/design/template-enforcer",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "finance",
+      "name": "Finance",
+      "assets": [
+        {
+          "path": "skills/finance/bill-pay-optimizer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/business-pulse",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/deposit-collection",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/invoice-chaser",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/job-to-invoice",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/month-end-close-orchestrator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/payroll-forecast",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "hr",
+      "name": "HR",
+      "assets": [
+        {
+          "path": "skills/hr/hr-policy-agent",
+          "type": "skill"
+        },
+        {
+          "path": "skills/hr/onboarding-orchestrator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/hr/performance-review-drafter",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "leadership",
+      "name": "Leadership",
+      "assets": [
+        {
+          "path": "skills/leadership/business-case-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/leadership/executive-voice-runtime-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/leadership/goal-tracker-reporter",
+          "type": "skill"
+        },
+        {
+          "path": "skills/leadership/swot-analysis-generator",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "marketing",
+      "name": "Marketing",
+      "assets": [
+        {
+          "path": "skills/marketing/content-calendar-planner",
+          "type": "skill"
+        },
+        {
+          "path": "skills/marketing/content-recycler",
+          "type": "skill"
+        },
+        {
+          "path": "skills/marketing/email-campaign-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/marketing/retail-content-generator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/marketing/seo-content-writer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/marketing/social-post-creator",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "project-management",
+      "name": "Project Management",
+      "assets": [
+        {
+          "path": "skills/project-management/dependency-critical-path-analyzer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/project-management/risk-register-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/project-management/standup-summarizer",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "sales",
+      "name": "Sales",
+      "assets": [
+        {
+          "path": "plugins/sales/salesforce-for-sales",
+          "type": "plugin"
+        },
+        {
+          "path": "skills/sales/account-context",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/account-plan",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/account-tiering",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/assign-target-to-sdr",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/calendar-events",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/call-follow-up",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/call-prep",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/close-plan",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/competitor-intel",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/configure",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/customer-health",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/customer-voice",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/daily-briefing",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/deal-advance-gap",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/deal-pipeline-manager",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/deal-review",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/deal-signals",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/deal-slip-scenario",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/draft-outreach",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/expansion-whitespace",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/find-internal-answer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/follow-up-cadence",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/forecast-narrative",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/handle-objection",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/inbox-sweep",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/lead-prospector",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/lead-triage",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/log-activity",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/outreach-sequence-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/pipeline-review",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/proposal-generator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/query-activity-history",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/renewal-radar",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/rep-context",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/research-prospect",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/salesforce-hygiene-check",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/schedule-meeting",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-fba-inbound-management",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-invite-secondary-users",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-knowledge",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-buyability",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-compliance",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-issues",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-searchability",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-listing-troubleshooter",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-seller-analytics",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-stockout-prevention",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-support-case-helper",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/stakeholder-map",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/summarize-conversation-transcript",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/team-pipeline",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/update",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/update-opportunity",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/using-display-widget",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/voice-profile",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/weekly-wrap",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/win-loss-review",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "security-compliance",
+      "name": "Security & Compliance",
+      "assets": [
+        {
+          "path": "skills/security-compliance/compliance-automation",
+          "type": "skill"
+        },
+        {
+          "path": "skills/security-compliance/data-classification-assistant",
+          "type": "skill"
+        },
+        {
+          "path": "skills/security-compliance/vulnerability-report-summarizer",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "software-engineering",
+      "name": "Software Engineering",
+      "assets": [
+        {
+          "path": "skills/software-engineering/architecture-decision-record",
+          "type": "skill"
+        },
+        {
+          "path": "skills/software-engineering/fsi-architecture-assessment",
+          "type": "skill"
+        },
+        {
+          "path": "skills/software-engineering/incident-postmortem-writer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/software-engineering/release-notes-generator",
+          "type": "skill"
+        }
+      ]
+    }
+  ],
+  "industries": [
+    {
+      "slug": "power-utilities",
+      "name": "Power & Utilities",
+      "assets": [
+        {
+          "path": "skills/energy-utilities/battery-storage-analyst",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/carbon-footprint-calculator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/energy-market-intelligence",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/ev-fleet-planning",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/grid-capacity-planning",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/microgrid-design",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/nerc-gads-reporting",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/power-plant-performance",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/renewable-energy-assessment",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "oil-gas",
+      "name": "Oil & Gas",
+      "assets": [
+        {
+          "path": "skills/energy-utilities/automated-log-analysis",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/drilling-operations-analyst",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/exit-zone-geosteering",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/production-surveillance",
+          "type": "skill"
+        },
+        {
+          "path": "skills/energy-utilities/well-completion-optimization",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "financial-services",
+      "name": "Financial Services",
+      "assets": [
+        {
+          "path": "skills/finance/fsi-product-management",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/iso-premium-audit-advisory-get",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "healthcare",
+      "name": "Healthcare",
+      "assets": [
+        {
+          "path": "skills/healthcare/healthcare-claims-analytics",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/hedis-measure-calculation",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/hedis-measure-specification",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/prior-authorization-clinical-policy",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/prior-authorization-decision-automation",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "life-sciences",
+      "name": "Life Sciences",
+      "assets": [
+        {
+          "path": "skills/healthcare/cdisc-submission-compliance",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/protocol-drafting",
+          "type": "skill"
+        },
+        {
+          "path": "skills/healthcare/research-biomedical-databases",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "hospitality",
+      "name": "Retail & Hospitality",
+      "assets": [
+        {
+          "path": "skills/hospitality/restaurant-morning-briefing",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "legal",
+      "name": "Legal",
+      "assets": [
+        {
+          "path": "skills/legal/contract-clause-extractor",
+          "type": "skill"
+        },
+        {
+          "path": "skills/legal/regulatory-change-monitor",
+          "type": "skill"
+        }
+      ]
+    },
+    {
+      "slug": "supply-chain",
+      "name": "Manufacturing & Supply Chain",
+      "assets": [
+        {
+          "path": "skills/supply-chain/demand-forecast-explainer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/supply-chain/retail-supply-chain-pulse",
+          "type": "skill"
         }
       ]
     }

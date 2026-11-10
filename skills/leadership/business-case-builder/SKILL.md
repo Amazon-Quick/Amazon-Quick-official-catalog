@@ -37,7 +37,8 @@ inputs:
     options: [docx, html, md, both]
     required: false
     default: "both"
-checksum: "sha256:f41db3bb540d68316221f42076d577b30e4739a817310086f82c486fbf4a1a7d"
+checksum: "sha256:06fcd5eed52a6ecafca34ba823f6087b0be17112527ec512817b74c2b8baec9d"
+id: "ski-baccb3c418a241f294af960b7d864606"
 ---
 
 ## Overview

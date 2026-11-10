@@ -3,10 +3,9 @@ name: deal-advance-gap
 display_name: Deal Advance Gap
 description: "Map an opportunity's path to advance or close from Salesforce stage, stakeholder, activity, qualification, and risk data plus email, documents, and Slack. Use to diagnose a stuck deal, identify blockers and owners, or test whether its close date is credible."
 author: Salesforce
-roles:
-  - role/sales
 icon: assets/salesforce.svg
-checksum: "sha256:36a72ff770b8e1a7e5da8bc6794ce0d50eea26caf6610844189868c6d2a44afa"
+checksum: "sha256:bce1ccc823b82738b4892a3c57146b647e877ce4ed66d2ec1f6ecef9d343c082"
+id: "ski-1b930110e61c467798a2afeeea97cafe"
 ---
 <!-- global-rules-bootstrap -->
 **IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.

@@ -12,7 +12,8 @@ preferred_model: smart
 preferred_thinking: high
 tools: [get_current_time, file_read, file_write, folder_create, save_skill, extract_session_data, file_rag_search, web_search, url_fetch, run_python, start_task, create_task_group, get_task_group_result]
 readme: "Read assets/README.md for an overview, installation, and getting started. This skill uses only built-in tools and needs no external connectors."
-checksum: "sha256:ef7d52ee31b47b25c8e1ab1c6cf55f0492a520b12ac14dbb2a85aeb6da16d8a9"
+checksum: "sha256:b827cddebb2364377fba858a37126581c2d3f5dbf2f3dfdb0a933a7b1ef025ed"
+id: "ski-4f42a742a97c40578ef8c80eca80e53b"
 ---
 
 ## Overview

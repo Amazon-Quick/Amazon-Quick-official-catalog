@@ -28,7 +28,8 @@ inputs:
   type: boolean
   required: false
   default: true
-checksum: "sha256:8240013dde063e9713124141fb868c27ead5f71df28bfe4e7431c149dc815798"
+checksum: "sha256:faff16b5fa086fdcf7a99863e731f89a3c8d826c7c9281ef096f1b6a96264d4b"
+id: "ski-37648980e6d74100a111bf5d29282734"
 ---
 
 ## Overview

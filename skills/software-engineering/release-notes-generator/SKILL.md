@@ -29,7 +29,8 @@ inputs:
   required: false
   default: "markdown"
   enum: ["platform_release", "chat_post", "wiki", "markdown"]
-checksum: "sha256:eb2fc3f7f6663dc84d3c1fef2100e92ae4bd55d1c990065e88e8b4e3f931a496"
+checksum: "sha256:55803798baa2d1187f474cb5863f74affbbe2291b594a9a47e13a38d4e44cedd"
+id: "ski-6975ae9135f54ebd962a7d12e0bdcf2d"
 ---
 
 ## Overview

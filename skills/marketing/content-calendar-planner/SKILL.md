@@ -22,7 +22,8 @@ inputs:
   description: "Hours available per week for content creation"
   type: string
   required: false
-checksum: "sha256:f8de1d4479d2dd84eb4b0500f3f86fbde4f9b6272b50224c1ee7276767a26d60"
+checksum: "sha256:18e1042f3a6fa87cf0bff83b0ddc1aab5a96a440a36e7253248424e65865d615"
+id: "ski-59b28b9e9d544beea4f74c362ebc882e"
 ---
 
 ## Overview

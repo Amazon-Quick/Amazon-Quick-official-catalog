@@ -25,7 +25,8 @@ inputs:
     description: "Directory where the assessment report file should be written."
     type: path
     required: false
-checksum: "sha256:701db70ecfc06b966c4583ad8813aa8add31c6a80bc0e85bd7b51dd4401622b8"
+checksum: "sha256:127d59b1cfae9fee395b3aaf31b78480c82e05091b3915f430d01bd2ac871a68"
+id: "23626101-ec16-491e-aef2-8039941215dd"
 ---
 
 ## Overview

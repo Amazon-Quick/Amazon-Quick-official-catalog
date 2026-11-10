@@ -28,7 +28,8 @@ inputs:
   options: [markdown, email_summary, chat_post]
   required: false
   default: "markdown"
-checksum: "sha256:eeccab7aa6c47b80cdff05a062d82706b29a60f775b7e9e105561d92a75ac531"
+checksum: "sha256:bed78b1b2be6bc2826143dbfab25cd2eb6772034aa97ddfc5a1505466dbda733"
+id: "f1ce64b3-75c0-463f-af98-1760ff49f073"
 ---
 
 ## Overview

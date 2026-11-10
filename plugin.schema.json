@@ -4,6 +4,7 @@
   "description": "Schema for plugins/<category>/<name>/plugin.json.",
   "type": "object",
   "required": [
+    "id",
     "name",
     "displayName",
     "description",
@@ -13,6 +14,11 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "Stable plugin ID: a lowercase hyphenated UUIDv4 (8-4-4-4-12). Assigned once by scripts/asset_ids.py and never changed, even when the plugin moves or is renamed."
+    },
     "name": {
       "type": "string",
       "maxLength": 64,

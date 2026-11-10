@@ -8,7 +8,8 @@ last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, file_read, file_write, folder_list, folder_create, kg_search, search_all, file_rag_search, open_in_session_tab]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
-checksum: "sha256:f5d23e3ecd3683f656873248e39768fbcda42fa5ef0a9fdf5d96f27171b22529"
+checksum: "sha256:9996721306b1052ec364b457adb8eb24d80422513dd18c3acdc7cae120fa8156"
+id: "7f3e67d1-60b7-4517-aa07-b760b60bcfa6"
 ---
 
 ## Overview

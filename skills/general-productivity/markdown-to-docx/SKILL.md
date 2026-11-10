@@ -22,7 +22,8 @@ inputs:
     description: Optional document title (overrides the first H1 heading)
     type: string
     required: false
-checksum: "sha256:4b1e30654dee8121fcee4b1b803efcf6a20740628995ac192aa068df9b89dd9e"
+checksum: "sha256:f56d174227fd063947681d6e5bd5212500d3dcbc1360ccb86a67e35aa4b60b67"
+id: "01d32ff7-342c-4acc-8c74-0074d88bf68a"
 ---
 
 ## Overview

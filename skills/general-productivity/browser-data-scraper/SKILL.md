@@ -37,7 +37,8 @@ inputs:
     description: "Directory for all output files. If omitted, a timestamped folder is created under the workspace directory."
     type: path
     required: false
-checksum: "sha256:267ebfb1632a5938df57661e61145b806a954e679e5f4d0ecc7e28a694a6182a"
+checksum: "sha256:5c09a3c334fc2085b88cc218366281569491f730aa9eec8c542c9fb052709909"
+id: "079eb7f3-cf91-4df0-b5b7-a19b0fb5022c"
 ---
 
 ## Overview

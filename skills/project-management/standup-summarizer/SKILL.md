@@ -7,7 +7,8 @@ created_date: "2026-07-02"
 last_updated: "2026-07-02"
 license: "MIT-0"
 tools: [file_read, file_write]
-checksum: "sha256:8a2af31d1d9788e890808f1d9095640411d64fadf33f12c97c4089620f0429c1"
+checksum: "sha256:2da7b74d8501c098605971bc1532246e3a6274ddf0c86f624b8f80bdce7ab21a"
+id: "35f38660-9ebc-4493-9a13-20a95ab748af"
 ---
 
 ## Overview

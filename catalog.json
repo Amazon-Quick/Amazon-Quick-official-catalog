@@ -1,5 +1,5 @@
 {
-  "skillsChecksum": "sha256:b52cb8eccb02e2e9b7982fb939913e79c7a3ec715fe968b7b5f7deecd8fe9be3",
+  "skillsChecksum": "sha256:3112c87a9821ce8eaa86f1c89654513e51a50acff9decdb4893333513a70cf65",
   "categories": [
     {
       "name": "Amazon Quick",
@@ -611,202 +611,202 @@
         {
           "path": "skills/sales/account-context",
           "type": "skill",
-          "checksum": "sha256:afd4f3e5ae70f83b3bdccafc6a86911c2ab01ac7e18e918b11b14c6772a7f8e3"
+          "checksum": "sha256:32faac57c431229aa7aaa605e0c7133a145362336466ed1010a30f67f33f2377"
         },
         {
           "path": "skills/sales/account-plan",
           "type": "skill",
-          "checksum": "sha256:1db8062642a0165fbb39021ab089e6d3db6eb486a9f3230300028b10fec24342"
+          "checksum": "sha256:d2d7e530f3f05dbe61ee7bd0f184da1ddedbd42593f0f579b2db3870bba3ff2b"
         },
         {
           "path": "skills/sales/account-tiering",
           "type": "skill",
-          "checksum": "sha256:b9d84b471b7d20e176da11e1e415ca5ed2af6cc365d9a7f5f012d81bc4e338b4"
+          "checksum": "sha256:f5687c556f657187ad8e5cf08935922110145c3b2bf5c23d79797228213fca96"
         },
         {
           "path": "skills/sales/assign-target-to-sdr",
           "type": "skill",
-          "checksum": "sha256:bda92b8357626d7b8c044584fe06d34d6212832a70d050f9f9c1ccfd7ce03984"
+          "checksum": "sha256:534384cf0b1d0475b89f029fdb66390f1471a058ef4c54288ca5a8e50e8972b1"
         },
         {
           "path": "skills/sales/calendar-events",
           "type": "skill",
-          "checksum": "sha256:e3e3601a172735ec09df7c7a60e1c8ddc8b91d168b8ff085ccf0cc400e130d2e"
+          "checksum": "sha256:04b52e19505ed3d31b97fcb37e94e120f9a46bbfa2965b758b6e331b07baa935"
         },
         {
           "path": "skills/sales/call-follow-up",
           "type": "skill",
-          "checksum": "sha256:5c3eeb8205540cf87ceece0695560b2383a7cbc7b88937dcddd072868a75ff21"
+          "checksum": "sha256:a4d8b3d5be6fd74aaaefeb3ae04504b4373e6da5dc1665308d06670ee37a8b72"
         },
         {
           "path": "skills/sales/call-prep",
           "type": "skill",
-          "checksum": "sha256:89ae4606664781c6ad49a1e63272ea1a5b4ce47e39c589411bf7c5f5f1ffc70c"
+          "checksum": "sha256:c3c0c79eef873f7f8d1caeefad8ab776cf870079f52cf47df1602908e08a0bc1"
         },
         {
           "path": "skills/sales/close-plan",
           "type": "skill",
-          "checksum": "sha256:b2bdf899d73e74864ee58e085511c144a46474d1a3e7d20ff8920f1088322314"
+          "checksum": "sha256:f4d4f07559d21f2d55f9d7de51685c7a72b3785f95649e59375b0c43b48f3a03"
         },
         {
           "path": "skills/sales/configure",
           "type": "skill",
-          "checksum": "sha256:6e48835ab4aaaf659ceb0630ca1b9a9c25eec39f2b8abae33561d3f057b73b33"
+          "checksum": "sha256:a0e8580811d0d45155fe110652860a46f9bd1f6e97dc63d16a39499f3328d6f5"
         },
         {
           "path": "skills/sales/customer-health",
           "type": "skill",
-          "checksum": "sha256:c7998a02a1b0b2e613b14946ae988869b397e12c103dfc24b1068171495b6c8b"
+          "checksum": "sha256:25366e7d48a4f95be36f13571fdad5f90519afa0947edc6edcfa3d28c56a4304"
         },
         {
           "path": "skills/sales/customer-voice",
           "type": "skill",
-          "checksum": "sha256:ec5d88b1a6f5801cdd67a7b374c60d8f8a34146371bc5b510d2619d689ac71a2"
+          "checksum": "sha256:64325e7b5e89cf2a7f759e977f1fda647970d02e2232a74bb73839c606cd1564"
         },
         {
           "path": "skills/sales/daily-briefing",
           "type": "skill",
-          "checksum": "sha256:e5071555dc41fbe38ebd8bc28fbe280938f50ebdb76daf29ed701ee26f7c32d5"
+          "checksum": "sha256:5171784fb0d2acfa3aab5804b220c4a329d5c06585bbe61dd95f9f73e7e61e75"
         },
         {
           "path": "skills/sales/deal-advance-gap",
           "type": "skill",
-          "checksum": "sha256:963617a8a1b0bc1c5ac5ceb4339838cb64dbee7c2a6ca1b5b5c157fd4ca34141"
+          "checksum": "sha256:36a72ff770b8e1a7e5da8bc6794ce0d50eea26caf6610844189868c6d2a44afa"
         },
         {
           "path": "skills/sales/deal-review",
           "type": "skill",
-          "checksum": "sha256:295036e7cec78b3ae9d55dc0565c26863fa2c3b95a2f44851055c15d3dfdc7b1"
+          "checksum": "sha256:b2c0d3ee2ff598cf7be25f99d7983cf2c8f5a21d3f1642c5ed05b8c416199cf1"
         },
         {
           "path": "skills/sales/deal-signals",
           "type": "skill",
-          "checksum": "sha256:1ec0e27c4f4a1d85cb8056ebb581c17a1e8419f20febf810c4cba67b395cda43"
+          "checksum": "sha256:7615739a88a2d462caf016a3396a83fe78b3184beb9722f8ae50b65e7d1b5fbf"
         },
         {
           "path": "skills/sales/deal-slip-scenario",
           "type": "skill",
-          "checksum": "sha256:6decd00c7eda22c6ddaef3c0e960538f4b7f7bee515555070ec2dc9434499a62"
+          "checksum": "sha256:f8bbb9ac3a75c4c69c74808d22a0cc05ec13eb9d76f450bbebaf116c8531af23"
         },
         {
           "path": "skills/sales/draft-outreach",
           "type": "skill",
-          "checksum": "sha256:9be1807d7c0d44b0a0b8148f7f4a92e34e43f916c6a767fef7fab072967df0b0"
+          "checksum": "sha256:95d885a618013350f485c8b9e918494cd4d2de5b3f37d3500243cae71866c610"
         },
         {
           "path": "skills/sales/expansion-whitespace",
           "type": "skill",
-          "checksum": "sha256:7c96eab48bdd6a12f432c2d7407fa2d6cb8e971392c74319fd3f5082ad8f55f4"
+          "checksum": "sha256:929691d2d3dc7918c713b762990f30e0a02a33cbea90a692853da221a8468a1e"
         },
         {
           "path": "skills/sales/find-internal-answer",
           "type": "skill",
-          "checksum": "sha256:c56b59a3be226d3759366c0ccb74b9843b327d76b238f849b5558f0769a19a18"
+          "checksum": "sha256:a0aee7b2da2d18281912d25d24d2eb04386acab7b4fec9048abc5fbe7e557383"
         },
         {
           "path": "skills/sales/forecast-narrative",
           "type": "skill",
-          "checksum": "sha256:05a455ce3bedf9b5605c0feaed69c01da7bff6b54752eadf099565446e5e0abf"
+          "checksum": "sha256:6c5a24e239c1b873cee9d5f80a76d5b99abc13c99e9509b2f256cbba9e24ea71"
         },
         {
           "path": "skills/sales/handle-objection",
           "type": "skill",
-          "checksum": "sha256:930dbdc0fcfb9a00d2d8db5cedc1e8e76eed010c1e9889de85f463c5098a0b52"
+          "checksum": "sha256:d9dfa0fdef2534cbe0af2d9146036a6a87467c8f68cd9166e501ac92fbf644ce"
         },
         {
           "path": "skills/sales/inbox-sweep",
           "type": "skill",
-          "checksum": "sha256:25e6b299de547f3f6df3eeb9ec0d77175d760971b0e343e88dd5d01cd6e3e1ac"
+          "checksum": "sha256:bfb1902e4538970f58dbe11a0f1f60980e4e8f0b3fa4699533489d73c7d9aff9"
         },
         {
           "path": "skills/sales/lead-triage",
           "type": "skill",
-          "checksum": "sha256:b674e8cf775e72a0faf23ec974272e4452095b1c9a8b0ec74c023a7aa445577c"
+          "checksum": "sha256:145a0c6a17b5d4e67ca30fe9414357cad48f4c72f942d9fcc5b5304bbbae21c3"
         },
         {
           "path": "skills/sales/log-activity",
           "type": "skill",
-          "checksum": "sha256:ade91d77309ede50a66120e4d4288d8308f1b3acb8541e8a9e96c3549defdb97"
+          "checksum": "sha256:f487e3d3d2944c01d4308372b86cbf605e54fbac0a74cf10ede1a49766b7eed4"
         },
         {
           "path": "skills/sales/pipeline-review",
           "type": "skill",
-          "checksum": "sha256:bb14718a249d4d622e7a308c6bb4df6ffb0b64eb657d7e4a0fc404f8789a0124"
+          "checksum": "sha256:4b046755922d46d58d2d547619102ff76151597476448847d0fdbf7b04bf83cf"
         },
         {
           "path": "skills/sales/query-activity-history",
           "type": "skill",
-          "checksum": "sha256:e7f8b9b990e8731309fd17d5780fcd4b18ac0cfbadeb2b56c95c852f7263bec4"
+          "checksum": "sha256:d2a9716d569244affcfd81592506b74e66fb0f0086dce89c6bb83f2db9ed7dd8"
         },
         {
           "path": "skills/sales/renewal-radar",
           "type": "skill",
-          "checksum": "sha256:a2c050d8c024421c070110310f03c2e063534a159063d4457742799a5118d450"
+          "checksum": "sha256:81e54a7b620a1cad2a6a7178d96b4992b5e1c02da769494a5e6f198a621e043b"
         },
         {
           "path": "skills/sales/rep-context",
           "type": "skill",
-          "checksum": "sha256:e3e87550248f8d15c59e34ed61d73f94895bb9a8610cc16c9d7ece5b7cda07cd"
+          "checksum": "sha256:76a8c1db4477cc99fcd3d689f7461f73c12e03d72f22ca7968d9fa9846c28034"
         },
         {
           "path": "skills/sales/research-prospect",
           "type": "skill",
-          "checksum": "sha256:1a6f61057a8a47839c5dbef82c92462f27f46a31510e5a73ddb73264463deb1c"
+          "checksum": "sha256:2e66b0a8088a484c4123ebfff60e6ea018e4d6fdc0a7985c8ce998ae34f4b64b"
         },
         {
           "path": "skills/sales/salesforce-hygiene-check",
           "type": "skill",
-          "checksum": "sha256:934c5893f9e6beedd34f87df5a75787f3774687e237f36d55b93a87c6d85050f"
+          "checksum": "sha256:70be27bb880fb8c4b1619c7917713b6905705801322559e458344f2fdcc8e16f"
         },
         {
           "path": "skills/sales/schedule-meeting",
           "type": "skill",
-          "checksum": "sha256:0459e3595519a496e2bad5ad8a5c019feb95c2027314d887b3ab0cc1e1541278"
+          "checksum": "sha256:cabc2adc851b6bfabe3db3657381c7f817db19979efd17e5cb566ade89b47e2b"
         },
         {
           "path": "skills/sales/stakeholder-map",
           "type": "skill",
-          "checksum": "sha256:d6b5da9416a1d9dbeef0dea3615b06764a89bbb3f5f92442c44d75ae6c52b2ea"
+          "checksum": "sha256:4161f58f8a92e3cf12f38ac557eb956b3290e90666b57413ac6dc1383b5d1ecf"
         },
         {
           "path": "skills/sales/summarize-conversation-transcript",
           "type": "skill",
-          "checksum": "sha256:74eda5fd6def3441503b73c81174c2476f495a4dd95cc09fa6eb85033a924f47"
+          "checksum": "sha256:2dd227f70cbe1ec489dd10c3159d6b12fdea7ec20014ffbf42bfb19ec54f5ecf"
         },
         {
           "path": "skills/sales/team-pipeline",
           "type": "skill",
-          "checksum": "sha256:bbf64e34e8bcc31c34eda1a9bea0c9be34de646c63ea371c6663a024b09833fb"
+          "checksum": "sha256:607cccd6b75b2662386bdc5cbd52d9ffd405840145156c69451a9c8aaa03adb1"
         },
         {
           "path": "skills/sales/update",
           "type": "skill",
-          "checksum": "sha256:87ffb0a0d12de3bcbbb9b4fbb19967aa127f5ba6ab48c4e083453a25212384c1"
+          "checksum": "sha256:660836cc4c5b98fd55fa3d847342cbe09f982fbcd7ab4c8838c16c8e9f36fe83"
         },
         {
           "path": "skills/sales/update-opportunity",
           "type": "skill",
-          "checksum": "sha256:9601337abfc8f8bc0606e699c3847d62775ec92a8c311410d4eca37957142f13"
+          "checksum": "sha256:fbfbbca2c7c37d7089fb5dac043e8bf4f1c642857dc5e6fd124e76856ff2e6c3"
         },
         {
           "path": "skills/sales/using-display-widget",
           "type": "skill",
-          "checksum": "sha256:162dfa8957783a87e9fa4bca40aa4ce55192f9b9dd368da1c9b1949779f52bc6"
+          "checksum": "sha256:e6e8680d92bba08e4993bad39e5d7ecea53642602f8dc7774505bf5a5fd8cd41"
         },
         {
           "path": "skills/sales/voice-profile",
           "type": "skill",
-          "checksum": "sha256:037468982f6b46456156f164d5284fc9e78e4fb2783368095d2a7fa33c0b099f"
+          "checksum": "sha256:db6bc2679320a8262d20741aa9465003ba6c7b9cfa1d1822c077e225b9c151b9"
         },
         {
           "path": "skills/sales/weekly-wrap",
           "type": "skill",
-          "checksum": "sha256:2b6bff1a3e3bfd2763e81db9982f20c0798d42327dbd6eda04e1f8ba90d2d0f0"
+          "checksum": "sha256:6ec5393392efe531253ea1f6bbd8afbdd11e90a5116529c0c2d8a24c86e40dd8"
         },
         {
           "path": "skills/sales/win-loss-review",
           "type": "skill",
-          "checksum": "sha256:e55b295a3c3e0b710a7a786dd9c0938270238205c1cdfa49a2a63ad63d435a9b"
+          "checksum": "sha256:6d032a9d06c9da7d649c816c33ca4cdabc74a815cfec974527832153122d8d71"
         },
         {
           "path": "plugins/sales/salesforce-for-sales",

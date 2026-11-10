@@ -27,7 +27,8 @@ inputs:
   description: "Date the incident occurred (e.g., '2026-06-20' or 'last Friday')"
   type: string
   required: true
-checksum: "sha256:6b76b06cf3e2ec8ee5bc21f41326d0b4702d037afeb0a624a7df79089f41880e"
+checksum: "sha256:6737984d9c09742a3aab323ec34b9ffe879bf6380611e4c485386ca6d74e8bc9"
+id: "393473d2-4e94-4e68-9e4e-e2cdfc501e10"
 ---
 
 ## Overview

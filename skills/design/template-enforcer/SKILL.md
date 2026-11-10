@@ -29,7 +29,8 @@ inputs:
     options: [strict, moderate, advisory]
     required: false
     default: "moderate"
-checksum: "sha256:6c90290e9bb30a3a9992c09c2eff4a0eec1ff9016e2052443204d5ad973bc206"
+checksum: "sha256:7957e8a03f02cb3ce6b26ccfbc07f3b90dcdd9a68fb8df45c6ee375ec45b85e0"
+id: "35c8a493-7136-47f2-a55d-61b9b3e3a6bd"
 ---
 
 ## Overview

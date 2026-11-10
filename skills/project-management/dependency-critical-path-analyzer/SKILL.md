@@ -21,7 +21,8 @@ inputs:
   description: "Project deadline (e.g., '2026-08-15'). Used for schedule risk calculations."
   type: string
   required: false
-checksum: "sha256:2c23b4ebae9a5366262f1bfa89bc73c7297736ec791025d5a97e8174d2a5b830"
+checksum: "sha256:97f936001c1e7294f8821845614d9901d22f251a21692212a1f3614e188979a1"
+id: "6b2d719f-1233-4a04-84ee-8eeac04655da"
 ---
 
 ## Overview

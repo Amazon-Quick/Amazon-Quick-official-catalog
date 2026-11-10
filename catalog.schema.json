@@ -5,7 +5,9 @@
   "type": "object",
   "required": [
     "skillsChecksum",
-    "categories"
+    "categories",
+    "roles",
+    "industries"
   ],
   "additionalProperties": false,
   "properties": {
@@ -17,12 +19,66 @@
     "categories": {
       "type": "array",
       "minItems": 1,
+      "description": "The category filter that current AWS Quick versions show. Every released skill and plugin has an entry here. Keep it until every AWS Quick version reads roles and industries.",
       "items": {
         "$ref": "#/$defs/Category"
+      }
+    },
+    "roles": {
+      "type": "array",
+      "description": "Role filter values for AWS Quick versions that read roles and industries. Each lists, by path, assets that categories already lists. Every catalog asset is in exactly one role or one industry, never both; scripts/catalog_check.py enforces this.",
+      "items": {
+        "$ref": "#/$defs/AssetGroup"
+      }
+    },
+    "industries": {
+      "type": "array",
+      "description": "Industry filter values for AWS Quick versions that read roles and industries. Each lists, by path, assets that categories already lists. Every catalog asset is in exactly one role or one industry, never both; scripts/catalog_check.py enforces this.",
+      "items": {
+        "$ref": "#/$defs/AssetGroup"
       }
     }
   },
   "$defs": {
+    "AssetGroup": {
+      "type": "object",
+      "required": [
+        "slug",
+        "name",
+        "assets"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "slug": {
+          "$ref": "#/$defs/Category/properties/slug"
+        },
+        "name": {
+          "$ref": "#/$defs/Category/properties/name"
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GroupAsset"
+          }
+        }
+      }
+    },
+    "GroupAsset": {
+      "type": "object",
+      "required": [
+        "path",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/Asset/properties/path"
+        },
+        "type": {
+          "$ref": "#/$defs/Asset/properties/type"
+        }
+      }
+    },
     "Category": {
       "type": "object",
       "required": [
@@ -58,7 +114,8 @@
       "type": "object",
       "required": [
         "path",
-        "type"
+        "type",
+        "id"
       ],
       "additionalProperties": false,
       "properties": {
@@ -77,6 +134,11 @@
             "mcp",
             "agent"
           ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "description": "Stable asset ID: a lowercase hyphenated UUIDv4 (8-4-4-4-12), the same as the id in the asset's manifest. Assigned once by scripts/asset_ids.py and never changed."
         },
         "checksum": {
           "type": "string",

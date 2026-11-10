@@ -18,7 +18,8 @@ inputs:
   description: "Source for HR policy documents. Accepts: a local folder path containing indexed HR handbooks and policy documents, an AWS Quick space name (documents in the space will be searched semantically), or leave empty to use the default indexed documents."
   type: string
   required: false
-checksum: "sha256:64aa800091b2245cb222bd4c5b9a2bc56e7aa771441877d5657fc179c6dc0fd5"
+checksum: "sha256:a3aad1a78ed01c01c6beb2f3436e4a73de3dea017f0a67e3fb1af0a97569e09f"
+id: "e2182d44-08b5-4d61-adce-c1b3f5165333"
 ---
 
 ## Overview

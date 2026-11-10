@@ -32,7 +32,8 @@ inputs:
     type: boolean
     required: false
     default: false
-checksum: "sha256:900962efb0d3b5b456b5a1476b0d16da57e5aeef558d300a9175097b60d5764e"
+checksum: "sha256:2a7cff574809b096794c5b8532bee1e1871f96aeaaeb9b0b3c77d4b2273284ae"
+id: "6f8d8f72-cdbb-4833-8c0b-08f9c71fbeb6"
 ---
 
 ## Overview

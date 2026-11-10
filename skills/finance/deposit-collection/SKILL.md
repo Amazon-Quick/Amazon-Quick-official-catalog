@@ -32,7 +32,8 @@ inputs:
     options: [request, confirm, final]
     required: false
     default: request
-checksum: "sha256:5a582a0862231a14cf7fda0554ea9c78f349d1fd7278d968446ff7acb999e914"
+checksum: "sha256:ac6359fd67047740b0231c3cd4ed097dc27c5e00e77cd6dc6751d8ad43d4a808"
+id: "87dd9087-24d2-400e-af8b-952d28be9c4e"
 ---
 
 ## Overview

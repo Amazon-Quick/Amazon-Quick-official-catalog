@@ -7,7 +7,8 @@ description: "Interpret Healthcare Effectiveness Data and Information Set (HEDIS
 created_date: "2026-07-14"
 last_updated: "2026-07-14"
 tools: [get_current_time, file_read]
-checksum: "sha256:6b9e829b1a971c1be0a2ac57133d8b924e610171f1ea1a330820b9cb1cdbde01"
+checksum: "sha256:8d5ec39994c359a212a33f189777cf8ac5cede2bd64d236105f7a7b27041f5ee"
+id: "5d375adc-30b2-4d83-b0f9-08e5eaf7ef00"
 ---
 
 ## Overview

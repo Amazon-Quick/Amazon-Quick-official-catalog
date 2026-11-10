@@ -16,7 +16,8 @@ inputs:
     description: "Brief description of the financial-services product, initiative, or problem the PM is working on (e.g., payments, lending, deposits, wealth, insurance, capital markets). Used to tailor guidance and outputs."
     type: string
     required: false
-checksum: "sha256:5f4e3bfeef3cea59e33d1475db90f2da9fdd7ae37c865dbcc92609d0d1fc3872"
+checksum: "sha256:83b11f8552bb374ec4819b481527d439fac5c852b11cfc0ba8c8f25ca6efa968"
+id: "98178c8d-2f10-4a4c-8cd2-d384f72870df"
 ---
 
 ## Overview

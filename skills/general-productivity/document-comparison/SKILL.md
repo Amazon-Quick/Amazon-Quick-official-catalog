@@ -23,7 +23,8 @@ inputs:
     options: [html, markdown, both]
     required: false
     default: "both"
-checksum: "sha256:d5fa972f400ac6743993f068b3dea546bfd805f0627a5fa9476c462cde7b77ef"
+checksum: "sha256:1e4341b326385885732fbf1b3c5e9aba68aa2e1f77beb752f82d72115fa32a0b"
+id: "24855477-a404-453d-bbf0-7803f9f652af"
 ---
 
 ## Overview

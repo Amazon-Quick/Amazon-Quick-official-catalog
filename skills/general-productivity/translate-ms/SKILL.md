@@ -17,7 +17,8 @@ inputs:
     description: "Target language for translation (e.g. French, Japanese, German, Spanish)"
     type: string
     required: true
-checksum: "sha256:aa938225f591e8afb85acf9ce6d7eb80722d9b395f47a8c9b85ae45eec3f0733"
+checksum: "sha256:4cb62396f5ca06fe4c1fe0c3d6d2dc1cc07bc2b21917576ec59eec7f7bea7ca1"
+id: "52eb6ac3-6c63-4af5-ad7e-ef01711fabc7"
 ---
 
 ## Overview

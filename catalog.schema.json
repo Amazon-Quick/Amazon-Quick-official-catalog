@@ -1,11 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Amazon Quick Official Catalog",
-  "description": "Schema for the Amazon Quick Official Catalog used to list skills and assets.",
+  "title": "AWS Quick Official Catalog",
+  "description": "Schema for the AWS Quick Official Catalog used to list skills and assets.",
   "type": "object",
   "required": [
     "skillsChecksum",
-    "categories"
+    "categories",
+    "roles",
+    "industries"
   ],
   "additionalProperties": false,
   "properties": {
@@ -17,27 +19,28 @@
     "categories": {
       "type": "array",
       "minItems": 1,
+      "description": "The category filter that current AWS Quick versions show. Every released skill and plugin has an entry here. Keep it until every AWS Quick version reads roles and industries.",
       "items": {
         "$ref": "#/$defs/Category"
       }
     },
     "roles": {
       "type": "array",
-      "description": "Role filter values. Each lists the assets tagged with it; an asset may appear under several values or none.",
+      "description": "Role filter values for AWS Quick versions that read roles and industries. Each lists, by path, assets that categories already lists. Every catalog asset is in exactly one role or one industry, never both; scripts/catalog_check.py enforces this.",
       "items": {
-        "$ref": "#/$defs/TagValue"
+        "$ref": "#/$defs/AssetGroup"
       }
     },
     "industries": {
       "type": "array",
-      "description": "Industry filter values. Each lists the assets tagged with it; an asset may appear under several values or none.",
+      "description": "Industry filter values for AWS Quick versions that read roles and industries. Each lists, by path, assets that categories already lists. Every catalog asset is in exactly one role or one industry, never both; scripts/catalog_check.py enforces this.",
       "items": {
-        "$ref": "#/$defs/TagValue"
+        "$ref": "#/$defs/AssetGroup"
       }
     }
   },
   "$defs": {
-    "TagValue": {
+    "AssetGroup": {
       "type": "object",
       "required": [
         "slug",
@@ -47,25 +50,20 @@
       "additionalProperties": false,
       "properties": {
         "slug": {
-          "type": "string",
-          "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
-          "description": "Kebab-case match key for the value (e.g. 'oil-gas')."
+          "$ref": "#/$defs/Category/properties/slug"
         },
         "name": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 64,
-          "description": "Display name shown in the filter."
+          "$ref": "#/$defs/Category/properties/name"
         },
         "assets": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/AssetRef"
+            "$ref": "#/$defs/GroupAsset"
           }
         }
       }
     },
-    "AssetRef": {
+    "GroupAsset": {
       "type": "object",
       "required": [
         "path",
@@ -74,18 +72,10 @@
       "additionalProperties": false,
       "properties": {
         "path": {
-          "type": "string",
-          "description": "Path of an asset listed in categories."
+          "$ref": "#/$defs/Asset/properties/path"
         },
         "type": {
-          "type": "string",
-          "enum": [
-            "skill",
-            "plugin",
-            "mcp",
-            "agent",
-            "acp"
-          ]
+          "$ref": "#/$defs/Asset/properties/type"
         }
       }
     },
@@ -129,16 +119,11 @@
       ],
       "additionalProperties": false,
       "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^[a-z]{3}-[0-9a-f]{12}4[0-9a-f]{3}[89ab][0-9a-f]{15}$",
-          "description": "Stable asset ID: the asset type's 3-letter code, a hyphen, and a UUIDv4 as 32 lowercase hex. Assigned once and never changed."
-        },
         "path": {
           "type": "string",
           "minLength": 3,
           "maxLength": 192,
-          "pattern": "^(skills|plugins|mcps|agents|acps)/[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9-]*[a-z0-9]$",
+          "pattern": "^(skills|plugins|mcps|agents)/[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9-]*[a-z0-9]$",
           "description": "Relative path in the format '{type_dir}/{category}/{kebab-case-name}'."
         },
         "type": {
@@ -147,9 +132,13 @@
             "skill",
             "plugin",
             "mcp",
-            "agent",
-            "acp"
+            "agent"
           ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "description": "Stable asset ID: a lowercase hyphenated UUIDv4 (8-4-4-4-12), the same as the id in the asset's manifest. Assigned once by scripts/asset_ids.py and never changed."
         },
         "checksum": {
           "type": "string",
@@ -169,6 +158,26 @@
           "minLength": 1,
           "maxLength": 128,
           "description": "Display name of the publishing company. Required when publisher_type is THIRD_PARTY."
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Plugin assets only. Overrides the plugin.json displayName."
+        },
+        "icon": {
+          "type": "string",
+          "pattern": "^assets/[a-z0-9][a-z0-9._-]*\\.svg$",
+          "description": "Plugin assets only. Overrides the plugin.json icon."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "solution",
+            "package",
+            "partner"
+          ],
+          "description": "Plugin assets only. Overrides the plugin.json kind."
         }
       },
       "allOf": [
@@ -204,6 +213,41 @@
             "required": [
               "company"
             ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "not": {
+                  "const": "plugin"
+                }
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "displayName"
+                  ]
+                },
+                {
+                  "required": [
+                    "icon"
+                  ]
+                },
+                {
+                  "required": [
+                    "kind"
+                  ]
+                }
+              ]
+            }
           }
         }
       ]

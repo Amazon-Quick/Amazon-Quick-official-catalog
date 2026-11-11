@@ -43,8 +43,8 @@ inputs:
   type: choice
   options: [soft-pastel, ocean-breeze, warm-earth, minimal-clean, amazon-quick]
   required: false
-checksum: "sha256:c06ca54cfb35ae96a2bce8a172ba194473ca4d7c3255df2fa92bbc16a141cb92"
-id: "ski-a9616271f8e84003a3015ffecbb7b425"
+checksum: "sha256:bbf94c781ad43faf23d0d0afea908647281566fcf26207ddd495319c79b955d0"
+id: "a9616271-f8e8-4003-a301-5ffecbb7b425"
 ---
 
 ## Overview

@@ -24,8 +24,8 @@ inputs:
   type: number
   required: false
   default: 15
-checksum: "sha256:f34648cdf42d89c4f2352f53360783653445a9c85abbd0f495507ca89afbe90b"
-id: "ski-8bbc862bf3514265a890a673fe31b2b3"
+checksum: "sha256:22ac21afaba2f98c8a53dc0bacedf189d947d042933cb4aedb1a84ef627de9a9"
+id: "8bbc862b-f351-4265-a890-a673fe31b2b3"
 ---
 
 ## Overview

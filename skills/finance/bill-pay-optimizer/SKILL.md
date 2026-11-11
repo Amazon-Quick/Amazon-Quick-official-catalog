@@ -25,8 +25,8 @@ inputs:
     type: string
     required: false
     default: "08:00"
-checksum: "sha256:19302712fa0e1b5a162deb9735559957571bcd9be0e5ae936a52c38b745be5b4"
-id: "ski-147f1d1e60d94dd4a86fcedfc0d24506"
+checksum: "sha256:5a01cc46b91deb85f320379ba903cf22cee9efd40d636f9b16b0a76a9b9a1f36"
+id: "147f1d1e-60d9-4dd4-a86f-cedfc0d24506"
 ---
 
 ## Overview

@@ -24,8 +24,8 @@ inputs:
   type: string
   required: false
   default: "full"
-checksum: "sha256:b17b17586e8891546031a1d811de2171d0938e8a8adaacb994c433ebfe35f979"
-id: "ski-c545ee8573ac486fb40f217f11493db8"
+checksum: "sha256:5a0e391b53316589c927a9bb395d10c239a3207d0acce26e53f9fae447e2c64b"
+id: "c545ee85-73ac-486f-b40f-217f11493db8"
 ---
 
 ## Overview

@@ -28,8 +28,8 @@ inputs:
   type: string
   required: false
   default: "7 days"
-checksum: "sha256:f8176a3c303cb104fce3e76251f5b03f47d09a5f70cc5e724baf95c8492ccfc6"
-id: "ski-8c6c4d0cbab04d8db58d09c245ab5e4e"
+checksum: "sha256:4ffc7da880bef64e49331bb0a14cac5c0b382433836fcac4681b0aaa0eca407d"
+id: "8c6c4d0c-bab0-4d8d-b58d-09c245ab5e4e"
 ---
 
 ## Overview

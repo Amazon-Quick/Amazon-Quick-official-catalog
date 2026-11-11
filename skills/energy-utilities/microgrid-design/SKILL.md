@@ -25,8 +25,8 @@ inputs:
     description: "Directory where deliverables (report, charts, equipment schedule) are written."
     type: path
     required: false
-checksum: "sha256:5712a31f3b4bad50d5d6aee55992c4fde99e0fdf53bfe765ac674e5ebbc8a7f4"
-id: "ski-9830fbe945c742439cfb8d81245cdb1f"
+checksum: "sha256:f1e60dac43a3a7c5e194bc58b727ca4492d883527c16c69ef626dc10ef7eed2c"
+id: "9830fbe9-45c7-4243-9cfb-8d81245cdb1f"
 ---
 
 ## Overview

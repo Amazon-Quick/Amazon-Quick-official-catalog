@@ -7,8 +7,8 @@ created_date: "2026-07-14"
 last_updated: "2026-07-14"
 license: MIT-0
 tools: [file_read, web_search, url_fetch, get_current_time]
-checksum: "sha256:d6bb9117ae17938e0570036cdc8b4d5d5ce4e1b043530d3b4e36d05f1b9ed50e"
-id: "ski-08eb7d610c5b4aabafc206f2cbb039e6"
+checksum: "sha256:ae12eb9d21d4a050b854628348e70eb5d0ed240430ed46b14d4b102fd2b63874"
+id: "08eb7d61-0c5b-4aab-afc2-06f2cbb039e6"
 ---
 
 ## Overview

@@ -28,8 +28,8 @@ inputs:
     type: number
     required: false
     default: 8
-checksum: "sha256:9c9d59b2e724d75257779ee852a34c0843bb2ca9248741609605e68ab2cf5fd2"
-id: "ski-a7285733e4e444d4a51220e5521a9a12"
+checksum: "sha256:526bb58d79cd2936ed0e34c179450c1c04be077c4a6f5f18dad3e51fbccb18a2"
+id: "ae0d8dc5-ca61-4079-bb3c-7aab5a14cb48"
 ---
 
 ## Overview

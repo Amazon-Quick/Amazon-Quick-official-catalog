@@ -7,8 +7,8 @@ icon: assets/salesforce.svg
 # Explicit-invocation only: run by the daily schedule (which invokes it by name /update)
 # or by the user deliberately. Claude must not auto-trigger maintenance from conversation.
 disable-model-invocation: true
-checksum: "sha256:37f8e1ca4dc5a7d417ad804cfd22f13efa222ae2857f1498d501d9d28e7264ab"
-id: "ski-590c644f55214fbea72651b010136cac"
+checksum: "sha256:b8ac9b8c321c95ef000214984a0642b7e3f065af7320cc995ed871ec29752a61"
+id: "590c644f-5521-4fbe-a726-51b010136cac"
 ---
 <!-- global-rules-bootstrap -->
 **IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.

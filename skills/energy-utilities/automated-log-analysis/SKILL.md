@@ -24,8 +24,8 @@ inputs:
     description: "Email addresses to CC on the results draft (comma-separated)"
     type: string
     required: false
-checksum: "sha256:b83347d734a3b38a47df7940132e1b11ee52ca764a671aef215a003751b4d6a7"
-id: "ski-319198e0d0ac4393b3b15af4df14e853"
+checksum: "sha256:86d65b63cdb4781d23f73e80fb61bf2271a02748d6ac8c6c82dcbd14735fb0a9"
+id: "319198e0-d0ac-4393-b3b1-5af4df14e853"
 ---
 
 ## Overview

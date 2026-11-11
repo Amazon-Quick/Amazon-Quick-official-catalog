@@ -8,8 +8,8 @@ last_updated: "2026-09-13"
 license: "MIT-0"
 tools: []
 
-checksum: "sha256:8b3df6d1d9668b2b1db3b8ddb70ae280d7d9958762fe57aa5a1d54d0a30c493d"
-id: "ski-01ede8183f1b4c36bd781f82d4d0331b"
+checksum: "sha256:960da270f07fadf8282c5ba8c26591b4ba945b4513a081a736494df8aa47b72a"
+id: "01ede818-3f1b-4c36-bd78-1f82d4d0331b"
 ---
 
 ## Overview

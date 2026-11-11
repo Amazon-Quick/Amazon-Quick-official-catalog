@@ -8,8 +8,8 @@ readme: "Read assets/README.md for an overview and getting started. This skill u
 created_date: "2026-06-04"
 last_updated: "2026-09-08"
 tools: [file_read, file_write, file_edit, folder_create, folder_list, run_python, open_in_session_tab, get_current_time]
-checksum: "sha256:fa4bb7a2ab8966fa788481312551ec29e2e8b821ded74634b05b40cc01af68d4"
-id: "ski-b3f7fa380f68428c82ec9c4ef426350f"
+checksum: "sha256:ebf02632598a82235de10667dfb09412b3e4d923d16f5c8a9e76ddb6c1eb63bb"
+id: "b3f7fa38-0f68-428c-82ec-9c4ef426350f"
 ---
 
 # Agent To Quick Skill

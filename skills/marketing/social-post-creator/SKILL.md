@@ -24,8 +24,8 @@ inputs:
   type: string
   required: false
   default: "engagement"
-checksum: "sha256:434eda66674948c42bce6342573cc918d17c296e3d990730a7ce34b81559abb5"
-id: "ski-a77f305bc6c94dab93bb9f4d0a99ab96"
+checksum: "sha256:dc9255f06f32a89d435961b0d045eb0a7961c4ed963657e3e375e06afdd5998b"
+id: "a77f305b-c6c9-4dab-93bb-9f4d0a99ab96"
 ---
 
 ## Overview

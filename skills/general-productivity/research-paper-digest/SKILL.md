@@ -22,8 +22,8 @@ inputs:
     type: choice
     options: [tldr, executive, full]
     default: full
-checksum: "sha256:ca695b2e140651688781b6025d418d589e440841f17f7b550bc90cf8ac3da560"
-id: "ski-481db3e9ef534795ba85b418ff659e59"
+checksum: "sha256:8c0224e0834e9351438ee28308ba18a9d15e8153e6672994e09e0f89193a56c7"
+id: "481db3e9-ef53-4795-ba85-b418ff659e59"
 ---
 
 ## Overview

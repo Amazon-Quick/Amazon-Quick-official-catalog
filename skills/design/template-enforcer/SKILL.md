@@ -29,8 +29,8 @@ inputs:
     options: [strict, moderate, advisory]
     required: false
     default: "moderate"
-checksum: "sha256:d04c3b1dc1ef77a0a80a2dc136ecd3f68512b5f843e4ba6c0841ead10a9755c1"
-id: "ski-35c8a493713647f2a55d61b9b3e3a6bd"
+checksum: "sha256:c1df5fcf59c40ba753ab3c9ef7012e2ff7246ae1f96086809f4654271536a22a"
+id: "35c8a493-7136-47f2-a55d-61b9b3e3a6bd"
 ---
 
 ## Overview

@@ -25,8 +25,8 @@ inputs:
 scripts:
   - funnel_analyzer.py
   - revenue_impact_calculator.py
-checksum: "sha256:dda160566d5cae6f314f8869712c59b244a2c37a80f33b21dc1c74f5c3ec2321"
-id: "ski-2aecc6d966984c7ea483004c77565ebd"
+checksum: "sha256:f2977f41a7004204cf053b7ffc3966d07707b6487ee0b43dc59f95dcab6dafde"
+id: "2aecc6d9-6698-4c7e-a483-004c77565ebd"
 ---
 
 ## Overview

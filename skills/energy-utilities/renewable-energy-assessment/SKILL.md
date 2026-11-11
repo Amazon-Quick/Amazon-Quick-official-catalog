@@ -18,8 +18,8 @@ inputs:
     description: "Directory where the report and dashboard files should be written"
     type: path
     required: false
-checksum: "sha256:c70cffe507e04c0f80b789a461adee97dcc598c46aa270aacd451ba965029fa0"
-id: "ski-770c28ade4a841bf8d8dbb8b07652e5d"
+checksum: "sha256:30a437ca6dd9d063d95e6a8e4a1b7fc01558cd6b93b629a6c4db2dd5b233a7a4"
+id: "770c28ad-e4a8-41bf-8d8d-bb8b07652e5d"
 ---
 
 ## Overview

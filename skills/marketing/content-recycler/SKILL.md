@@ -29,8 +29,8 @@ inputs:
   description: "Free-text guidance on brand voice, terminology preferences, or style constraints to apply across all variants."
   type: string
   required: false
-checksum: "sha256:6e1dc4dc8dd503cb096b4ac5e5e2b80482a11067eedc2947ade149a0bd0122a6"
-id: "ski-b5ab715c5069408fb809496974724404"
+checksum: "sha256:e8a2a7e95d1a845ebb77ebd1452481cde0594cb228c9e0249e0b47e00cc62e9a"
+id: "b5ab715c-5069-408f-b809-496974724404"
 ---
 
 ## Overview

@@ -8,8 +8,8 @@ last_updated: "2026-07-24"
 tools: [folder_list, folder_create, file_move, file_delete, run_python, create_scheduled_agent]
 preferred_model: fast
 preferred_thinking: "off"
-checksum: "sha256:339dfe631d680d8680a198eaab6b4a306c3f756dfd304aa290e6341b00c90392"
-id: "ski-2a6b15557b2a45a29bd85dc5c8cdfae4"
+checksum: "sha256:d39b8bba7778d1bd3c5045f1f541474058d942c8cd322c6f8fdda48710d7b3ef"
+id: "2a6b1555-7b2a-45a2-9bd8-5dc5c8cdfae4"
 ---
 
 <Identity>

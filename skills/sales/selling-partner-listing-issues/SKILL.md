@@ -7,8 +7,8 @@ created_date: "2026-09-15"
 last_updated: "2026-09-16"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Selling Partner API connector; verify it is available and stop if it is missing."
-checksum: "sha256:42640fe2a15c825fa0e10172893199db378c7802d4996e0fa45474938004858b"
-id: "ski-63008b92ef1748ffac7f79608e23303a"
+checksum: "sha256:74cd010814d1636687a7c2bddb493af540f570c99cdd5b7b02dba5abf2a9976b"
+id: "63008b92-ef17-48ff-ac7f-79608e23303a"
 ---
 
 ## Overview

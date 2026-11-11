@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AWS Quick Official Catalog Plugin",
+  "description": "Schema for plugins/<category>/<name>/plugin.json.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "displayName",
+    "description",
+    "version",
+    "author",
+    "skills"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "Stable plugin ID: a lowercase hyphenated UUIDv4 (8-4-4-4-12). Assigned once by scripts/asset_ids.py and never changed, even when the plugin moves or is renamed."
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+      "description": "Kebab-case plugin identifier. Must match the plugin directory name."
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "description": "Name shown in AWS Quick. A displayName on the plugin's catalog.json entry overrides it."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "description": "What the plugin does and who it is for."
+    },
+    "version": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semantic version (MAJOR.MINOR.PATCH)."
+    },
+    "author": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Publisher name. Amazon, AWS, Amazon Web Services, or AWS Quick marks a first-party plugin; any other name marks a third-party plugin."
+        }
+      }
+    },
+    "icon": {
+      "type": "string",
+      "pattern": "^assets/[a-z0-9][a-z0-9._-]*\\.svg$",
+      "description": "Plugin-relative path to an SVG icon of at most 5 KB. Required for first-party plugins. An icon on the plugin's catalog.json entry overrides it."
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "solution",
+        "package",
+        "partner"
+      ],
+      "description": "Plugin kind. A kind on the plugin's catalog.json entry overrides it."
+    },
+    "categories": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "description": "Other catalog categories to list the plugin under. Each must be a category in catalog.json."
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]/[a-z0-9]([a-z0-9_-]*[a-z0-9])?$"
+      },
+      "description": "Skills the plugin installs, as <category>/<name> references to skills/<category>/<name>. Each skill must be published in the catalog."
+    },
+    "connectors": {
+      "type": "array",
+      "maxItems": 1,
+      "items": {
+        "$ref": "#/$defs/ConnectorSlot"
+      },
+      "description": "The connector the plugin needs. At most one."
+    }
+  },
+  "$defs": {
+    "ConnectorSlot": {
+      "type": "object",
+      "required": [
+        "key",
+        "label",
+        "types",
+        "required"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$",
+          "description": "Identifier for the slot."
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Name of the slot shown at install."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 1024,
+          "description": "What the connector is used for."
+        },
+        "types": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "description": "Connector types that can fill the slot, for example SALESFORCE_CRM."
+        },
+        "required": {
+          "const": true,
+          "description": "Must be true."
+        }
+      }
+    }
+  }
+}

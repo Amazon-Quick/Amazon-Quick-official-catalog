@@ -25,8 +25,8 @@ inputs:
     options: [kebab-case, snake_case, PascalCase, camelCase, date-prefix, original, other]
     required: false
     default: "kebab-case"
-checksum: "sha256:a66b6a56c4db621d172f13f9ccf38989b6d74113a9553eab8bdf212a2fe64a56"
-id: "ski-72ef72fb1e1d42cda06f42baf5114a63"
+checksum: "sha256:f521a2af755838c2915bc3afea1aab405ed30a78cc3c09884165d0c527cbf504"
+id: "72ef72fb-1e1d-42cd-a06f-42baf5114a63"
 ---
 
 ## Overview

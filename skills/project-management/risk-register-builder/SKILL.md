@@ -31,8 +31,8 @@ inputs:
     required: false
     default: "both"
 tools: [file_read, file_read_pdf, file_read_docx, run_python, file_write, open_in_session_tab]
-checksum: "sha256:ca56fff3fc0ac8c7ad9236264e2f0e5ac4b1c17d196c536c4ab9536a5f12105c"
-id: "ski-370629429edd4d5ba5240af6e8019281"
+checksum: "sha256:bb1fc6f2fd3cfd412d146573878c26c930eff8a87bbe958a3e111a768d1d1759"
+id: "37062942-9edd-4d5b-a524-0af6e8019281"
 ---
 
 ## Overview

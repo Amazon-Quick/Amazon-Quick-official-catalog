@@ -22,8 +22,8 @@ inputs:
   description: "The existing classification label on the data asset, if any. Used for reclassification reviews."
   type: string
   required: false
-checksum: "sha256:11ec5d45fb5f88b12db22bcf92795b347f40fc643c021a52b776b4aba3afbe4d"
-id: "ski-7deafccfa1f7451dae50b6ed37cb5977"
+checksum: "sha256:ade022fd2ac4245310df366a72f42fa158ce3db1614e20bd50154b5817fda4de"
+id: "7deafccf-a1f7-451d-ae50-b6ed37cb5977"
 ---
 
 ## Overview

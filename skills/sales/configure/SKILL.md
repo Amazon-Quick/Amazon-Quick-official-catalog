@@ -7,8 +7,8 @@ icon: assets/salesforce.svg
 # Explicit-invocation only: the user runs this deliberately (/configure or by name).
 # Claude must not auto-trigger onboarding from ambient conversation.
 disable-model-invocation: true
-checksum: "sha256:a6dfaa08907870ffff160337bfd2ecb7aa457c9353c13d326a4d8f53efd17032"
-id: "ski-d3151f08f7e94b87969576cc7edede06"
+checksum: "sha256:74b332a6bc09609d81342c144b8abdd0be2738ca438056d4cdb6909ecb44f891"
+id: "d3151f08-f7e9-4b87-9695-76cc7edede06"
 ---
 <!-- global-rules-bootstrap -->
 

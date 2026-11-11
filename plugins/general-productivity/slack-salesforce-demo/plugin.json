@@ -1,0 +1,36 @@
+{
+  "name": "slack-salesforce-demo",
+  "displayName": "Slack + Salesforce (test)",
+  "description": "Test plugin: three general skills with two connector slots, Slack and Salesforce, for checking how the app handles a plugin that needs more than one connector.",
+  "author": {
+    "name": "AWS"
+  },
+  "version": "0.1.0",
+  "icon": "assets/icon.svg",
+  "skills": [
+    "general-productivity/meeting-notes-to-actions",
+    "general-productivity/document-comparison",
+    "general-productivity/teach-me"
+  ],
+  "connectors": [
+    {
+      "key": "slack",
+      "label": "Your Slack",
+      "description": "The Slack workspace the skills post to and read from.",
+      "types": [
+        "SLACK"
+      ],
+      "required": true
+    },
+    {
+      "key": "salesforce",
+      "label": "Your Salesforce",
+      "description": "The Salesforce org the skills read from.",
+      "types": [
+        "SALESFORCE_CRM"
+      ],
+      "required": true
+    }
+  ],
+  "id": "185ae29b-2215-42ed-a35a-a1fd83e0e18e"
+}

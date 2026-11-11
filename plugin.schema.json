@@ -96,11 +96,11 @@
     },
     "connectors": {
       "type": "array",
-      "maxItems": 1,
+      "maxItems": 2,
       "items": {
         "$ref": "#/$defs/ConnectorSlot"
       },
-      "description": "The connector the plugin needs. At most one."
+      "description": "The connectors the plugin needs. At most two."
     }
   },
   "$defs": {

@@ -360,6 +360,11 @@
           "type": "skill",
           "checksum": "sha256:526bb58d79cd2936ed0e34c179450c1c04be077c4a6f5f18dad3e51fbccb18a2",
           "id": "ae0d8dc5-ca61-4079-bb3c-7aab5a14cb48"
+        },
+        {
+          "path": "plugins/general-productivity/slack-salesforce-demo",
+          "type": "plugin",
+          "id": "185ae29b-2215-42ed-a35a-a1fd83e0e18e"
         }
       ]
     },
@@ -1089,6 +1094,10 @@
         {
           "path": "skills/general-productivity/translate-ms",
           "type": "skill"
+        },
+        {
+          "path": "plugins/general-productivity/slack-salesforce-demo",
+          "type": "plugin"
         }
       ]
     },

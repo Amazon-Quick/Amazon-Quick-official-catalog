@@ -956,6 +956,11 @@
           "path": "plugins/sales/salesforce-for-sales",
           "type": "plugin",
           "id": "23eb2f62-3654-43a5-a195-3ab1be4388b5"
+        },
+        {
+          "path": "plugins/sales/salesforce-optional-demo",
+          "type": "plugin",
+          "id": "3551d914-937e-4d79-ba11-d8f1d6973792"
         }
       ]
     },
@@ -1498,6 +1503,10 @@
         {
           "path": "skills/sales/win-loss-review",
           "type": "skill"
+        },
+        {
+          "path": "plugins/sales/salesforce-optional-demo",
+          "type": "plugin"
         }
       ]
     },

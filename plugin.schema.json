@@ -143,8 +143,8 @@
           "description": "Connector types that can fill the slot, for example SALESFORCE_CRM."
         },
         "required": {
-          "const": true,
-          "description": "Must be true."
+          "type": "boolean",
+          "description": "Whether install must bind this slot. false marks it optional."
         }
       }
     }

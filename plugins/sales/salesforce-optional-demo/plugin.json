@@ -1,0 +1,27 @@
+{
+  "name": "salesforce-optional-demo",
+  "displayName": "Sales Outreach (Salesforce optional)",
+  "description": "Test plugin: three sales skills with an optional Salesforce connector slot, for checking how the app handles a connector that is not required.",
+  "author": {
+    "name": "AWS"
+  },
+  "version": "0.1.0",
+  "icon": "assets/icon.svg",
+  "skills": [
+    "sales/research-prospect",
+    "sales/draft-outreach",
+    "sales/handle-objection"
+  ],
+  "connectors": [
+    {
+      "key": "salesforce",
+      "label": "Your Salesforce",
+      "description": "Optional. Skills use Salesforce data when it is connected.",
+      "types": [
+        "SALESFORCE_CRM"
+      ],
+      "required": false
+    }
+  ],
+  "id": "3551d914-937e-4d79-ba11-d8f1d6973792"
+}

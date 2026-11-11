@@ -1,0 +1,18 @@
+{
+  "name": "oil-and-gas",
+  "displayName": "Oil and Gas",
+  "description": "The skills in this plugin follow a well from formation evaluation through drilling, completion, and production, for upstream oil and gas teams. They evaluate Log ASCII Standard (LAS) well logs, analyze drilling efficiency and geosteering, review hydraulic fracturing treatments, and run production surveillance checks. The skills work from data you provide and use built-in AWS Quick tools, so no connector is required. Production surveillance also includes synthetic field data to try it with.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/fuel.svg",
+  "skills": [
+    "energy-utilities/automated-log-analysis",
+    "energy-utilities/drilling-operations-analyst",
+    "energy-utilities/exit-zone-geosteering",
+    "energy-utilities/production-surveillance",
+    "energy-utilities/well-completion-optimization"
+  ],
+  "id": "bd9127d7-ef4b-4b22-946b-87dd3e2e3147"
+}

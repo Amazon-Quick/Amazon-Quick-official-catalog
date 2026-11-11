@@ -1,0 +1,27 @@
+{
+  "name": "small-business-owner",
+  "displayName": "Small Business Owner",
+  "description": "Small business owners can manage money, customers, and marketing from one plugin. The finance skills all read from QuickBooks, so a payroll check, an overdue invoice, and a business health briefing work from the same books. The sales skills follow a deal from prospect research through the proposal and the follow-up. The marketing skills plan content and write campaigns for email and social media. The finance skills require the QuickBooks connector, and the overdue invoice follow-up also needs Gmail or Outlook.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/briefcase-business.svg",
+  "skills": [
+    "finance/business-pulse",
+    "finance/bill-pay-optimizer",
+    "finance/deposit-collection",
+    "finance/job-to-invoice",
+    "finance/invoice-chaser",
+    "finance/payroll-forecast",
+    "sales/lead-prospector",
+    "sales/competitor-intel",
+    "sales/deal-pipeline-manager",
+    "sales/follow-up-cadence",
+    "sales/proposal-generator",
+    "marketing/content-calendar-planner",
+    "marketing/email-campaign-builder",
+    "marketing/social-post-creator"
+  ],
+  "id": "fe72498d-9ecc-4266-a89a-ccf6eda28fca"
+}

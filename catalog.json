@@ -104,6 +104,11 @@
           "type": "skill",
           "checksum": "sha256:7957e8a03f02cb3ce6b26ccfbc07f3b90dcdd9a68fb8df45c6ee375ec45b85e0",
           "id": "35c8a493-7136-47f2-a55d-61b9b3e3a6bd"
+        },
+        {
+          "path": "plugins/design/presentation-studio",
+          "type": "plugin",
+          "id": "2115775b-7a93-4057-950d-04d510930412"
         }
       ]
     },
@@ -195,6 +200,16 @@
           "type": "skill",
           "checksum": "sha256:1bab9711e61d7bf299a7fafc88e5228847936fda4cd432093e3869c29bd3aca5",
           "id": "44a716c8-e0d1-4e1d-b270-15d6bdb48e4c"
+        },
+        {
+          "path": "plugins/energy-utilities/power-and-utilities",
+          "type": "plugin",
+          "id": "5f702053-5656-45c7-9a42-b00234c0464a"
+        },
+        {
+          "path": "plugins/energy-utilities/oil-and-gas",
+          "type": "plugin",
+          "id": "bd9127d7-ef4b-4b22-946b-87dd3e2e3147"
         }
       ]
     },
@@ -258,6 +273,11 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Verisk Analytics",
           "id": "6beb887f-455c-4f74-9495-624d3e4b6f18"
+        },
+        {
+          "path": "plugins/finance/small-business-owner",
+          "type": "plugin",
+          "id": "fe72498d-9ecc-4266-a89a-ccf6eda28fca"
         }
       ]
     },
@@ -700,6 +720,11 @@
           "type": "skill",
           "checksum": "sha256:806211cdad79fff5e57154d2c7c71057a45ea2fa4049960798cbcc751b9a8621",
           "id": "e792b823-52df-4e97-be04-2796c361e151"
+        },
+        {
+          "path": "plugins/sales/amazon-selling-partner",
+          "type": "plugin",
+          "id": "55a7a521-4b2d-4109-afa4-08a85dec02f3"
         }
       ]
     },
@@ -878,6 +903,10 @@
         {
           "path": "skills/design/template-enforcer",
           "type": "skill"
+        },
+        {
+          "path": "plugins/design/presentation-studio",
+          "type": "plugin"
         }
       ]
     },
@@ -912,6 +941,10 @@
         {
           "path": "skills/finance/payroll-forecast",
           "type": "skill"
+        },
+        {
+          "path": "plugins/finance/small-business-owner",
+          "type": "plugin"
         }
       ]
     },
@@ -1074,6 +1107,10 @@
         {
           "path": "skills/sales/selling-partner-listing-compliance",
           "type": "skill"
+        },
+        {
+          "path": "plugins/sales/amazon-selling-partner",
+          "type": "plugin"
         }
       ]
     },
@@ -1158,6 +1195,10 @@
         {
           "path": "skills/energy-utilities/renewable-energy-assessment",
           "type": "skill"
+        },
+        {
+          "path": "plugins/energy-utilities/power-and-utilities",
+          "type": "plugin"
         }
       ]
     },
@@ -1184,6 +1225,10 @@
         {
           "path": "skills/energy-utilities/automated-log-analysis",
           "type": "skill"
+        },
+        {
+          "path": "plugins/energy-utilities/oil-and-gas",
+          "type": "plugin"
         }
       ]
     },

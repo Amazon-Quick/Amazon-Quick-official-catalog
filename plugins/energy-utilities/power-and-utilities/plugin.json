@@ -1,0 +1,22 @@
+{
+  "name": "power-and-utilities",
+  "displayName": "Power and Utilities",
+  "description": "This plugin is for power and utility teams. Its skills follow an asset from planning through operations to reporting. Planning skills cover grid capacity, solar and wind projects, battery storage, microgrids, and electric vehicle charging. Operations skills track thermal plant performance and prepare generator availability reports for the North American Electric Reliability Corporation. Reporting skills calculate greenhouse gas emissions and produce energy market briefings that cite their sources. The skills run on built-in AWS Quick tools with no connector to set up, and return their results as workbooks, reports, and charts.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/zap.svg",
+  "skills": [
+    "energy-utilities/grid-capacity-planning",
+    "energy-utilities/power-plant-performance",
+    "energy-utilities/nerc-gads-reporting",
+    "energy-utilities/renewable-energy-assessment",
+    "energy-utilities/battery-storage-analyst",
+    "energy-utilities/microgrid-design",
+    "energy-utilities/ev-fleet-planning",
+    "energy-utilities/carbon-footprint-calculator",
+    "energy-utilities/energy-market-intelligence"
+  ],
+  "id": "5f702053-5656-45c7-9a42-b00234c0464a"
+}

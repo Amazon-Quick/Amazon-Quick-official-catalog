@@ -1,0 +1,36 @@
+{
+  "name": "sf-slack-both-optional-demo",
+  "displayName": "Salesforce + Slack both optional (test)",
+  "description": "Test plugin: Salesforce and Slack connectors, both optional.",
+  "author": {
+    "name": "AWS"
+  },
+  "version": "0.1.0",
+  "icon": "assets/icon.svg",
+  "skills": [
+    "general-productivity/translate-ms",
+    "general-productivity/ooo-setup",
+    "general-productivity/markdown-to-docx"
+  ],
+  "connectors": [
+    {
+      "key": "salesforce",
+      "label": "Your Salesforce",
+      "description": "The Salesforce org the skills read from.",
+      "types": [
+        "SALESFORCE_CRM"
+      ],
+      "required": false
+    },
+    {
+      "key": "slack",
+      "label": "Your Slack",
+      "description": "The Slack workspace the skills post to and read from.",
+      "types": [
+        "SLACK"
+      ],
+      "required": false
+    }
+  ],
+  "id": "feb025d8-8c12-4d18-935e-7179af15161c"
+}

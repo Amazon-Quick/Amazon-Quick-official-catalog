@@ -1,0 +1,36 @@
+{
+  "name": "sf-required-slack-optional-demo",
+  "displayName": "Salesforce required + Slack optional (test)",
+  "description": "Test plugin: Salesforce connector required, Slack connector optional.",
+  "author": {
+    "name": "AWS"
+  },
+  "version": "0.1.0",
+  "icon": "assets/icon.svg",
+  "skills": [
+    "general-productivity/file-organizer",
+    "general-productivity/second-opinion",
+    "general-productivity/research-paper-digest"
+  ],
+  "connectors": [
+    {
+      "key": "salesforce",
+      "label": "Your Salesforce",
+      "description": "The Salesforce org the skills read from.",
+      "types": [
+        "SALESFORCE_CRM"
+      ],
+      "required": true
+    },
+    {
+      "key": "slack",
+      "label": "Your Slack",
+      "description": "The Slack workspace the skills post to and read from.",
+      "types": [
+        "SLACK"
+      ],
+      "required": false
+    }
+  ],
+  "id": "1a6955ce-ac3d-4f7f-9d19-a4c9ad5204e5"
+}

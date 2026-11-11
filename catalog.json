@@ -365,6 +365,16 @@
           "path": "plugins/general-productivity/slack-salesforce-demo",
           "type": "plugin",
           "id": "185ae29b-2215-42ed-a35a-a1fd83e0e18e"
+        },
+        {
+          "path": "plugins/general-productivity/sf-required-slack-optional-demo",
+          "type": "plugin",
+          "id": "1a6955ce-ac3d-4f7f-9d19-a4c9ad5204e5"
+        },
+        {
+          "path": "plugins/general-productivity/sf-slack-both-optional-demo",
+          "type": "plugin",
+          "id": "feb025d8-8c12-4d18-935e-7179af15161c"
         }
       ]
     },
@@ -1097,6 +1107,14 @@
         },
         {
           "path": "plugins/general-productivity/slack-salesforce-demo",
+          "type": "plugin"
+        },
+        {
+          "path": "plugins/general-productivity/sf-required-slack-optional-demo",
+          "type": "plugin"
+        },
+        {
+          "path": "plugins/general-productivity/sf-slack-both-optional-demo",
           "type": "plugin"
         }
       ]

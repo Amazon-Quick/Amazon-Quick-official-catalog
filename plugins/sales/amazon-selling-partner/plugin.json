@@ -1,0 +1,24 @@
+{
+  "name": "amazon-selling-partner",
+  "displayName": "Amazon Selling Partner",
+  "description": "This plugin helps Amazon sellers keep listings buyable and visible in search, keep Fulfillment by Amazon inventory in stock, and run the seller account. The skills work through the Amazon Selling Partner connector and reuse the seller account and marketplace it sets for the session. Connect once, and you can move from a listing problem to a stock question without setting up each skill. The support case helper is the one skill that runs without the connector.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/store.svg",
+  "skills": [
+    "sales/selling-partner-listing-troubleshooter",
+    "sales/selling-partner-listing-issues",
+    "sales/selling-partner-listing-buyability",
+    "sales/selling-partner-listing-searchability",
+    "sales/selling-partner-listing-compliance",
+    "sales/selling-partner-stockout-prevention",
+    "sales/selling-partner-fba-inbound-management",
+    "sales/selling-partner-seller-analytics",
+    "sales/selling-partner-knowledge",
+    "sales/selling-partner-invite-secondary-users",
+    "sales/selling-partner-support-case-helper"
+  ],
+  "id": "55a7a521-4b2d-4109-afa4-08a85dec02f3"
+}

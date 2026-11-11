@@ -201,6 +201,11 @@
           "type": "skill",
           "checksum": "sha256:f10a13d08c19a54b3476ddd980f647d964a67a12a5299d8ce3bdedae3cd99fe5",
           "id": "44a716c8-e0d1-4e1d-b270-15d6bdb48e4c"
+        },
+        {
+          "path": "plugins/energy-utilities/oil-and-gas",
+          "type": "plugin",
+          "id": "bd9127d7-ef4b-4b22-946b-87dd3e2e3147"
         }
       ]
     },
@@ -1603,6 +1608,10 @@
         {
           "path": "skills/energy-utilities/well-completion-optimization",
           "type": "skill"
+        },
+        {
+          "path": "plugins/energy-utilities/oil-and-gas",
+          "type": "plugin"
         }
       ]
     },

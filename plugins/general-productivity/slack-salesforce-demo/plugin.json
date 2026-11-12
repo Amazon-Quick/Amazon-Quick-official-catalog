@@ -20,6 +20,7 @@
       "key": "slack",
       "label": "Your Slack",
       "description": "The Slack workspace the skills post to and read from.",
+      "type": "SLACK",
       "types": ["SLACK"],
       "required": true
     },
@@ -27,6 +28,7 @@
       "key": "salesforce",
       "label": "Your Salesforce",
       "description": "The Salesforce org the skills read from.",
+      "type": "SALESFORCE_CRM",
       "types": ["SALESFORCE_CRM"],
       "required": true
     }

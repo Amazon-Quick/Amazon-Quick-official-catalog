@@ -57,9 +57,8 @@
       "key": "salesforce",
       "label": "Your Salesforce",
       "description": "The Salesforce org the skills read from and, after you confirm, write to.",
-      "types": [
-        "SALESFORCE_CRM"
-      ],
+      "type": "SALESFORCE_CRM",
+      "types": ["SALESFORCE_CRM"],
       "required": true
     }
   ],

@@ -158,7 +158,7 @@
             "minLength": 1,
             "maxLength": 64
           },
-          "description": "TODO: legacy form, kept only for salesforce-for-sales because the released app reads connectors[].types and drops a slot without it. Switch that plugin to `type` and remove this property once the app reads `type`."
+          "description": "TODO: legacy form, written beside `type` on every slot because released apps read only connectors[].types and drop a slot without it. Apps from CR-322150122 / CR-322164961 on read `type` first. Remove this property from every plugin (and here) once no supported app reads `types`."
         },
         "required": {
           "type": "boolean",

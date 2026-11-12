@@ -21,7 +21,6 @@
       "label": "Your Salesforce",
       "description": "Optional. Skills use Salesforce data when it is connected.",
       "type": "SALESFORCE_CRM",
-      "types": ["SALESFORCE_CRM"],
       "required": false
     }
   ],

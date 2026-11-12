@@ -123,7 +123,8 @@
       "type": "object",
       "required": [
         "key",
-        "label"
+        "label",
+        "type"
       ],
       "additionalProperties": false,
       "properties": {
@@ -149,35 +150,12 @@
           "maxLength": 64,
           "description": "The connector type that fills the slot, for example SALESFORCE_CRM."
         },
-        "types": {
-          "type": "array",
-          "minItems": 1,
-          "maxItems": 1,
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
-          },
-          "description": "TODO: legacy form, written beside `type` on every slot because released apps read only connectors[].types and drop a slot without it. Apps from CR-322150122 / CR-322164961 on read `type` first. Remove this property from every plugin (and here) once no supported app reads `types`."
-        },
         "required": {
           "type": "boolean",
           "default": true,
           "description": "Whether the plugin needs this connector. Omit or set true for a required slot; false marks it optional and skippable at install."
         }
-      },
-      "anyOf": [
-        {
-          "required": [
-            "type"
-          ]
-        },
-        {
-          "required": [
-            "types"
-          ]
-        }
-      ]
+      }
     }
   }
 }

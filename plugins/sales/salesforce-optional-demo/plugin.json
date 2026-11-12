@@ -7,6 +7,9 @@
   },
   "version": "0.1.0",
   "icon": "assets/icon.svg",
+  "roles": [
+    "sales"
+  ],
   "skills": [
     "sales/research-prospect",
     "sales/draft-outreach",
@@ -17,9 +20,7 @@
       "key": "salesforce",
       "label": "Your Salesforce",
       "description": "Optional. Skills use Salesforce data when it is connected.",
-      "types": [
-        "SALESFORCE_CRM"
-      ],
+      "type": "SALESFORCE_CRM",
       "required": false
     }
   ],

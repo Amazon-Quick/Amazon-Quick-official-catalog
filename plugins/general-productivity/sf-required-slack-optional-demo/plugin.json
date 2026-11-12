@@ -7,6 +7,9 @@
   },
   "version": "0.1.0",
   "icon": "assets/icon.svg",
+  "roles": [
+    "general"
+  ],
   "skills": [
     "general-productivity/file-organizer",
     "general-productivity/second-opinion",
@@ -17,18 +20,14 @@
       "key": "salesforce",
       "label": "Your Salesforce",
       "description": "The Salesforce org the skills read from.",
-      "types": [
-        "SALESFORCE_CRM"
-      ],
+      "type": "SALESFORCE_CRM",
       "required": true
     },
     {
       "key": "slack",
       "label": "Your Slack",
       "description": "The Slack workspace the skills post to and read from.",
-      "types": [
-        "SLACK"
-      ],
+      "type": "SLACK",
       "required": false
     }
   ],

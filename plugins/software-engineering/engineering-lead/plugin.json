@@ -1,0 +1,32 @@
+{
+  "name": "engineering-lead",
+  "displayName": "Engineering Lead (Slack)",
+  "description": "This plugin is for engineering managers and tech leads who write the documents around design, delivery, and incidents. With its skills, you can record an architecture decision with the options considered and its consequences. From a project plan, you can find the critical path, the tasks with slack, and the schedule risks. You can also build a scored risk register. For a release, you can generate grouped release notes from a repository, a commit log, or a changelog. After an incident, you can draft a blameless postmortem with a timeline, a root cause analysis, and action items. The postmortem skill reads the timeline from the Slack channel or thread where your team handled the incident. The other skills work from documents and notes that you provide. Risk scores are estimates, so validate high-stakes decisions with qualified professionals.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/drafting-compass.svg",
+  "categories": [
+    "Project Management"
+  ],
+  "connectors": [
+    {
+      "key": "slack",
+      "label": "Slack",
+      "description": "The postmortem skill reads the incident timeline from a channel or thread in this workspace.",
+      "types": [
+        "SLACK"
+      ],
+      "required": true
+    }
+  ],
+  "skills": [
+    "software-engineering/architecture-decision-record",
+    "project-management/dependency-critical-path-analyzer",
+    "project-management/risk-register-builder",
+    "software-engineering/release-notes-generator",
+    "software-engineering/incident-postmortem-writer"
+  ],
+  "id": "32575b52-f249-430c-9e5a-f7af8b73d4ac"
+}

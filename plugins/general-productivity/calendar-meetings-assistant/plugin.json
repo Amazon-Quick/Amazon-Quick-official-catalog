@@ -1,0 +1,30 @@
+{
+  "name": "calendar-meetings-assistant",
+  "displayName": "Calendar and Meetings Assistant",
+  "description": "This plugin is for anyone who wants help with their calendar around meetings and time away. To prepare for time off, the out-of-office skill finds meeting conflicts and suggests who to notify, based on your recent meetings. After you approve each step, it declines or cancels meetings and sends a calendar notice to the people you choose. It also drafts your email auto-reply and gives you the steps to turn it on. If you connect Slack, it can set your status too. For meetings, you can turn notes or a transcript into decisions, owned action items, and open questions. You can also summarize standup notes into blockers, progress, and plans. The out-of-office skill works through your Microsoft Outlook calendar. The meeting and standup skills work from notes that you provide.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/calendar-check.svg",
+  "categories": [
+    "Project Management"
+  ],
+  "connectors": [
+    {
+      "key": "outlook",
+      "label": "Microsoft Outlook",
+      "description": "The out-of-office skill reads your meetings from this calendar. After you confirm, it declines or cancels meetings and sends invites from it.",
+      "types": [
+        "MICROSOFT_OUTLOOK"
+      ],
+      "required": true
+    }
+  ],
+  "skills": [
+    "general-productivity/ooo-setup",
+    "general-productivity/meeting-notes-to-actions",
+    "project-management/standup-summarizer"
+  ],
+  "id": "5c7424b2-b173-4d90-a4d8-94482833747d"
+}

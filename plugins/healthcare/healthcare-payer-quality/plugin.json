@@ -1,0 +1,18 @@
+{
+  "name": "healthcare-payer-quality",
+  "displayName": "Healthcare Payer and Quality",
+  "description": "This plugin is for analysts and reviewers at health plans who work with claims, quality measures, and prior authorization. With its skills, you can generate Python and SQL that parse X12 837 claim files and flag claims for billing review. For quality reporting, you can calculate Healthcare Effectiveness Data and Information Set (HEDIS) rates and care gaps with generated code. Another skill shows how a measure's denominator, exclusion, and enrollment rules apply to your data. For prior authorization, you can compare a request with the payer's published policy, outline an appeal, and generate code that applies your own rules. The skills work from data and documents that you provide, so you don't need a connector. Have a qualified professional review the results, and keep decisions about coverage, billing, and HEDIS reporting with your staff.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/clipboard-check.svg",
+  "skills": [
+    "healthcare/healthcare-claims-analytics",
+    "healthcare/hedis-measure-specification",
+    "healthcare/hedis-measure-calculation",
+    "healthcare/prior-authorization-clinical-policy",
+    "healthcare/prior-authorization-decision-automation"
+  ],
+  "id": "6b6ff835-af55-4017-845b-ee41c4650c4b"
+}

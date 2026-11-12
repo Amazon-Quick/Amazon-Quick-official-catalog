@@ -1,0 +1,30 @@
+{
+  "name": "sales-development-gmail",
+  "displayName": "Sales Development (Gmail)",
+  "description": "This plugin is for sales development representatives and small sales teams who work in Gmail. Its skills follow a prospect from research to a proposal. With them, you can build a researched lead list, analyze competitors, and write a multi-touch outreach sequence. You can also draft follow-ups that refer to your last conversation, review your pipeline for stalled deals, and generate a proposal as a Word document. The skills use your Gmail mailbox to check for past contact, find replies and sent proposals, and stage outreach as drafts. They send email only after you approve it. Connect Gmail once, and every skill uses the same mailbox. Lead research uses public web sources, so verify contact details before you reach out.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/handshake.svg",
+  "connectors": [
+    {
+      "key": "email",
+      "label": "Gmail",
+      "description": "The skills search this mailbox for past contact, replies, and sent proposals. They also stage outreach here as drafts for you to review and send.",
+      "types": [
+        "GMAIL"
+      ],
+      "required": true
+    }
+  ],
+  "skills": [
+    "sales/lead-prospector",
+    "sales/competitor-intel",
+    "sales/outreach-sequence-builder",
+    "sales/follow-up-cadence",
+    "sales/deal-pipeline-manager",
+    "sales/proposal-generator"
+  ],
+  "id": "f89a8998-6f35-4062-8ad6-686c8b36d4f3"
+}

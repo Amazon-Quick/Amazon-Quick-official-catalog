@@ -20,5 +20,16 @@
     "sales/selling-partner-invite-secondary-users",
     "sales/selling-partner-support-case-helper"
   ],
+  "connectors": [
+    {
+      "key": "selling-partner",
+      "label": "Amazon Selling Partner",
+      "description": "The listing, inventory, and account skills work through your seller account and marketplace.",
+      "types": [
+        "AMAZON_SELLING_PARTNER"
+      ],
+      "required": true
+    }
+  ],
   "id": "55a7a521-4b2d-4109-afa4-08a85dec02f3"
 }

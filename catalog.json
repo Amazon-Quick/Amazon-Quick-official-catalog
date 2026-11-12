@@ -29,6 +29,11 @@
           "type": "skill",
           "checksum": "sha256:6a01cb46d2aaa07a5520dc2b191f1309e1078f439ced1010f9bf9963a714246b",
           "id": "3d744ffb-5262-4da2-8757-4f64c9ab30c4"
+        },
+        {
+          "path": "plugins/aws-quick/quick-builder-kit",
+          "type": "plugin",
+          "id": "8bf602e7-972f-4f69-9959-e0bbe3fc0092"
         }
       ]
     },
@@ -73,6 +78,11 @@
           "type": "skill",
           "checksum": "sha256:a58711039673ab4bc578c6b6eaa99555035b458ac38b5667fbb8073ef9780c16",
           "id": "c5f435e2-f108-41c8-8e6c-8886876d50d3"
+        },
+        {
+          "path": "plugins/data-analytics/retail-merchant-operations",
+          "type": "plugin",
+          "id": "fde8f1d9-66c5-4ec4-80d9-1f88a8c7679a"
         }
       ]
     },
@@ -278,6 +288,13 @@
           "path": "plugins/finance/small-business-owner",
           "type": "plugin",
           "id": "fe72498d-9ecc-4266-a89a-ccf6eda28fca"
+        },
+        {
+          "path": "plugins/finance/verisk-underwriting-intelligence",
+          "type": "plugin",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Verisk Analytics",
+          "id": "79a4a2f5-d40a-4046-b676-7fe29a381d76"
         }
       ]
     },
@@ -369,6 +386,16 @@
           "type": "skill",
           "checksum": "sha256:e5b2b8a017ed662e07c26c74f712a289b7aafbbb12a5659b6e653fc467bd63bb",
           "id": "ae0d8dc5-ca61-4079-bb3c-7aab5a14cb48"
+        },
+        {
+          "path": "plugins/general-productivity/everyday-productivity",
+          "type": "plugin",
+          "id": "8c61f5a1-6d84-4ca7-bca2-2747ff3aea27"
+        },
+        {
+          "path": "plugins/general-productivity/calendar-meetings-assistant",
+          "type": "plugin",
+          "id": "5c7424b2-b173-4d90-a4d8-94482833747d"
         }
       ]
     },
@@ -424,6 +451,16 @@
           "type": "skill",
           "checksum": "sha256:a7368ce812d02e9019069b471710986d89428ccb6797189a26f3d09bedc604ff",
           "id": "aecafc70-2bfe-4bc2-8adf-f9a752847b50"
+        },
+        {
+          "path": "plugins/healthcare/healthcare-payer-quality",
+          "type": "plugin",
+          "id": "6b6ff835-af55-4017-845b-ee41c4650c4b"
+        },
+        {
+          "path": "plugins/healthcare/clinical-research",
+          "type": "plugin",
+          "id": "e739db96-5b4a-4fe3-87ef-9a95aab09821"
         }
       ]
     },
@@ -462,6 +499,11 @@
           "type": "skill",
           "checksum": "sha256:1ad8bd0c8df74989f229bdd3e9beb8147ca92df96ccdaf3f5ed3b1717d16fd63",
           "id": "9b4be866-00cc-4218-9fde-3964599619d8"
+        },
+        {
+          "path": "plugins/hr/people-operations",
+          "type": "plugin",
+          "id": "0aafa107-0a32-4931-987e-78f63d89ce7f"
         }
       ]
     },
@@ -493,6 +535,11 @@
           "type": "skill",
           "checksum": "sha256:548015e6301a4a2a06647f8c3c55c0dead0097c9b266585f7f69e320581f66cc",
           "id": "37648980-e6d7-4100-a111-bf5d29282734"
+        },
+        {
+          "path": "plugins/leadership/executive-strategy",
+          "type": "plugin",
+          "id": "0f8b9b17-1b0e-4538-8977-beb8267e1175"
         }
       ]
     },
@@ -586,6 +633,16 @@
           "type": "skill",
           "checksum": "sha256:1d1239d98248e805acb92ee75b469118a354e2c52aba80d685ee600172c11fdf",
           "id": "6975ae91-35f5-4ebd-962a-7d12e0bdcf2d"
+        },
+        {
+          "path": "plugins/software-engineering/engineering-lead",
+          "type": "plugin",
+          "id": "32575b52-f249-430c-9e5a-f7af8b73d4ac"
+        },
+        {
+          "path": "plugins/software-engineering/engineering-lead-teams",
+          "type": "plugin",
+          "id": "ae84aa6e-8312-4525-88bb-c05621742e50"
         }
       ]
     },
@@ -725,6 +782,16 @@
           "path": "plugins/sales/amazon-selling-partner",
           "type": "plugin",
           "id": "55a7a521-4b2d-4109-afa4-08a85dec02f3"
+        },
+        {
+          "path": "plugins/sales/sales-development",
+          "type": "plugin",
+          "id": "eb4110a3-42bd-485b-b4db-c0df5738ccbb"
+        },
+        {
+          "path": "plugins/sales/sales-development-gmail",
+          "type": "plugin",
+          "id": "f89a8998-6f35-4062-8ad6-686c8b36d4f3"
         }
       ]
     },
@@ -750,6 +817,11 @@
           "type": "skill",
           "checksum": "sha256:f9bd58ac0519d5bc693926139132cfcfd30a244f7054988ae6eb7ba66ef73629",
           "id": "aa13c8fc-c113-4428-862f-0f02c02f3709"
+        },
+        {
+          "path": "plugins/security-compliance/security-compliance-analyst",
+          "type": "plugin",
+          "id": "4fe73848-b05c-469b-83d2-470047734a14"
         }
       ]
     },
@@ -777,6 +849,7 @@
     {
       "slug": "general",
       "name": "General",
+      "description": "Everyday work that spans roles, such as meeting notes, documents, and files, plus skills for building and extending AWS Quick.",
       "assets": [
         {
           "path": "skills/aws-quick/aws-quick-community",
@@ -849,12 +922,25 @@
         {
           "path": "skills/general-productivity/click-through-demo",
           "type": "skill"
+        },
+        {
+          "path": "plugins/aws-quick/quick-builder-kit",
+          "type": "plugin"
+        },
+        {
+          "path": "plugins/general-productivity/everyday-productivity",
+          "type": "plugin"
+        },
+        {
+          "path": "plugins/general-productivity/calendar-meetings-assistant",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "customer-success",
       "name": "Customer Success",
+      "description": "For customer success and support teams who score account health and triage support tickets.",
       "assets": [
         {
           "path": "skills/customer-success/customer-health-scorer",
@@ -869,6 +955,7 @@
     {
       "slug": "data-analytics",
       "name": "Data Analysis",
+      "description": "For analysts who explore data, build reports and dashboards, and turn the results into decisions.",
       "assets": [
         {
           "path": "skills/data-analytics/ecommerce-conversion-insights",
@@ -881,12 +968,17 @@
         {
           "path": "skills/data-analytics/retail-merchant-briefing",
           "type": "skill"
+        },
+        {
+          "path": "plugins/data-analytics/retail-merchant-operations",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "design",
       "name": "Design",
+      "description": "For designers and content creators who make presentations, visuals, and branded materials.",
       "assets": [
         {
           "path": "skills/design/html-deck-builder",
@@ -913,6 +1005,7 @@
     {
       "slug": "finance",
       "name": "Finance",
+      "description": "For finance teams who manage budgets, invoices, payroll, and reporting on how the business is doing.",
       "assets": [
         {
           "path": "skills/finance/bill-pay-optimizer",
@@ -951,6 +1044,7 @@
     {
       "slug": "hr",
       "name": "HR",
+      "description": "For HR teams who hire, onboard, and support employees throughout their time at the company.",
       "assets": [
         {
           "path": "skills/hr/hr-policy-agent",
@@ -963,12 +1057,17 @@
         {
           "path": "skills/hr/performance-review-drafter",
           "type": "skill"
+        },
+        {
+          "path": "plugins/hr/people-operations",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "leadership",
       "name": "Leadership",
+      "description": "For managers and executives who make decisions, set priorities, and keep their teams informed.",
       "assets": [
         {
           "path": "skills/leadership/business-case-builder",
@@ -985,12 +1084,17 @@
         {
           "path": "skills/leadership/swot-analysis-generator",
           "type": "skill"
+        },
+        {
+          "path": "plugins/leadership/executive-strategy",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "marketing",
       "name": "Marketing",
+      "description": "For marketers who plan campaigns, write content, and measure what reaches their audience.",
       "assets": [
         {
           "path": "skills/marketing/content-calendar-planner",
@@ -1021,6 +1125,7 @@
     {
       "slug": "project-management",
       "name": "Project Management",
+      "description": "For project and program managers who plan work, track status, and keep delivery on schedule.",
       "assets": [
         {
           "path": "skills/project-management/dependency-critical-path-analyzer",
@@ -1039,6 +1144,7 @@
     {
       "slug": "sales",
       "name": "Sales",
+      "description": "For sellers who research prospects, manage their pipeline, and move deals to close.",
       "assets": [
         {
           "path": "skills/sales/competitor-intel",
@@ -1111,12 +1217,21 @@
         {
           "path": "plugins/sales/amazon-selling-partner",
           "type": "plugin"
+        },
+        {
+          "path": "plugins/sales/sales-development",
+          "type": "plugin"
+        },
+        {
+          "path": "plugins/sales/sales-development-gmail",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "security-compliance",
       "name": "Security & Compliance",
+      "description": "For security and compliance teams who review risks, check controls, and prepare for audits.",
       "assets": [
         {
           "path": "skills/security-compliance/compliance-automation",
@@ -1129,12 +1244,17 @@
         {
           "path": "skills/security-compliance/vulnerability-report-summarizer",
           "type": "skill"
+        },
+        {
+          "path": "plugins/security-compliance/security-compliance-analyst",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "software-engineering",
       "name": "Software Engineering",
+      "description": "For engineers who design, build, and run software, from architecture to operations.",
       "assets": [
         {
           "path": "skills/software-engineering/architecture-decision-record",
@@ -1151,6 +1271,14 @@
         {
           "path": "skills/software-engineering/release-notes-generator",
           "type": "skill"
+        },
+        {
+          "path": "plugins/software-engineering/engineering-lead",
+          "type": "plugin"
+        },
+        {
+          "path": "plugins/software-engineering/engineering-lead-teams",
+          "type": "plugin"
         }
       ]
     }
@@ -1159,6 +1287,7 @@
     {
       "slug": "power-utilities",
       "name": "Power & Utilities",
+      "description": "For power generation and utility teams who plan grid capacity, run plants, and report on emissions and reliability.",
       "assets": [
         {
           "path": "skills/energy-utilities/battery-storage-analyst",
@@ -1205,6 +1334,7 @@
     {
       "slug": "oil-gas",
       "name": "Oil & Gas",
+      "description": "For upstream oil and gas teams who evaluate wells, review drilling and completions, and monitor production.",
       "assets": [
         {
           "path": "skills/energy-utilities/drilling-operations-analyst",
@@ -1235,6 +1365,7 @@
     {
       "slug": "financial-services",
       "name": "Financial Services",
+      "description": "For banking, insurance, and payments teams who build financial products and assess underwriting risk.",
       "assets": [
         {
           "path": "skills/finance/fsi-product-management",
@@ -1243,12 +1374,17 @@
         {
           "path": "skills/finance/iso-premium-audit-advisory-get",
           "type": "skill"
+        },
+        {
+          "path": "plugins/finance/verisk-underwriting-intelligence",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "healthcare",
       "name": "Healthcare",
+      "description": "For health plans and providers who analyze claims, calculate quality measures, and review prior authorizations.",
       "assets": [
         {
           "path": "skills/healthcare/healthcare-claims-analytics",
@@ -1269,12 +1405,17 @@
         {
           "path": "skills/healthcare/prior-authorization-decision-automation",
           "type": "skill"
+        },
+        {
+          "path": "plugins/healthcare/healthcare-payer-quality",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "life-sciences",
       "name": "Life Sciences",
+      "description": "For clinical research teams who draft trial protocols, search biomedical databases, and prepare regulatory submissions.",
       "assets": [
         {
           "path": "skills/healthcare/cdisc-submission-compliance",
@@ -1287,12 +1428,17 @@
         {
           "path": "skills/healthcare/research-biomedical-databases",
           "type": "skill"
+        },
+        {
+          "path": "plugins/healthcare/clinical-research",
+          "type": "plugin"
         }
       ]
     },
     {
       "slug": "hospitality",
       "name": "Retail & Hospitality",
+      "description": "For retail and hospitality teams, such as restaurant managers, who run daily operations and serve customers and guests.",
       "assets": [
         {
           "path": "skills/hospitality/restaurant-morning-briefing",
@@ -1303,6 +1449,7 @@
     {
       "slug": "legal",
       "name": "Legal",
+      "description": "For legal teams who review contracts, track obligations, and manage regulatory risk.",
       "assets": [
         {
           "path": "skills/legal/contract-clause-extractor",
@@ -1317,6 +1464,7 @@
     {
       "slug": "supply-chain",
       "name": "Manufacturing & Supply Chain",
+      "description": "For manufacturing and supply chain teams who plan inventory, manage suppliers, and respond to disruptions.",
       "assets": [
         {
           "path": "skills/supply-chain/demand-forecast-explainer",

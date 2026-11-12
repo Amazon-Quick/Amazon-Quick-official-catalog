@@ -1,5 +1,4 @@
 {
-  "skillsChecksum": "sha256:be245dedd24711513c193f6537f8fdebd1df27b0fb52fa31bee663500655f994",
   "categories": [
     {
       "name": "AWS Quick",
@@ -33,7 +32,8 @@
         {
           "path": "plugins/aws-quick/quick-builder-kit",
           "type": "plugin",
-          "id": "8bf602e7-972f-4f69-9959-e0bbe3fc0092"
+          "id": "8bf602e7-972f-4f69-9959-e0bbe3fc0092",
+          "checksum": "sha256:585bf2aef1cdf8f22b6a25a20559966b20fcffc16638d02f8c7fe1b81deada0d"
         }
       ]
     },
@@ -82,7 +82,8 @@
         {
           "path": "plugins/data-analytics/retail-merchant-operations",
           "type": "plugin",
-          "id": "fde8f1d9-66c5-4ec4-80d9-1f88a8c7679a"
+          "id": "fde8f1d9-66c5-4ec4-80d9-1f88a8c7679a",
+          "checksum": "sha256:92c08b9484127680850102145e1b5254c13517da3d2dc83d56aff671b827f9fc"
         }
       ]
     },
@@ -118,7 +119,8 @@
         {
           "path": "plugins/design/presentation-studio",
           "type": "plugin",
-          "id": "2115775b-7a93-4057-950d-04d510930412"
+          "id": "2115775b-7a93-4057-950d-04d510930412",
+          "checksum": "sha256:a7e119db2043ea1981e646c9b9fb90c2dfc382347c78a62d53cf1ec89ec9de0a"
         }
       ]
     },
@@ -214,12 +216,14 @@
         {
           "path": "plugins/energy-utilities/power-and-utilities",
           "type": "plugin",
-          "id": "5f702053-5656-45c7-9a42-b00234c0464a"
+          "id": "5f702053-5656-45c7-9a42-b00234c0464a",
+          "checksum": "sha256:08d63857f7fe2b8b342679616bd788ce3ada139537e24b3165cdc4de168308d2"
         },
         {
           "path": "plugins/energy-utilities/oil-and-gas",
           "type": "plugin",
-          "id": "bd9127d7-ef4b-4b22-946b-87dd3e2e3147"
+          "id": "bd9127d7-ef4b-4b22-946b-87dd3e2e3147",
+          "checksum": "sha256:5435eb6eb97025da0eea00f3350e646ee26f2527e2ca24f1b55898dc8cf34c31"
         }
       ]
     },
@@ -287,14 +291,16 @@
         {
           "path": "plugins/finance/small-business-owner",
           "type": "plugin",
-          "id": "fe72498d-9ecc-4266-a89a-ccf6eda28fca"
+          "id": "fe72498d-9ecc-4266-a89a-ccf6eda28fca",
+          "checksum": "sha256:279d48fa701498aa91ad47622f4b4af43539decb098372cb4b9d68b208f9d026"
         },
         {
           "path": "plugins/finance/verisk-underwriting-intelligence",
           "type": "plugin",
           "publisher_type": "THIRD_PARTY",
           "company": "Verisk Analytics",
-          "id": "79a4a2f5-d40a-4046-b676-7fe29a381d76"
+          "id": "79a4a2f5-d40a-4046-b676-7fe29a381d76",
+          "checksum": "sha256:0e7fbf4df9e836eaf7881709e95cf7344e3e2c73fa9b4f737282a4bb36adfe0e"
         }
       ]
     },
@@ -390,12 +396,14 @@
         {
           "path": "plugins/general-productivity/everyday-productivity",
           "type": "plugin",
-          "id": "8c61f5a1-6d84-4ca7-bca2-2747ff3aea27"
+          "id": "8c61f5a1-6d84-4ca7-bca2-2747ff3aea27",
+          "checksum": "sha256:580477e9242d02a6fb0afd4f8741fd764cb1a147f8f680a7f330ac357954f87c"
         },
         {
           "path": "plugins/general-productivity/calendar-meetings-assistant",
           "type": "plugin",
-          "id": "5c7424b2-b173-4d90-a4d8-94482833747d"
+          "id": "5c7424b2-b173-4d90-a4d8-94482833747d",
+          "checksum": "sha256:933ee2f0823bfeaf122b1f00e81eca2bbb95e0bc409fb2453b4d85a05edf0cbe"
         }
       ]
     },
@@ -455,12 +463,14 @@
         {
           "path": "plugins/healthcare/healthcare-payer-quality",
           "type": "plugin",
-          "id": "6b6ff835-af55-4017-845b-ee41c4650c4b"
+          "id": "6b6ff835-af55-4017-845b-ee41c4650c4b",
+          "checksum": "sha256:3825e337ee036643b46adab835a9fa54ce3ffa118bf249e901fbda22555fc0ef"
         },
         {
           "path": "plugins/healthcare/clinical-research",
           "type": "plugin",
-          "id": "e739db96-5b4a-4fe3-87ef-9a95aab09821"
+          "id": "e739db96-5b4a-4fe3-87ef-9a95aab09821",
+          "checksum": "sha256:9827e9b1fa63bf41d42861722a5583499a7d05303f781d0e1d3e5fd984073bf2"
         }
       ]
     },
@@ -503,7 +513,8 @@
         {
           "path": "plugins/hr/people-operations",
           "type": "plugin",
-          "id": "0aafa107-0a32-4931-987e-78f63d89ce7f"
+          "id": "0aafa107-0a32-4931-987e-78f63d89ce7f",
+          "checksum": "sha256:7be38ff844b3beefbb6d767843b4c5469f8a2aa32c90393d5bfe5fbaae66f913"
         }
       ]
     },
@@ -539,7 +550,8 @@
         {
           "path": "plugins/leadership/executive-strategy",
           "type": "plugin",
-          "id": "0f8b9b17-1b0e-4538-8977-beb8267e1175"
+          "id": "0f8b9b17-1b0e-4538-8977-beb8267e1175",
+          "checksum": "sha256:ed85501444539b788692a1b36a0bc01deb37a4d6e708558c904e4541b678aa30"
         }
       ]
     },
@@ -637,12 +649,14 @@
         {
           "path": "plugins/software-engineering/engineering-lead",
           "type": "plugin",
-          "id": "32575b52-f249-430c-9e5a-f7af8b73d4ac"
+          "id": "32575b52-f249-430c-9e5a-f7af8b73d4ac",
+          "checksum": "sha256:48e1ebed7df8040c40b63b38074654aeaa0a57ccf9ecaec5607b087938a55921"
         },
         {
           "path": "plugins/software-engineering/engineering-lead-teams",
           "type": "plugin",
-          "id": "ae84aa6e-8312-4525-88bb-c05621742e50"
+          "id": "ae84aa6e-8312-4525-88bb-c05621742e50",
+          "checksum": "sha256:3470f0c7be800387c4776d0bf03bf425c5c6eab8a73f6c72884f72569c5b64a5"
         }
       ]
     },
@@ -781,17 +795,20 @@
         {
           "path": "plugins/sales/amazon-selling-partner",
           "type": "plugin",
-          "id": "55a7a521-4b2d-4109-afa4-08a85dec02f3"
+          "id": "55a7a521-4b2d-4109-afa4-08a85dec02f3",
+          "checksum": "sha256:446879d35c147e865b16e49843c8421b4d12261b0af9caa6a3d9dc1665fc31b8"
         },
         {
           "path": "plugins/sales/sales-development",
           "type": "plugin",
-          "id": "eb4110a3-42bd-485b-b4db-c0df5738ccbb"
+          "id": "eb4110a3-42bd-485b-b4db-c0df5738ccbb",
+          "checksum": "sha256:961df8ab018e855165e75bb28cc9874f42b0676081b8835bc3e4c0df512c661f"
         },
         {
           "path": "plugins/sales/sales-development-gmail",
           "type": "plugin",
-          "id": "f89a8998-6f35-4062-8ad6-686c8b36d4f3"
+          "id": "f89a8998-6f35-4062-8ad6-686c8b36d4f3",
+          "checksum": "sha256:1c22a729a91328690212ed8be3c423dadae83b9ef24b9539f35dc662d5de8b28"
         }
       ]
     },
@@ -821,7 +838,8 @@
         {
           "path": "plugins/security-compliance/security-compliance-analyst",
           "type": "plugin",
-          "id": "4fe73848-b05c-469b-83d2-470047734a14"
+          "id": "4fe73848-b05c-469b-83d2-470047734a14",
+          "checksum": "sha256:522ae651d5beb98fc20d46aa0230e5d6b9e78d0bb69bbb75d106b3feb9903810"
         }
       ]
     },

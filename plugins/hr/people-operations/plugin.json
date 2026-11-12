@@ -7,9 +7,6 @@
     "name": "AWS"
   },
   "icon": "assets/users-round.svg",
-  "categories": [
-    "Leadership"
-  ],
   "skills": [
     "hr/onboarding-orchestrator",
     "hr/hr-policy-agent",

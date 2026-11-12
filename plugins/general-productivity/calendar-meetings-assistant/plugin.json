@@ -7,9 +7,6 @@
     "name": "AWS"
   },
   "icon": "assets/calendar-check.svg",
-  "categories": [
-    "Project Management"
-  ],
   "connectors": [
     {
       "key": "outlook",

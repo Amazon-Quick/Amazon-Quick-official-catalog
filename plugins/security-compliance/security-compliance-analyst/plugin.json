@@ -7,9 +7,6 @@
     "name": "AWS"
   },
   "icon": "assets/shield-half.svg",
-  "categories": [
-    "Legal"
-  ],
   "skills": [
     "security-compliance/compliance-automation",
     "security-compliance/data-classification-assistant",

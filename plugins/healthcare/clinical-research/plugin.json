@@ -7,9 +7,6 @@
     "name": "AWS"
   },
   "icon": "assets/microscope.svg",
-  "categories": [
-    "General Productivity"
-  ],
   "skills": [
     "healthcare/protocol-drafting",
     "healthcare/cdisc-submission-compliance",

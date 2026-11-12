@@ -7,10 +7,6 @@
     "name": "AWS"
   },
   "icon": "assets/shopping-bag.svg",
-  "categories": [
-    "Supply Chain & Logistics",
-    "Marketing"
-  ],
   "skills": [
     "data-analytics/retail-analytics-concierge",
     "data-analytics/retail-merchant-briefing",

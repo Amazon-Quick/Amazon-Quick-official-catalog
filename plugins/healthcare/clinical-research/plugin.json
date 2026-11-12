@@ -1,0 +1,20 @@
+{
+  "name": "clinical-research",
+  "displayName": "Clinical Research and Regulatory",
+  "description": "This plugin is for clinical operations and regulatory affairs teams who prepare clinical trials for submission. With its skills, you can draft a protocol's objectives, background, and study design from a grant or study synopsis. Each section cites the International Council for Harmonisation (ICH) guidelines and US Food and Drug Administration (FDA) regulations that it follows. For submission data, you can get recommendations on Clinical Data Interchange Standards Consortium (CDISC) standards for tabulation datasets, analysis datasets, and define.xml. You can also condense the research papers behind a protocol and compare two versions of a document. Protocol drafting needs two Model Context Protocol (MCP) servers that you deploy and connect to AWS Quick. One retrieves FDA regulations, and the other retrieves ICH guidelines. The other skills work from documents that you provide. Have qualified medical and regulatory professionals review the results before you submit them.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/microscope.svg",
+  "categories": [
+    "General Productivity"
+  ],
+  "skills": [
+    "healthcare/protocol-drafting",
+    "healthcare/cdisc-submission-compliance",
+    "general-productivity/research-paper-digest",
+    "general-productivity/document-comparison"
+  ],
+  "id": "e739db96-5b4a-4fe3-87ef-9a95aab09821"
+}

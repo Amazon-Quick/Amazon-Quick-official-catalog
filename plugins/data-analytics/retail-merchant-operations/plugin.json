@@ -1,0 +1,23 @@
+{
+  "name": "retail-merchant-operations",
+  "displayName": "Retail and Merchant Operations",
+  "description": "This plugin is for retail merchandising and operations leaders. With its skills, you can ask data questions in plain language and get an answer with a chart. The analytics skill shows each SQL query for your approval and runs only read-only queries. A weekly merchant briefing ranks the top five category issues by revenue impact, with a likely cause and an action for each. From a funnel export, you can find where shoppers drop off and estimate the revenue at stake. You can also get a plain-language explanation of a demand forecast and a morning digest of supply chain exceptions, ranked by severity. For product listings, you can generate titles and descriptions in your brand voice for search engines and AI-powered search. The skills work from files that you upload. When one is available, they also use an AWS Quick Sight dataset or a data warehouse connection, so you don't need a connector. Check the figures against your system of record before you act on them.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/shopping-bag.svg",
+  "categories": [
+    "Supply Chain & Logistics",
+    "Marketing"
+  ],
+  "skills": [
+    "data-analytics/retail-analytics-concierge",
+    "data-analytics/retail-merchant-briefing",
+    "data-analytics/ecommerce-conversion-insights",
+    "supply-chain/demand-forecast-explainer",
+    "supply-chain/retail-supply-chain-pulse",
+    "marketing/retail-content-generator"
+  ],
+  "id": "fde8f1d9-66c5-4ec4-80d9-1f88a8c7679a"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "everyday-productivity",
+  "displayName": "Everyday Productivity",
+  "description": "This plugin is for anyone who wants to spend less time on routine document and file work. With its skills, you can turn meeting notes or a transcript into decisions, owned action items, and open questions. You can also compare two versions of a document, convert Markdown to Word, and translate Word and PowerPoint files while keeping their formatting. To tidy up, reorganize a folder or your desktop. The skill asks for your approval before it moves any file. For learning, you can condense a research paper for your audience or build an interactive quiz from documents, web pages, or a topic. The skills work from files that you provide and from public web sources, so you don't need a connector. A professional translator hasn't reviewed the translations. Have a qualified translator review them before you use them for legal, medical, financial, or safety purposes.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/list-checks.svg",
+  "skills": [
+    "general-productivity/meeting-notes-to-actions",
+    "general-productivity/document-comparison",
+    "general-productivity/markdown-to-docx",
+    "general-productivity/translate-ms",
+    "general-productivity/file-organizer",
+    "general-productivity/desktop-cleanup",
+    "general-productivity/research-paper-digest",
+    "general-productivity/teach-me"
+  ],
+  "id": "8c61f5a1-6d84-4ca7-bca2-2747ff3aea27"
+}

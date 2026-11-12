@@ -1,0 +1,20 @@
+{
+  "name": "people-operations",
+  "displayName": "People Operations",
+  "description": "This plugin is for human resources (HR) teams and people managers who support employees from their first day through performance reviews. With its skills, you can build a 30/60/90-day onboarding plan with a tool access checklist and a check-in schedule. Policy questions get answers from your HR handbooks, with the document and section for each fact. The policy skill refers sensitive questions, such as compensation or accommodation requests, to your HR team. To track team goals, you can set objectives and key results (OKRs), key performance indicators (KPIs), or another framework, and score progress at each check-in. At review time, you can draft a self-assessment, a manager review, or peer feedback from evidence of the employee's work. The skills work from documents and notes that you provide, so you don't need a connector. The results are drafts and aren't legal or HR advice. Have your managers and HR team review them and make all employment decisions.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/users-round.svg",
+  "categories": [
+    "Leadership"
+  ],
+  "skills": [
+    "hr/onboarding-orchestrator",
+    "hr/hr-policy-agent",
+    "leadership/goal-tracker-reporter",
+    "hr/performance-review-drafter"
+  ],
+  "id": "0aafa107-0a32-4931-987e-78f63d89ce7f"
+}

@@ -23,5 +23,16 @@
     "marketing/email-campaign-builder",
     "marketing/social-post-creator"
   ],
+  "connectors": [
+    {
+      "key": "quickbooks",
+      "label": "QuickBooks",
+      "description": "The finance skills read invoices, bills, payroll, and deposits from your QuickBooks books.",
+      "types": [
+        "QUICKBOOKS"
+      ],
+      "required": true
+    }
+  ],
   "id": "fe72498d-9ecc-4266-a89a-ccf6eda28fca"
 }

@@ -1,0 +1,20 @@
+{
+  "name": "security-compliance-analyst",
+  "displayName": "Security and Compliance Analyst",
+  "description": "This plugin is for security, governance, risk, and compliance teams who prepare for audits and track risk. With its skills, you can draft policies, control mappings, evidence checklists, and gap analyses for an audit. The skills cover System and Organization Controls (SOC) 2, ISO/IEC 27001, and the Health Insurance Portability and Accountability Act of 1996 (HIPAA). You can also classify data assets by sensitivity and get handling, retention, and access recommendations for each level. From a vulnerability scan export, you can produce prioritized reports for executive and technical readers. To keep up with new rules, you can get a digest of regulatory changes from official sources. The skills work from documents and scan files that you provide, and from public regulatory sources, so you don't need a connector. The results are drafts. Have qualified compliance, legal, and security professionals review them before you make an audit or risk decision.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/shield-half.svg",
+  "categories": [
+    "Legal"
+  ],
+  "skills": [
+    "security-compliance/compliance-automation",
+    "security-compliance/data-classification-assistant",
+    "security-compliance/vulnerability-report-summarizer",
+    "legal/regulatory-change-monitor"
+  ],
+  "id": "4fe73848-b05c-469b-83d2-470047734a14"
+}

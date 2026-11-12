@@ -1,0 +1,26 @@
+{
+  "name": "verisk-underwriting-intelligence",
+  "displayName": "Verisk Underwriting Intelligence",
+  "description": "Premium auditors and underwriters can answer audit questions on General Liability, Businessowners Policy, and Commercial Auto from Verisk's Premium Audit Advisory Service (PAAS). The skill covers classification codes, payroll and exposure bases, audit procedures, and state-specific audit rules, and every answer cites the PAAS documents it came from. The skill requires the Verisk connector.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Verisk Analytics"
+  },
+  "icon": "assets/icon.svg",
+  "kind": "partner",
+  "skills": [
+    "finance/iso-premium-audit-advisory-get"
+  ],
+  "connectors": [
+    {
+      "key": "verisk",
+      "label": "Verisk",
+      "description": "The skill answers audit questions only from the Premium Audit Advisory Service content that this connector returns.",
+      "types": [
+        "VERISK"
+      ],
+      "required": true
+    }
+  ],
+  "id": "79a4a2f5-d40a-4046-b676-7fe29a381d76"
+}

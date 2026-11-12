@@ -26,25 +26,250 @@
     },
     "roles": {
       "type": "array",
-      "description": "Role filter values for AWS Quick versions that read roles and industries. Each lists, by path, assets that categories already lists. Every catalog asset is in exactly one role or one industry, never both; scripts/catalog_check.py enforces this.",
+      "description": "Role filter values for AWS Quick versions that read roles and industries. Each lists, by path, assets that categories already lists. Every catalog asset is in exactly one role or one industry, never both; scripts/catalog_check.py enforces this. Only the approved roles in RoleValue are allowed.",
       "items": {
-        "$ref": "#/$defs/AssetGroup"
+        "allOf": [
+          {
+            "$ref": "#/$defs/AssetGroup"
+          },
+          {
+            "$ref": "#/$defs/RoleValue"
+          }
+        ]
       }
     },
     "industries": {
       "type": "array",
-      "description": "Industry filter values for AWS Quick versions that read roles and industries. Each lists, by path, assets that categories already lists. Every catalog asset is in exactly one role or one industry, never both; scripts/catalog_check.py enforces this.",
+      "description": "Industry filter values for AWS Quick versions that read roles and industries. Each lists, by path, assets that categories already lists. Every catalog asset is in exactly one role or one industry, never both; scripts/catalog_check.py enforces this. Only the approved industries in IndustryValue are allowed, so the catalog never shows an industry that isn't in the product's industries list.",
       "items": {
-        "$ref": "#/$defs/AssetGroup"
+        "allOf": [
+          {
+            "$ref": "#/$defs/AssetGroup"
+          },
+          {
+            "$ref": "#/$defs/IndustryValue"
+          }
+        ]
       }
     }
   },
   "$defs": {
+    "RoleValue": {
+      "description": "The approved roles, each a fixed slug and name pair. Adding or removing a role needs product approval first.",
+      "oneOf": [
+        {
+          "properties": {
+            "slug": {
+              "const": "general"
+            },
+            "name": {
+              "const": "General"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "customer-success"
+            },
+            "name": {
+              "const": "Customer Success"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "data-analytics"
+            },
+            "name": {
+              "const": "Data Analysis"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "design"
+            },
+            "name": {
+              "const": "Design"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "finance"
+            },
+            "name": {
+              "const": "Finance"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "hr"
+            },
+            "name": {
+              "const": "HR"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "leadership"
+            },
+            "name": {
+              "const": "Leadership"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "marketing"
+            },
+            "name": {
+              "const": "Marketing"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "project-management"
+            },
+            "name": {
+              "const": "Project Management"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "sales"
+            },
+            "name": {
+              "const": "Sales"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "security-compliance"
+            },
+            "name": {
+              "const": "Security & Compliance"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "software-engineering"
+            },
+            "name": {
+              "const": "Software Engineering"
+            }
+          }
+        }
+      ]
+    },
+    "IndustryValue": {
+      "description": "The approved industries, each a fixed slug and name pair. Adding or removing an industry needs product approval first, and the industries list in AWS Quick must change with it.",
+      "oneOf": [
+        {
+          "properties": {
+            "slug": {
+              "const": "power-utilities"
+            },
+            "name": {
+              "const": "Power & Utilities"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "oil-gas"
+            },
+            "name": {
+              "const": "Oil & Gas"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "financial-services"
+            },
+            "name": {
+              "const": "Financial Services"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "healthcare"
+            },
+            "name": {
+              "const": "Healthcare"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "life-sciences"
+            },
+            "name": {
+              "const": "Life Sciences"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "hospitality"
+            },
+            "name": {
+              "const": "Retail & Hospitality"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "legal"
+            },
+            "name": {
+              "const": "Legal"
+            }
+          }
+        },
+        {
+          "properties": {
+            "slug": {
+              "const": "supply-chain"
+            },
+            "name": {
+              "const": "Manufacturing & Supply Chain"
+            }
+          }
+        }
+      ]
+    },
     "AssetGroup": {
       "type": "object",
       "required": [
         "slug",
         "name",
+        "description",
         "assets"
       ],
       "additionalProperties": false,
@@ -54,6 +279,12 @@
         },
         "name": {
           "$ref": "#/$defs/Category/properties/name"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "One plain-language sentence on who the role or industry is for and what its skills help with, shown in the UI."
         },
         "assets": {
           "type": "array",

@@ -364,7 +364,8 @@
         {
           "path": "plugins/general-productivity/slack-salesforce-demo",
           "type": "plugin",
-          "id": "185ae29b-2215-42ed-a35a-a1fd83e0e18e"
+          "id": "185ae29b-2215-42ed-a35a-a1fd83e0e18e",
+          "priority": 80
         },
         {
           "path": "plugins/general-productivity/sf-required-slack-optional-demo",
@@ -959,18 +960,21 @@
           "path": "skills/sales/weekly-wrap",
           "type": "skill",
           "checksum": "sha256:e846f5178629152c7f6a644cbb474363c12760aea4a8d00ee81be070c7a1920a",
-          "id": "034f9b9b-6a0e-4405-87eb-99e3deba2f7f"
+          "id": "034f9b9b-6a0e-4405-87eb-99e3deba2f7f",
+          "priority": 70
         },
         {
           "path": "skills/sales/win-loss-review",
           "type": "skill",
           "checksum": "sha256:556730a81b118c4cd3d39e78af8ece01d0a2ffc8612147d9bbf3969df0d546b7",
-          "id": "d6b1464c-325a-4d8a-9b53-12dbb7b69319"
+          "id": "d6b1464c-325a-4d8a-9b53-12dbb7b69319",
+          "priority": 90
         },
         {
           "path": "plugins/sales/salesforce-for-sales",
           "type": "plugin",
-          "id": "23eb2f62-3654-43a5-a195-3ab1be4388b5"
+          "id": "23eb2f62-3654-43a5-a195-3ab1be4388b5",
+          "priority": 100
         },
         {
           "path": "plugins/sales/salesforce-optional-demo",

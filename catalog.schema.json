@@ -178,6 +178,12 @@
             "partner"
           ],
           "description": "Plugin assets only. Overrides the plugin.json kind."
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999,
+          "description": "Optional. The Catalog page's Official row lists a higher priority first; assets without one come after, in any order."
         }
       },
       "allOf": [

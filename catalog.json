@@ -376,6 +376,11 @@
           "path": "plugins/general-productivity/sf-slack-both-optional-demo",
           "type": "plugin",
           "id": "feb025d8-8c12-4d18-935e-7179af15161c"
+        },
+        {
+          "path": "plugins/general-productivity/outlook-required-demo",
+          "type": "plugin",
+          "id": "6d63382b-993d-48f3-a45e-3693cbe86f49"
         }
       ]
     },
@@ -1119,6 +1124,10 @@
         },
         {
           "path": "plugins/general-productivity/sf-slack-both-optional-demo",
+          "type": "plugin"
+        },
+        {
+          "path": "plugins/general-productivity/outlook-required-demo",
           "type": "plugin"
         }
       ]

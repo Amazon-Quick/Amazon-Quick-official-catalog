@@ -1,0 +1,17 @@
+{
+  "name": "presentation-studio",
+  "displayName": "Presentation Studio",
+  "description": "Teams that turn documents into presentations can take a source document to a finished deck with this plugin. Convert a Word, PDF, or Markdown file into slides, set a theme, build in PowerPoint or HTML, and apply your brand guide. They rely on the built-in AWS Quick document and presentation skills, so no connector is required.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/presentation.svg",
+  "skills": [
+    "design/slide-deck-from-doc",
+    "design/presentation-theme-creator",
+    "design/html-deck-builder",
+    "design/template-enforcer"
+  ],
+  "id": "2115775b-7a93-4057-950d-04d510930412"
+}

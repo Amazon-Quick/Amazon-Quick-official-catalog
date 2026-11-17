@@ -77,6 +77,6 @@ class TranslationState:
         self._batch_results_received: int = 0
 
 
-# Singleton guard, prevents re-creation in Quick's script concatenation mode.
+# Singleton guard, prevents re-creation in the AWS Quick script concatenation mode.
 if "_STATE" not in globals():
     _STATE = TranslationState()

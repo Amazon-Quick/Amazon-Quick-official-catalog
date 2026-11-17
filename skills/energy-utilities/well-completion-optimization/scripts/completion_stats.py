@@ -5,7 +5,7 @@ origin: original
 
 Completion design statistics using only numpy and the standard library.
 
-The Amazon Quick Python sandbox provides numpy and pandas but not scipy or
+The AWS Quick code sandbox provides numpy and pandas but not scipy or
 statsmodels, so the tests a completion comparison needs are implemented here from
 first principles. Student's t tail probabilities come from the regularized
 incomplete beta function (Numerical Recipes formulation), the Wilcoxon

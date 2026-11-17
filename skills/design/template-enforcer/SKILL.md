@@ -3,9 +3,9 @@ name: template-enforcer
 display_name: Template Enforcer
 icon: assets/stamp.svg
 description: "Apply a brand guide or style template to any document, presentation, or generated output, enforcing colors, fonts, tone of voice, logo placement, and formatting rules. Use when the user says 'apply brand guide', 'enforce template', 'match this style', 'make it consistent with our brand', 'apply our formatting', 'style this document', or any request to align a document with a visual/brand standard."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-15"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [file_read, file_read_pdf, file_read_docx, file_read_pptx, run_python, file_write, open_in_session_tab]
 inputs:
@@ -29,7 +29,7 @@ inputs:
     options: [strict, moderate, advisory]
     required: false
     default: "moderate"
-checksum: "sha256:c1df5fcf59c40ba753ab3c9ef7012e2ff7246ae1f96086809f4654271536a22a"
+checksum: "sha256:7957e8a03f02cb3ce6b26ccfbc07f3b90dcdd9a68fb8df45c6ee375ec45b85e0"
 id: "35c8a493-7136-47f2-a55d-61b9b3e3a6bd"
 ---
 

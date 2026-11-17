@@ -10,7 +10,7 @@ Creates SEO-optimized blog posts, landing pages, and website copy that rank on G
 
 ## Overview
 
-This skill solves the problem of producing content that satisfies both Google's ranking algorithm and human readers. It conducts keyword research, analyzes the top-ranking competition, finds content gaps, and writes in-depth articles that exceed what currently ranks, matching your brand voice when it finds brand docs in local folders. It is for small business owners and marketers, and it extends Amazon Quick by turning a topic or keyword into a publish-ready, on-page-verified draft.
+This skill solves the problem of producing content that satisfies both Google's ranking algorithm and human readers. It conducts keyword research, analyzes the top-ranking competition, finds content gaps, and writes in-depth articles that exceed what currently ranks, matching your brand voice when it finds brand docs in local folders. It is for small business owners and marketers, and it extends AWS Quick by turning a topic or keyword into a publish-ready, on-page-verified draft.
 
 ## Pre-requisites
 
@@ -19,7 +19,7 @@ This skill solves the problem of producing content that satisfies both Google's 
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

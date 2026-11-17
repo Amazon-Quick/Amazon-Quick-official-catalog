@@ -11,7 +11,7 @@ confounders.
 
 ## Sandbox constraint (read first)
 
-The Amazon Quick Python sandbox provides numpy and pandas but does NOT provide
+The AWS Quick code sandbox provides numpy and pandas but does NOT provide
 scipy or statsmodels. Do not import them; they fail at runtime. All statistical
 tests in this skill are implemented in pure numpy plus the standard library in
 `scripts/completion_stats.py`. Call that script rather than reaching for scipy or

@@ -1,5 +1,5 @@
 """
-description: Create a deterministic LAS 2.0 well log with vendor mnemonics inside the Amazon Quick workspace.
+description: Create a deterministic LAS 2.0 well log with vendor mnemonics inside the AWS Quick workspace.
 last_updated: 2026-09-16
 origin: original
 """

@@ -1,5 +1,5 @@
 ---
-description: "Guidance for sizing a battery energy storage system and scheduling its charge and discharge using numpy-based deterministic methods in the Quick sandbox."
+description: "Guidance for sizing a battery energy storage system and scheduling its charge and discharge using numpy-based deterministic methods in the AWS Quick code sandbox."
 last_updated: 2026-09-13
 origin: original
 ---
@@ -12,7 +12,7 @@ charge and discharge. Read this during sizing (workflow step BESS.3) and dispatc
 
 ## Sandbox note: no linear-programming solver
 
-The Amazon Quick Python sandbox provides numpy and pandas but no linear-programming
+The code sandbox provides numpy and pandas but no linear-programming
 or mixed-integer solver (no scipy.optimize, pulp, cvxpy, or ortools) and `pip
 install` is blocked. Do not claim to run a linear program. Size and dispatch with
 the numpy-based deterministic methods below, which give the same answer for the

@@ -5,7 +5,7 @@ icon: assets/file-search.svg
 description: "Parse LAS 2.0 well logs with vendor curve-alias resolution, run a deterministic petrophysical evaluation (Vshale, density porosity, Archie Sw, effective porosity, net pay, pay zones, OOIP), render a five-track composite log, write a Word and Markdown report, and draft results by email. Use when asked to 'process daily drilling logs', 'check for new MWD data', 'run petrophysics on incoming email', 'analyze vendor log delivery', 'evaluate this well log', 'analyze this LAS file', or 'run the log analysis pipeline'."
 license: MIT-0
 created_date: "2026-09-15"
-last_updated: "2026-09-16"
+last_updated: "2026-11-05"
 preferred_model: smart
 preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time]
@@ -24,7 +24,7 @@ inputs:
     description: "Email addresses to CC on the results draft (comma-separated)"
     type: string
     required: false
-checksum: "sha256:86d65b63cdb4781d23f73e80fb61bf2271a02748d6ac8c6c82dcbd14735fb0a9"
+checksum: "sha256:8d92f0ad9d2212e89581beb2f7aad88184f19dfdadfb5efb6931cfecee18b282"
 id: "319198e0-d0ac-4393-b3b1-5af4df14e853"
 ---
 
@@ -45,7 +45,7 @@ Given a LAS 2.0 file, from an email attachment, a workspace path, or the synthet
 <Definitions>
 
 <Definition - Script execution recipe>
-Read `references/script-interface.md` first. For every script: read its source with `file_read`, then in `run_python_with_write` import it by file stem and call `run(request)`; for example `import run_evaluation as script; result = script.run(request)`. Always pass `workspace_dir` (the sandbox workspace directory Amazon Quick supplies) in the request. Use a unique `script_name` per execution. Do not read or assign `__file__` or other dunder attributes, do not compile or exec source text, do not modify `sys.path` or `os.environ`, and do not import one bundled script from another. Treat the returned JSON as authoritative.
+Read `references/script-interface.md` first. For every script: read its source with `file_read`, then in `run_python_with_write` import it by file stem and call `run(request)`; for example `import run_evaluation as script; result = script.run(request)`. Always pass `workspace_dir` (the sandbox workspace directory AWS Quick supplies) in the request. Use a unique `script_name` per execution. Do not read or assign `__file__` or other dunder attributes, do not compile or exec source text, do not modify `sys.path` or `os.environ`, and do not import one bundled script from another. Treat the returned JSON as authoritative.
 </Definition - Script execution recipe>
 
 <Definition - Canonical request>

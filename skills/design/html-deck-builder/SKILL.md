@@ -4,7 +4,7 @@ display_name: HTML Deck Builder
 icon: assets/presentation.svg
 description: "Build professional HTML slide presentations as single self-contained files with keyboard navigation, speaker notes, and progress tracking. Use when asked to 'build a presentation', 'create a slide deck', 'make slides', 'build a deck', 'presentation about X', 'create a slideshow', 'HTML slides for', 'make a deck for my talk', 'slide deck about', or any request to produce a browser-based HTML slideshow."
 created_date: "2026-07-17"
-last_updated: "2026-09-09"
+last_updated: "2026-11-05"
 license: "MIT-0"
 preferred_model: smart
 preferred_thinking: medium
@@ -22,7 +22,7 @@ inputs:
     description: Primary brand color hex code to override the default palette
     type: string
     required: false
-checksum: "sha256:7501dea320582117b4d12030aa8e80fb4d682f59990c9ddbd07319ced34d5d33"
+checksum: "sha256:4af5ae328bdfcc3c40dd2d366639a5a211bf5c14c2a2adb592e7e578f4c14570"
 id: "1eb18750-2279-44ca-a941-02de9c5f822d"
 ---
 

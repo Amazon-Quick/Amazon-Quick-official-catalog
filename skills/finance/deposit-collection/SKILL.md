@@ -4,7 +4,7 @@ display_name: Deposit Collection
 icon: assets/banknote.svg
 description: "Collect a deposit before work starts, so the cash arrives before the labor and materials go out. Use when asked 'collect a deposit', 'request a deposit', 'get a deposit before I start', 'invoice a deposit', 'bill upfront', or when a new job is booked and the owner wants money down first. Creates a deposit request in QuickBooks for a configurable percentage, sends it with a payment link after approval, confirms when it clears, records it as a customer prepayment (a liability), and on job completion nets it against the final invoice."
 created_date: "2026-06-07"
-last_updated: "2026-07-03"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [recall_memories]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -32,7 +32,7 @@ inputs:
     options: [request, confirm, final]
     required: false
     default: request
-checksum: "sha256:e41149d66a283e1e4706f96ac44edd6a3f5ad201b434b656b58c641fd0dc6648"
+checksum: "sha256:ac6359fd67047740b0231c3cd4ed097dc27c5e00e77cd6dc6751d8ad43d4a808"
 id: "87dd9087-24d2-400e-af8b-952d28be9c4e"
 ---
 

@@ -802,7 +802,7 @@ def run(request_object: dict[str, Any]) -> dict[str, Any]:
 
     ``request_object`` carries ``operation``, optional ``arguments``, and
     ``fixture`` (path to the fixture JSON). This is the entry point for the
-    Amazon Quick sandbox, where the module is executed from source and this
+    AWS Quick code sandbox, where the module is executed from source and this
     function is called directly.
     """
     try:

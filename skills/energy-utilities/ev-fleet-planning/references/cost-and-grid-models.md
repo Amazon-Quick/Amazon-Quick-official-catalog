@@ -28,7 +28,7 @@ subject to:
   P_peak >= sum over v of [P_charge(v,t)] + Load_existing(t)      for all t
 ```
 
-The Amazon Quick Python sandbox has numpy and pandas but NO linear-program solver
+The AWS Quick code sandbox has numpy and pandas but NO linear-program solver
 (no scipy.optimize, pulp, or cvxpy). Implement managed charging with a valley-filling
 heuristic instead: sort intervals by rate(t) ascending, fill each vehicle's required
 energy into its cheapest available plugged-in intervals first, and cap the site total

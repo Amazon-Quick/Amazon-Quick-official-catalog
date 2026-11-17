@@ -1,0 +1,17 @@
+{
+  "name": "quick-builder-kit",
+  "displayName": "Quick Builder Kit",
+  "description": "This plugin is for people who build their own skills and agents in AWS Quick. With its skills, you can plan, build, test, and audit a skill from a description, a runbook, or a task that you just finished. A chat agent from another assistant platform can become an AWS Quick skill, and the conversion reports each knowledge source and capability that it remaps or drops. You can also build a personal skill, a space, and an agent from your own AWS Quick memories, conversations, and connectors, and approve each one before it's created. To find answers and examples, you can search the public AWS Quick Community and its learning content and events. The skills use built-in tools and public sources, so you don't need a connector. When connected email or chat is available, the personal agent skill uses it for writing samples.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/hammer.svg",
+  "skills": [
+    "aws-quick/skill-architect",
+    "aws-quick/agent-to-quick-skill",
+    "aws-quick/personal-agent-architect",
+    "aws-quick/aws-quick-community"
+  ],
+  "id": "8bf602e7-972f-4f69-9959-e0bbe3fc0092"
+}

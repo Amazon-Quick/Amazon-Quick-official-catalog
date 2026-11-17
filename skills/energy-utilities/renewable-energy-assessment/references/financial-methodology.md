@@ -59,7 +59,7 @@ def npv(rate, cashflows):
 
 def irr(cashflows, lo=-0.9, hi=2.0, tol=1e-7, iters=200):
     """Solve IRR by bisection. numpy.irr was removed and numpy_financial is not
-    available in the Quick sandbox, so bracket the root manually."""
+    available in the AWS Quick code sandbox, so bracket the root manually."""
     f_lo = npv(lo, cashflows)
     if f_lo * npv(hi, cashflows) > 0:
         return None  # no sign change in the bracket

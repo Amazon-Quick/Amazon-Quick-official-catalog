@@ -10,7 +10,7 @@ Adds a fractional VP of Sales that reviews your pipeline, flags at-risk deals, p
 
 ## Overview
 
-Deal Pipeline Manager assesses pipeline health, identifies stale and at-risk deals, ranks the highest-leverage actions to take, and forecasts revenue against a target. It is for owner-operators managing 5-50 active deals without a dedicated sales team. It extends Amazon Quick by pulling deal data from connected sources or verbal input, then producing prioritized coaching and skill-ready outputs for related sales skills.
+Deal Pipeline Manager assesses pipeline health, identifies stale and at-risk deals, ranks the highest-leverage actions to take, and forecasts revenue against a target. It is for owner-operators managing 5-50 active deals without a dedicated sales team. It extends AWS Quick by pulling deal data from connected sources or verbal input, then producing prioritized coaching and skill-ready outputs for related sales skills.
 
 ## Pre-requisites
 
@@ -19,7 +19,7 @@ Deal Pipeline Manager assesses pipeline health, identifies stale and at-risk dea
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

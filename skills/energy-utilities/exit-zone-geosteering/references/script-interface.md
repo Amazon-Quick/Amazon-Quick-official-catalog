@@ -6,18 +6,18 @@ origin: original
 
 # Script interface
 
-Every script exposes `run(request: dict) -> dict`. The Amazon Quick sandbox environment is read-only, so agents MUST pass `workspace_dir` explicitly in the request and MUST NOT assign `WORKSPACE_DIR`. The environment variable is a compatibility fallback only when `workspace_dir` is absent.
+Every script exposes `run(request: dict) -> dict`. The AWS Quick code sandbox environment is read-only, so agents MUST pass `workspace_dir` explicitly in the request and MUST NOT assign `WORKSPACE_DIR`. The environment variable is a compatibility fallback only when `workspace_dir` is absent.
 
-Amazon Quick Desktop MUST execute a bundled script inside `run_python_with_write`, not as a subprocess:
+AWS Quick on desktop MUST execute a bundled script inside `run_python_with_write`, not as a subprocess:
 
 1. Read the complete script source with `file_read`.
-2. In `run_python_with_write`, import the script by its file stem, which Amazon Quick places on the sandbox import path, and call its `run(request)`: `import run_verification as script; result = script.run(request)`. Do not read or assign `__file__`, `__dict__`, or any other dunder attribute; the sandbox attribute checker blocks those and the import already registers the module in `sys.modules`, which the dataclass postponed annotations need. Do not compile or `exec` the source yourself.
+2. In `run_python_with_write`, import the script by its file stem, which AWS Quick places on the sandbox import path, and call its `run(request)`: `import run_verification as script; result = script.run(request)`. Do not read or assign `__file__`, `__dict__`, or any other dunder attribute; the sandbox attribute checker blocks those and the import already registers the module in `sys.modules`, which the dataclass postponed annotations need. Do not compile or `exec` the source yourself.
 
 Use a unique `script_name` for each execution. Do not invoke a subprocess, modify `os.environ`, import another bundled script, or modify `sys.path`. The callable entry is `run` in each of `create_synthetic_well.py`, `run_verification.py`, `run_price_impact.py`, `run_zone_exit.py`, `create_handover.py`, and `create_dashboard.py`. The CLI form `python scripts/<name>.py --input '<json object>'` remains available outside the read-only sandbox.
 
 ## Common input
 
-- `workspace_dir` (string, required in Amazon Quick Desktop; absolute path supplied by the sandbox workspace context)
+- `workspace_dir` (string, required in AWS Quick on desktop; absolute path supplied by the sandbox workspace context)
 - `wellbore_id` (string, must match `^[A-Za-z0-9._-]+$`; default `SYN1`)
 - `data_root` (string, relative below `workspace_dir`; default `exit-zone-geosteering-data`). Absolute paths and paths escaping the resolved workspace directory are rejected.
 
@@ -27,7 +27,7 @@ The common request shape for `SYN1` is:
 {"workspace_dir":"<Quick workspace directory>","wellbore_id":"SYN1","data_root":"exit-zone-geosteering-data"}
 ```
 
-Replace `<Quick workspace directory>` with the workspace directory supplied by Amazon Quick and replace only the validated `wellbore_id` when another well is requested. Isolated Decision Review tasks receive this exact request object in their prompt because they cannot see conversation history.
+Replace `<Quick workspace directory>` with the workspace directory supplied by AWS Quick and replace only the validated `wellbore_id` when another well is requested. Isolated Decision Review tasks receive this exact request object in their prompt because they cannot see conversation history.
 
 Responses are JSON objects with a `status` field when the operation is not an observation. `created`, `appended`, `projected`, and `no_alert` are documented results; `error` carries an `error` message. A persisted observation is returned as the complete observation object. Treat an error as the documented failure path and never recompute a value by hand.
 

@@ -1,7 +1,7 @@
 [project]
 name = "amazon-quick-official-catalog"
 version = "1.0.0"
-description = "Official catalog for Amazon Quick skills, plugins, and integrations"
+description = "Official catalog for AWS Quick skills, plugins, and integrations"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
@@ -19,7 +19,8 @@ fix = "scripts.build:fix"
 release = "scripts.release:release"
 embargo = "scripts.embargo:cli"
 skill-security = "scripts.build:skill_security"
-skills-checksum = "scripts.skills_checksum:main"
+asset-checksums = "scripts.asset_checksums:main"
+asset-ids = "scripts.asset_ids:cli"
 category-check = "scripts.category_check:main"
 docs-build = "scripts.build:docs"
 docs-serve = "scripts.build:docs_serve"
@@ -38,6 +39,7 @@ dev = [
     "mkdocs-macros-plugin>=1,<2",
     "pathspec>=1,<2",
     "pydantic>=2,<3",
+    "pytest>=9,<10",
     "pyyaml>=6,<7",
     "ruff>=0.15,<1",
     "zensical",

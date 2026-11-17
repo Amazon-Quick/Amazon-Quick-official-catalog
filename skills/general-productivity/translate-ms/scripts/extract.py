@@ -38,7 +38,7 @@ from docx.oxml.ns import qn
 from lxml import etree
 from pptx import Presentation
 
-# try/except avoids F821 lint errors in Quick's script concatenation mode.
+# try/except avoids F821 lint errors in the AWS Quick script concatenation mode.
 try:
     from state import _STATE
 except ImportError:

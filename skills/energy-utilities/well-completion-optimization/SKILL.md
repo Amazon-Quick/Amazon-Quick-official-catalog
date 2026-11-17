@@ -5,9 +5,9 @@ icon: assets/cylinder.svg
 description: "Quantitative hydraulic fracturing and completion analysis: Nolte-Smith treatment-pressure diagnostics, Diagnostic Fracture Injection Test (DFIT) G-function closure analysis, completion economics, and matched-pair design comparison. Use when asked to analyze treatment pressure, identify fracture propagation mode, run a G-function or DFIT analysis, find closure pressure, compare completion designs, optimize stage or cluster spacing, calculate Estimated Ultimate Recovery (EUR) per dollar or Net Present Value (NPV), or track frac fleet efficiency"
 license: MIT-0
 created_date: "2026-07-14"
-last_updated: "2026-07-14"
+last_updated: "2026-11-05"
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, web_search, url_fetch, get_current_time]
-checksum: "sha256:f10a13d08c19a54b3476ddd980f647d964a67a12a5299d8ce3bdedae3cd99fe5"
+checksum: "sha256:1bab9711e61d7bf299a7fafc88e5228847936fda4cd432093e3869c29bd3aca5"
 id: "44a716c8-e0d1-4e1d-b270-15d6bdb48e4c"
 ---
 

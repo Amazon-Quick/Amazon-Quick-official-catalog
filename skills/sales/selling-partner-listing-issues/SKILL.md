@@ -4,10 +4,10 @@ display_name: SP-API Listing Issue Fixer
 icon: assets/wrench.svg
 description: "Fixes Selling Partner API (SP-API) listing problems that surface as reported issues on a listing: missing or invalid attributes, and suppressions tied to an issue. Reads the listing's issues (severity and enforcement), prioritizes by impact, and previews every fix before it goes live. Use when asked to fix listing issues, listing errors, attribute errors, a listing suppressed because of an issue, or 'what's wrong with this listing'. Do NOT use for why a listing isn't buyable when there is no issue (use selling-partner-listing-buyability), search visibility or optimization (use selling-partner-listing-searchability), creating new listings, inventory or stockout, advertising, or orders."
 created_date: "2026-09-15"
-last_updated: "2026-09-16"
+last_updated: "2026-11-05"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Selling Partner API connector; verify it is available and stop if it is missing."
-checksum: "sha256:74cd010814d1636687a7c2bddb493af540f570c99cdd5b7b02dba5abf2a9976b"
+checksum: "sha256:f18b927c75874de1edfaa1e8bd4a1b5fddb8927613942b29656122a77a76c75d"
 id: "63008b92-ef17-48ff-ac7f-79608e23303a"
 ---
 
@@ -142,7 +142,7 @@ Sibling skills in the SP-API listing troubleshooter family, route to these when 
 - selling-partner-listing-troubleshooter: the router that picks among these by symptom.
 - selling-partner-listing-compliance: the pre-flight compliance gate run before any compliance-sensitive write (claims, ingredients, category, condition, images, identifiers).
 
-This skill depends on the built-in Amazon Selling Partner connector in Amazon Quick (see README.md ## Pre-requisites). The connector is offered during onboarding; if the seller skipped it, they connect and authenticate it from Settings > Capabilities.
+This skill depends on the built-in Amazon Selling Partner connector in AWS Quick (see README.md ## Pre-requisites). The connector is offered during onboarding; if the seller skipped it, they connect and authenticate it from Settings > Capabilities.
 
 Amazon Selling Partner API and Seller Central references (public):
 - Amazon selling policies: https://sellercentral.amazon.com/help/hub/reference/GSNV3657R94YP9DZ

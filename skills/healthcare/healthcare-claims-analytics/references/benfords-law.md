@@ -7,7 +7,7 @@ origin: original
 # Benford's Law Analysis
 
 Test whether the first-digit distribution of charge amounts follows Benford's Law, using a
-manually computed chi-square statistic. scipy is not available in the Amazon Quick sandbox,
+manually computed chi-square statistic. scipy is not available in the AWS Quick code sandbox,
 so this uses numpy and the standard-library `math` module only.
 
 ## Inputs

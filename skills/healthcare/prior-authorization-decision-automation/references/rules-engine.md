@@ -7,7 +7,7 @@ origin: original
 # Rules-Based Adjudication Engine
 
 A deterministic rules engine is the audit-defensible core of PA automation. It runs on
-the Python standard library, so it works in the Amazon Quick `run_python` sandbox and
+the Python standard library, so it works in the AWS Quick code sandbox and
 in an external environment. Use it for clear-cut policy criteria (step therapy, age,
 lab thresholds) and route only ambiguous cases to a machine learning model (see
 `references/ml-classifier.md`).

@@ -15,14 +15,14 @@ defensible. Route clear-cut cases through the rules engine
 ## Sandbox availability
 
 The training and explainability code below depends on `xgboost`, `scikit-learn`, and
-`shap`. None of these are available in the Amazon Quick `run_python` sandbox, whose
+`shap`. None of these are available in the AWS Quick code sandbox, whose
 package set is a closed allowlist (numpy, pandas, matplotlib, and similar). Do not try
 to run this code inside Quick. Deliver it as code the user runs in their own training
 environment, where they control the installed packages (for example a coding agent such
 as Kiro via ACP in Quick on desktop, which can install xgboost, scikit-learn, and shap
 and run the code outside the sandbox). The parsing, feature
 extraction, and rules-engine code elsewhere in this skill uses only pandas and the
-standard library, so that code does run in the Quick sandbox.
+standard library, so that code does run in the code sandbox.
 
 ## Training Pipeline
 

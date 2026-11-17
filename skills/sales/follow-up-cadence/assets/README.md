@@ -10,7 +10,7 @@ Adds strategic follow-up sequences that keep sales momentum without sounding pus
 
 ## Overview
 
-Follow-Up Cadence drafts context-aware follow-ups for meetings, proposals, events, cold leads, and post-purchase check-ins, then tracks each touch in a persistent ledger with reminders for the next action. It is for small business sellers who owe follow-ups and want every message to add new value. It extends Amazon Quick by pulling prior email and calendar context when available and staging or sending drafts, with a chat fallback when no connector is present.
+Follow-Up Cadence drafts context-aware follow-ups for meetings, proposals, events, cold leads, and post-purchase check-ins, then tracks each touch in a persistent ledger with reminders for the next action. It is for small business sellers who owe follow-ups and want every message to add new value. It extends AWS Quick by pulling prior email and calendar context when available and staging or sending drafts, with a chat fallback when no connector is present.
 
 ## Pre-requisites
 
@@ -21,7 +21,7 @@ Follow-Up Cadence drafts context-aware follow-ups for meetings, proposals, event
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

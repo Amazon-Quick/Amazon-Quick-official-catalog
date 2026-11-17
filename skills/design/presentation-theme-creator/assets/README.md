@@ -14,13 +14,13 @@ Create a custom PowerPoint theme with consistent colors, fonts, and slide layout
 
 ## Pre-requisites
 
-This skill builds on the following built-in Amazon Quick system skills. They are pre-installed and marked with a System badge; make sure each is enabled in Customize > Skills (see https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html):
+This skill builds on the following built-in AWS Quick system skills. They are pre-installed and marked with a System badge; make sure each is enabled in Customize > Skills (see https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html):
 
 - `canvas_pptx`: creates PowerPoint (.pptx) presentations (the built-in Presentations system skill).
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. In Customize > Skills, confirm the built-in system skills listed above are enabled (they carry a System badge and are on by default).
 
 ## Getting started

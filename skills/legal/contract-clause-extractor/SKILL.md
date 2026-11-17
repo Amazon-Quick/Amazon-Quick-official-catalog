@@ -4,14 +4,14 @@ display_name: Contract Clause Extractor
 icon: assets/file-pen.svg
 description: "Extracts, classifies, and risk-scores key clauses from contracts and legal agreements. Identifies standard vs non-standard terms, flags high-risk provisions (unlimited liability, broad indemnification, auto-renewal), and produces structured clause inventories with plain-language summaries. Use when asked to 'review this contract', 'extract key clauses', 'flag risky terms', 'contract risk assessment', 'what are the key provisions', or 'summarize this agreement'."
 created_date: "2026-06-22"
-last_updated: "2026-06-22"
+last_updated: "2026-11-05"
 license: "MIT-0"
 
 tools: [file_read, file_read_pdf, file_write, run_python, open_in_session_tab, search_relevant_content, read_quick_suite_file]
 inputs:
 
 - name: contract_file
-  description: "Contract document. Accepts: a local file path (PDF, DOCX, or plain text), a document from a Quick Space, or pasted contract text."
+  description: "Contract document. Accepts: a local file path (PDF, DOCX, or plain text), a document from an AWS Quick space, or pasted contract text."
   type: string
   required: true
 - name: contract_type
@@ -25,7 +25,7 @@ inputs:
   options: [liability, termination, ip, payment, confidentiality, indemnification, all]
   required: false
   default: "all"
-checksum: "sha256:e6679cd616bd56fe314c7894c15b5fbf593ea7d0b5e04d4187e7c3af6b0a9e2d"
+checksum: "sha256:dd3ad6de8c97dce8f5d3b23f076ce6b39956837d20399cff374a3d45a29c6a3a"
 id: "277876fa-56a2-4166-a7b3-149d17b36c5a"
 ---
 

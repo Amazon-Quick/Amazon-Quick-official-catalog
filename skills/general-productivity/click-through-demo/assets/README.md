@@ -20,17 +20,17 @@ The skill only looks around. It never submits, sends, saves, deletes, buys, or c
 
 | Dependency | Type | Runs on | Required |
 | --- | --- | --- | --- |
-| Amazon Quick Web Browser skill | System tool | Your computer, through the Amazon Quick desktop app, driving the browser chosen in Amazon Quick settings | Required |
-| Permission to run page scripts and type into pages | Browser permission prompts in Amazon Quick | Your computer | Required. Choose Allow when the skill first measures a page, because that is how highlights and blur areas are measured. Choose Allow when it first types a search term, or the tour skips the typed-search screen. |
-| A trusted folder on your computer | Amazon Quick allowed folder | Your computer | Recommended. The skill lists your folders and saves the demo in one, so it opens in your browser with internet access. Add one under allowed folders in Amazon Quick settings. |
+| AWS Quick Web Browser skill | System tool | Your computer, through the AWS Quick desktop app, driving the browser chosen in AWS Quick settings | Required |
+| Permission to run page scripts and type into pages | Browser permission prompts in AWS Quick | Your computer | Required. Choose Allow when the skill first measures a page, because that is how highlights and blur areas are measured. Choose Allow when it first types a search term, or the tour skips the typed-search screen. |
+| A trusted folder on your computer | AWS Quick allowed folder | Your computer | Recommended. The skill lists your folders and saves the demo in one, so it opens in your browser with internet access. Add one under allowed folders in AWS Quick settings. |
 | Signed-in session on the site you demo | Your own browser login | Your computer | Optional. Needed only for pages behind a login. Sign in yourself, since the skill never types passwords. |
 
-The skill's scripts need Pillow and pydantic, which the Amazon Quick sandbox provides. Video links (direct https .mp4 or .webm) need an internet connection when the demo is viewed, and embedded video files do not.
+The skill's scripts need Pillow and pydantic, which the AWS Quick code sandbox provides. Video links (direct https .mp4 or .webm) need an internet connection when the demo is viewed, and embedded video files do not.
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
-2. While the skill runs, keep the Amazon Quick desktop app open, your computer awake, and the browser window in front on one display. Some sites do not load content in a hidden tab. Pick your browser in Amazon Quick settings. For desktop setup, see [Connections on desktop](https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+2. While the skill runs, keep the AWS Quick desktop app open, your computer awake, and the browser window in front on one display. Some sites do not load content in a hidden tab. Pick your browser in AWS Quick settings. For desktop setup, see [Connections on desktop](https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html).
 
 ## Getting started
 

@@ -4,7 +4,7 @@ display_name: Markdown to DOCX
 icon: assets/file-text.svg
 description: "Convert markdown documents to professionally formatted Word (.docx) files. Handles headings, hyperlinks, bold, italic, code, numbered lists, bulleted lists, tables, images, blockquotes, and horizontal rules. Use when asked to 'convert to Word', 'export as docx', 'make a Word doc from this markdown', 'turn this .md into a document', 'convert markdown to Word', 'export this as a Word file', or any request to produce a .docx from markdown source."
 created_date: "2026-08-26"
-last_updated: "2026-08-29"
+last_updated: "2026-11-05"
 tools: [run_python, file_read, file_write, open_in_session_tab]
 scripts: [convert.py]
 preferred_model: balanced
@@ -22,7 +22,7 @@ inputs:
     description: Optional document title (overrides the first H1 heading)
     type: string
     required: false
-checksum: "sha256:ed12d86a223cbe68922cd5393cbe4c97509d4e03225ca6976abbb365d5f9cf5c"
+checksum: "sha256:f56d174227fd063947681d6e5bd5212500d3dcbc1360ccb86a67e35aa4b60b67"
 id: "01d32ff7-342c-4acc-8c74-0074d88bf68a"
 ---
 
@@ -75,7 +75,7 @@ See references/element-mapping.md for the complete mapping of markdown syntax to
 - python-docx does not support hyperlinks natively. The script uses lxml XML manipulation to insert w:hyperlink elements with proper relationship IDs. Do not attempt to add hyperlinks via the python-docx API alone.
 - The List Bullet 2 and List Number 2 styles may not exist in all document templates. The script falls back to manual indent if the style is missing.
 - Inline formatting regex is greedy-resistant but not nested. Bold inside a link or code inside bold are handled by processing the outermost match first. Deeply nested formatting (bold inside italic inside a link) renders the outermost format only.
-- The run_python sandbox has Pillow, python-docx, and lxml pre-installed. No pip install is needed or possible.
+- The AWS Quick code sandbox has Pillow, python-docx, and lxml pre-installed. No pip install is needed or possible.
 </Gotchas>
 
 <Instructions>

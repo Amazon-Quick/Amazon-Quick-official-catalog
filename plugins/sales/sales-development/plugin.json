@@ -1,0 +1,30 @@
+{
+  "name": "sales-development",
+  "displayName": "Sales Development (Outlook)",
+  "description": "This plugin is for sales development representatives and small sales teams who work in Microsoft Outlook. Its skills follow a prospect from research to a proposal. With them, you can build a researched lead list, analyze competitors, and write a multi-touch outreach sequence. You can also draft follow-ups that refer to your last conversation, review your pipeline for stalled deals, and generate a proposal as a Word document. The skills use your Outlook mailbox to check for past contact, find replies and sent proposals, and stage outreach as drafts. They send email only after you approve it. Connect Outlook once, and every skill uses the same mailbox. Lead research uses public web sources, so verify contact details before you reach out.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/handshake.svg",
+  "connectors": [
+    {
+      "key": "email",
+      "label": "Microsoft Outlook",
+      "description": "The skills search this mailbox for past contact, replies, and sent proposals. They also stage outreach here as drafts for you to review and send.",
+      "types": [
+        "MICROSOFT_OUTLOOK"
+      ],
+      "required": true
+    }
+  ],
+  "skills": [
+    "sales/lead-prospector",
+    "sales/competitor-intel",
+    "sales/outreach-sequence-builder",
+    "sales/follow-up-cadence",
+    "sales/deal-pipeline-manager",
+    "sales/proposal-generator"
+  ],
+  "id": "eb4110a3-42bd-485b-b4db-c0df5738ccbb"
+}

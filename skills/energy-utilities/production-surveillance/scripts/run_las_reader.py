@@ -718,7 +718,7 @@ def run(request_object: dict[str, Any]) -> dict[str, Any]:
     """Execute one request object and return the result dict (sandbox entry point).
 
     ``workspace_dir`` may be supplied in the request object; it is required in
-    the Amazon Quick sandbox because the process environment is read-only. When
+    the AWS Quick code sandbox because the process environment is read-only. When
     absent, the WORKSPACE_DIR environment variable is used.
     """
     workspace_dir = request_object.get("workspace_dir") or os.environ.get(

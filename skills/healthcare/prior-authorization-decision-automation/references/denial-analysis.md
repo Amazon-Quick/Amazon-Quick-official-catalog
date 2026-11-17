@@ -7,7 +7,7 @@ origin: original
 # Denial Reason Analysis
 
 Denial pattern analysis identifies systemic documentation or policy gaps across a book
-of PA decisions. It uses pandas, which is available in the Amazon Quick `run_python`
+of PA decisions. It uses pandas, which is available in the AWS Quick code
 sandbox.
 
 ## Denial Pattern Analysis

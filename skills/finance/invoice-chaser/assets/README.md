@@ -20,12 +20,12 @@ Invoice Chaser answers the weekly question "who hasn't paid me, and what should 
 - Twilio (cloud connector, cloud runtime, optional): ensure it is installed, you are signed in, and it is enabled. Used only for the secondary SMS channel; if it is absent the skill falls back to email.
 
 
-This skill also uses built-in Amazon Quick system tools. These are available by default (no install); manage them under Customize > Connectors (see https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html):
+This skill also uses built-in AWS Quick system tools. These are available by default (no install); manage them under Customize > Connectors (see https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html):
 - `agent_management`: Agent management (built-in system tool) to create and trigger the scheduled routine (create_scheduled_agent) that runs the skill automatically.
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

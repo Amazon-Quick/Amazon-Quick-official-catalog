@@ -10,7 +10,7 @@ Adds systematic prospect research that builds targeted lead lists with decision-
 
 ## Overview
 
-Lead Prospector researches companies that match your ideal customer profile, identifies named decision makers, gathers personalization intel, and deduplicates against existing contacts. It is for small business sellers who need actionable leads rather than raw directory names. It extends Amazon Quick by combining web research with your email history and delivering lists formatted for immediate use by outreach and pipeline skills.
+Lead Prospector researches companies that match your ideal customer profile, identifies named decision makers, gathers personalization intel, and deduplicates against existing contacts. It is for small business sellers who need actionable leads rather than raw directory names. It extends AWS Quick by combining web research with your email history and delivering lists formatted for immediate use by outreach and pipeline skills.
 
 ## Pre-requisites
 
@@ -20,7 +20,7 @@ Lead Prospector researches companies that match your ideal customer profile, ide
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

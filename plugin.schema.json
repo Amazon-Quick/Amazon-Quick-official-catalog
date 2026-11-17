@@ -123,8 +123,7 @@
       "type": "object",
       "required": [
         "key",
-        "label",
-        "type"
+        "label"
       ],
       "additionalProperties": false,
       "properties": {
@@ -150,12 +149,35 @@
           "maxLength": 64,
           "description": "The connector type that fills the slot, for example SALESFORCE_CRM."
         },
+        "types": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "description": "Deprecated. Legacy form of type: a one-element list holding the same value as type. Kept only for app versions that read types and not type. TODO: remove once no supported app reads it."
+        },
         "required": {
           "type": "boolean",
           "default": true,
           "description": "Whether the plugin needs this connector. Omit or set true for a required slot; false marks it optional and skippable at install."
         }
-      }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ]
+        },
+        {
+          "required": [
+            "types"
+          ]
+        }
+      ]
     }
   }
 }

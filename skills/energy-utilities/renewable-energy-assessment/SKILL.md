@@ -3,9 +3,9 @@ name: renewable-energy-assessment
 display_name: Renewable Energy Assessment
 icon: assets/sun.svg
 description: "Assess solar and wind project potential with resource characterization, energy yield estimation, and financial analysis including levelized cost of energy (LCOE). Use when asked to 'assess a solar project', 'estimate wind energy yield', 'calculate LCOE', 'run a renewable feasibility study', 'model PV production', 'size a wind farm', or to evaluate any solar or wind project economics"
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
-last_updated: "2026-07-15"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, file_read, web_search, url_fetch, run_python, run_python_with_write, file_write, open_in_session_tab]
 inputs:
@@ -18,7 +18,7 @@ inputs:
     description: "Directory where the report and dashboard files should be written"
     type: path
     required: false
-checksum: "sha256:30a437ca6dd9d063d95e6a8e4a1b7fc01558cd6b93b629a6c4db2dd5b233a7a4"
+checksum: "sha256:5a4828a8017843fce65e527cb7713d1bc6fb91e61cc999ad94bff23ae552b9a6"
 id: "770c28ad-e4a8-41bf-8d8d-bb8b07652e5d"
 ---
 
@@ -105,7 +105,7 @@ data is limited, provide conservative estimates with uncertainty bounds.
 </Agent Annotations>
 
 <Gotchas>
-- scipy is NOT importable in the Amazon Quick sandbox. Do the Weibull fit, gamma
+- scipy is NOT importable in the AWS Quick code sandbox. Do the Weibull fit, gamma
   function, and power-curve integration with numpy and the stdlib math module
   (math.gamma, method of moments, numpy integration). The methodology references
   give numpy-only reference implementations. Do not import scipy.

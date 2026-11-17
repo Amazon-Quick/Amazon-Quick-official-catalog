@@ -4,10 +4,10 @@ display_name: SP-API Listing Troubleshooter
 icon: assets/circle-question-mark.svg
 description: "Top-level entry point for any 'something's wrong with my listing' question in the Selling Partner API (SP-API). Does a quick read of the listing's status and issues, identifies the symptom, and routes the seller to the right specialist skill. Use when the complaint is non-specific: 'something's wrong with my listing', 'troubleshoot my listing', 'my product has a problem', 'listing not working', or 'where do I start'. Routes to selling-partner-listing-issues, selling-partner-listing-buyability, selling-partner-listing-searchability, or selling-partner-listing-compliance. Do NOT use when the seller already names the symptom; go straight to that specialist skill."
 created_date: "2026-09-15"
-last_updated: "2026-09-16"
+last_updated: "2026-11-05"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Selling Partner connector; verify it is connected and stop if it is missing."
-checksum: "sha256:f9ff405fba3745a4501a21efd76d2be53fe6206ce7615ddf293489ad1713c05b"
+checksum: "sha256:16d3081896fa3b811571ad166486761366c34624b4ebab9360b1c39f58f60596"
 id: "22a8f167-2014-4632-ae87-a1fb04bac78b"
 ---
 
@@ -116,5 +116,5 @@ Specialist skills in the SP-API listing troubleshooter family that this router h
 - selling-partner-listing-searchability: why a listing is not found, plus search optimization.
 - selling-partner-listing-compliance: pre-flight compliance gate for "can I list this" and for any compliance-sensitive write the specialists are about to make.
 
-This skill depends on the built-in Amazon Selling Partner connector in Amazon Quick (see README.md ## Pre-requisites). The connector is offered during onboarding; if the seller skipped it, they connect and authenticate it from Settings > Capabilities.
+This skill depends on the built-in Amazon Selling Partner connector in AWS Quick (see README.md ## Pre-requisites). The connector is offered during onboarding; if the seller skipped it, they connect and authenticate it from Settings > Capabilities.
 </Resources>

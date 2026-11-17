@@ -6,16 +6,16 @@
   --md-accent-fg-color--transparent: rgba(255, 196, 53, 0.1);
 }
 
-.md-content img[alt="Amazon Quick"] {
+.md-content img[alt="AWS Quick Official Catalog logo"] {
   display: block;
   margin: 0 auto;
 }
 
-.md-content h1#amazon-quick-official-catalog {
+.md-content h1#aws-quick-official-skills-catalog {
   text-align: center;
 }
 
-.md-content h1#amazon-quick-official-catalog + p {
+.md-content h1#aws-quick-official-skills-catalog + p {
   border-bottom: 2px solid var(--md-primary-fg-color);
   padding-bottom: 1em;
 }

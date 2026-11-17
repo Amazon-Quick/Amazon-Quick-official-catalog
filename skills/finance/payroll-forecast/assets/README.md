@@ -17,13 +17,13 @@ Payday Cash Projection answers "can I make payroll?" conservatively: it computes
 - QuickBooks (cloud connector, cloud runtime, required): ensure it is installed, you are signed in, and it is enabled. It supplies the bank balances, payroll liabilities, bills, and obligations the projection is built from; the skill does not run without it.
 
 
-This skill also uses built-in Amazon Quick system tools. These are available by default (no install); manage them under Customize > Connectors (see https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html):
+This skill also uses built-in AWS Quick system tools. These are available by default (no install); manage them under Customize > Connectors (see https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html):
 - `agent_management`: Agent management (built-in system tool) to create and trigger the optional scheduled routine.
 - `memory_management`: Knowledge and memory (built-in system tool) to recall the owner's preferences and prior decisions across runs.
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

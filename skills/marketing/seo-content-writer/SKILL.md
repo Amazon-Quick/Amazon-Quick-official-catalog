@@ -5,7 +5,7 @@ display_name: SEO Content Writer
 icon: assets/search.svg
 description: "Creates SEO-optimized blog posts, landing pages, and website content that ranks on Google while converting readers into customers. Conducts keyword research, competitive analysis, and writes in-depth content. Use when user says 'write a blog post', 'SEO content', 'help me rank for [keyword]', 'website copy', 'landing page', 'optimize my content', 'keyword research', 'write for Google', 'blog article about [topic]', 'content that ranks', or 'article for [audience]'."
 created_date: "2026-05-15"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [web_search, url_fetch, file_rag_search, file_read, file_write, run_python, open_in_session_tab]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -23,7 +23,7 @@ inputs:
   description: "Geographic focus for local SEO (city, state, region)"
   type: string
   required: false
-checksum: "sha256:1ff40581e64eafb14c1e26972fc5cf64f9306ca3e135556d192880b34c56bf45"
+checksum: "sha256:449fe1489f01e7350fbaab10b6033703129b504b6695b8f917485ffecd34a78b"
 id: "e249c165-f5b5-4b1d-979f-394ae814e0c0"
 ---
 

@@ -1,5 +1,5 @@
 """
-description: Project chart-ready geosteering data and render a plain-HTML fallback inside the Amazon Quick workspace.
+description: Project chart-ready geosteering data and render a plain-HTML fallback inside the AWS Quick workspace.
 last_updated: 2026-09-15
 origin: original
 """

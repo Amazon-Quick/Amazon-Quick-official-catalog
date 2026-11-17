@@ -4,10 +4,10 @@ display_name: SP-API Support Case Helper
 icon: assets/life-buoy.svg
 description: "Guides an Amazon seller (Seller Central) who has a Selling Partner account or selling issue to the right Amazon support path. It gathers a few case details, assembles a clean, PII-free summary, and either (a) uses an Amazon Selling Partner connector tool to contact Seller Support / create a case when such a tool is available and the seller explicitly confirms, or (b) when no such tool exists, points the seller to the Seller Central Help Center to open the case themselves. Use when asked to contact Amazon about an account, open a support case, get additional help with Amazon, or connect with Amazon support. Do NOT use for Vendors (Vendor Central) or any non-Seller Central use case, requests that are not Amazon Seller / Selling Partner support, diagnosing or fixing the underlying problem, or submitting a case without the seller's explicit confirmation."
 created_date: "2026-09-18"
-last_updated: "2026-09-18"
+last_updated: "2026-11-05"
 license: "Apache-2.0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Amazon Selling Partner connector; verify it is available and stop if it is missing."
-checksum: "sha256:6313b3a3e0ff6723e3bfca397202f3c8428ee6c18430bf3098e108b6422505ab"
+checksum: "sha256:7a803e9cf8b531be061e1410d9f87f795947bd3345988f183941867a99b587a5"
 id: "8a06fc11-e6ab-47d9-adc0-63684ca09068"
 ---
 

@@ -3,9 +3,9 @@ name: retail-merchant-briefing
 display_name: Merchant Monday Briefing
 icon: assets/clipboard-list.svg
 description: "Automated weekly performance intelligence that replaces dashboard reviews with synthesized insights and recommended actions for retail merchandising leaders. Use when asked to 'give me my Monday briefing', 'weekly performance summary', 'what needs attention this week', 'category performance review', 'merchandising dashboard', or 'what happened last week in [category]'."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-06-10"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [run_python, file_write, file_read, open_in_session_tab, web_search]
 inputs:
@@ -40,7 +40,7 @@ inputs:
     type: number
     required: false
     default: 5
-checksum: "sha256:1342776b664741ea5b1ea3fbd9e3fbaf52e5e4a2ddc02cc1539fdd1faee74b87"
+checksum: "sha256:a58711039673ab4bc578c6b6eaa99555035b458ac38b5667fbb8073ef9780c16"
 id: "c5f435e2-f108-41c8-8e6c-8886876d50d3"
 ---
 
@@ -75,7 +75,7 @@ Produce a single interactive HTML briefing that answers: "What happened last wee
 
 <Definition - Data Source Cascade>
 Try in order, stop at first success:
-1. Amazon Quick Dataset Q&A (if a QuickSight dataset is configured): ask questions directly in natural language against the full dataset with automatic SQL generation and security enforcement.
+1. AWS Quick Dataset Q&A (if an AWS Quick Sight dataset is configured): ask questions directly in natural language against the full dataset with automatic SQL generation and security enforcement.
 2. Data warehouse MCP connector detected (any SQL-compatible connector): query catalog for sales/margin tables.
 3. Data source input provided as file path (.csv, .xlsx): parse with run_python.
 4. Spreadsheet connector available (Google Sheets, OneDrive): search for "sales" or "performance" in shared files.

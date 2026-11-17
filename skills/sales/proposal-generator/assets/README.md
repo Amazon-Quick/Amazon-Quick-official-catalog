@@ -10,7 +10,7 @@ Adds prospect-specific sales proposals and quotes, auto-branded with the sender'
 
 ## Overview
 
-Proposal Generator creates tailored proposals across Quick Quote, Standard, and Enterprise tiers, leading with the buyer's goals, quantifying outcomes, and presenting clear pricing options. It is for small business sellers who need polished, deal-specific proposals rather than generic templates. It extends Amazon Quick by resolving seller identity from context or memory, pulling deal notes from connected local folders, and offering to send the finished document by email or save it locally.
+Proposal Generator creates tailored proposals across Quick Quote, Standard, and Enterprise tiers, leading with the buyer's goals, quantifying outcomes, and presenting clear pricing options. It is for small business sellers who need polished, deal-specific proposals rather than generic templates. It extends AWS Quick by resolving seller identity from context or memory, pulling deal notes from connected local folders, and offering to send the finished document by email or save it locally.
 
 ## Pre-requisites
 
@@ -18,7 +18,7 @@ Proposal Generator creates tailored proposals across Quick Quote, Standard, and 
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 2. Install and enable any connectors listed in Pre-requisites above. For connector setup, see https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 
 ## Getting started

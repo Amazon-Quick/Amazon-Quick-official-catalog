@@ -4,9 +4,9 @@ display_name: Microgrid Design
 icon: assets/plug-zap.svg
 license: MIT-0
 description: "Optimize sizing, dispatch, resilience, and financials for grid-connected or islanded microgrids. Use when asked to 'design a microgrid', 'size solar plus storage', 'optimize a hybrid energy system', 'run a microgrid feasibility study', 'model dispatch for a distributed energy resource', 'calculate levelized cost of energy for a microgrid', 'analyze backup resilience and hours of autonomy', or any distributed-energy techno-economic sizing request"
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 created_date: "2026-07-15"
-last_updated: "2026-07-15"
+last_updated: "2026-11-05"
 tools: [get_current_time, web_search, url_fetch, file_read, run_python, run_python_with_write, open_in_session_tab]
 inputs:
   - name: load_data_path
@@ -25,7 +25,7 @@ inputs:
     description: "Directory where deliverables (report, charts, equipment schedule) are written."
     type: path
     required: false
-checksum: "sha256:f1e60dac43a3a7c5e194bc58b727ca4492d883527c16c69ef626dc10ef7eed2c"
+checksum: "sha256:7141f027d22c9ac12885c88870fd8c4b11d6e25e95f2902e1bdc4bf5204ccf7a"
 id: "9830fbe9-45c7-4243-9cfb-8d81245cdb1f"
 ---
 
@@ -75,7 +75,7 @@ Deliver an optimized microgrid design with validated sizing, a defined dispatch 
 </Agent Annotations>
 
 <Gotchas>
-- pvlib, HOMER, and SAM are not installed in the Amazon Quick sandbox and cannot be imported. Implement the solar, dispatch, and financial models with numpy and pandas per the reference files, or fetch a production profile from a verified service. `pip install` is blocked. For high-fidelity solar modeling that requires pvlib, use a coding agent such as Kiro via ACP in Quick on desktop to install pvlib and execute the code outside the sandbox.
+- pvlib, HOMER, and SAM are not installed in the AWS Quick code sandbox and cannot be imported. Implement the solar, dispatch, and financial models with numpy and pandas per the reference files, or fetch a production profile from a verified service. `pip install` is blocked. For high-fidelity solar modeling that requires pvlib, use a coding agent such as Kiro via ACP in Quick on desktop to install pvlib and execute the code outside the sandbox.
 - `run_python` has a 60-second execution cap. A 200-configuration by 8,760-hour sweep can exceed it. Screen coarsely first, vectorize with numpy, checkpoint partial results to disk with `run_python_with_write`, and resume rather than restarting.
 - Minimum genset loading is a binding constraint simplified models ignore. A 500 kW genset that cannot run below about 150 kW will dump energy into the battery or curtail solar rather than idle, wasting fuel.
 - Battery round-trip efficiency is a real energy cost: a 90% unit loses 10% of every kWh cycled, which compounds over hundreds of cycles per year.

@@ -21,6 +21,9 @@
       "label": "Your Outlook",
       "description": "The Microsoft Outlook mailbox the skills read from.",
       "type": "MICROSOFT_OUTLOOK",
+      "types": [
+        "MICROSOFT_OUTLOOK"
+      ],
       "required": true
     }
   ],

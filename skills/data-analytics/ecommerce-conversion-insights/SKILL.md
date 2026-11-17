@@ -4,7 +4,7 @@ display_name: E-commerce Conversion Insights
 icon: assets/trending-up.svg
 description: "Analyzes funnel data from uploaded CSV/Excel files (exported from any analytics platform) to identify conversion blockers, quantify revenue impact, and deliver actionable recommendations. Use when asked 'why is conversion down', 'funnel analysis', 'conversion drop', 'checkout abandonment', 'where are we losing customers', 'conversion blockers', or 'site experience issues'."
 created_date: "2026-06-12"
-last_updated: "2026-07-03"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [run_python, file_read, file_write, open_in_session_tab]
 inputs:
@@ -25,7 +25,7 @@ inputs:
 scripts:
   - funnel_analyzer.py
   - revenue_impact_calculator.py
-checksum: "sha256:f2977f41a7004204cf053b7ffc3966d07707b6487ee0b43dc59f95dcab6dafde"
+checksum: "sha256:a6a183a69c12f1ad43d5e8329657dd339287bc55788551129f78016f78af39c1"
 id: "2aecc6d9-6698-4c7e-a483-004c77565ebd"
 ---
 

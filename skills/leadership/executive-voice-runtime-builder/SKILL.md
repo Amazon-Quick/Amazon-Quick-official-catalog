@@ -4,11 +4,11 @@ display_name: Executive Voice Runtime Builder
 icon: assets/mic.svg
 description: "Analyzes how a person writes and encodes it into a portable, machine-readable voice profile (engram) for drafting in their voice, with calibration gates and a governance log. Use when asked to 'build a voice profile', 'capture my writing voice', 'create a voice engram', 'clone my writing style', 'refresh my voice model', 'validate a draft against my voice', or 'does this sound like me'"
 created_date: "2026-07-17"
-last_updated: "2026-07-17"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, file_read, file_write, folder_list, folder_create, kg_search, search_all, file_rag_search, open_in_session_tab]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
-checksum: "sha256:0a8dfdcdffddcf82d988291f80a3ee83b7aa8b5a895f4fa1e47b2a1ebee85f36"
+checksum: "sha256:9996721306b1052ec364b457adb8eb24d80422513dd18c3acdc7cae120fa8156"
 id: "7f3e67d1-60b7-4517-aa07-b760b60bcfa6"
 ---
 
@@ -16,7 +16,7 @@ id: "7f3e67d1-60b7-4517-aa07-b760b60bcfa6"
 
 Analyzes how a user writes, not what they think, and builds a portable, machine-readable voice engram used to draft in their voice. The engram captures structure, tone, rhythm, register routing, hard limits, and vocabulary signatures. It does not capture business judgment, opinions, or permission to act without review.
 
-The engram is a portable artifact: a structured file the user owns plus a paste-able `portable_prompt`. Amazon Quick has no auto-load hook for a custom drafting runtime, so the engram is delivered as a file the user loads or pastes, not registered as a background model.
+The engram is a portable artifact: a structured file the user owns plus a paste-able `portable_prompt`. AWS Quick has no auto-load hook for a custom drafting runtime, so the engram is delivered as a file the user loads or pastes, not registered as a background model.
 
 | Path | Duration | When to Use |
 |------|----------|-------------|
@@ -108,7 +108,7 @@ Evaluated across 7 dimensions (see `references/analysis-dimensions.md`): structu
 </Agent Annotations>
 
 <Gotchas>
-1. Amazon Quick has no auto-load hook for a custom drafting runtime. The engram is a portable artifact (a file plus its `portable_prompt`), not a background model the platform invokes. Deliver it as a file the user loads or pastes.
+1. AWS Quick has no auto-load hook for a custom drafting runtime. The engram is a portable artifact (a file plus its `portable_prompt`), not a background model the platform invokes. Deliver it as a file the user loads or pastes.
 2. Datasets and knowledge bases are read-only at runtime. The engram cannot be written back to them. Persist to user-controlled files only.
 3. Sourcing sent mail and messages needs a connected connector or the personal knowledge graph. If neither is available, fall back to pasted samples or files.
 4. AI contamination ruins models silently. If more than 40% of samples score H2 or lower, trigger Native Voice Calibration Prompts before analysis (see `references/authorship-confidence-gate.md`).

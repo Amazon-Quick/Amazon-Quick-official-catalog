@@ -4,7 +4,7 @@ display_name: "Clinical Trial Protocol Drafting"
 icon: assets/notebook-pen.svg
 description: "Draft clinical trial protocol sections grounded in ICH guidelines and FDA regulations, starting from a grant document or study synopsis. Generates Objectives, Background & Rationale, Study Design, and assembles them into a cohesive protocol document. Use when asked to 'draft a clinical trial protocol', 'write protocol objectives from this grant', 'generate a study design section', 'create a protocol from my synopsis', 'draft IND protocol sections', or any request to produce ICH/FDA-compliant protocol text from research source documents."
 created_date: "2026-07-27"
-last_updated: "2026-07-27"
+last_updated: "2026-11-05"
 license: MIT-0
 preferred_model: smart
 preferred_thinking: medium
@@ -23,7 +23,7 @@ inputs:
     description: "Disease area or therapeutic focus (e.g., oncology, cardiology). Inferred from source if not provided."
     type: string
     required: false
-checksum: "sha256:a7e885f2a5e31714ce500d6bc75234cbfb03bb1ca0d3b02ff6df1f79d133a55e"
+checksum: "sha256:11c1b8b8adaff36a47950aa432156e5e8668ccdc6c2cb15ce50d0e0cd018e608"
 id: "6bf9d2ad-3d1d-4f23-b3e0-9c5a70b6a9d2"
 ---
 
@@ -38,7 +38,7 @@ The final deliverable is an assembled protocol document ready for PI and IRB rev
 
 ### Prerequisites
 
-This skill requires two MCP servers connected to Amazon Quick as remotely hosted
+This skill requires two MCP servers connected to AWS Quick as remotely hosted
 MCP servers before use:
 
 1. **fda-ecfr** - Retrieves 21 CFR regulatory text from the public FDA eCFR API.

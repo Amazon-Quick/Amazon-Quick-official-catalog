@@ -4,13 +4,13 @@ display_name: Support Ticket Triager
 icon: assets/ticket.svg
 description: "Classifies incoming support tickets by category, urgency, and complexity. Applies routing rules to assign teams, generates initial response drafts, and flags escalation candidates based on customer tier, issue severity, and Service Level Agreement (SLA) proximity. Use when asked to 'triage these tickets', 'classify support requests', 'route this ticket', 'prioritize the queue', 'which tickets need escalation', or 'auto-categorize support inbox'."
 created_date: "2026-06-22"
-last_updated: "2026-06-22"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [file_read, file_write, run_python, open_in_session_tab, query_dataset, list_qa_resources, search_relevant_content, read_quick_suite_file]
 inputs:
 
 - name: tickets_source
-  description: "Ticket data source. Accepts: a file path (CSV, JSON, or plain text export from your helpdesk), pasted ticket text, a Quick dataset name or ARN containing ticket records, or a document from a Quick Space."
+  description: "Ticket data source. Accepts: a file path (CSV, JSON, or plain text export from your helpdesk), pasted ticket text, an AWS Quick dataset name or ARN containing ticket records, or a document from a Quick space."
   type: string
   required: true
 - name: routing_rules
@@ -21,7 +21,7 @@ inputs:
   description: "File path to SLA definitions (JSON or YAML). Maps priority levels to response and resolution time targets. If not provided, the agent uses standard defaults from the Priority Levels definition."
   type: string
   required: false
-checksum: "sha256:656ec83d460de6a3c7cc3468b4324402c4c780de14815b979003287a108d92d6"
+checksum: "sha256:bc17a3f7c2f762be70b6524705e4d0467fcf45531d4fb006aebee2f8c1f1bc2c"
 id: "1797190a-af8c-4e68-a19d-c2315a9c8391"
 ---
 

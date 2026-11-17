@@ -1,0 +1,18 @@
+{
+  "name": "executive-strategy",
+  "displayName": "Executive and Strategy",
+  "description": "This plugin is for directors and executives who make decisions and communicate them. With its skills, you can build a business case that compares your proposal with an alternative and with doing nothing. Each case has a financial model with three scenarios. A strengths, weaknesses, opportunities, and threats (SWOT) analysis pairs its findings into strategies and ranks the actions. To track goals, you can set objectives and key results (OKRs), key performance indicators (KPIs), or another framework, and score progress. You can also build a profile of your writing voice from samples and check drafts against it. A separate ruleset revises drafts to remove patterns common in AI-generated text. The business case and SWOT skills use your documents and public web research. The voice skill uses samples from connected email or chat, or samples that you paste, so you don't need a connector. To profile another person's voice, get that person's consent first. Review the results before you act on or share them.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/compass.svg",
+  "skills": [
+    "leadership/business-case-builder",
+    "leadership/swot-analysis-generator",
+    "leadership/goal-tracker-reporter",
+    "leadership/executive-voice-runtime-builder",
+    "general-productivity/eliminate-ai-writing-tropes"
+  ],
+  "id": "0f8b9b17-1b0e-4538-8977-beb8267e1175"
+}

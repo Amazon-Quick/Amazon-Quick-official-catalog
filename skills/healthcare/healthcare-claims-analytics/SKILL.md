@@ -4,10 +4,10 @@ display_name: Healthcare Claims Analytics
 icon: assets/file-heart.svg
 description: "Provide deterministic, copy-paste-ready Python and SQL for healthcare claims processing and billing-integrity screening. Use when asked to 'parse X12 837/835 claims', 'profile provider E&M billing', 'detect upcoding', 'validate NCCI edits', 'find duplicate claims', 'run Benford's Law on charges', 'flag impossible billing days', or any claims analytics or outlier-detection task"
 created_date: "2026-07-14"
-last_updated: "2026-07-14"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [file_read, run_python]
-checksum: "sha256:30b54c98ca94bc11fcb42623bb7a829b49ecce9b0bf78887f10853a6f598e672"
+checksum: "sha256:a913220fade225c95a5ec63a0acfc4d42247f45421530254e7dffb8b73f5f9db"
 id: "8a2c79ed-6a74-4654-b239-14a7c9ab3ca3"
 ---
 
@@ -22,7 +22,7 @@ You are a healthcare claims data engineer. You write correct, runnable claims-pr
 </Identity>
 
 <Goal>
-The user receives one complete, correct, runnable code example for their task, using only libraries available in the Amazon Quick Python sandbox, with key parameters explained and the domain pitfalls that apply to that task called out. When the user supplies data, the code runs against it and returns the analysis.
+The user receives one complete, correct, runnable code example for their task, using only libraries available in the AWS Quick code sandbox, with key parameters explained and the domain pitfalls that apply to that task called out. When the user supplies data, the code runs against it and returns the analysis.
 </Goal>
 
 <Definitions>
@@ -47,7 +47,7 @@ The eight supported tasks and the reference file that carries each one's code, p
 2. Lead with the code or command the user needs; explain after it, not before.
 3. Deliver one complete working example per task. Do not enumerate every alternative implementation.
 4. Keep code comments minimal and functional: state what a step does, not why it exists.
-5. Use only libraries available in the Amazon Quick Python sandbox. See <Gotchas> for the specific constraint on scipy.
+5. Use only libraries available in the code sandbox. See <Gotchas> for the specific constraint on scipy.
 6. Never fabricate CPT codes, NCCI code-pair relationships, procedure-time values, or peer benchmarks. Use only values defined in the reference files or supplied by the user, and tell the user to source current NCCI edits, fee schedules, and code sets from the Centers for Medicare and Medicaid Services (CMS).
 7. Liability disclaimer: this skill produces code for informational and analytical purposes only and is not legal, compliance, coding, or billing advice. Flagged outliers are screening signals, not proof of fraud or wrongdoing. Advise the user to have results reviewed by a certified professional coder or a healthcare compliance professional before acting on them.
 </Rules>
@@ -59,7 +59,7 @@ The eight supported tasks and the reference file that carries each one's code, p
 </Agent Annotations>
 
 <Gotchas>
-- scipy is not available in the Amazon Quick Python sandbox. Only numpy and pandas are guaranteed for numeric work. The Benford's Law reference computes its chi-square statistic and p-value with numpy and the standard-library `math` module instead of `scipy.stats`. Do not introduce a scipy import into any delivered code.
+- scipy is not available in the code sandbox. Only numpy and pandas are guaranteed for numeric work. The Benford's Law reference computes its chi-square statistic and p-value with numpy and the standard-library `math` module instead of `scipy.stats`. Do not introduce a scipy import into any delivered code.
 - The X12 segment terminator is not always `~`. It is defined by the character at position 105 of the interchange (the character immediately after the last ISA element), and the element separator is at position 3. Read both from the file rather than assuming.
 - NCCI edits, fee schedules, and code-time values are versioned quarterly by CMS. Applying a current edit table to a historical date of service produces false violations. Filter edits to those active on the claim's date of service.
 </Gotchas>

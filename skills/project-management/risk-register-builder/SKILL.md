@@ -2,10 +2,10 @@
 name: risk-register-builder
 display_name: Risk Register Builder
 description: "Create a structured risk register for any project or initiative with identified risks, probability/impact scoring, risk owners, mitigation plans, and contingency actions. Use when the user says 'build a risk register', 'identify project risks', 'risk assessment', 'what could go wrong', 'risk matrix', or 'project risk analysis'."
-readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in Amazon Quick capabilities; verify each is enabled and stop if a required one is missing."
+readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required built-in AWS Quick capabilities; verify each is enabled and stop if a required one is missing."
 icon: assets/triangle-alert.svg
 created_date: "2026-06-15"
-last_updated: "2026-07-03"
+last_updated: "2026-11-05"
 license: "MIT-0"
 inputs:
   - name: project
@@ -31,7 +31,7 @@ inputs:
     required: false
     default: "both"
 tools: [file_read, file_read_pdf, file_read_docx, run_python, file_write, open_in_session_tab]
-checksum: "sha256:bb1fc6f2fd3cfd412d146573878c26c930eff8a87bbe958a3e111a768d1d1759"
+checksum: "sha256:4502c547289c35f05b85b9990396990cd5de006373fff748ec525b877bf7ef0e"
 id: "37062942-9edd-4d5b-a524-0af6e8019281"
 ---
 

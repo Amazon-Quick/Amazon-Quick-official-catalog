@@ -4,7 +4,7 @@ display_name: HR Policy Agent
 icon: assets/book.svg
 description: "Answers employee questions about company policies by searching indexed HR handbooks, benefits guides, and policy documents. Provides accurate, sourced responses with page references and escalates ambiguous or sensitive questions to HR. Use when asked about 'PTO policy', 'benefits question', 'company policy on X', 'HR handbook', 'what's our policy for', or any employee policy inquiry."
 created_date: "2026-06-22"
-last_updated: "2026-06-22"
+last_updated: "2026-11-05"
 license: "MIT-0"
 
 tools: [file_rag_search, file_read, file_read_pdf, run_python, open_in_session_tab, search_relevant_content, read_quick_suite_file]
@@ -15,10 +15,10 @@ inputs:
   type: string
   required: true
 - name: document_folder
-  description: "Source for HR policy documents. Accepts: a local folder path containing indexed HR handbooks and policy documents, a Quick Space name (documents in the space will be searched semantically), or leave empty to use the default indexed documents."
+  description: "Source for HR policy documents. Accepts: a local folder path containing indexed HR handbooks and policy documents, an AWS Quick space name (documents in the space will be searched semantically), or leave empty to use the default indexed documents."
   type: string
   required: false
-checksum: "sha256:ecd2453de28d72a6de9fb088ed691a39ee472efacca22cde03348e990192b55f"
+checksum: "sha256:a3aad1a78ed01c01c6beb2f3436e4a73de3dea017f0a67e3fb1af0a97569e09f"
 id: "e2182d44-08b5-4d61-adce-c1b3f5165333"
 ---
 

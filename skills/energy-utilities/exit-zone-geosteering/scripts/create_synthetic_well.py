@@ -1,5 +1,5 @@
 """
-description: Create a deterministic synthetic geosteering well, reference pack, JSONL stream, and initial read model inside the Amazon Quick workspace.
+description: Create a deterministic synthetic geosteering well, reference pack, JSONL stream, and initial read model inside the AWS Quick workspace.
 last_updated: 2026-09-15
 origin: original
 """

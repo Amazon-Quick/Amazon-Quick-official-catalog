@@ -8,7 +8,7 @@ origin: original
 
 Feature extraction turns a parsed PA request plus claims, formulary, and lab data into
 a single feature vector for adjudication. It uses pandas, which is available in the
-Amazon Quick `run_python` sandbox.
+AWS Quick code sandbox.
 
 ## Feature Set for PA Adjudication
 

@@ -10,21 +10,21 @@ Drafts ICH- and FDA-grounded clinical trial protocol sections from a grant docum
 
 ## Overview
 
-This skill turns a research source document into IRB-ready protocol text, producing Objectives, Background and Rationale, and Study Design sections and assembling them into a cohesive protocol. It is for clinical researchers, medical writers, and regulatory affairs staff who need a defensible first draft grounded in ICH E6/E8/E9 and 21 CFR Part 312. It extends Amazon Quick by pulling authoritative regulatory text through MCP servers and presenting each section for human review before proceeding, flagging gaps rather than fabricating content.
+This skill turns a research source document into IRB-ready protocol text, producing Objectives, Background and Rationale, and Study Design sections and assembling them into a cohesive protocol. It is for clinical researchers, medical writers, and regulatory affairs staff who need a defensible first draft grounded in ICH E6/E8/E9 and 21 CFR Part 312. It extends AWS Quick by pulling authoritative regulatory text through MCP servers and presenting each section for human review before proceeding, flagging gaps rather than fabricating content.
 
 ## Pre-requisites
 
-Both MCP servers must be connected to Amazon Quick before use. Without them, the skill cannot retrieve authoritative regulatory text and will not function.
+Both MCP servers must be connected to AWS Quick before use. Without them, the skill cannot retrieve authoritative regulatory text and will not function.
 
 - fda-ecfr (custom/remote MCP server, required): retrieves 21 CFR regulatory text from the public FDA eCFR API. Source and setup: https://github.com/aws-samples/amazon-bedrock-agents-healthcare-lifesciences/tree/main/mcp-servers/agentcore-gateway/fda-ecfr
 - awslabs.bedrock-kb-retrieval-mcp-server (custom/remote MCP server, required): queries ICH guideline content (E6, E8, E9) via an Amazon Bedrock Knowledge Base. Source and setup: https://github.com/awslabs/mcp/tree/main/src/bedrock-kb-retrieval-mcp-server
 
 ## Installation
 
-1. In Amazon Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
+1. In AWS Quick on desktop, go to Customize > Skills, choose Browse all, select the Official tab, and search for the skill by name. Choose Install. See [Browsing for more skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html).
 
 2. Deploy the two MCP servers listed above from their source repositories.
-3. Connect each deployed server to Amazon Quick as a remotely hosted MCP server. The path depends on your surface:
+3. Connect each deployed server to AWS Quick as a remotely hosted MCP server. The path depends on your surface:
    - Desktop app: Customize > Connectors, then Create > Cloud Connector (a remotely hosted MCP server is added as a cloud connector). See https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
    - Web console: Connectors > Create for your team > Model Context Protocol (MCP). See https://docs.aws.amazon.com/quick/latest/userguide/mcp-integration.html
 4. Add this skill: https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html

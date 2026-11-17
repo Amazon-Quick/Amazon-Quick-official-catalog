@@ -5,7 +5,7 @@ display_name: Social Post Creator
 icon: assets/share-2.svg
 description: "Creates social media posts for small businesses across LinkedIn, Instagram, Twitter/X, Facebook, and TikTok. Generates platform-native copy, hashtag strategies, image prompts, and carousel designs. Use when user says 'write a social post', 'create a LinkedIn post', 'Instagram caption', 'social media content', 'write a tweet', 'carousel ideas', 'post about [topic]', 'social copy for [product/event]', or 'thread about [topic]'."
 created_date: "2026-05-15"
-last_updated: "2026-09-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [web_search, run_python, file_write, open_in_session_tab, generate_image]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -24,7 +24,7 @@ inputs:
   type: string
   required: false
   default: "engagement"
-checksum: "sha256:dc9255f06f32a89d435961b0d045eb0a7961c4ed963657e3e375e06afdd5998b"
+checksum: "sha256:8c1cad566b158ec81b87ad925bc6860f8a8f93ade1be822c750ee7a4c763b4cb"
 id: "a77f305b-c6c9-4dab-93bb-9f4d0a99ab96"
 ---
 

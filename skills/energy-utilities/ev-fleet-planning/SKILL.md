@@ -4,10 +4,10 @@ display_name: Electric Vehicle Fleet Planning
 icon: assets/car.svg
 description: "Produce electrically feasible, financially justified electric vehicle (EV) fleet electrification plans grounded in duty-cycle, site electrical, and tariff data. Use when asked to 'plan fleet electrification', 'size EV chargers', 'model fleet charging load', 'assess site electrical capacity for EV charging', 'compare EV vs internal combustion total cost of ownership', 'optimize managed charging', 'assess grid impact of fleet charging', or build a phased fleet transition plan."
 created_date: "2026-07-15"
-last_updated: "2026-07-15"
+last_updated: "2026-11-05"
 license: MIT-0
 tools: [get_current_time, web_search, url_fetch, file_read, run_python, file_write, open_in_session_tab]
-checksum: "sha256:ed3979c438cbc454f948c83c3c4655a9d7a9ab4a957fc130c82bd4a406bef9b1"
+checksum: "sha256:b3bc3b405f474f93bf664883d234643869512f81a44d209b7808ccb4c604229a"
 id: "385e703d-255a-43d7-9d7f-34e2603d6303"
 ---
 
@@ -118,7 +118,7 @@ procurement decisions, with each time-sensitive figure sourced or flagged.
 - EV residual value is volatile beyond 5 years. Use conservative assumptions.
 - Three-phase 480V service is standard for DCFC but may not exist at a depot; adding
   it is a major cost.
-- The Amazon Quick Python sandbox has numpy and pandas but no linear-program solver
+- The AWS Quick code sandbox has numpy and pandas but no linear-program solver
   (no scipy.optimize, pulp, or cvxpy). Implement managed charging as a valley-filling
   heuristic, not a solved optimum. See references/cost-and-grid-models.md. For a true
   least-cost managed-charging optimum, use a coding agent such as Kiro via ACP in

@@ -4,7 +4,7 @@ display_name: Business Pulse
 icon: assets/activity.svg
 description: "Delivers a plain-language business health briefing for owner-operators by synthesizing cash position, receivables, payables, schedule, and anomalies from QuickBooks. Use when asked 'how's my business doing', 'business pulse', 'what's my cash position', 'who owes me money', 'what do I owe this week', 'give me my morning briefing', 'daily summary', 'where do we stand financially', or any request for a quick financial health snapshot."
 created_date: "2026-06-04"
-last_updated: "2026-07-03"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [agent_management, gmail, google-calendar, memory_management, outlook, quickbooks, slack]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
@@ -30,7 +30,7 @@ inputs:
     type: number
     required: false
     default: 0.4
-checksum: "sha256:1b56770536b66ad5e7796da7d5c30920e8373fb3a0442983c96fd4421d33107f"
+checksum: "sha256:59ed9a4d9c159de7bb9011fc76d7dde657807f1c560f93a32e82801db80c463a"
 id: "9244e71b-068e-4ad2-9da9-28f73f98c0e5"
 ---
 
@@ -144,7 +144,7 @@ Workflow steps use these prefixes:
 - A Balance > '0' invoice query returns only positive open invoices; credit memos and unapplied customer credits are a separate record type with negative balances and are NOT returned by it. Query them separately (or read the net from customer balance detail), or the money-owed total will be overstated and a credit memo will be silently dropped (Rule 11).
 - Calendar cancellations only reach this skill if the calendar connector has push notifications enabled. Without it, a cancelled appointment is only detected at the next scheduled briefing.
 - Slack status and channel posts are visible to others. Treat any channel delivery as public and strip customer names accordingly.
-- Scheduled delivery runs as a local Quick scheduled task: it fires only when the owner's machine is on and Quick is running. It is hands-off (no interaction needed) but not machine-off, so do not promise delivery while the laptop is closed. Never attach a condition to the fixed-time briefing task, which can silently suppress the run.
+- Scheduled delivery runs as a local AWS Quick scheduled task: it fires only when the owner's machine is on and Quick is running. It is hands-off (no interaction needed) but not machine-off, so do not promise delivery while the laptop is closed. Never attach a condition to the fixed-time briefing task, which can silently suppress the run.
 </Gotchas>
 
 <Instructions>

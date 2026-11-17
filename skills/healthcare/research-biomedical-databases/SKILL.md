@@ -4,7 +4,7 @@ display_name: Research Biomedical Databases
 icon: assets/dna.svg
 description: "Query biomedical databases via the Biomni AgentCore Gateway MCP server for protein lookup, variant interpretation, pathway analysis, drug-target associations, and genomic annotations. Use when asked to 'find protein info', 'check variant pathogenicity', 'look up a gene in ClinVar', 'find drug targets for a disease', 'search clinical trials', 'get population frequency', 'find protein structure', 'query UniProt', 'look up pathways in Reactome', or any biomedical database research question."
 created_date: "2026-07-20"
-last_updated: "2026-07-20"
+last_updated: "2026-11-05"
 license: "MIT-0"
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required connectors; verify each is available and stop if a required one is missing."
 inputs:
@@ -18,7 +18,7 @@ inputs:
   options: [variant-interpretation, drug-target-analysis, gene-expression, protein-analysis, discovery]
   required: false
   default: discovery
-checksum: "sha256:caeef49338cd8e61554642dc18a4c9061d491fc44c169cac059032aac7fec7de"
+checksum: "sha256:a7368ce812d02e9019069b471710986d89428ccb6797189a26f3d09bedc604ff"
 id: "aecafc70-2bfe-4bc2-8adf-f9a752847b50"
 ---
 
@@ -30,7 +30,7 @@ Orchestrates queries across the Biomni biomedical database tools (UniProt, ClinV
 
 This skill does nothing on its own. It requires the `biomni-research` MCP server (an Amazon Bedrock AgentCore Gateway) to be deployed on your own AWS account and connected to your AI assistant first. This server is **not** built into any assistant. If it is not connected, none of the tools referenced below exist and no workflow can run.
 
-**Before using this skill, complete the setup in `<Resource - MCP Server Setup>` at the bottom of this file.** It works with any MCP-capable assistant (Claude Code, Cursor, Kiro, Amazon Quick, or a programmatic Strands/MCP client).
+**Before using this skill, complete the setup in `<Resource - MCP Server Setup>` at the bottom of this file.** It works with any MCP-capable assistant (Claude Code, Cursor, Kiro, AWS Quick, or a programmatic Strands/MCP client).
 
 ## Workflow
 

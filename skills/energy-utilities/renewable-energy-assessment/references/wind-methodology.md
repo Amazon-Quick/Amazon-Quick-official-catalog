@@ -15,7 +15,7 @@ verified live per Rule 0.
 - c = scale parameter (m/s), related to mean speed: c = v_mean / Gamma(1 + 1/k)
 - Mean wind speed from Weibull: v_mean = c * Gamma(1 + 1/k)
 
-The Amazon Quick sandbox does not provide scipy, so fit the distribution with the
+The AWS Quick code sandbox does not provide scipy, so fit the distribution with the
 method of moments using numpy and the stdlib `math.gamma`, not `scipy.stats`.
 
 ## Wind shear correction (power law)

@@ -4,7 +4,7 @@ display_name: Browser Data Scraper
 icon: assets/globe.svg
 description: "Scrapes structured data from static web pages into JSONL and exports to CSV, XLSX, or JSONL. Use when asked to 'scrape a website', 'extract data from these URLs', 'collect listings into a spreadsheet', 'paginate through search results', 'crawl a sitemap', or 'pull records from a page'. Handles URL-parameter pagination, next-link following, and URL lists; not JavaScript-rendered pages"
 created_date: "2026-07-13"
-last_updated: "2026-07-13"
+last_updated: "2026-11-05"
 license: "MIT-0"
 tools: [get_current_time, url_fetch, run_python, run_python_with_write, file_read, folder_create, open_in_session_tab]
 inputs:
@@ -37,7 +37,7 @@ inputs:
     description: "Directory for all output files. If omitted, a timestamped folder is created under the workspace directory."
     type: path
     required: false
-checksum: "sha256:43b75c2f6c7991d3fee160113eff77aa2a21aa8caa331061470612e0cedb637c"
+checksum: "sha256:5c09a3c334fc2085b88cc218366281569491f730aa9eec8c542c9fb052709909"
 id: "079eb7f3-cf91-4df0-b5b7-a19b0fb5022c"
 ---
 

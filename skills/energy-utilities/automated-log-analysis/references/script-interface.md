@@ -1,12 +1,12 @@
 ---
-description: "Exact Amazon Quick sandbox invocation contract for automated LAS generation, parsing, petrophysics, plotting, and reporting."
+description: "Exact AWS Quick code sandbox invocation contract for automated LAS generation, parsing, petrophysics, plotting, and reporting."
 last_updated: 2026-09-16
 origin: original
 ---
 
 # Script interface
 
-Every bundled script exposes `run(request: dict) -> dict`. Amazon Quick Desktop executes the scripts inside `run_python_with_write`:
+Every bundled script exposes `run(request: dict) -> dict`. AWS Quick on desktop runs the scripts inside `run_python_with_write`:
 
 1. Read the complete script source with `file_read`.
 2. Import the script by its file stem and call `run(request)`. Example: `import run_evaluation as script; result = script.run(request)`.
@@ -16,7 +16,7 @@ Each script is self-contained. The scripts do not call each other. Use the outpu
 
 ## Common input
 
-- `workspace_dir` (string, required): absolute sandbox workspace directory supplied by Amazon Quick.
+- `workspace_dir` (string, required): absolute sandbox workspace directory supplied by AWS Quick.
 - `well_id` (string, optional): must match `^[A-Za-z0-9._-]+$`; default `SYN-LAS-1`.
 - `data_root` (string, optional): relative directory beneath `workspace_dir`; default `automated-log-analysis-data`.
 

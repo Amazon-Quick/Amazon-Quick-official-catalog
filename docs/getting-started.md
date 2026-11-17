@@ -1,15 +1,15 @@
 ---
-title: What are skills in Amazon Quick?
-description: Learn how reusable skills teach Amazon Quick agents to follow task-specific instructions, use tools, and work with reference files.
+title: What are skills in AWS Quick?
+description: Learn how reusable skills teach AWS Quick agents to follow task-specific instructions, use tools, and work with reference files.
 ---
 
-# What are skills in Amazon Quick?
+# What are skills in AWS Quick?
 
-A skill is a set of instructions that tells Amazon Quick how to do a specific task, such as preparing your weekly status update from your team's template. You write the instructions once, and Amazon Quick follows them whenever that task comes up, instead of you explaining how you want it done in every conversation.
+A skill is a set of instructions that tells AWS Quick how to do a specific task, such as preparing your weekly status update from your team's template. You write the instructions once, and AWS Quick follows them whenever that task comes up, instead of you explaining how you want it done in every conversation.
 
-## How Amazon Quick finds a skill
+## How AWS Quick finds a skill
 
-Amazon Quick doesn't load every installed skill into each conversation. It reads only each skill's name and description, and when your request matches a description, or you ask for a skill by name, it loads that skill's full instructions and follows them. This keeps the skills you aren't using out of the conversation, and it means the description decides whether someone who doesn't know a skill's name ever gets it. [Write the description for someone who has never seen the skill](build-skills.md#write-the-description-for-someone-who-has-never-seen-the-skill) covers how to write one that matches the way people ask.
+AWS Quick doesn't load every installed skill into each conversation. It reads only each skill's name and description, and when your request matches a description, or you ask for a skill by name, it loads that skill's full instructions and follows them. This keeps the skills you aren't using out of the conversation, and it means the description decides whether someone who doesn't know a skill's name ever gets it. [Write the description for someone who has never seen the skill](build-skills.md#write-the-description-for-someone-who-has-never-seen-the-skill) covers how to write one that matches the way people ask.
 
 ## What's in a skill
 
@@ -35,6 +35,6 @@ inputs:
 ---
 ```
 
-Below the frontmatter are the steps Amazon Quick follows when the skill is active, and the folder can also hold the scripts, templates, and reference files those steps use. A skill doesn't include the connectors or other dependencies it relies on, such as Outlook or Slack, so many skills also include a `README.md` that lists what you need to set up before you run them.
+Below the frontmatter are the steps AWS Quick follows when the skill is active, and the folder can also hold the scripts, templates, and reference files those steps use. A skill doesn't include the connectors or other dependencies it relies on, such as Outlook or Slack, so many skills also include a `README.md` that lists what you need to set up before you run them.
 
-To learn about the other kinds of skills in Amazon Quick, including the system skills that come with it, see [Skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html) in the Amazon Quick User Guide.
+To learn about the other kinds of skills in AWS Quick, including the system skills that come with it, see [Skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html) in the AWS Quick User Guide.

@@ -158,7 +158,7 @@ class ZoneExitRunner:
                 "steer_status": "not generated; obtain steering direction from the geoscience system",
             },
             "confidence": float(verification["confidence"]) if verification else 0.0,
-            "reasoning": f"{projection.severity}: {projection.margin_ft:.1f} ft and {projection.eta_minutes:.1f} min to {projection.boundary_zone} base from trajectory-derived {projection.rate_ft_per_hr:.1f} ft/hr. Quick does not interpret the geology or make the steer.",
+            "reasoning": f"{projection.severity}: {projection.margin_ft:.1f} ft and {projection.eta_minutes:.1f} min to {projection.boundary_zone} base from trajectory-derived {projection.rate_ft_per_hr:.1f} ft/hr. AWS Quick does not interpret the geology or make the steer.",
             "source": source,
             "wellbore_id": self._wellbore_id,
             "depth_md": projection.depth_md,

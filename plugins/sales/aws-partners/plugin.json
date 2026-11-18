@@ -1,0 +1,18 @@
+{
+  "name": "aws-partners",
+  "displayName": "AWS Partner Central",
+  "description": "This plugin is for AWS Partners who build, market, and sell with AWS. With its skills, you can create and progress opportunities from your own notes, plan the next steps on a deal, match your solutions and AWS funding programs to each opportunity, improve your partner profile and AWS Marketplace listings, and get a ranked view of what needs your attention across your partnership. The skills work through the AWS Partner Central MCP server, so connect it to get started. Every write needs your approval before it runs. When Slack, email, Microsoft Teams, or a CRM is connected, the skills use it for engagement signals and delivery.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/aws-partner-central.svg",
+  "skills": [
+    "sales/aws-partner-deal-progression-sales-play",
+    "sales/aws-partner-funding-eligibility-check",
+    "sales/aws-partner-high-quality-cosell-opportunity-submission",
+    "sales/aws-partner-pipeline-health-check",
+    "sales/aws-partner-weekly-digest"
+  ],
+  "id": "0f67e43f-0b34-454f-80c7-04a844d653ab"
+}

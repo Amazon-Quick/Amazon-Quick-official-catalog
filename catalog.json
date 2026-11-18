@@ -30,6 +30,12 @@
           "id": "3d744ffb-5262-4da2-8757-4f64c9ab30c4"
         },
         {
+          "path": "skills/aws-quick/admin-onboarding-buddy",
+          "type": "skill",
+          "checksum": "sha256:659db07901a6b50d4dc1dba1c254fccc138ebdcca6f387a6ea0360d73c70f0c5",
+          "id": "1245341d-d7af-4840-bc59-a93bd223370f"
+        },
+        {
           "path": "plugins/aws-quick/quick-builder-kit",
           "type": "plugin",
           "id": "8bf602e7-972f-4f69-9959-e0bbe3fc0092",
@@ -691,6 +697,42 @@
       "description": "Build pipeline, accelerate deals, and close with confidence.",
       "assets": [
         {
+          "path": "skills/sales/aws-partner-deal-progression-sales-play",
+          "type": "skill",
+          "checksum": "sha256:f95015fbbcdeb29b5a35050d46b6f53726360abda64d1de766a93a09a34fe8dd",
+          "id": "0e8343cb-09b2-4d63-bd23-007e20afbca0"
+        },
+        {
+          "path": "skills/sales/aws-partner-funding-eligibility-check",
+          "type": "skill",
+          "checksum": "sha256:9a3186bb583a1ccd850da8c4187d4931fc4d9ff4411d977279e6b00fa1977e13",
+          "id": "c479f1a8-ab3b-4cfb-a10e-30530b77b945"
+        },
+        {
+          "path": "skills/sales/aws-partner-high-quality-cosell-opportunity-submission",
+          "type": "skill",
+          "checksum": "sha256:bc0039ad2bb66d6972e00b1fb6371f5b510501c917154d72731f44d2a4f7a5b8",
+          "id": "7743083f-88c2-4f4b-b6db-8d8f96713974"
+        },
+        {
+          "path": "skills/sales/aws-partner-pipeline-health-check",
+          "type": "skill",
+          "checksum": "sha256:1f8a4bc0944a0646ea069182c306c3ff191d726e42056409141f7dc5a4bef6bf",
+          "id": "54f49e2b-03c8-45a3-b1e2-37994542f8c5"
+        },
+        {
+          "path": "skills/sales/aws-partner-weekly-digest",
+          "type": "skill",
+          "checksum": "sha256:8602d41992b82186e11c42adeb672b2b2c362a7bca6852aeddee6837b95e433f",
+          "id": "755a8625-febe-4919-980b-77c8392e6639"
+        },
+        {
+          "path": "plugins/sales/aws-partners",
+          "type": "plugin",
+          "id": "0f67e43f-0b34-454f-80c7-04a844d653ab",
+          "checksum": "sha256:57ee6ed659323491378ec958c9a8f625e5528c5d14c5b9ee2e84affad3e38bd0"
+        },
+        {
           "path": "skills/sales/competitor-intel",
           "type": "skill",
           "checksum": "sha256:bb637376e2de59e2290d41e3c66e0f61caf4c06be2c53e62db5995dccde242aa",
@@ -883,6 +925,10 @@
         },
         {
           "path": "skills/aws-quick/personal-agent-architect",
+          "type": "skill"
+        },
+        {
+          "path": "skills/aws-quick/admin-onboarding-buddy",
           "type": "skill"
         },
         {
@@ -1242,6 +1288,30 @@
         },
         {
           "path": "plugins/sales/sales-development-gmail",
+          "type": "plugin"
+        },
+        {
+          "path": "skills/sales/aws-partner-deal-progression-sales-play",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/aws-partner-funding-eligibility-check",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/aws-partner-high-quality-cosell-opportunity-submission",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/aws-partner-pipeline-health-check",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/aws-partner-weekly-digest",
+          "type": "skill"
+        },
+        {
+          "path": "plugins/sales/aws-partners",
           "type": "plugin"
         }
       ]

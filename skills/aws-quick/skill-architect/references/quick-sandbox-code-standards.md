@@ -1,7 +1,6 @@
 ---
 description: "Runtime rules for code generated to run in the AWS Quick code sandbox (run_python and run_javascript): manifest-only dependencies, no network, time and memory limits, workspace persistence, read-only vs write execution, result handling, imports, regexes, and filtering. Applies to both languages."
-last_updated: 2026-10-22
-origin: original
+last_updated: 2026-11-18
 ---
 
 <purpose>
@@ -29,7 +28,6 @@ Runtime and hygiene rules every snippet generated for the code sandbox must foll
 <example type="correct">
 ```python
 import json
-import os
 import re
 from pathlib import Path
 
@@ -40,9 +38,8 @@ def is_active(record: dict) -> bool:  # named predicate (Rule 12)
     return record.get("status") == "active"
 
 
-records = json.loads(
-    (Path(os.environ["WORKSPACE_DIR"]) / "in.json").read_text(encoding="utf-8")
-)
+# WORKSPACE_DIR is a global the sandbox sets, not an environment variable.
+records = json.loads((Path(WORKSPACE_DIR) / "in.json").read_text(encoding="utf-8"))
 active = [r for r in records if is_active(r) and ISO_DATE.match(r["date"])]
 print(f"{len(active)} active records")  # print the result (Rule 5)
 ```

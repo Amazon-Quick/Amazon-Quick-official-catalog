@@ -1,0 +1,2588 @@
+{
+  "$defs": {
+    "BinaryTextCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "kind": {
+          "const": "binary_text",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "kind"
+      ],
+      "title": "BinaryTextCheck",
+      "type": "object"
+    },
+    "BlankRunCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "blank_run",
+          "title": "Kind",
+          "type": "string"
+        },
+        "max_blank_lines": {
+          "exclusiveMinimum": 0,
+          "title": "Max Blank Lines",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind",
+        "max_blank_lines"
+      ],
+      "title": "BlankRunCheck",
+      "type": "object"
+    },
+    "BodyMaxLinesCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "pass_message": {
+          "minLength": 1,
+          "title": "Pass Message",
+          "type": "string"
+        },
+        "kind": {
+          "const": "body_max_lines",
+          "title": "Kind",
+          "type": "string"
+        },
+        "max_lines": {
+          "exclusiveMinimum": 0,
+          "title": "Max Lines",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "pass_message",
+        "kind",
+        "max_lines"
+      ],
+      "title": "BodyMaxLinesCheck",
+      "type": "object"
+    },
+    "Examples": {
+      "additionalProperties": false,
+      "description": "Lines or files the check must flag and must ignore. They are the check's tests.\nAn example given as a list of parts is joined before the test runs, so a rule\nfile never holds a working secret or encoded string that a security audit of the\nrule file itself would flag.",
+      "properties": {
+        "flags": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "Flags",
+          "type": "array"
+        },
+        "ignores": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "Ignores",
+          "type": "array"
+        }
+      },
+      "required": [
+        "flags",
+        "ignores"
+      ],
+      "title": "Examples",
+      "type": "object"
+    },
+    "FileCountCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "kind": {
+          "const": "file_count",
+          "title": "Kind",
+          "type": "string"
+        },
+        "max_files": {
+          "exclusiveMinimum": 0,
+          "title": "Max Files",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "kind",
+        "max_files"
+      ],
+      "title": "FileCountCheck",
+      "type": "object"
+    },
+    "FileMatchCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "file_match",
+          "title": "Kind",
+          "type": "string"
+        },
+        "suffixes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Suffixes",
+          "type": "array"
+        },
+        "names": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Names",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "FileMatchCheck",
+      "type": "object"
+    },
+    "FileSizeCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "kind": {
+          "const": "file_size",
+          "title": "Kind",
+          "type": "string"
+        },
+        "max_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Max Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "kind",
+        "max_bytes"
+      ],
+      "title": "FileSizeCheck",
+      "type": "object"
+    },
+    "FrontmatterParseCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "frontmatter_parse",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "FrontmatterParseCheck",
+      "type": "object"
+    },
+    "FrontmatterRequiredCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "pass_message": {
+          "minLength": 1,
+          "title": "Pass Message",
+          "type": "string"
+        },
+        "kind": {
+          "const": "frontmatter_required",
+          "title": "Kind",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "pass_message",
+        "kind",
+        "field"
+      ],
+      "title": "FrontmatterRequiredCheck",
+      "type": "object"
+    },
+    "FrontmatterValueCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "pass_message": {
+          "minLength": 1,
+          "title": "Pass Message",
+          "type": "string"
+        },
+        "kind": {
+          "const": "frontmatter_value",
+          "title": "Kind",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "extract": {
+          "title": "Extract",
+          "type": "string"
+        },
+        "on_no_match": {
+          "$ref": "#/$defs/NoMatch"
+        },
+        "pattern": {
+          "default": "",
+          "title": "Pattern",
+          "type": "string"
+        },
+        "max_length": {
+          "default": 0,
+          "title": "Max Length",
+          "type": "integer"
+        },
+        "one_of": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "One Of",
+          "type": "array"
+        },
+        "strip": {
+          "default": false,
+          "title": "Strip",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "pass_message",
+        "kind",
+        "field",
+        "extract",
+        "on_no_match"
+      ],
+      "title": "FrontmatterValueCheck",
+      "type": "object"
+    },
+    "HeadingRequiredCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "pass_message": {
+          "minLength": 1,
+          "title": "Pass Message",
+          "type": "string"
+        },
+        "kind": {
+          "const": "heading_required",
+          "title": "Kind",
+          "type": "string"
+        },
+        "heading": {
+          "title": "Heading",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "pass_message",
+        "kind",
+        "heading"
+      ],
+      "title": "HeadingRequiredCheck",
+      "type": "object"
+    },
+    "HiddenPathCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "hidden_path",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "HiddenPathCheck",
+      "type": "object"
+    },
+    "HtmlCommentCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": true,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "html_comment",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "HtmlCommentCheck",
+      "type": "object"
+    },
+    "ImageMagicCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "kind": {
+          "const": "image_magic",
+          "title": "Kind",
+          "type": "string"
+        },
+        "signatures": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "minProperties": 1,
+          "title": "Signatures",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "kind",
+        "signatures"
+      ],
+      "title": "ImageMagicCheck",
+      "type": "object"
+    },
+    "InvisibleCharsCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "invisible_chars",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "InvisibleCharsCheck",
+      "type": "object"
+    },
+    "JsModuleCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "js_module",
+          "title": "Kind",
+          "type": "string"
+        },
+        "modules": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Modules",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind",
+        "modules"
+      ],
+      "title": "JsModuleCheck",
+      "type": "object"
+    },
+    "JsThirdPartyCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "js_third_party",
+          "title": "Kind",
+          "type": "string"
+        },
+        "builtins": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Builtins",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind",
+        "builtins"
+      ],
+      "title": "JsThirdPartyCheck",
+      "type": "object"
+    },
+    "Level": {
+      "title": "Level",
+      "description": "How sure a check is when it matches.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "error",
+          "description": "The code is certain the line breaks the rule, such as a real access key. An error always counts as a finding."
+        },
+        {
+          "const": "warning",
+          "description": "The line might break the rule, and might be a false alarm. The agent reads it and decides. A warning never fails anything until the agent confirms it."
+        }
+      ]
+    },
+    "LongLineCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "long_line",
+          "title": "Kind",
+          "type": "string"
+        },
+        "max_chars": {
+          "exclusiveMinimum": 0,
+          "title": "Max Chars",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind",
+        "max_chars"
+      ],
+      "title": "LongLineCheck",
+      "type": "object"
+    },
+    "NoMatch": {
+      "title": "NoMatch",
+      "description": "What a frontmatter_value check does when its extract pattern finds no value.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "skip",
+          "description": "Report nothing: another check covers a missing or unquoted value."
+        },
+        {
+          "const": "fail",
+          "description": "Report the check as failed, since the value is in the wrong format."
+        }
+      ]
+    },
+    "ProseForbiddenCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "pass_message": {
+          "minLength": 1,
+          "title": "Pass Message",
+          "type": "string"
+        },
+        "kind": {
+          "const": "prose_forbidden",
+          "title": "Kind",
+          "type": "string"
+        },
+        "pattern": {
+          "title": "Pattern",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "pass_message",
+        "kind",
+        "pattern"
+      ],
+      "title": "ProseForbiddenCheck",
+      "type": "object"
+    },
+    "PublicIpCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "public_ip",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "PublicIpCheck",
+      "type": "object"
+    },
+    "PythonCallCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "python_call",
+          "title": "Kind",
+          "type": "string"
+        },
+        "names": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Names",
+          "type": "array"
+        },
+        "name_pattern": {
+          "default": "",
+          "title": "Name Pattern",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "PythonCallCheck",
+      "type": "object"
+    },
+    "PythonImportCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "python_import",
+          "title": "Kind",
+          "type": "string"
+        },
+        "modules": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Modules",
+          "type": "array"
+        },
+        "include_imported_names": {
+          "default": false,
+          "title": "Include Imported Names",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind",
+        "modules"
+      ],
+      "title": "PythonImportCheck",
+      "type": "object"
+    },
+    "PythonSyntaxCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "python_syntax",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "PythonSyntaxCheck",
+      "type": "object"
+    },
+    "PythonThirdPartyCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "python_third_party",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "PythonThirdPartyCheck",
+      "type": "object"
+    },
+    "PythonYamlLoadCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "python_yaml_load",
+          "title": "Kind",
+          "type": "string"
+        },
+        "unsafe_calls": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Unsafe Calls",
+          "type": "array"
+        },
+        "safe_loaders": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Safe Loaders",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind",
+        "unsafe_calls",
+        "safe_loaders"
+      ],
+      "title": "PythonYamlLoadCheck",
+      "type": "object"
+    },
+    "RegexCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "regex",
+          "title": "Kind",
+          "type": "string"
+        },
+        "pattern": {
+          "title": "Pattern",
+          "type": "string"
+        },
+        "exclude": {
+          "default": "",
+          "title": "Exclude",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target",
+          "default": "file"
+        },
+        "redact": {
+          "default": false,
+          "title": "Redact",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind",
+        "pattern"
+      ],
+      "title": "RegexCheck",
+      "type": "object"
+    },
+    "Review": {
+      "additionalProperties": false,
+      "description": "What the agent answers by reading, when code can't decide.",
+      "properties": {
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "question": {
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "look_for": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Look For",
+          "type": "array"
+        },
+        "finding_example": {
+          "minLength": 1,
+          "title": "Finding Example",
+          "type": "string"
+        },
+        "pass_example": {
+          "minLength": 1,
+          "title": "Pass Example",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope",
+        "question",
+        "finding_example",
+        "pass_example"
+      ],
+      "title": "Review",
+      "type": "object"
+    },
+    "RuleId": {
+      "title": "RuleId",
+      "description": "Every rule the engine knows. Each is defined once, in the rule file of its type.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "prompt_injection",
+          "description": "Lines that override instructions, hide a step from the user, change the agent's role, claim prior approval, or speak to a reviewer."
+        },
+        {
+          "const": "data_exfiltration",
+          "description": "Steps that send, post, upload, or save the user's content somewhere the description doesn't need."
+        },
+        {
+          "const": "malicious_references",
+          "description": "Links whose domain doesn't fit the purpose, or that the agent fetches and follows at run time."
+        },
+        {
+          "const": "dangerous_instructions",
+          "description": "Steps that bypass a security control, run commands or programs, or change system settings."
+        },
+        {
+          "const": "security_guidance",
+          "description": "Advice that would weaken someone's security if they followed it."
+        },
+        {
+          "const": "supply_chain",
+          "description": "Packages the sandbox doesn't provide, install steps, or code pulled from somewhere that can change."
+        },
+        {
+          "const": "excessive_permissions",
+          "description": "Tools the workflows don't use or the purpose doesn't need, and changes made without the user's confirmation."
+        },
+        {
+          "const": "obfuscated_intent",
+          "description": "Anything that hides what the skill does: hidden text, encoded strings, unreadable files, or a description that doesn't match the workflows."
+        },
+        {
+          "const": "tool_hijacking",
+          "description": "Steps that chain tools to reach systems the purpose doesn't need."
+        },
+        {
+          "const": "context_poisoning",
+          "description": "Steps that write to memory or files later conversations read, to change how the agent behaves next time."
+        },
+        {
+          "const": "secrets_and_personal_data",
+          "description": "Real credentials, personal data, or account details in the files, or steps that collect personal data the purpose doesn't need."
+        },
+        {
+          "const": "frontmatter",
+          "description": "SKILL.md frontmatter has the required fields, each in a valid format."
+        },
+        {
+          "const": "headings",
+          "description": "SKILL.md has the headings save_skill requires."
+        },
+        {
+          "const": "body_length",
+          "description": "The SKILL.md body stays under the line limit, since every line loads on every run."
+        },
+        {
+          "const": "prose",
+          "description": "The SKILL.md body prose has no em dashes or emojis."
+        }
+      ]
+    },
+    "RuleSpec": {
+      "additionalProperties": false,
+      "description": "One rule as a rule file writes it. Its type comes from the file it is in.",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/RuleId"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "fix": {
+          "minLength": 1,
+          "title": "Fix",
+          "type": "string"
+        },
+        "checks": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "binary_text": "#/$defs/BinaryTextCheck",
+                "blank_run": "#/$defs/BlankRunCheck",
+                "body_max_lines": "#/$defs/BodyMaxLinesCheck",
+                "file_count": "#/$defs/FileCountCheck",
+                "file_match": "#/$defs/FileMatchCheck",
+                "file_size": "#/$defs/FileSizeCheck",
+                "frontmatter_parse": "#/$defs/FrontmatterParseCheck",
+                "frontmatter_required": "#/$defs/FrontmatterRequiredCheck",
+                "frontmatter_value": "#/$defs/FrontmatterValueCheck",
+                "heading_required": "#/$defs/HeadingRequiredCheck",
+                "hidden_path": "#/$defs/HiddenPathCheck",
+                "html_comment": "#/$defs/HtmlCommentCheck",
+                "image_magic": "#/$defs/ImageMagicCheck",
+                "invisible_chars": "#/$defs/InvisibleCharsCheck",
+                "js_module": "#/$defs/JsModuleCheck",
+                "js_third_party": "#/$defs/JsThirdPartyCheck",
+                "long_line": "#/$defs/LongLineCheck",
+                "prose_forbidden": "#/$defs/ProseForbiddenCheck",
+                "public_ip": "#/$defs/PublicIpCheck",
+                "python_call": "#/$defs/PythonCallCheck",
+                "python_import": "#/$defs/PythonImportCheck",
+                "python_syntax": "#/$defs/PythonSyntaxCheck",
+                "python_third_party": "#/$defs/PythonThirdPartyCheck",
+                "python_yaml_load": "#/$defs/PythonYamlLoadCheck",
+                "regex": "#/$defs/RegexCheck",
+                "unknown_file_type": "#/$defs/UnknownFileTypeCheck",
+                "unsafe_path": "#/$defs/UnsafePathCheck",
+                "unused_tools": "#/$defs/UnusedToolsCheck"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RegexCheck"
+              },
+              {
+                "$ref": "#/$defs/HtmlCommentCheck"
+              },
+              {
+                "$ref": "#/$defs/InvisibleCharsCheck"
+              },
+              {
+                "$ref": "#/$defs/BlankRunCheck"
+              },
+              {
+                "$ref": "#/$defs/LongLineCheck"
+              },
+              {
+                "$ref": "#/$defs/PublicIpCheck"
+              },
+              {
+                "$ref": "#/$defs/FileMatchCheck"
+              },
+              {
+                "$ref": "#/$defs/HiddenPathCheck"
+              },
+              {
+                "$ref": "#/$defs/UnsafePathCheck"
+              },
+              {
+                "$ref": "#/$defs/ImageMagicCheck"
+              },
+              {
+                "$ref": "#/$defs/BinaryTextCheck"
+              },
+              {
+                "$ref": "#/$defs/UnknownFileTypeCheck"
+              },
+              {
+                "$ref": "#/$defs/FileCountCheck"
+              },
+              {
+                "$ref": "#/$defs/FileSizeCheck"
+              },
+              {
+                "$ref": "#/$defs/FrontmatterParseCheck"
+              },
+              {
+                "$ref": "#/$defs/UnusedToolsCheck"
+              },
+              {
+                "$ref": "#/$defs/PythonImportCheck"
+              },
+              {
+                "$ref": "#/$defs/PythonThirdPartyCheck"
+              },
+              {
+                "$ref": "#/$defs/PythonCallCheck"
+              },
+              {
+                "$ref": "#/$defs/PythonYamlLoadCheck"
+              },
+              {
+                "$ref": "#/$defs/PythonSyntaxCheck"
+              },
+              {
+                "$ref": "#/$defs/JsModuleCheck"
+              },
+              {
+                "$ref": "#/$defs/JsThirdPartyCheck"
+              },
+              {
+                "$ref": "#/$defs/FrontmatterRequiredCheck"
+              },
+              {
+                "$ref": "#/$defs/FrontmatterValueCheck"
+              },
+              {
+                "$ref": "#/$defs/HeadingRequiredCheck"
+              },
+              {
+                "$ref": "#/$defs/BodyMaxLinesCheck"
+              },
+              {
+                "$ref": "#/$defs/ProseForbiddenCheck"
+              }
+            ]
+          },
+          "title": "Checks",
+          "type": "array"
+        },
+        "review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Review"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "fix"
+      ],
+      "title": "RuleSpec",
+      "type": "object"
+    },
+    "RuleType": {
+      "title": "RuleType",
+      "description": "What a rule protects.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "security",
+          "description": "Protects the user from a skill that could harm them: sending data out, hiding instructions, or running what it shouldn't."
+        },
+        {
+          "const": "standard",
+          "description": "Checks that the skill follows the Skill Architect standard, so it is consistent, testable, and maintainable."
+        }
+      ]
+    },
+    "Scope": {
+      "title": "Scope",
+      "description": "What one review task covers.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "file",
+          "description": "One task per file: the agent reads the whole file against the rule."
+        },
+        {
+          "const": "skill",
+          "description": "One task for the whole skill, such as comparing the description with the workflows."
+        }
+      ]
+    },
+    "Target": {
+      "title": "Target",
+      "description": "Which part of a text file a text check reads.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "file",
+          "description": "The whole text of the file."
+        },
+        {
+          "const": "frontmatter",
+          "description": "Only the YAML frontmatter of SKILL.md."
+        },
+        {
+          "const": "body_prose",
+          "description": "The SKILL.md body with fenced code blanked out, keeping line numbers."
+        }
+      ]
+    },
+    "UnknownFileTypeCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "unknown_file_type",
+          "title": "Kind",
+          "type": "string"
+        },
+        "known_suffixes": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Known Suffixes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind",
+        "known_suffixes"
+      ],
+      "title": "UnknownFileTypeCheck",
+      "type": "object"
+    },
+    "UnsafePathCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "unsafe_path",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "UnsafePathCheck",
+      "type": "object"
+    },
+    "UnusedToolsCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/$defs/Level"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "files": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "exclude_files": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Files",
+          "type": "array"
+        },
+        "skip_evals": {
+          "default": false,
+          "title": "Skip Evals",
+          "type": "boolean"
+        },
+        "fix": {
+          "default": "",
+          "title": "Fix",
+          "type": "string"
+        },
+        "examples": {
+          "$ref": "#/$defs/Examples"
+        },
+        "kind": {
+          "const": "unused_tools",
+          "title": "Kind",
+          "type": "string"
+        },
+        "ignore_tools": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ignore Tools",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "message",
+        "examples",
+        "kind"
+      ],
+      "title": "UnusedToolsCheck",
+      "type": "object"
+    },
+    "Status": {
+      "title": "Status",
+      "description": "Where a result stands.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "passed",
+          "description": "The check ran on the whole skill and found nothing."
+        },
+        {
+          "const": "open",
+          "description": "A warning the agent hasn't judged yet. A review with an open result is incomplete."
+        },
+        {
+          "const": "confirmed",
+          "description": "A finding: an error, or a warning or agent result the agent judged to break the rule."
+        },
+        {
+          "const": "dismissed",
+          "description": "A warning the agent judged to be a false alarm, with the reason. It stays in the results so anyone can see what was filtered out."
+        },
+        {
+          "const": "unsure",
+          "description": "The agent can't decide and asks the user. After the user answers, it becomes confirmed or dismissed."
+        }
+      ]
+    },
+    "Source": {
+      "title": "Source",
+      "description": "Who produced a result.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "code",
+          "description": "A code check in a rule file produced the result."
+        },
+        {
+          "const": "agent",
+          "description": "The agent produced the result while reading a file or answering a review task."
+        }
+      ]
+    },
+    "CheckKind": {
+      "title": "CheckKind",
+      "description": "Every kind of code check the engine can run. A rule file chooses a kind and gives its parameters; the engine owns how each kind works.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "regex",
+          "description": "Flags every match of a regular expression in the target text, minus matches the exclude pattern finds."
+        },
+        {
+          "const": "html_comment",
+          "description": "Flags every HTML comment, since an agent reads text a person doesn't see."
+        },
+        {
+          "const": "invisible_chars",
+          "description": "Flags lines with invisible or control characters that can hide text."
+        },
+        {
+          "const": "blank_run",
+          "description": "Flags a run of blank lines that can push text out of sight."
+        },
+        {
+          "const": "long_line",
+          "description": "Flags a line longer than the limit, where text can hide past the edge of the screen."
+        },
+        {
+          "const": "public_ip",
+          "description": "Flags public IPv4 addresses, leaving out private and documentation ranges."
+        },
+        {
+          "const": "file_match",
+          "description": "Flags files whose suffix or name is on the list."
+        },
+        {
+          "const": "hidden_path",
+          "description": "Flags hidden files and cache folders."
+        },
+        {
+          "const": "unsafe_path",
+          "description": "Flags symbolic links and paths that escape the skill folder."
+        },
+        {
+          "const": "image_magic",
+          "description": "Flags an image file whose bytes don't match its suffix."
+        },
+        {
+          "const": "binary_text",
+          "description": "Flags a text file that contains binary data."
+        },
+        {
+          "const": "unknown_file_type",
+          "description": "Flags files whose suffix isn't on the known list."
+        },
+        {
+          "const": "file_count",
+          "description": "Flags a skill with more files than the limit."
+        },
+        {
+          "const": "file_size",
+          "description": "Flags a file larger than the limit."
+        },
+        {
+          "const": "frontmatter_parse",
+          "description": "Flags a SKILL.md with no frontmatter, frontmatter that doesn't parse, or a custom YAML tag."
+        },
+        {
+          "const": "unused_tools",
+          "description": "Flags frontmatter tools that no workflow's tools=[...] names."
+        },
+        {
+          "const": "python_import",
+          "description": "Flags Python imports of the listed modules."
+        },
+        {
+          "const": "python_third_party",
+          "description": "Flags Python imports outside the standard library and the skill's own modules."
+        },
+        {
+          "const": "python_call",
+          "description": "Flags Python calls to the listed functions."
+        },
+        {
+          "const": "python_yaml_load",
+          "description": "Flags yaml.load without a safe loader."
+        },
+        {
+          "const": "python_syntax",
+          "description": "Flags Python that doesn't parse, since unparsed code can't be reviewed."
+        },
+        {
+          "const": "js_module",
+          "description": "Flags JavaScript imports of the listed modules."
+        },
+        {
+          "const": "js_third_party",
+          "description": "Flags JavaScript imports outside the listed Node.js modules."
+        },
+        {
+          "const": "frontmatter_required",
+          "description": "Passes when SKILL.md frontmatter has the field."
+        },
+        {
+          "const": "frontmatter_value",
+          "description": "When the field is present, passes if its value matches the pattern, length limit, or allowed values."
+        },
+        {
+          "const": "heading_required",
+          "description": "Passes when the SKILL.md body contains the heading."
+        },
+        {
+          "const": "body_max_lines",
+          "description": "Passes when the SKILL.md body is within the line limit."
+        },
+        {
+          "const": "prose_forbidden",
+          "description": "Passes when no body prose line matches the pattern."
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "description": "One rule file: references/rules/<type>_rule.json, every rule of one type.",
+  "properties": {
+    "type": {
+      "$ref": "#/$defs/RuleType"
+    },
+    "description": {
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "last_updated": {
+      "format": "date",
+      "title": "Last Updated",
+      "type": "string"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/RuleSpec"
+      },
+      "minItems": 1,
+      "title": "Rules",
+      "type": "array"
+    }
+  },
+  "required": [
+    "type",
+    "description",
+    "last_updated",
+    "rules"
+  ],
+  "title": "RuleFile",
+  "type": "object"
+}

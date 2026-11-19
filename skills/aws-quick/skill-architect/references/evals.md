@@ -1,20 +1,36 @@
 ---
 description: "How to evaluate a skill: fixed checks, runs with and without the skill, grading, scoring over time, and reading the results."
-last_updated: 2026-10-22
-origin: original
+last_updated: 2026-11-18
 ---
 
 # Evals
 
 <purpose>
 
-The method the Eval workflow follows, from defining checks to reading the scorecard. A grading task reads only `<step-3-grade>`. The evals.json schema is `<Definition - Evals>` in SKILL.md.
+The method the Eval workflow follows, from defining checks to reading the scorecard. A grading task reads only `<step-3-grade>`. The evals.json schema is `<evals-json-schema>`.
 
 </purpose>
 
+<evals-json-schema>
+
+evals.json is a JSON object with:
+
+- `skill_name` (required): name of the skill being tested.
+- `settings` (optional): `repeats`, how many times each case runs per configuration. Default 3.
+- `targets` (optional): the bars the scorecard reports against. Nothing blocks on them, and the user sets them. Defaults: `pass_rate` 0.9, `min_lift` 0 (judged after the margin of error), `max_regressions` 0, `consistency` 1.0.
+- `cases` (required): list of test cases. Each case has:
+  - `id` (required): stable kebab-case identifier, never reused.
+  - `prompt` (required): a realistic user message. Do not name the skill, so the run shows whether the description triggers it.
+  - `should_trigger` (optional, default true): false marks a negative control, a prompt the skill must not activate on. Negative controls run only with the skill, never as a baseline.
+  - `replies` (optional): scripted user answers, in order, for the skill's [Ask user] steps, so checks after the first question can be reached.
+  - `files` (optional): input files under evals/files/, including canned connector or Quick data responses the run reads instead of calling the live service.
+  - `checks` (required): pass/fail checks, written before any run and changed only on purpose. Each has a stable `id`, a `type` (`outcome`: the result is correct; `process`: the right steps happened; `triggering`: the skill activated, or stayed off), and `check` (what to verify).
+
+</evals-json-schema>
+
 <what-we-measure>
 
-Whether the skill makes the agent do the job right, compared with the same agent without the skill. Every case has pass/fail checks of three kinds: outcome (the result is correct), process (the right steps happened), and triggering (the skill activated when it should and stayed off when it should not).
+Whether the skill makes the agent do the job right, compared with the same agent without the skill. Every case has pass/fail checks of three kinds: outcome, process, and triggering. An outcome check passes when the result is correct, a process check when the right steps happened, and a triggering check when the skill activated when it should and stayed off when it shouldn't.
 
 `scripts/create_benchmark.py` computes these metrics for each eval run and saves them as one line of `evals/results.jsonl`:
 
@@ -47,8 +63,8 @@ When a case would call a connector or AWS Quick data (a space, a knowledge base,
 
 - With-skill task: give it every case's `prompt` and `replies`, never the checks. The skill is installed. For each case, the task treats the prompt as a new conversation, decides from the skill's description alone whether to load it, and carries nothing over from earlier cases.
 - Without-skill task: the same prompts, with an instruction not to load the skill. Leave out negative controls. When improving an existing skill, this task uses the prior version and saves under `old_skill/`. The baseline depends only on the prompts, so reuse the last baseline when no prompt or reply has changed.
-- Both tasks: pass `tools="all"`, `share_workspace=False`, and `fork=False`, so each has the full toolset, its own workspace, and no conversation history. Set `model` and `thinking_effort` from the skill's frontmatter. `start_task` accepts only `fast`, `balanced`, or `smart`, so a skill set to `auto` runs at `smart`. Start the two tasks one after the other.
-- When a case has `replies`, the task uses them in order as the user's answers. When it asks a question with no reply left, that case stops there. The task declines run metrics when asked, so the replies go to the skill's own questions.
+- Both tasks: pass `tools="all"`, `share_workspace=False`, and `fork=False`, so each has the full toolset, its own workspace, and no conversation history. Set `model` and `thinking_effort` from the skill's frontmatter. `start_task` accepts only `fast`, `balanced`, or `smart`, so a skill set to `auto` runs at `smart`. Start the with-skill and without-skill tasks one after the other.
+- When a case has `replies`, the task uses them in order as the user's answers. When it asks a question with no reply left, that case stops there.
 - For each case, the task saves its outputs, a short transcript, and a `metrics.json` with `tool_calls` and `duration_seconds` under `eval-<case-id>/<config>/run-1/`. When `settings.repeats` is above 1, run the with-skill task again, saving `run-2/`, `run-3/`.
 
 Later cases in a task have seen earlier ones, so triggering and consistency results are less reliable than fully isolated runs. When one of those checks matters, rerun that case alone in its own task.

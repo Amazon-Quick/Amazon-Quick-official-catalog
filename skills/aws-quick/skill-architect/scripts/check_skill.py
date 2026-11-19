@@ -1,17 +1,16 @@
 """
-description: Run the mechanical, objective pass/fail schema checks on a SKILL.md (frontmatter fields, naming, character and line limits, XML tag balance, block ordering, em dashes and body emojis, rule numbering, a well-formed checksum field, and checksum integrity by recomputing the content digest and comparing it to the stored checksum), plus non-blocking staleness WARNINGs when SKILL.md or a header file is over six months old; qualitative review is done by reading, not here. Run as: python check_skill.py <path/to/SKILL.md>.
-last_updated: 2026-10-22
-origin: original
+description: Run the mechanical pass/fail checks on a SKILL.md (frontmatter fields, naming, length limits, XML tag balance, block order, em dashes and emojis, rule numbering, declared and unused tools, file headers, and the checksum), plus staleness WARNINGs for files over six months old. Qualitative review is done by reading, not here.
+last_updated: 2026-11-18
 
 Usage:
     python check_skill.py <path/to/SKILL.md>
+    In AWS Quick: import check_skill; check_skill.main(["<path/to/SKILL.md>"])
 """
 
 from __future__ import annotations
 
 import argparse
 import datetime
-import hashlib
 import logging
 import re
 import sys
@@ -19,6 +18,20 @@ from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
 from typing import Protocol
+
+from create_checksum import ManifestDigest, SkillManifest
+from run_rules import (
+    RULES_DIR,
+    CheckRunner,
+    Level,
+    Rule,
+    RuleId,
+    RuleLoader,
+    SkillFile,
+    SkillSource,
+    SkillView,
+    Status,
+)
 
 
 class _PrintStream:
@@ -40,17 +53,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-MAX_DESCRIPTION = 1024
-# Anthropic's skill guidance: keep the SKILL.md body under 500 lines.
-MAX_BODY_LINES = 500
-MAX_NAME = 64
-
 # Six calendar months, per the staleness rule in references/reference-file-standard.md.
 STALENESS_MONTHS = 6
 
-REQUIRED_FRONTMATTER = ("name", "description", "created_date", "last_updated")
-DATE_FIELDS = ("created_date", "last_updated")
-HEADINGS = ("## Overview", "## Workflow")
 BLOCK_ORDER = (
     "Goal",
     "Definitions",
@@ -60,16 +65,12 @@ BLOCK_ORDER = (
     "Instructions",
     "Resources",
 )
-VALID_MODELS = ("fast", "balanced", "smart", "auto")
-VALID_THINKING = ("off", "low", "medium", "high")
 
 # Compiled once, named for intent, referenced wherever needed.
 FENCE_RE = re.compile(r"```.*?```", re.S)
 DEFINITIONS_RE = re.compile(r"<Definitions>.*?</Definitions>", re.S)
 RULES_BLOCK_RE = re.compile(r"<Rules>(.*?)</Rules>", re.S)
 NAME_RE = re.compile(r'^name\s*:\s*"?([^"\n]+)"?', re.M)
-DESCRIPTION_RE = re.compile(r'^description\s*:\s*"(.*)"\s*$', re.M)
-KEBAB_RE = re.compile(rf"[a-z][a-z0-9-]{{0,{MAX_NAME - 1}}}")
 PAIRED_OPEN_RE = re.compile(r"^\s*<([A-Z][A-Za-z ]*?)>\s*$", re.M)
 PAIRED_CLOSE_RE = re.compile(r"^\s*</([A-Z][A-Za-z ]*?)>\s*$", re.M)
 WORKFLOW_OPEN_RE = re.compile(r"^\s*<Workflow - [^\n>]*$", re.M)
@@ -86,37 +87,20 @@ WORKFLOW_TOOLS_RE = re.compile(r"tools=\[([^\]]*)\]")
 INPUT_NAME_RE = re.compile(r"^\s*-\s*name:\s*([A-Za-z0-9_]+)", re.M)
 PLACEHOLDER_RE = re.compile(r"\{\{([A-Za-z0-9_]+)\}\}")
 INPUT_SPLIT_RE = re.compile(r"\n\s*-\s*name\s*:")
-# Emoji live across several Unicode blocks. Each range is named so a human
-# reviewer reads the intent instead of decoding raw code points.
-EMOJI_PICTOGRAPHS = ("\U0001f300", "\U0001faff")  # symbols, pictographs, emoticons
-EMOJI_MISC_SYMBOLS = ("\U00002600", "\U000027bf")  # miscellaneous symbols and dingbats
-EMOJI_CARDS_AND_TILES = ("\U0001f000", "\U0001f0ff")  # mahjong, dominoes, playing cards
-EMOJI_BLOCKS = (EMOJI_PICTOGRAPHS, EMOJI_MISC_SYMBOLS, EMOJI_CARDS_AND_TILES)
-EMOJI_RE = re.compile(
-    "[" + "".join(f"{low}-{high}" for low, high in EMOJI_BLOCKS) + "]"
-)
-EM_DASH = "\u2014"  # the em dash character, rendered "—"
 CHECKSUM_VALUE_RE = re.compile(r'^checksum\s*:\s*"?sha256:[0-9a-f]{64}"?\s*$', re.M)
 CHECKSUM_CAPTURE_RE = re.compile(r'^checksum\s*:\s*"?(sha256:[0-9a-f]{64})"?', re.M)
-# Removes the whole line, newline included; must match create_checksum.py.
-CHECKSUM_STRIP_RE = re.compile(r"^checksum\s*:.*\n?", re.M)
 LAST_UPDATED_VALUE_RE = re.compile(r'^last_updated\s*:\s*"?(\d{4}-\d{2}-\d{2})', re.M)
 SKILL_FILENAME = "SKILL.md"
-# Digest inputs; must mirror create_checksum.py, which a standalone script cannot import.
-# README.md is not a root file; its canonical location is assets/README.md,
-# already captured by the "assets" entry of DIGEST_DIRS.
-DIGEST_ROOT_FILES = (SKILL_FILENAME,)
-DIGEST_DIRS = ("scripts", "references", "assets")
-DIGEST_EXCLUDE_DIRS = frozenset({"evals", "tests", "__pycache__", ".git"})
-DIGEST_EXCLUDE_SUFFIXES = frozenset({".pyc"})
-DIGEST_EXCLUDE_NAMES = frozenset({".DS_Store"})
-DIGEST_TEST_FILE_RE = re.compile(r"^test_.*\.py$")
-DIGEST_PREFIX = "sha256"
 # Reference-file header standard: every references/*.md and scripts/*.py must
-# declare description, last_updated, and exactly one of source_url or origin.
+# declare description and last_updated; an optional sources field lists URLs.
 HEADER_DESCRIPTION_RE = re.compile(r"^description\s*:", re.M)
 HEADER_LAST_UPDATED_RE = re.compile(r"^last_updated\s*:", re.M)
-HEADER_PROVENANCE_RE = re.compile(r"^(?:source_url|origin)\s*:", re.M)
+SOURCES_KEY_RE = re.compile(r"^sources\s*:(.*)$", re.M)
+SOURCE_ITEM_RE = re.compile(r"^\s+-\s*(.*?)\s*$")
+URL_RE = re.compile(r"^https?://\S+$")
+SOURCES_PROBLEM = "sources (must be a list of URLs)"
+# Placeholder names a workflow's tools=[...] example may use; never real tools.
+TOOL_PLACEHOLDERS = frozenset({"...", "built_in_tool"})
 PY_DOCSTRING_RE = re.compile(r'"""(.*?)"""', re.S)
 MD_FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.S)
 HEADER_FILE_GROUPS = (("references", "*.md"), ("scripts", "*.py"))
@@ -285,95 +269,28 @@ class Check(Protocol):
     def run(self, document: SkillDocument) -> CheckResult | None: ...
 
 
-class _RequiredFieldCheck:
-    """One required frontmatter field is present."""
+class _RuleFileCheck:
+    """Runs one standard check from references/rules/standard_rule.json through
+    the rule engine, and reports it as a PASS, FAIL, or WARNING with the rule's
+    message, so the output matches what the catalog build parses."""
 
-    def __init__(self, field: str) -> None:
-        self.field = field
-
-    def run(self, document: SkillDocument) -> CheckResult | None:
-        present = bool(re.search(rf"^{self.field}\s*:", document.frontmatter, re.M))
-        return CheckResult.of(
-            present,
-            (
-                f"frontmatter: {self.field} present"
-                if present
-                else f"frontmatter: {self.field} MISSING"
-            ),
-        )
-
-
-class _NameFormatCheck:
-    """Frontmatter name is valid kebab-case."""
+    def __init__(self, rule: Rule, check_id: str) -> None:
+        self.rule = rule
+        self.check = next(c for c in rule.checks if c.id == check_id)
 
     def run(self, document: SkillDocument) -> CheckResult | None:
-        name = document.name_value()
-        if name is None:
+        text = f"---\n{document.frontmatter}\n---\n{document.body}"
+        skill = SkillFile(path=SKILL_FILENAME, data=text.encode("utf-8"))
+        view = SkillView.from_source(SkillSource(location="", root="", files=[skill]))
+        results = CheckRunner(self.rule, self.check, view).run()
+        if not results:
             return None
-        valid = bool(KEBAB_RE.fullmatch(name))
-        return CheckResult.of(
-            valid,
-            (
-                f"name '{name}' is valid kebab-case"
-                if valid
-                else f"name '{name}' is not valid kebab-case (lowercase, hyphens, <= {MAX_NAME} chars)"
-            ),
-        )
-
-
-class _DescriptionLengthCheck:
-    """Description is within the character limit."""
-
-    def run(self, document: SkillDocument) -> CheckResult | None:
-        m = DESCRIPTION_RE.search(document.frontmatter)
-        if not m:
-            return None
-        n = len(m.group(1))
-        return CheckResult.of(
-            n <= MAX_DESCRIPTION, f"description length {n} (limit {MAX_DESCRIPTION})"
-        )
-
-
-class _DateFormatCheck:
-    """A date field, when present, is ISO YYYY-MM-DD."""
-
-    def __init__(self, field: str) -> None:
-        self.field = field
-
-    def run(self, document: SkillDocument) -> CheckResult | None:
-        if not re.search(rf"^{self.field}\s*:", document.frontmatter, re.M):
-            return None
-        m = re.search(
-            rf'^{self.field}\s*:\s*"?(\d{{4}}-\d{{2}}-\d{{2}})"?',
-            document.frontmatter,
-            re.M,
-        )
-        return CheckResult.of(
-            bool(m),
-            (
-                f"{self.field} is ISO YYYY-MM-DD"
-                if m
-                else f"{self.field} not ISO YYYY-MM-DD"
-            ),
-        )
-
-
-class _HeadingCheck:
-    """A required markdown heading is present."""
-
-    def __init__(self, heading: str) -> None:
-        self.heading = heading
-
-    def run(self, document: SkillDocument) -> CheckResult | None:
-        ok = self.heading in document.body
-        return CheckResult.of(
-            ok,
-            (
-                f"heading '{self.heading}' present"
-                if ok
-                else f"heading '{self.heading}' MISSING (save_skill requires it)"
-            ),
-        )
+        result = results[0]
+        if result.status is Status.PASSED:
+            return CheckResult.passed(result.message)
+        if result.level is Level.WARNING:
+            return CheckResult.warned(result.message)
+        return CheckResult.failed(result.message)
 
 
 class _BlockOrderCheck:
@@ -416,44 +333,6 @@ class _TagBalanceCheck:
         if unbalanced:
             return CheckResult.failed("tag balance issues: " + "; ".join(unbalanced))
         return CheckResult.passed("all block and workflow tags balanced")
-
-
-class _BodyLengthCheck:
-    """Body stays within the line limit."""
-
-    def run(self, document: SkillDocument) -> CheckResult | None:
-        n = len(document.body.splitlines())
-        return CheckResult.of(
-            n <= MAX_BODY_LINES, f"body length {n} lines (limit {MAX_BODY_LINES})"
-        )
-
-
-class _EmDashCheck:
-    """No em dashes in body prose (fenced code excluded)."""
-
-    def run(self, document: SkillDocument) -> CheckResult | None:
-        scan = _blank_fences(document.body)
-        em_lines = [i + 1 for i, ln in enumerate(scan) if EM_DASH in ln]
-        return CheckResult.of(
-            not em_lines,
-            "no em dashes" if not em_lines else f"em dashes on body lines {em_lines}",
-        )
-
-
-class _EmojiCheck:
-    """No emojis in body prose (fenced code excluded)."""
-
-    def run(self, document: SkillDocument) -> CheckResult | None:
-        scan = _blank_fences(document.body)
-        emoji_lines = [i + 1 for i, ln in enumerate(scan) if EMOJI_RE.search(ln)]
-        return CheckResult.of(
-            not emoji_lines,
-            (
-                "no body emojis"
-                if not emoji_lines
-                else f"emojis on body lines {emoji_lines}"
-            ),
-        )
 
 
 class _RuleSequentialNumberingCheck:
@@ -526,25 +405,59 @@ class _StepFailurePathCheck:
             yield STEP_PREFIX_RE.match(lines[start]).group(1).strip(), block
 
 
+@dataclass(frozen=True)
+class ToolUsage:
+    """The tools a SKILL.md declares in frontmatter and the tools its workflows use."""
+
+    declared: frozenset[str]
+    used: frozenset[str]
+
+
+class ToolUsageReader:
+    """Reads a document's declared and workflow-used tools (pure)."""
+
+    def __init__(self, document: SkillDocument) -> None:
+        self.document = document
+
+    def read(self) -> ToolUsage:
+        m = FRONTMATTER_TOOLS_RE.search(self.document.frontmatter)
+        declared = (
+            {t.strip() for t in m.group(1).split(",") if t.strip()} if m else set()
+        )
+        used: set[str] = set()
+        for block in WORKFLOW_TOOLS_RE.findall(self.document.body_without_examples()):
+            used |= {t.strip() for t in block.split(",") if t.strip()}
+        return ToolUsage(
+            declared=frozenset(declared), used=frozenset(used - TOOL_PLACEHOLDERS)
+        )
+
+
 class _WorkflowToolsCheck:
     """Every tool used in a workflow tools=[...] is declared in frontmatter."""
 
     def run(self, document: SkillDocument) -> CheckResult | None:
-        m = FRONTMATTER_TOOLS_RE.search(document.frontmatter)
-        declared = (
-            {t.strip() for t in m.group(1).split(",") if t.strip()} if m else set()
-        )
-        used = set()
-        for block in WORKFLOW_TOOLS_RE.findall(document.body_without_examples()):
-            used |= {t.strip() for t in block.split(",") if t.strip()}
-        undeclared = sorted(
-            t for t in (used - declared) if t not in ("...", "built_in_tool")
-        )
+        usage = ToolUsageReader(document).read()
+        undeclared = sorted(usage.used - usage.declared)
         if undeclared:
             return CheckResult.failed(
                 f"workflow tools not in frontmatter `tools`: {undeclared}"
             )
         return CheckResult.passed("all workflow tools are declared in frontmatter")
+
+
+class _UnusedToolsCheck:
+    """WARNING when a tool declared in frontmatter is used by no workflow, so a
+    skill holds no more tools than its workflows need (least privilege). A
+    warning, not a failure, until existing skills drop their unused tools."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        usage = ToolUsageReader(document).read()
+        if not usage.declared:
+            return None
+        unused = sorted(usage.declared - usage.used)
+        if unused:
+            return CheckResult.warned(f"frontmatter `tools` no workflow uses: {unused}")
+        return CheckResult.passed("every declared tool is used by a workflow")
 
 
 class _InputPlaceholderCheck:
@@ -576,30 +489,6 @@ class _WorkflowAttributesCheck:
             return CheckResult.failed("workflow attribute gaps: " + "; ".join(missing))
         return CheckResult.passed(
             f"all {len(openers)} workflows have description, tools, triggers"
-        )
-
-
-class _PreferredFieldCheck:
-    """A preferred_* frontmatter field, when present, holds a valid value."""
-
-    def __init__(self, field: str, valid: tuple[str, ...]) -> None:
-        self.field = field
-        self.valid = valid
-
-    def run(self, document: SkillDocument) -> CheckResult | None:
-        m = re.search(
-            rf'^{self.field}\s*:\s*"?([A-Za-z]+)"?', document.frontmatter, re.M
-        )
-        if not m:
-            return None
-        val = m.group(1)
-        return CheckResult.of(
-            val in self.valid,
-            (
-                f"{self.field} '{val}' is valid"
-                if val in self.valid
-                else f"{self.field} '{val}' invalid (must be one of {', '.join(self.valid)})"
-            ),
         )
 
 
@@ -701,64 +590,6 @@ class _SkillChecksumFieldCheck:
         )
 
 
-class SkillContentManifest:
-    """Reads a skill directory into a {relpath: content} manifest (I/O). Mirrors
-    create_checksum.py."""
-
-    def __init__(self, skill_dir: Path) -> None:
-        self.skill_dir = skill_dir
-
-    def collect(self) -> dict[str, bytes]:
-        manifest: dict[str, bytes] = {}
-        for name in DIGEST_ROOT_FILES:
-            path = self.skill_dir / name
-            if path.is_file():
-                manifest[name] = self._content_for(name, path)
-        for directory in DIGEST_DIRS:
-            base = self.skill_dir / directory
-            if not base.is_dir():
-                continue
-            for path in sorted(base.rglob("*")):
-                if self._is_included(path):
-                    relpath = path.relative_to(self.skill_dir).as_posix()
-                    manifest[relpath] = self._content_for(relpath, path)
-        return manifest
-
-    def _content_for(self, relpath: str, path: Path) -> bytes:
-        if relpath == SKILL_FILENAME:
-            stripped = CHECKSUM_STRIP_RE.sub(
-                "", path.read_text(encoding="utf-8"), count=1
-            )
-            return stripped.encode("utf-8")
-        return path.read_bytes()
-
-    def _is_included(self, path: Path) -> bool:
-        if not path.is_file():
-            return False
-        parts = set(path.relative_to(self.skill_dir).parts)
-        if parts & DIGEST_EXCLUDE_DIRS:
-            return False
-        if path.suffix in DIGEST_EXCLUDE_SUFFIXES or path.name in DIGEST_EXCLUDE_NAMES:
-            return False
-        return not DIGEST_TEST_FILE_RE.match(path.name)
-
-
-class ContentDigest:
-    """Hashes a manifest into a deterministic, order-independent digest (pure).
-    Mirrors create_checksum.py."""
-
-    def __init__(self, manifest: dict[str, bytes]) -> None:
-        self.manifest = manifest
-
-    def compute(self) -> str:
-        lines = [
-            f"{relpath}\t{hashlib.sha256(content).hexdigest()}"
-            for relpath, content in sorted(self.manifest.items())
-        ]
-        body = "\n".join(lines).encode("utf-8")
-        return f"{DIGEST_PREFIX}:{hashlib.sha256(body).hexdigest()}"
-
-
 class _ChecksumIntegrityCheck:
     """FAILs when the stored checksum does not match a recomputed digest. Field
     presence and format stay _SkillChecksumFieldCheck's job; skipped when there is
@@ -770,9 +601,7 @@ class _ChecksumIntegrityCheck:
         stored = document.checksum_value()
         if stored is None:
             return None
-        computed = ContentDigest(
-            SkillContentManifest(document.skill_dir).collect()
-        ).compute()
+        computed = ManifestDigest(SkillManifest(document.skill_dir).collect()).compute()
         if stored == computed:
             return CheckResult.passed("checksum matches recomputed digest")
         return CheckResult.failed(
@@ -797,12 +626,41 @@ class HeaderExtractor:
         return match.group(1) if match else ""
 
 
+class SourcesValidator:
+    """Checks an optional `sources` header field (pure): when present, it is a
+    YAML list whose every item is an http or https URL."""
+
+    def __init__(self, header: str) -> None:
+        self.header = header
+
+    def is_valid(self) -> bool:
+        match = SOURCES_KEY_RE.search(self.header)
+        if match is None:
+            return True
+        inline = match.group(1).strip()
+        if inline:
+            items = [i.strip().strip("\"'") for i in inline.strip("[]").split(",")]
+        else:
+            items = self._block_items(self.header[match.end() :])
+        return bool(items) and all(URL_RE.match(item) for item in items if item)
+
+    @staticmethod
+    def _block_items(rest: str) -> list[str]:
+        items = []
+        for line in rest.splitlines()[1:]:
+            item = SOURCE_ITEM_RE.match(line)
+            if item is None:
+                break
+            items.append(item.group(1).strip("\"'"))
+        return items
+
+
 class FileHeaderValidator:
     """Validates that a file's header carries the required fields (pure).
 
     Given a file's text and whether it is Python, it extracts the header (the
     module docstring for .py, the YAML frontmatter for .md) and returns the list
-    of missing fields: description, last_updated, and source_url-or-origin.
+    of problems: a missing description or last_updated, or a malformed sources.
     """
 
     def __init__(self, text: str, is_python: bool) -> None:
@@ -810,15 +668,15 @@ class FileHeaderValidator:
         self.is_python = is_python
 
     def validate(self) -> list[str]:
-        """Return the required header fields that are missing (empty if valid)."""
+        """Return the header problems (empty if valid)."""
         header = self._header()
         missing = []
         if not HEADER_DESCRIPTION_RE.search(header):
             missing.append("description")
         if not HEADER_LAST_UPDATED_RE.search(header):
             missing.append("last_updated")
-        if not HEADER_PROVENANCE_RE.search(header):
-            missing.append("source_url or origin")
+        if not SourcesValidator(header).is_valid():
+            missing.append(SOURCES_PROBLEM)
         return missing
 
     def _header(self) -> str:
@@ -919,22 +777,10 @@ class _FileStalenessCheck:
         if stale:
             return CheckResult.warned(
                 f"stale files (last_updated over {self.evaluator.months} months old); "
-                "regenerate a derived file from its source_url or review an "
-                "origin: original file by hand: " + "; ".join(stale)
+                "refresh a file with sources from those pages, and review one "
+                "without sources by hand: " + "; ".join(stale)
             )
         return CheckResult.passed("all file headers are within the staleness window")
-
-
-def _blank_fences(text: str) -> list[str]:
-    """Return body lines with fenced code blanked, preserving line numbers."""
-    out, in_fence = [], False
-    for line in text.splitlines():
-        if line.strip().startswith("```"):
-            in_fence = not in_fence
-            out.append("")
-            continue
-        out.append("" if in_fence else line)
-    return out
 
 
 def build_checks(today: datetime.date | None = None) -> list[Check]:
@@ -944,30 +790,33 @@ def build_checks(today: datetime.date | None = None) -> list[Check]:
     injected by tests so staleness results are deterministic.
     """
     evaluator = StalenessEvaluator(today or datetime.datetime.now(datetime.UTC).date())
+    rules = {rule.id: rule for rule in RuleLoader(RULES_DIR).load()}
+    frontmatter, headings = rules[RuleId.FRONTMATTER], rules[RuleId.HEADINGS]
     return [
-        _RequiredFieldCheck("name"),
-        _RequiredFieldCheck("description"),
-        _RequiredFieldCheck("created_date"),
-        _RequiredFieldCheck("last_updated"),
-        _NameFormatCheck(),
-        _DescriptionLengthCheck(),
-        _DateFormatCheck("created_date"),
-        _DateFormatCheck("last_updated"),
-        _HeadingCheck("## Overview"),
-        _HeadingCheck("## Workflow"),
+        _RuleFileCheck(frontmatter, "required_name"),
+        _RuleFileCheck(frontmatter, "required_description"),
+        _RuleFileCheck(frontmatter, "required_created_date"),
+        _RuleFileCheck(frontmatter, "required_last_updated"),
+        _RuleFileCheck(frontmatter, "name_format"),
+        _RuleFileCheck(frontmatter, "description_length"),
+        _RuleFileCheck(frontmatter, "created_date_format"),
+        _RuleFileCheck(frontmatter, "last_updated_format"),
+        _RuleFileCheck(headings, "heading_overview"),
+        _RuleFileCheck(headings, "heading_workflow"),
         _BlockOrderCheck(),
         _TagBalanceCheck(),
-        _BodyLengthCheck(),
-        _EmDashCheck(),
-        _EmojiCheck(),
+        _RuleFileCheck(rules[RuleId.BODY_LENGTH], "max_lines"),
+        _RuleFileCheck(rules[RuleId.PROSE], "em_dash"),
+        _RuleFileCheck(rules[RuleId.PROSE], "emoji"),
         _RuleSequentialNumberingCheck(),
         _RuleSelfReferenceCheck(),
         _StepFailurePathCheck(),
         _WorkflowToolsCheck(),
+        _UnusedToolsCheck(),
         _InputPlaceholderCheck(),
         _WorkflowAttributesCheck(),
-        _PreferredFieldCheck("preferred_model", VALID_MODELS),
-        _PreferredFieldCheck("preferred_thinking", VALID_THINKING),
+        _RuleFileCheck(frontmatter, "preferred_model"),
+        _RuleFileCheck(frontmatter, "preferred_thinking"),
         _RuleCrossRefCheck(),
         _NameMatchesDirectoryCheck(),
         _ChoiceOptionsCheck(),
@@ -997,12 +846,12 @@ class SkillChecker:
         return ValidationReport(results)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Mechanical pass/fail checks for a SKILL.md."
     )
     parser.add_argument("skill_md", help="Path to the SKILL.md file.")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     path = Path(args.skill_md)
     if not path.is_file():

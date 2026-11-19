@@ -1,7 +1,6 @@
 """
 description: Score one eval iteration. Reads every run's grading.json and metrics.json, compares them with the last saved result, appends one line to evals/results.jsonl, and prints a plain-language scorecard. Run as: python create_benchmark.py <iteration_dir> <evals_dir> --model TIER.
-last_updated: 2026-10-22
-origin: original
+last_updated: 2026-11-18
 
 Standard library plus pydantic (in the sandbox manifest). A single self-contained
 file. Readers (I/O) load evals.json, the graded runs, and the previous result;
@@ -738,14 +737,14 @@ class BenchmarkBuilder:
         return record
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Score an eval iteration and append it to results.jsonl."
     )
     parser.add_argument("iteration_dir", help="Path to the iteration-N directory.")
     parser.add_argument("evals_dir", help="Path to the skill's evals/ directory.")
     parser.add_argument("--model", required=True, help="Model tier the runs used.")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     iteration_dir, evals_dir = Path(args.iteration_dir), Path(args.evals_dir)
     if not iteration_dir.is_dir() or not (evals_dir / EVALS_FILE).is_file():

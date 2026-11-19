@@ -1,8 +1,9 @@
 """
-description: Scaffold a new scripts/*.py file with a standard-conforming header (description, last_updated, and exactly one of source_url or origin) and a one-public-method class plus main()/argparse skeleton, so a new script starts compliant with the Python sandbox code standard. Run as: python create_script.py scripts <file_name> --description "..." --class-name "..." --method-name "..." (--source-url "..." | --origin original).
-last_updated: 2026-10-22
-origin: original
+description: Scaffold a new scripts/*.py file with a standard-conforming header (description, last_updated, and optional sources) and a one-public-method class plus a main(argv) entry point, so a new script starts compliant with the Python sandbox code standard.
+last_updated: 2026-11-18
 
+Usage:
+    python create_script.py scripts <file_name> --description "..." --class-name "..." --method-name "..." [--source URL ...]
 """
 
 from __future__ import annotations
@@ -43,8 +44,7 @@ class ScriptSpec:
     description: str
     class_name: str
     method_name: str
-    source_url: str | None
-    origin: str | None
+    sources: tuple[str, ...] = ()
 
 
 class ScriptRenderer:
@@ -56,16 +56,15 @@ class ScriptRenderer:
     def render(self) -> str:
         """Return the full text of the new script."""
         spec = self.spec
-        provenance = (
-            f"source_url: {spec.source_url}"
-            if spec.source_url
-            else f"origin: {spec.origin}"
+        sources = (
+            "sources:\n" + "".join(f"  - {url}\n" for url in spec.sources)
+            if spec.sources
+            else ""
         )
         return f'''"""
 description: {spec.description}
 last_updated: {date.today().isoformat()}
-{provenance}
-"""
+{sources}"""
 
 from __future__ import annotations
 
@@ -106,10 +105,10 @@ class {spec.class_name}:
         raise NotImplementedError
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description="{spec.description}")
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description={spec.description!r})
     parser.add_argument("target", help="Path this script operates on.")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     target = Path(args.target)
     if not target.exists():
@@ -153,12 +152,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--method-name", required=True, help="Public method name, e.g. collect."
     )
-    provenance = parser.add_mutually_exclusive_group(required=True)
-    provenance.add_argument(
-        "--source-url", help="URL the script is derived from (derived files)."
-    )
-    provenance.add_argument(
-        "--origin", choices=["original"], help="Mark internal-authored content."
+    parser.add_argument(
+        "--source",
+        action="append",
+        default=[],
+        help="A URL the script's content comes from. Repeat for each page.",
     )
     args = parser.parse_args(argv)
 
@@ -173,8 +171,7 @@ def main(argv: list[str] | None = None) -> int:
         description=args.description,
         class_name=args.class_name,
         method_name=args.method_name,
-        source_url=args.source_url,
-        origin=args.origin,
+        sources=tuple(args.source),
     )
     target = ScriptGenerator(scripts_dir, spec).generate()
     logger.info("Wrote %s", target)

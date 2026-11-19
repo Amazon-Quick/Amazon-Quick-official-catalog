@@ -1,7 +1,6 @@
 """
 description: Unit tests for create_checksum.py. Dependency-injected and filesystem-free: the pure classes receive their inputs directly, so the digest and the frontmatter rendering are verified without reading or writing any file.
-last_updated: 2026-09-13
-origin: original
+last_updated: 2026-11-18
 
 Run from the skill root (scripts/ on the path, no in-code sys.path edits):
     PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"

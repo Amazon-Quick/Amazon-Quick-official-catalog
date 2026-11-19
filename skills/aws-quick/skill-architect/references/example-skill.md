@@ -1,7 +1,6 @@
 ---
 description: "A minimal complete skill that follows the standard, used as a structural template."
-last_updated: 2026-10-22
-origin: original
+last_updated: 2026-11-18
 ---
 
 # Example Skill

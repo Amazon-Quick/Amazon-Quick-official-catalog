@@ -1,0 +1,421 @@
+{
+  "description": "Every built-in cloud connector type a skill's README can list, the same values as ConnectorType in the catalog's plugin.schema.json, with its AWS Quick User Guide page, or the integration guides index when it has none.",
+  "last_updated": "2026-11-18",
+  "sources": [
+    "https://docs.aws.amazon.com/quick/latest/userguide/toc-contents.json"
+  ],
+  "connector_types": [
+    {
+      "type": "SERVICENOW_NOW_PLATFORM",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/servicenow-integration.html"
+    },
+    {
+      "type": "SALESFORCE_CRM",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/salesforce-integration.html"
+    },
+    {
+      "type": "MICROSOFT_OUTLOOK",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/microsoft-outlook-integration.html"
+    },
+    {
+      "type": "GOOGLE_DRIVE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/google-drive-action-integration.html"
+    },
+    {
+      "type": "PAGERDUTY_ADVANCE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/pagerduty-advance-integration.html"
+    },
+    {
+      "type": "JIRA_CLOUD",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/jira-integration.html"
+    },
+    {
+      "type": "ATLASSIAN_CONFLUENCE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/confluence-action-integration.html"
+    },
+    {
+      "type": "AMAZON_S3",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/s3-integration.html"
+    },
+    {
+      "type": "AMAZON_BEDROCK_AGENT_RUNTIME",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "AMAZON_BEDROCK_RUNTIME",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "AMAZON_BEDROCK_DATA_AUTOMATION_RUNTIME",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "AMAZON_TEXTRACT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "AMAZON_COMPREHEND",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "AMAZON_COMPREHEND_MEDICAL",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "MICROSOFT_ONEDRIVE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/onedrive-action-integration.html"
+    },
+    {
+      "type": "MICROSOFT_SHAREPOINT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/sharepoint-action-integration.html"
+    },
+    {
+      "type": "MICROSOFT_TEAMS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/microsoft-teams-integration.html"
+    },
+    {
+      "type": "SAP_BUSINESSPARTNER",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/sap-integrations.html"
+    },
+    {
+      "type": "SAP_PRODUCTMASTERDATA",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/sap-integrations.html"
+    },
+    {
+      "type": "SAP_PHYSICALINVENTORY",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/sap-integrations.html"
+    },
+    {
+      "type": "SAP_BILLOFMATERIALS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/sap-integrations.html"
+    },
+    {
+      "type": "SAP_MATERIALSTOCK",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/sap-integrations.html"
+    },
+    {
+      "type": "ZENDESK_SUITE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/zendesk-integration.html"
+    },
+    {
+      "type": "SMARTSHEET",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/smartsheet-integration.html"
+    },
+    {
+      "type": "SLACK",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/slack-integration.html"
+    },
+    {
+      "type": "ASANA",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/asana-integration.html"
+    },
+    {
+      "type": "BAMBOO_HR",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/bamboohr-integration.html"
+    },
+    {
+      "type": "FACTSET",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/factset.html"
+    },
+    {
+      "type": "BOX_AGENT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "S_AND_P_GLOBAL_ENERGY",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/spgi-global-energy.html"
+    },
+    {
+      "type": "PAGER_DUTY_AGENT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "S_AND_P_GLOBAL_MARKET_INTELLIGENCE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/spgi-market-intelligence.html"
+    },
+    {
+      "type": "CANVA_AGENT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "VISIER_AGENT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "REVINOVA_AGENT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "GITHUB",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/github-integration.html"
+    },
+    {
+      "type": "NOTION",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/notion-integration.html"
+    },
+    {
+      "type": "LINEAR",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/linear-integration.html"
+    },
+    {
+      "type": "HUGGINGFACE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/huggingface-integration.html"
+    },
+    {
+      "type": "MONDAY",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/monday-integration.html"
+    },
+    {
+      "type": "HUBSPOT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/hubspot-integration.html"
+    },
+    {
+      "type": "INTERCOM",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/intercom-integration.html"
+    },
+    {
+      "type": "STRIPE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "NEW_RELIC",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/newrelic-integration.html"
+    },
+    {
+      "type": "SNOWFLAKE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/snowflake-integration.html"
+    },
+    {
+      "type": "ZAPIER",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/zapier-integration.html"
+    },
+    {
+      "type": "MOODYS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/moodys-integration.html"
+    },
+    {
+      "type": "DROPBOX",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/dropbox-integration.html"
+    },
+    {
+      "type": "GOOGLE_MEET",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/google-meet-integration.html"
+    },
+    {
+      "type": "GOOGLE_SHEETS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/google-sheets-integration.html"
+    },
+    {
+      "type": "GOOGLE_DOCS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/google-docs-integration.html"
+    },
+    {
+      "type": "GOOGLE_SLIDES",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/google-slides-integration.html"
+    },
+    {
+      "type": "GOOGLE_ANALYTICS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/google-analytics-integration.html"
+    },
+    {
+      "type": "GOOGLE_CALENDAR",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/google-calendar-integration.html"
+    },
+    {
+      "type": "GMAIL",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/gmail-integration.html"
+    },
+    {
+      "type": "ZOOM",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/zoom-integration.html"
+    },
+    {
+      "type": "QUICKBOOKS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/quickbooks-integration.html"
+    },
+    {
+      "type": "AIRTABLE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/airtable-integration.html"
+    },
+    {
+      "type": "MICROSOFT_ONENOTE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/microsoft-onenote-integration.html"
+    },
+    {
+      "type": "WORKDAY",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "GOOGLE_CHAT",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/google-chat-integration.html"
+    },
+    {
+      "type": "SHOPIFY",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/shopify-integration.html"
+    },
+    {
+      "type": "FIGMA",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/figma-integration.html"
+    },
+    {
+      "type": "WHATSAPP",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/whatsapp-integration.html"
+    },
+    {
+      "type": "CALENDLY",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "GITLAB",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "BITBUCKET",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "TWILIO",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "ADOBE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/adobe-integration.html"
+    },
+    {
+      "type": "CISCO_WEBEX_VIDCAST",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/cisco-webex-vidcast-integration.html"
+    },
+    {
+      "type": "CISCO_WEBEX_MEETINGS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/cisco-webex-meetings-integration.html"
+    },
+    {
+      "type": "DUN_AND_BRADSTREET",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/dun-bradstreet-integration.html"
+    },
+    {
+      "type": "AMPLITUDE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "HG_INSIGHTS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/hg-insights-integration.html"
+    },
+    {
+      "type": "ZOOM_INFO",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/zoominfo-integration.html"
+    },
+    {
+      "type": "BOX",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/box-action-integration.html"
+    },
+    {
+      "type": "CANVA",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/canva-integration.html"
+    },
+    {
+      "type": "VISIER",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/visier-integration.html"
+    },
+    {
+      "type": "CISCO_WORKSPACES",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/cisco-workspaces-integration.html"
+    },
+    {
+      "type": "BEE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "AMAZON_SELLING_PARTNER",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "GONG",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/gong-integration.html"
+    },
+    {
+      "type": "META_ADS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "VERISK",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/verisk-integration.html"
+    },
+    {
+      "type": "DOCUSIGN",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "EPIQ_AI",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "INFORMATICA_CATALOG_DISCOVERY",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "INFORMATICA_DATA_EXPLORER",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "LUMINANCE",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "NET_DOCUMENTS",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "MOODYS_GROWTH_STRATEGY",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "HARVEY_LEGAL_AI",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "CORNERSTONE_ON_DEMAND",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "PLAID",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "TURBOTAX",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "XERO",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "ZOHO_EMAIL",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "ZOHO_CRM",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "AWS_EVENTS_CENTRAL",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "FABRIC_IQ",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "TABLEAU",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "CLIO",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    },
+    {
+      "type": "LEGORA",
+      "docs": "https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html"
+    }
+  ]
+}

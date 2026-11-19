@@ -75,11 +75,14 @@ A skill that uses a connector works for you because the connector is set up in y
 1. [Agent] Find the emails you sent this week and add them to the summary.
 ```
 
-Name the dependency in the skill's README, where the person installing the skill reads what to set up. The entry says what kind of dependency it is, where it runs (in this case, in the cloud rather than on their computer), and whether the skill can run without it:
+Name the dependency in the skill's README, where the person installing the skill reads what to set up. Each row names the dependency and links its setup guide, gives its type, and says whether the skill needs it to run:
 
 ```markdown
 ## Pre-requisites
-- Microsoft Outlook (cloud connector, cloud runtime, required)
+
+| Name | Type | Required |
+| --- | --- | --- |
+| [Microsoft Outlook](https://docs.aws.amazon.com/quick/latest/userguide/microsoft-outlook-integration.html) | MICROSOFT_OUTLOOK | Y |
 ```
 
 Then add a first step that checks for the connector before the skill does any work, so a missing connector stops the skill with a message that tells the person what to do:
@@ -125,33 +128,25 @@ These dates work like the version number on a software release, telling people w
 
 ## Record where reference files came from
 
-Some skills include reference files with information their steps rely on, such as a list of package names or a lookup table. When that information is copied from somewhere else, it goes out of date when the source changes, and whoever fixes it needs to know where it came from. Each reference file starts with a short header. This one, which Skill Architect's standard uses as an example of what not to do, leaves the next person guessing:
-
-```yaml
----
-description: "Eval methodology."
-last_updated: 2026-09-13
----
-```
-
-This one tells them where to rebuild the file from:
+Some skills include reference files with information their steps rely on, such as a list of package names or a lookup table. When that information is copied from somewhere else, it goes out of date when the source changes, and whoever fixes it needs to know where it came from. Each reference file starts with a short header, and a file copied from web pages lists those pages under `sources`:
 
 ```yaml
 ---
 description: "AWS Quick code sandbox Python package names, grouped by use."
 last_updated: 2026-09-13
-source_url: <URL of the documentation page the list came from>
+sources:
+  - <URL of the documentation page the list came from>
 ---
 ```
 
-When someone writes a file from scratch, the header records `origin: original` instead, so the maintainer knows there's no source to compare against and reviews the file by hand. Developers keep a note of where they copied code from, so they can pull in updates later. Skill Architect creates every reference file and script from a generator that requires exactly one of `source_url` or `origin: original`, and the [reference file header standard](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/skills/aws-quick/skill-architect/references/reference-file-standard.md) lists every field.
+A file written from scratch leaves `sources` out. Developers keep a note of where they copied code from, so they can pull in updates later. When a file's `last_updated` date is more than six months old, the audit flags it as stale, and Skill Architect refreshes a file that lists `sources` by reading those pages again. Skill Architect creates every reference file and script from a generator that writes the header, and the [reference file header standard](https://github.com/Amazon-Quick/amazon-quick-official-catalog/blob/main/skills/aws-quick/skill-architect/references/reference-file-standard.md) lists every field.
 
 ## Fingerprint the files you checked
 
 Once a skill passes its checks, any edit or copy can make it different from what was checked, and nothing about the files shows it. A checksum makes that difference visible. It's a fingerprint calculated from the contents of the skill's files and stored in the frontmatter, and changing any of those files changes the fingerprint:
 
 ```yaml
-checksum: "sha256:<fingerprint of SKILL.md, README.md, scripts/, references/, and assets/>"
+checksum: "sha256:<fingerprint of SKILL.md, scripts/, references/, and assets/>"
 ```
 
 Say you download a skill's folder from the catalog repository and change one of its scripts for your team. When you run `sa audit` on your copy, the stored checksum no longer matches the files, which tells you that your copy differs from the version that was audited. The same check catches a copied folder that's missing a file. Software downloads publish checksums for the same purpose, so you can confirm that the file you have is the one that was released. Skill Architect calculates the checksum every time it saves a skill, and its audit recalculates it and compares the two.
@@ -161,6 +156,8 @@ Say you download a skill's folder from the catalog repository and change one of 
 A later edit can undo any of these practices without anyone noticing. If you edit a step by hand and leave out its failure path, or change a file without updating the checksum, the skill still reads fine. That's why Skill Architect audits a skill every time it saves it, and why you should enter `sa audit` after you edit a skill's files yourself.
 
 The audit works in two passes. First, a script checks what a program can check, such as required fields, the order of the instruction sections, failure paths, listed tools, and the checksum. Then Skill Architect reads the skill for what needs judgment, such as whether each rule is a real constraint. Developers rely on the same kind of automatic check, called a linter, to catch mistakes before anyone reviews their code.
+
+The audit also looks for security problems, which matters most before you install a skill someone else wrote. A script runs the checks a program can make, such as hidden HTML comments, links the skill fetches while it runs, and network calls in its scripts. Then Skill Architect reads every line of every file and decides whether each warning the script raised is a real problem or a false alarm. It writes a report that lists each problem with its fix, and the report never calls a skill safe, because no review catches everything.
 
 ## Test the skill against no skill at all
 

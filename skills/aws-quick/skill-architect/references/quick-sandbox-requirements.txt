@@ -35,8 +35,12 @@ ffmpeg-python
 
 # Data visualization
 matplotlib
+seaborn
 plotly
 kaleido
+
+# Power BI model metadata
+pbixray
 
 # Data modeling and SQL
 pydantic

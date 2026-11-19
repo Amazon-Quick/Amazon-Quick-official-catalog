@@ -1,8 +1,9 @@
 """
-description: Scaffold a new references/*.md file with a standard-conforming frontmatter header (description, last_updated, and exactly one of source_url or origin) plus a purpose skeleton, so a new reference file starts compliant with the reference-file header standard. Run as: python create_reference_file.py references <name> --description "..." (--source-url "..." | --origin original).
-last_updated: 2026-09-13
-origin: original
+description: Scaffold a new references/*.md file with a standard-conforming frontmatter header (description, last_updated, and optional sources) plus a purpose skeleton, so a new reference file starts compliant with the reference-file header standard.
+last_updated: 2026-11-18
 
+Usage:
+    python create_reference_file.py references <name> --description "..." [--source URL ...]
 """
 
 from __future__ import annotations
@@ -41,8 +42,7 @@ class ReferenceFileSpec:
 
     name: str
     description: str
-    source_url: str | None
-    origin: str | None
+    sources: tuple[str, ...] = ()
 
 
 class ReferenceRenderer:
@@ -54,17 +54,17 @@ class ReferenceRenderer:
     def render(self) -> str:
         """Return the full text of the new reference file."""
         spec = self.spec
-        provenance = (
-            f"source_url: {spec.source_url}"
-            if spec.source_url
-            else f"origin: {spec.origin}"
+        sources = (
+            "sources:\n" + "".join(f"  - {url}\n" for url in spec.sources)
+            if spec.sources
+            else ""
         )
         title = spec.name.replace("-", " ").replace("_", " ").title()
         return (
             "---\n"
             f'description: "{spec.description}"\n'
             f"last_updated: {date.today().isoformat()}\n"
-            f"{provenance}\n"
+            f"{sources}"
             "---\n\n"
             f"# {title}\n\n"
             "<purpose>\n"
@@ -100,12 +100,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--description", required=True, help="What the file contains and why."
     )
-    provenance = parser.add_mutually_exclusive_group(required=True)
-    provenance.add_argument(
-        "--source-url", help="URL the file is derived from (derived files)."
-    )
-    provenance.add_argument(
-        "--origin", choices=["original"], help="Mark internal-authored content."
+    parser.add_argument(
+        "--source",
+        action="append",
+        default=[],
+        help="A URL the file's content comes from. Repeat for each page.",
     )
     args = parser.parse_args(argv)
 
@@ -118,8 +117,7 @@ def main(argv: list[str] | None = None) -> int:
     spec = ReferenceFileSpec(
         name=args.name,
         description=args.description,
-        source_url=args.source_url,
-        origin=args.origin,
+        sources=tuple(args.source),
     )
     target = ReferenceFileGenerator(references_dir, spec).generate()
     logger.info("Wrote %s", target)

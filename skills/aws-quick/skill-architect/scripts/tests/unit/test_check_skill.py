@@ -1,7 +1,6 @@
 """
-description: Unit tests for check_skill.py. Filesystem-free: each check is fed a SkillDocument built directly, so individual checks (checksum field, name format, tag balance) are verified without reading a file.
-last_updated: 2026-09-13
-origin: original
+description: Unit tests for check_skill.py. Filesystem-free: each check is fed a SkillDocument built directly, so individual checks (checksum field, name format, tag balance, tools, headers) are verified without reading a file.
+last_updated: 2026-11-18
 
 Run: PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"
 """
@@ -10,16 +9,18 @@ import datetime
 import unittest
 
 from check_skill import (
+    SOURCES_PROBLEM,
     CheckStatus,
-    ContentDigest,
     FileHeaderValidator,
     HeaderExtractor,
     SkillDocument,
     StalenessEvaluator,
-    _NameFormatCheck,
+    _RuleFileCheck,
     _SkillChecksumFieldCheck,
     _TagBalanceCheck,
+    _UnusedToolsCheck,
 )
+from run_rules import RULES_DIR, RuleId, RuleLoader
 
 VALID_CHECKSUM = "sha256:" + "a" * 64
 
@@ -47,13 +48,24 @@ class TestSkillChecksumFieldCheck(unittest.TestCase):
 
 
 class TestNameFormatCheck(unittest.TestCase):
+    """The name format check now lives in references/rules/standard_rule.json;
+    check_skill.py runs it through the rule engine with the same message."""
+
+    def check(self) -> _RuleFileCheck:
+        rules = {rule.id: rule for rule in RuleLoader(RULES_DIR).load()}
+        return _RuleFileCheck(rules[RuleId.FRONTMATTER], "name_format")
+
     def test_valid_kebab_passes(self) -> None:
-        result = _NameFormatCheck().run(_doc(frontmatter='name: "my-skill"'))
+        result = self.check().run(_doc(frontmatter='name: "my-skill"'))
         self.assertIs(result.status_code, CheckStatus.PASS)
+        self.assertEqual(result.status_reason, "name 'my-skill' is valid kebab-case")
 
     def test_uppercase_name_fails(self) -> None:
-        result = _NameFormatCheck().run(_doc(frontmatter='name: "MySkill"'))
+        result = self.check().run(_doc(frontmatter='name: "MySkill"'))
         self.assertIs(result.status_code, CheckStatus.FAIL)
+
+    def test_missing_name_is_not_applicable(self) -> None:
+        self.assertIsNone(self.check().run(_doc(frontmatter="description: x")))
 
 
 class TestTagBalanceCheck(unittest.TestCase):
@@ -66,32 +78,56 @@ class TestTagBalanceCheck(unittest.TestCase):
         self.assertIs(result.status_code, CheckStatus.FAIL)
 
 
+class TestUnusedToolsCheck(unittest.TestCase):
+    _BODY = '<Workflow - Do\ndescription="x"\ntools=[file_read]\ntriggers=["x"]\n>'
+
+    def test_every_declared_tool_used_passes(self) -> None:
+        doc = _doc(frontmatter="tools: [file_read]", body=self._BODY)
+        self.assertIs(_UnusedToolsCheck().run(doc).status_code, CheckStatus.PASS)
+
+    def test_declared_tool_no_workflow_uses_warns(self) -> None:
+        doc = _doc(frontmatter="tools: [file_read, web_search]", body=self._BODY)
+        result = _UnusedToolsCheck().run(doc)
+        self.assertIs(result.status_code, CheckStatus.WARNING)
+        self.assertIn("web_search", result.status_reason)
+
+    def test_no_declared_tools_is_not_applicable(self) -> None:
+        self.assertIsNone(_UnusedToolsCheck().run(_doc(body=self._BODY)))
+
+
 class TestFileHeaderValidator(unittest.TestCase):
-    def test_compliant_python_header(self) -> None:
-        text = '"""\ndescription: does x\nlast_updated: 2026-09-13\norigin: original\n"""\n'
+    def test_header_without_sources_is_valid(self) -> None:
+        text = '"""\ndescription: does x\nlast_updated: 2026-09-13\n"""\n'
         self.assertEqual(FileHeaderValidator(text, is_python=True).validate(), [])
 
-    def test_compliant_markdown_header(self) -> None:
+    def test_sources_list_of_urls_is_valid(self) -> None:
         text = (
-            '---\ndescription: "x"\nlast_updated: 2026-09-13\n'
-            "source_url: https://example.com\n---\n# Title\n"
+            '---\ndescription: "x"\nlast_updated: 2026-09-13\nsources:\n'
+            "  - https://example.com/a\n  - https://example.com/b\n---\n# Title\n"
         )
         self.assertEqual(FileHeaderValidator(text, is_python=False).validate(), [])
 
-    def test_missing_provenance(self) -> None:
-        text = '"""\ndescription: x\nlast_updated: 2026-09-13\n"""\n'
+    def test_inline_sources_list_is_valid(self) -> None:
+        text = '---\ndescription: "x"\nlast_updated: 2026-09-13\nsources: [https://example.com]\n---\n'
+        self.assertEqual(FileHeaderValidator(text, is_python=False).validate(), [])
+
+    def test_source_that_is_not_a_url_fails(self) -> None:
+        text = '---\ndescription: "x"\nlast_updated: 2026-09-13\nsources:\n  - the user guide\n---\n'
         self.assertEqual(
-            FileHeaderValidator(text, is_python=True).validate(),
-            ["source_url or origin"],
+            FileHeaderValidator(text, is_python=False).validate(), [SOURCES_PROBLEM]
         )
 
-    def test_missing_all_fields(self) -> None:
+    def test_empty_sources_fails(self) -> None:
+        text = '---\ndescription: "x"\nlast_updated: 2026-09-13\nsources:\n---\n'
+        self.assertEqual(
+            FileHeaderValidator(text, is_python=False).validate(), [SOURCES_PROBLEM]
+        )
+
+    def test_missing_required_fields(self) -> None:
         missing = FileHeaderValidator(
             '"""just a docstring."""', is_python=True
         ).validate()
-        self.assertEqual(
-            set(missing), {"description", "last_updated", "source_url or origin"}
-        )
+        self.assertEqual(set(missing), {"description", "last_updated"})
 
 
 class TestSkillDocumentAccessors(unittest.TestCase):
@@ -134,31 +170,6 @@ class TestStalenessEvaluator(unittest.TestCase):
 
     def test_unparseable_date_is_not_stale(self) -> None:
         self.assertFalse(self._evaluator().is_stale("not-a-date"))
-
-
-class TestContentDigest(unittest.TestCase):
-    def test_digest_is_order_independent(self) -> None:
-        first = ContentDigest({"a.md": b"one", "b.md": b"two"}).compute()
-        second = ContentDigest({"b.md": b"two", "a.md": b"one"}).compute()
-        self.assertEqual(first, second)
-
-    def test_digest_changes_with_content(self) -> None:
-        base = ContentDigest({"a.md": b"one"}).compute()
-        changed = ContentDigest({"a.md": b"two"}).compute()
-        self.assertNotEqual(base, changed)
-
-    def test_digest_has_sha256_prefix(self) -> None:
-        self.assertTrue(ContentDigest({"a.md": b"one"}).compute().startswith("sha256:"))
-
-    def test_digest_matches_create_checksum_owner(self) -> None:
-        # Guards the deliberate duplication: the validator's self-contained digest
-        # must stay byte-identical to create_checksum's, or audits false-fail.
-        from create_checksum import ManifestDigest
-
-        manifest = {"SKILL.md": b"body", "scripts/x.py": b"code"}
-        self.assertEqual(
-            ContentDigest(manifest).compute(), ManifestDigest(manifest).compute()
-        )
 
 
 class TestHeaderExtractor(unittest.TestCase):

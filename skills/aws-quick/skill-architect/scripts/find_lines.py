@@ -1,7 +1,6 @@
 """
 description: Locate lines, XML blocks, Markdown headings, numbered rules, or an explicit line range in a UTF-8 text file and print 1-based line numbers, so an agent can make a surgical edit without reading the whole file. Run as: python find_lines.py <file> <mode> ... (modes: grep, block, heading, rule, show).
-last_updated: 2026-09-13
-origin: original
+last_updated: 2026-11-18
 
 """
 
@@ -311,8 +310,8 @@ def _build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main() -> int:
-    args = _build_parser().parse_args()
+def main(argv: list[str] | None = None) -> int:
+    args = _build_parser().parse_args(argv)
 
     path = Path(args.file)
     if not path.is_file():

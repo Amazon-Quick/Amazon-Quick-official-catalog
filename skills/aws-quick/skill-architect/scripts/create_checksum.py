@@ -1,8 +1,9 @@
 """
-description: Compute a skill's deterministic SHA-256 content digest and write it into SKILL.md frontmatter as checksum: "sha256:<hex>", so the validator only verifies the field rather than recomputing it. Run as: python create_checksum.py <skill_dir>.
-last_updated: 2026-09-13
-origin: original
+description: Compute a skill's deterministic SHA-256 content digest and write it into SKILL.md frontmatter as checksum: "sha256:<hex>", so the validator only verifies the field rather than recomputing it.
+last_updated: 2026-11-18
 
+Usage:
+    python create_checksum.py <skill_dir>
 """
 
 from __future__ import annotations
@@ -145,10 +146,10 @@ class ChecksumWriter:
         return digest
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Write a skill's content checksum.")
     parser.add_argument("skill_dir", help="Path to the skill directory.")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     skill_dir = Path(args.skill_dir)
     if not (skill_dir / SKILL_FILE).is_file():

@@ -1,7 +1,6 @@
 ---
 description: "Readable, correct, testable Python for the AWS Quick code sandbox: type hints, enums, Pydantic data models, one-public-method classes (SRP), constructor dependency injection, pure-vs-I/O separation, DRY via shared classes, facade and builder patterns, timestamped logging, cross-platform writes, and one dependency-injected unit test per file. Companion to quick-sandbox-code-standards."
-last_updated: 2026-10-22
-origin: original
+last_updated: 2026-11-18
 ---
 
 <purpose>
@@ -18,17 +17,17 @@ runtime rules live in quick-sandbox-code-standards.
 5. Parse external or unvalidated input at the boundary into a Pydantic model, then rely on that typed model downstream. Do not scatter defensive re-checks (isinstance, .get, null-guards) through code that already received a parsed model.
 6. Suffix custom exceptions with Error and inherit from an existing exception. Wrap only the statement that can raise, and catch specific exceptions: no bare except, no except that passes. Raise ValueError for a violated precondition.
 7. Never use a mutable default argument (use None and construct in the body), and bind the loop variable immediately when creating a closure inside a loop.
-8. Do not use importlib, sys.executable, dunder attribute access, or sys.path manipulation. The sandbox blocks them. Do not import one script from another either: each runnable script is a single self-contained file (Rule 17).
-9. Use pathlib and context managers for file access, and build paths from WORKSPACE_DIR. Write text with encoding="utf-8" and newline="\n" so output is byte-identical on Windows and macOS (this also keeps content hashes stable across platforms).
+8. In code passed to run_python, inline or with `file=`, do not use importlib, sys.executable, dunder attribute access, or sys.path manipulation. AWS Quick checks that code before it runs and blocks them, and its `sys` is a restricted proxy. A module in the skill's `scripts/` folder is imported instead, so that check doesn't apply and its own imports get the real modules behind a narrower block list. Such a module may use `__file__` to find the skill's own files, and the agent runs it by importing it (see Gotchas in SKILL.md), never with `file=`.
+9. Use pathlib and context managers for file access, and build paths from WORKSPACE_DIR. Write text with encoding="utf-8" and newline="\n" so output is byte-identical on Windows and macOS (this also keeps content hashes stable across platforms). A script imported as a module doesn't see WORKSPACE_DIR, so its main takes the path as an argument.
 10. Put business logic in a class with exactly ONE public method, named for its action (SkillDigest.compute, ChecksumWriter.write). Every other method is private (leading underscore). This is the Single Responsibility Principle: one class, one reason to change. Data carriers are exempt from the one-method rule: a Pydantic model or frozen dataclass holds data and may expose fields, validators, and computed properties, but no action methods.
 11. Inject collaborators and configuration that varies through __init__ (constructor dependency injection). __init__ only assigns its arguments to attributes: no I/O, parsing, or other fallible work. Do the reading and parsing inside the public method. Reference static module constants directly rather than injecting them.
 12. Separate pure logic from I/O so the logic is unit-testable without a filesystem or network. A pure class receives already-loaded data (a string, a list, a manifest) through __init__ and returns a result. An I/O class only reads or writes. The I/O class depends on the pure class, never the reverse (Dependency Inversion).
-13. State shared logic once (DRY): put it in one class and have the other classes in the same file use it. Because each runnable script is a single self-contained file that cannot import another (Rule 17), avoid cross-script sharing by giving each concern a single owner, never by duplicating logic across scripts.
+13. State shared logic once (DRY): put it in one class and have the other classes use it. When two scripts need the same logic, put it in one module in `scripts/` and import it from both, rather than copying it. AWS Quick puts the skill's `scripts/` folder on the import path, so a plain `import` of a sibling module works.
 14. When an action composes several collaborators, expose a facade: one class with a single public method that wires the collaborators together and returns the result. Callers depend on the facade, not on its internal parts.
 15. Assemble a complex artifact with a builder: a dedicated class whose single public method combines the parts and returns the finished model. Keep reading (an I/O class), assembling (the builder, pure), and writing (an I/O class) as separate single-purpose classes.
 16. Emit progress, diagnostics, and any human-readable result through the logging module with timestamps. The sandbox returns only stdout (a script's stderr is discarded), so route logging to stdout through a small `_PrintStream` adapter and configure it once at module top with `logging.basicConfig(stream=_PrintStream(), force=True)`. Write durable output to files (Rule 9) rather than hand-printing it, and keep bare `print()` out of the code except inside the stream adapter.
-17. Give a runnable script a verb_noun action name from the standard prefix set (create_, check_, find_, run_) and a standard entry point: an argparse.ArgumentParser, a main() that returns an exit code, and an if __name__ == "__main__" guard. Logging is configured once at module top (Rule 16); main() parses arguments, constructs one class (usually a facade or builder), and calls its single method. A runnable script is a single self-contained file: define all of its classes in that one file and import only the standard library and packages from the sandbox manifest, never another script.
-18. Ship one unit test per source file, named test_<module>.py beside it, that constructs inputs through dependency injection and asserts on a pure class with no filesystem or network access. Test the pure logic class, not the I/O wrapper. The test imports the module under test; this development-time import is the one place one file imports another, and it never runs in the skill's sandbox flow.
+17. Give a runnable script a verb_noun action name from the standard prefix set (create_, check_, find_, run_) and a standard entry point: an argparse.ArgumentParser, a `main(argv: list[str] | None = None)` that passes `argv` to `parse_args` and returns an exit code, and an if __name__ == "__main__" guard for running it from a terminal. Logging is configured once at module top (Rule 16); main() parses arguments, constructs one class (usually a facade or builder), and calls its single method. A runnable script imports only the standard library, packages from the sandbox manifest, and shared modules in the same `scripts/` folder (Rule 13).
+18. Ship one unit test per source file, named test_<module>.py in `scripts/tests/unit/`, that constructs inputs through dependency injection and asserts on a pure class with no filesystem or network access. Test the pure logic class, not the I/O wrapper.
 </rules>
 
 <examples>
@@ -122,10 +121,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Count non-empty lines in a file.")
     parser.add_argument("path")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     logger.info("Counting lines in %s", args.path)  # progress -> stdout
     result = LineCountReport(Path(args.path)).build()

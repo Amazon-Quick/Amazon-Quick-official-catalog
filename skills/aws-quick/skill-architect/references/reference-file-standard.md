@@ -1,78 +1,78 @@
 ---
-description: "The header standard every skill file must carry: SKILL.md frontmatter, references/*.md frontmatter, and scripts/*.py module docstrings. Defines required and conditional fields and the staleness rule."
-last_updated: 2026-10-22
-origin: original
+description: "The header every README, reference file, and script in a skill carries (description, last_updated, and optional sources), why each field exists, and the staleness rule the Audit workflow enforces."
+last_updated: 2026-11-18
 ---
 
 # Reference File Header Standard
 
 <purpose>
-Every file in a skill declares who it is and where it came from, so a file that has gone stale can be found and rebuilt from its source. This standard defines the header fields and the staleness rule that the Audit workflow enforces.
+Every README, reference file, and script in a skill opens with a short header. The header tells the agent and the person maintaining the skill what a file holds and when to refresh it, without reading all of it. This standard defines the header fields and the staleness rule that the Audit workflow enforces.
 </purpose>
 
 <scope>
 Applies to:
-- `SKILL.md` frontmatter.
-- `README.md` frontmatter.
+- `assets/README.md` frontmatter.
 - `references/*.md` frontmatter.
-- `scripts/*.py` module docstrings (a script cannot carry YAML frontmatter, so the same fields live in the top-of-file docstring).
+- `references/*.json` and the `*_rule.json` files in `references/rules/`: the same fields as top-level keys of the JSON object. The generated `*.schema.json` files and the sandbox manifests (quick-sandbox-requirements.txt, quick-sandbox-package.json) are exempt, because a generator or the sandbox owns their content.
+- `scripts/*.py` module docstrings. A script can't carry YAML frontmatter, so the same fields go at the top of its docstring.
+- `scripts/*.js`: the same fields in a `/** ... */` comment at the top of the file.
+
+SKILL.md has its own frontmatter, defined in `<Definition - Frontmatter>`.
 </scope>
 
 <fields>
-- `description` (required, all files): what the file contains and why the skill needs it.
-- `last_updated` (required, all files): ISO `YYYY-MM-DD` date the file was last changed.
-- `source_url` (required when derived): the URL the file was built from, when its content comes from an external source. A derived file must record where to rebuild it.
-- `origin: original` (required when not derived): marks internal-authored content that has no upstream source.
-
-Exactly one of `source_url` or `origin: original` is present on every file, so "no source" is always a deliberate declaration rather than an omission.
+- `description` (required): what the file holds, in one line. The agent reads it to pick the right file without opening every one, and a person reads it to see what a file covers without reading all of it.
+- `last_updated` (required): the ISO `YYYY-MM-DD` date the file last changed. The staleness rule below reads it.
+- `sources` (optional): a list of the URLs the file copies content from, such as snippets or tables taken from documentation. Pages change, so the list tells whoever refreshes the file which pages to read again. Leave it out when the file has no outside source.
 </fields>
 
 <staleness>
-A file is stale when its `last_updated` is more than six calendar months before today (UTC). Audit every skill on this six-month cadence. A stale file, or a stale `SKILL.md`, produces a WARNING (not a failure): the skill still runs, but the audit flags it. `check_skill.py` emits the staleness WARNING for `SKILL.md` and every `README.md`, `references/*.md`, and `scripts/*.py` header. The skill-architect `<Workflow - Audit>` says how to refresh a stale file.
+A file is stale when its `last_updated` is more than six calendar months before today (UTC). A stale file, or a stale `SKILL.md`, produces a WARNING, not a failure: the skill still runs, but the audit flags it. `check_skill.py` reports staleness for `SKILL.md` and every README, reference file, and script. The Audit workflow says how to refresh a stale file.
 </staleness>
 
 <generating>
-Do not hand-write the header. Scaffold a new file with a compliant header using the bundled generators, run from the skill root:
+Scaffold a new file with the generators instead of writing the header by hand. Each sets `last_updated` to today, and `--source` adds a URL to `sources` (repeat it for each page):
 
-- Reference file: `python scripts/create_reference_file.py references <name> --description "..." (--source-url "..." | --origin original)`
-- Script: `python scripts/create_script.py scripts <file_name> --description "..." --class-name "..." --method-name "..." (--source-url "..." | --origin original)`
-- README: `python scripts/create_readme.py <skill_dir> --description "..." (--source-url "..." | --origin original)`
-
-Each generator sets `last_updated` to today, requires exactly one of `--source-url` (derived) or `--origin original` (internal), and emits the skeleton this standard defines. Use `--source-url` when the content comes from an external source, so the file records where to rebuild from.
+- Reference file: `create_reference_file.py references <name> --description "..." [--source URL ...]`
+- Script: `create_script.py scripts <file_name> --description "..." --class-name "..." --method-name "..." [--source URL ...]`
+- README: `create_readme.py <skill_dir> --title "..." --summary "..." --prefix <prefix> [--dependency "Name|TYPE|Y|URL" ...]`
 </generating>
 
 <examples>
 <example type="correct">
-Markdown reference file derived from an external source:
+A reference file that copies a table from the docs:
 
 ```yaml
 ---
-description: "AWS Quick code sandbox Python package names, grouped by use."
-last_updated: 2026-09-13
-source_url: https://docs.aws.amazon.com/quick/latest/userguide/...
+description: "AWS Quick connector setup steps, by connector."
+last_updated: 2026-11-18
+sources:
+  - https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
+  - https://docs.aws.amazon.com/quick/latest/userguide/mcp-integration.html
 ---
 ```
 </example>
 
 <example type="correct">
-Script header (same fields, in the module docstring):
+A script written from scratch, with no outside source:
 
 ```python
 """
-description: Compute a skill's deterministic sha256 content digest and write it into SKILL.md.
-last_updated: 2026-09-13
-origin: original
+description: Compute a skill's sha256 content digest and write it into SKILL.md.
+last_updated: 2026-11-18
 """
 ```
 </example>
 
 <example type="incorrect">
-Missing both source_url and origin, so staleness cannot suggest a rebuild path:
+A `sources` entry that isn't a URL, so nobody can open it to refresh the file:
 
 ```yaml
 ---
-description: "Eval methodology."
-last_updated: 2026-09-13
+description: "Connector setup steps."
+last_updated: 2026-11-18
+sources:
+  - the AWS Quick User Guide
 ---
 ```
 </example>

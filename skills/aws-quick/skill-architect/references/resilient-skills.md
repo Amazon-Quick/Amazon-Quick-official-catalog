@@ -1,7 +1,6 @@
 ---
 description: "How to author a skill that survives long conversations, a weaker model tier, and execution limits."
-last_updated: 2026-10-22
-origin: original
+last_updated: 2026-11-18
 ---
 
 # Resilient Skills
@@ -13,7 +12,7 @@ How to author a skill that survives the conditions it will actually run under: a
 <failure_modes>
 Three conditions can degrade a skill at runtime. Design against each rather than assuming ideal conditions.
 
-**Losing the thread in a long conversation.** As a conversation grows, an agent running a long workflow can start skipping steps, repeating them, or losing track of what it already finished. This environment provides a summarize_context tool precisely because sessions fill up. A skill cannot control how much conversation precedes it, so build it to be re-entered partway through.
+**Losing the thread in a long conversation.** As a conversation grows, an agent running a long workflow can start skipping steps, repeating them, or losing track of what it already finished. AWS Quick summarizes a conversation when it nears the context limit, and the summary keeps less detail than the turns it replaces. A skill cannot control how much conversation precedes it, so build it to be re-entered partway through.
 
 **Model tier.** Background tasks accept a model tier (fast, balanced, or smart) through the start_task model parameter, so a skill sets the tier on the tasks it spawns. Do not assume the skill itself runs on a strong tier. A skill written to rely on smart-level inference can miss unstated rules when run on a weaker tier, so author steps explicitly enough that a fast-tier model could follow them.
 

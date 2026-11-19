@@ -1,0 +1,306 @@
+{
+  "type": "standard",
+  "description": "Standard rules: whether the skill follows the Skill Architect standard. check_skill.py runs these, and its messages must stay word for word, since the catalog build parses them.",
+  "last_updated": "2026-11-18",
+  "rules": [
+    {
+      "id": "frontmatter",
+      "name": "Frontmatter",
+      "description": "SKILL.md frontmatter has the required fields, each in a valid format.",
+      "fix": "Add or correct the field.",
+      "checks": [
+        {
+          "id": "required_name",
+          "kind": "frontmatter_required",
+          "level": "error",
+          "message": "frontmatter: {field} MISSING",
+          "pass_message": "frontmatter: {field} present",
+          "field": "name",
+          "examples": {
+            "flags": [
+              "---\nx_name: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ncreated_date: \"2026-01-01\"\nlast_updated: \"2026-01-02\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "required_description",
+          "kind": "frontmatter_required",
+          "level": "error",
+          "message": "frontmatter: {field} MISSING",
+          "pass_message": "frontmatter: {field} present",
+          "field": "description",
+          "examples": {
+            "flags": [
+              "---\nname: demo\nx_description: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ncreated_date: \"2026-01-01\"\nlast_updated: \"2026-01-02\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "required_created_date",
+          "kind": "frontmatter_required",
+          "level": "error",
+          "message": "frontmatter: {field} MISSING",
+          "pass_message": "frontmatter: {field} present",
+          "field": "created_date",
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ncreated_date: \"2026-01-01\"\nlast_updated: \"2026-01-02\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "required_last_updated",
+          "kind": "frontmatter_required",
+          "level": "error",
+          "message": "frontmatter: {field} MISSING",
+          "pass_message": "frontmatter: {field} present",
+          "field": "last_updated",
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ncreated_date: \"2026-01-01\"\nlast_updated: \"2026-01-02\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "name_format",
+          "kind": "frontmatter_value",
+          "level": "error",
+          "message": "name '{value}' is not valid kebab-case (lowercase, hyphens, <= 64 chars)",
+          "pass_message": "name '{value}' is valid kebab-case",
+          "field": "name",
+          "extract": "^name\\s*:\\s*\"?([^\"\\n]+)\"?",
+          "on_no_match": "skip",
+          "pattern": "[a-z][a-z0-9-]{0,63}",
+          "strip": true,
+          "examples": {
+            "flags": [
+              "---\nname: My Demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "description_length",
+          "kind": "frontmatter_value",
+          "level": "error",
+          "message": "description length {length} (limit {limit})",
+          "pass_message": "description length {length} (limit {limit})",
+          "field": "description",
+          "extract": "^description\\s*:\\s*\"(.*)\"\\s*$",
+          "on_no_match": "skip",
+          "max_length": 1024,
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y x y z\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "created_date_format",
+          "kind": "frontmatter_value",
+          "level": "error",
+          "message": "{field} not ISO YYYY-MM-DD",
+          "pass_message": "{field} is ISO YYYY-MM-DD",
+          "field": "created_date",
+          "extract": "^created_date\\s*:\\s*\"?(\\d{4}-\\d{2}-\\d{2})\"?",
+          "on_no_match": "fail",
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\ncreated_date: 18 Nov 2026\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ncreated_date: \"2026-11-18\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "last_updated_format",
+          "kind": "frontmatter_value",
+          "level": "error",
+          "message": "{field} not ISO YYYY-MM-DD",
+          "pass_message": "{field} is ISO YYYY-MM-DD",
+          "field": "last_updated",
+          "extract": "^last_updated\\s*:\\s*\"?(\\d{4}-\\d{2}-\\d{2})\"?",
+          "on_no_match": "fail",
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\nlast_updated: 18 Nov 2026\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\nlast_updated: \"2026-11-18\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "preferred_model",
+          "kind": "frontmatter_value",
+          "level": "error",
+          "message": "{field} '{value}' invalid (must be one of {allowed})",
+          "pass_message": "{field} '{value}' is valid",
+          "field": "preferred_model",
+          "extract": "^preferred_model\\s*:\\s*\"?([A-Za-z]+)\"?",
+          "on_no_match": "skip",
+          "one_of": [
+            "fast",
+            "balanced",
+            "smart",
+            "auto"
+          ],
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\npreferred_model: turbo\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\npreferred_model: fast\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        },
+        {
+          "id": "preferred_thinking",
+          "kind": "frontmatter_value",
+          "level": "error",
+          "message": "{field} '{value}' invalid (must be one of {allowed})",
+          "pass_message": "{field} '{value}' is valid",
+          "field": "preferred_thinking",
+          "extract": "^preferred_thinking\\s*:\\s*\"?([A-Za-z]+)\"?",
+          "on_no_match": "skip",
+          "one_of": [
+            "off",
+            "low",
+            "medium",
+            "high"
+          ],
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\npreferred_thinking: turbo\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\npreferred_thinking: off\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "headings",
+      "name": "Headings",
+      "description": "SKILL.md has the headings save_skill requires.",
+      "fix": "Add the heading.",
+      "checks": [
+        {
+          "id": "heading_overview",
+          "kind": "heading_required",
+          "level": "error",
+          "message": "heading '{heading}' MISSING (save_skill requires it)",
+          "pass_message": "heading '{heading}' present",
+          "heading": "## Overview",
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Other\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n\n## Workflow\n"
+            ]
+          }
+        },
+        {
+          "id": "heading_workflow",
+          "kind": "heading_required",
+          "level": "error",
+          "message": "heading '{heading}' MISSING (save_skill requires it)",
+          "pass_message": "heading '{heading}' present",
+          "heading": "## Workflow",
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n\n## Workflow\n"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "body_length",
+      "name": "Body length",
+      "description": "The SKILL.md body stays under the line limit, since every line loads on every run.",
+      "fix": "Move content out in the order Rule 11 gives.",
+      "checks": [
+        {
+          "id": "max_lines",
+          "kind": "body_max_lines",
+          "level": "error",
+          "message": "body length {count} lines (limit {limit})",
+          "pass_message": "body length {count} lines (limit {limit})",
+          "max_lines": 500,
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "prose",
+      "name": "Prose",
+      "description": "The SKILL.md body prose has no em dashes or emojis.",
+      "fix": "Use commas, periods, or colons, and remove emojis.",
+      "checks": [
+        {
+          "id": "em_dash",
+          "kind": "prose_forbidden",
+          "level": "error",
+          "message": "em dashes on body lines {lines}",
+          "pass_message": "no em dashes",
+          "pattern": "\u2014",
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\nA \u2014 B\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n```\nA \u2014 B\n```\n"
+            ]
+          }
+        },
+        {
+          "id": "emoji",
+          "kind": "prose_forbidden",
+          "level": "error",
+          "message": "emojis on body lines {lines}",
+          "pass_message": "no body emojis",
+          "pattern": "[\ud83c\udf00-\ud83e\udeff\u2600-\u27bf\ud83c\udc00-\ud83c\udcff]",
+          "examples": {
+            "flags": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\nDone \ud83c\udf89\n"
+            ],
+            "ignores": [
+              "---\nname: demo\ndescription: \"Demo.\"\ntools: [file_read]\n---\n\n## Overview\n\nDoes a thing.\n\n<Workflow - A\ndescription=\"a\"\ntools=[file_read]\ntriggers=[\"a\"]\n>\n1. [Agent] Read.\n</Workflow - A>\n"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

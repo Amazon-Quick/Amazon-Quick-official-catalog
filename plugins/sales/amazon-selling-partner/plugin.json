@@ -25,9 +25,7 @@
       "key": "selling-partner",
       "label": "Amazon Selling Partner",
       "description": "The listing, inventory, and account skills work through your seller account and marketplace.",
-      "types": [
-        "AMAZON_SELLING_PARTNER"
-      ],
+      "type": "AMAZON_SELLING_PARTNER",
       "required": true
     }
   ],

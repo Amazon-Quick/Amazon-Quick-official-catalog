@@ -12,9 +12,7 @@
       "key": "outlook",
       "label": "Microsoft Outlook",
       "description": "The out-of-office skill reads your meetings from this calendar. After you confirm, it declines or cancels meetings and sends invites from it.",
-      "types": [
-        "MICROSOFT_OUTLOOK"
-      ],
+      "type": "MICROSOFT_OUTLOOK",
       "required": true
     }
   ],

@@ -403,6 +403,18 @@
             "partner"
           ],
           "description": "Plugin assets only. The plugin's kind: solution, package, or partner."
+        },
+        "partner": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z0-9][a-z0-9_]*$",
+          "description": "Optional. Partner visibility tag for a skill or plugin. AWS Quick hides a tagged asset unless the account has the /quickwork/enable_official_partner_<partner> flag on. A plugin's tag also hides the skills it lists. Unrelated to publisher_type, which only names who published the asset."
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999,
+          "description": "Optional. The Catalog page's Official row lists a higher priority first; assets without one come after, in any order."
         }
       },
       "allOf": [

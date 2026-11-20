@@ -15,9 +15,7 @@
       "key": "verisk",
       "label": "Verisk",
       "description": "The skill answers audit questions only from the Premium Audit Advisory Service content that this connector returns.",
-      "types": [
-        "VERISK"
-      ],
+      "type": "VERISK",
       "required": true
     }
   ],

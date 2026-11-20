@@ -12,9 +12,7 @@
       "key": "email",
       "label": "Gmail",
       "description": "The skills search this mailbox for past contact, replies, and sent proposals. They also stage outreach here as drafts for you to review and send.",
-      "types": [
-        "GMAIL"
-      ],
+      "type": "GMAIL",
       "required": true
     }
   ],

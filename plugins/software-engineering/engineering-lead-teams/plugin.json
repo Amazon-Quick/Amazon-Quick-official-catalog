@@ -12,9 +12,7 @@
       "key": "teams",
       "label": "Microsoft Teams",
       "description": "The postmortem skill reads the incident timeline from a channel or chat in Microsoft Teams.",
-      "types": [
-        "MICROSOFT_TEAMS"
-      ],
+      "type": "MICROSOFT_TEAMS",
       "required": true
     }
   ],

@@ -298,7 +298,7 @@
           "path": "plugins/finance/small-business-owner",
           "type": "plugin",
           "id": "fe72498d-9ecc-4266-a89a-ccf6eda28fca",
-          "checksum": "sha256:279d48fa701498aa91ad47622f4b4af43539decb098372cb4b9d68b208f9d026"
+          "checksum": "sha256:44d3cee41375a8e77a371925580871a80d457ca391edb5aaed24ffc44d7ab508"
         },
         {
           "path": "plugins/finance/verisk-underwriting-intelligence",
@@ -306,7 +306,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Verisk Analytics",
           "id": "79a4a2f5-d40a-4046-b676-7fe29a381d76",
-          "checksum": "sha256:0e7fbf4df9e836eaf7881709e95cf7344e3e2c73fa9b4f737282a4bb36adfe0e"
+          "checksum": "sha256:beb53b5cfc8fb7c4d3bfe717dd3f8d94d454172cfed8b4b036745e2fd157e35d"
         }
       ]
     },
@@ -409,7 +409,7 @@
           "path": "plugins/general-productivity/calendar-meetings-assistant",
           "type": "plugin",
           "id": "5c7424b2-b173-4d90-a4d8-94482833747d",
-          "checksum": "sha256:933ee2f0823bfeaf122b1f00e81eca2bbb95e0bc409fb2453b4d85a05edf0cbe"
+          "checksum": "sha256:eb31528ba0af108a44f21fd1514a5c6e079fcc0dbc5cfd707931c0d0c6d6451a"
         }
       ]
     },
@@ -656,13 +656,13 @@
           "path": "plugins/software-engineering/engineering-lead",
           "type": "plugin",
           "id": "32575b52-f249-430c-9e5a-f7af8b73d4ac",
-          "checksum": "sha256:48e1ebed7df8040c40b63b38074654aeaa0a57ccf9ecaec5607b087938a55921"
+          "checksum": "sha256:b41c8cfcf88b4b55d202eeadcffe8f0234168320dc77c0b244bf33b2f074860b"
         },
         {
           "path": "plugins/software-engineering/engineering-lead-teams",
           "type": "plugin",
           "id": "ae84aa6e-8312-4525-88bb-c05621742e50",
-          "checksum": "sha256:3470f0c7be800387c4776d0bf03bf425c5c6eab8a73f6c72884f72569c5b64a5"
+          "checksum": "sha256:d109969a2e3138c415827ccb38802b6213dd0aa136c7ab2af573ede2a891d848"
         }
       ]
     },
@@ -838,19 +838,19 @@
           "path": "plugins/sales/amazon-selling-partner",
           "type": "plugin",
           "id": "55a7a521-4b2d-4109-afa4-08a85dec02f3",
-          "checksum": "sha256:446879d35c147e865b16e49843c8421b4d12261b0af9caa6a3d9dc1665fc31b8"
+          "checksum": "sha256:2214538a546231ea480817f3776eb47c495d4df135bc39627ba8711c6bb2afb3"
         },
         {
           "path": "plugins/sales/sales-development",
           "type": "plugin",
           "id": "eb4110a3-42bd-485b-b4db-c0df5738ccbb",
-          "checksum": "sha256:961df8ab018e855165e75bb28cc9874f42b0676081b8835bc3e4c0df512c661f"
+          "checksum": "sha256:84e1d892c8f8cad708bf422566f006fdb3f2d109bee09c6612ab8b7d2443e605"
         },
         {
           "path": "plugins/sales/sales-development-gmail",
           "type": "plugin",
           "id": "f89a8998-6f35-4062-8ad6-686c8b36d4f3",
-          "checksum": "sha256:1c22a729a91328690212ed8be3c423dadae83b9ef24b9539f35dc662d5de8b28"
+          "checksum": "sha256:ddf15adc14d9be5149bede26bb6e2f81e84e87aba7ca5f557721eadc242b29fb"
         }
       ]
     },

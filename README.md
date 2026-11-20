@@ -1,6 +1,6 @@
 # AWS Quick Official Catalog
 
-The AWS Quick Official Catalog provides reusable agent skills for [AWS Quick](https://aws.amazon.com/quick/) on desktop. Each skill packages instructions, validation steps, and supporting files for a specific task, so you can install an existing workflow instead of explaining or rebuilding it in every conversation.
+The AWS Quick Official Catalog provides reusable agent resources for [AWS Quick](https://aws.amazon.com/quick/). Each skill packages instructions, validation steps, and supporting files for a specific task, so you can install an existing workflow instead of explaining or rebuilding it in every conversation.
 
 Learn more about the [AWS Quick skill catalog](https://amazon-quick.github.io/Amazon-Quick-official-catalog) where you can find skills for productivity, sales, marketing, legal work, financial services, healthcare and life sciences, energy and utilities, and other areas.
 

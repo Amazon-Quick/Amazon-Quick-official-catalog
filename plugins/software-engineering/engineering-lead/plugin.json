@@ -12,9 +12,7 @@
       "key": "slack",
       "label": "Slack",
       "description": "The postmortem skill reads the incident timeline from a channel or thread in this workspace.",
-      "types": [
-        "SLACK"
-      ],
+      "type": "SLACK",
       "required": true
     }
   ],

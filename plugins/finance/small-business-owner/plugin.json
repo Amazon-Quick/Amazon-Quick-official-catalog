@@ -28,9 +28,7 @@
       "key": "quickbooks",
       "label": "QuickBooks",
       "description": "The finance skills read invoices, bills, payroll, and deposits from your QuickBooks books.",
-      "types": [
-        "QUICKBOOKS"
-      ],
+      "type": "QUICKBOOKS",
       "required": true
     }
   ],

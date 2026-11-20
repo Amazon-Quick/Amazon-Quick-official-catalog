@@ -6,24 +6,24 @@ last_updated: 2026-11-18
 # Reference File Header Standard
 
 <purpose>
-Every README, reference file, and script in a skill opens with a short header. The header tells the agent and the person maintaining the skill what a file holds and when to refresh it, without reading all of it. This standard defines the header fields and the staleness rule that the Audit workflow enforces.
+Every README, reference file, and script in a skill opens with a short header that says what the file holds and when it last changed. This standard defines the header fields and the staleness rule the Audit workflow enforces.
 </purpose>
 
 <scope>
 Applies to:
 - `assets/README.md` frontmatter.
 - `references/*.md` frontmatter.
-- `references/*.json` and the `*_rule.json` files in `references/rules/`: the same fields as top-level keys of the JSON object. The generated `*.schema.json` files and the sandbox manifests (quick-sandbox-requirements.txt, quick-sandbox-package.json) are exempt, because a generator or the sandbox owns their content.
-- `scripts/*.py` module docstrings. A script can't carry YAML frontmatter, so the same fields go at the top of its docstring.
+- `references/*.json` and the `*_rule.json` files in `references/rules/`: the same fields as top-level keys of the JSON object. The generated `*.schema.json` files and the sandbox manifests (quick-sandbox-requirements.txt, quick-sandbox-package.json) are exempt.
+- `scripts/*.py` module docstrings: the same fields at the top of the docstring.
 - `scripts/*.js`: the same fields in a `/** ... */` comment at the top of the file.
 
 SKILL.md has its own frontmatter, defined in `<Definition - Frontmatter>`.
 </scope>
 
 <fields>
-- `description` (required): what the file holds, in one line. The agent reads it to pick the right file without opening every one, and a person reads it to see what a file covers without reading all of it.
+- `description` (required): what the file holds, in one line.
 - `last_updated` (required): the ISO `YYYY-MM-DD` date the file last changed. The staleness rule below reads it.
-- `sources` (optional): a list of the URLs the file copies content from, such as snippets or tables taken from documentation. Pages change, so the list tells whoever refreshes the file which pages to read again. Leave it out when the file has no outside source.
+- `sources` (optional): a list of the URLs the file copies content from, such as snippets or tables taken from documentation. The Audit workflow refreshes a stale file from these pages. Leave it out when the file has no outside source.
 </fields>
 
 <staleness>

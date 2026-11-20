@@ -1,6 +1,6 @@
 ---
 description: "Each dependency type a skill's README can list, what it is, and the AWS Quick User Guide page to link it to."
-last_updated: 2026-11-18
+last_updated: 2026-11-20
 sources:
   - https://docs.aws.amazon.com/quick/latest/userguide/toc-contents.json
   - https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
@@ -30,7 +30,7 @@ Each Type value, what it is, and the page to link when no more specific page exi
 | `LOCAL_CONNECTOR_MCP_REMOTE` | An MCP server at a URL that only this user connects to from desktop | [Local connectors](https://docs.aws.amazon.com/quick/latest/userguide/local-connectors.html) |
 | `LOCAL_CONNECTOR_ACP` | A coding agent, such as Kiro, connected through the Agent Client Protocol (ACP) | [Coding agents](https://docs.aws.amazon.com/quick/latest/userguide/coding-agents.html) |
 | `SYSTEM_TOOL` | A built-in tool, such as code execution, which a user or administrator can turn off | [System tools](https://docs.aws.amazon.com/quick/latest/userguide/system-tools-desktop.html) |
-| `SKILL` | Another skill the workflows load | [Skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html) |
+| `SKILL` | Another skill the workflows use | [Skills](https://docs.aws.amazon.com/quick/latest/userguide/skills-desktop.html) |
 </types>
 
 <links>

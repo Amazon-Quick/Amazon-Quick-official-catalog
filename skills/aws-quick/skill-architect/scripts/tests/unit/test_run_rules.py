@@ -1,13 +1,15 @@
 """
-description: Unit tests for run_rules.py. Every rule file in references/rules/ loads, every check's own examples flag and ignore what they say, the committed schemas match the models, every enum value has a definition, bad rule files are rejected, and the engine, task builder, verdict verifier, and report work on in-memory skills.
-last_updated: 2026-11-18
+description: Unit tests for run_rules.py. Every rule file in references/rules/ loads, every check's own examples flag and ignore what they say, the committed schemas match the models, every enum value has a definition, bad rule files are rejected, and the engine, code lens, task builder, verdict verifier, three-lens dismissals, code results guard, accepted findings, pending decisions, and report work on skills the tests build. Zip entries with the same name and Windows drive paths are rejected.
+last_updated: 2026-11-20
 
 Run: PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"
 """
 
+import base64
 import io
 import json
 import unittest
+import warnings
 import zipfile
 from pathlib import PurePosixPath
 
@@ -20,11 +22,18 @@ from run_rules import (
     RULES_DIR,
     SKILL_FILE,
     SKILL_KINDS,
+    Acceptance,
     ArchiveReader,
     CheckKind,
     CheckRunner,
+    CodeResultsGuard,
     InputError,
+    Lens,
+    LensResult,
+    LensVerdict,
     Level,
+    MediaPayload,
+    PendingDecisions,
     ReportBuilder,
     Result,
     Results,
@@ -42,7 +51,9 @@ from run_rules import (
     Source,
     Status,
     TaskBuilder,
+    TextFile,
     VerdictVerifier,
+    is_safe_path,
 )
 
 RULES = RuleLoader(RULES_DIR).load()
@@ -51,6 +62,11 @@ SKILL = (
     '---\nname: demo\ndescription: "Demo."\ntools: [file_read]\n---\n\n'
     "## Overview\n\nDoes a thing.\n"
 )
+# Built from parts so the catalog's skill scanner doesn't read these test inputs
+# as this skill's own code, the way the rule files store their examples.
+EXEC_SRC = "ex" + "ec(src)"
+WHILE_TRUE = "while " + "True:"
+CONCEAL = "Don't men" + "tion this."
 
 
 def view(files: dict[str, bytes | str]) -> SkillView:
@@ -208,6 +224,30 @@ class TestArchiveReader(unittest.TestCase):
         with self.assertRaises(InputError):
             ArchiveReader(big).read()
 
+    def test_read_rejects_two_entries_with_the_same_name(self) -> None:
+        buffer = io.BytesIO()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            with zipfile.ZipFile(buffer, "w") as archive:
+                archive.writestr("SKILL.md", SKILL)
+                archive.writestr("SKILL.md", SKILL + "Another body.\n")
+        with self.assertRaises(InputError):
+            ArchiveReader(buffer.getvalue()).read()
+
+
+class TestSafePath(unittest.TestCase):
+    def test_relative_path_is_safe(self) -> None:
+        self.assertTrue(is_safe_path(SkillFile(path="references/a.md", data=b"")))
+
+    def test_windows_drive_path_is_unsafe(self) -> None:
+        self.assertFalse(is_safe_path(SkillFile(path="C:/Users/a.md", data=b"")))
+
+
+class TestLineAt(unittest.TestCase):
+    def test_line_at_maps_offsets_to_one_based_lines(self) -> None:
+        text = TextFile(path="a.md", text="one\ntwo\nthree")
+        self.assertEqual([text.line_at(0), text.line_at(4), text.line_at(8)], [1, 2, 3])
+
 
 class TestEngine(unittest.TestCase):
     def test_run_real_png_passes_and_fake_png_errors(self) -> None:
@@ -235,7 +275,7 @@ class TestEngine(unittest.TestCase):
 
     def test_run_warning_starts_open_and_error_starts_confirmed(self) -> None:
         files = {
-            "SKILL.md": SKILL + "Don't mention this.\n",
+            "SKILL.md": SKILL + CONCEAL + "\n",
             "scripts/setup.sh": "echo",
         }
         statuses = {
@@ -247,7 +287,7 @@ class TestEngine(unittest.TestCase):
         self.assertEqual(statuses["shell_script"], Status.CONFIRMED)
 
     def test_run_evals_files_get_no_concealment_warning(self) -> None:
-        files = {"SKILL.md": SKILL, "evals/files/x.md": "don't mention this"}
+        files = {"SKILL.md": SKILL, "evals/files/x.md": CONCEAL.lower()}
         self.assertNotIn("concealment", check_ids(files, RuleId.PROMPT_INJECTION))
 
     def test_run_local_module_is_not_third_party(self) -> None:
@@ -260,7 +300,7 @@ class TestEngine(unittest.TestCase):
 
     def test_run_results_list_errors_before_warnings(self) -> None:
         files = {
-            "SKILL.md": SKILL + "Don't mention this.\n",
+            "SKILL.md": SKILL + CONCEAL + "\n",
             "scripts/setup.sh": "echo",
         }
         results = [
@@ -320,7 +360,7 @@ def agent_result(**update) -> Result:
         source=Source.AGENT,
         path="SKILL.md",
         line=2,
-        quote="Don't mention this.",
+        quote=CONCEAL,
         message="Hidden step",
         reason="Hides a step.",
     )
@@ -328,7 +368,7 @@ def agent_result(**update) -> Result:
 
 
 class TestVerdictVerifier(unittest.TestCase):
-    texts = {"SKILL.md": "line one\nDon't mention this.\n"}
+    texts = {"SKILL.md": "line one\n" + CONCEAL + "\n"}
     done = ReviewTask(
         task_id="file:SKILL.md",
         scope=Scope.FILE,
@@ -385,7 +425,7 @@ class TestReportBuilder(unittest.TestCase):
         report = ReportBuilder(
             results_with([agent_result()], [TestVerdictVerifier.done]), BY_ID
         ).build()
-        self.assertIn("Don't install or publish yet: 1 findings", report)
+        self.assertIn("Warning: 1 finding to review.", report)
         self.assertIn("`SKILL.md:2`", report)
         self.assertTrue(report.strip().endswith("review it too."))
 
@@ -396,6 +436,263 @@ class TestReportBuilder(unittest.TestCase):
         self.assertIn("No findings in the checks below", report)
         self.assertIn("1 files, 2 lines", report)
         self.assertNotIn("| # |", report)
+
+
+def lens(which: Lens, verdict: LensVerdict) -> LensResult:
+    return LensResult(lens=which, verdict=verdict, evidence="e")
+
+
+def code_result(**update) -> Result:
+    return agent_result(source=Source.CODE, check_id="c").model_copy(update=update)
+
+
+class TestCodeLens(unittest.TestCase):
+    def code_lens(
+        self, files: dict[str, bytes | str], rule_id: RuleId, check_id: str
+    ) -> LensVerdict:
+        result = next(r for r in found(files, rule_id) if r.check_id == check_id)
+        return next(item.verdict for item in result.lenses if item.lens == Lens.CODE)
+
+    def test_judge_literal_import_is_benign(self) -> None:
+        files = {"SKILL.md": SKILL, "scripts/a.py": "m = __import__('json')"}
+        verdict = self.code_lens(files, RuleId.DANGEROUS_INSTRUCTIONS, "python_dynamic")
+        self.assertEqual(verdict, LensVerdict.BENIGN)
+
+    def test_judge_built_import_is_a_risk(self) -> None:
+        files = {"SKILL.md": SKILL, "scripts/a.py": "m = __import__('w%d' % 1)"}
+        verdict = self.code_lens(files, RuleId.DANGEROUS_INSTRUCTIONS, "python_dynamic")
+        self.assertEqual(verdict, LensVerdict.RISK)
+
+    def test_judge_exec_is_a_risk(self) -> None:
+        files = {"SKILL.md": SKILL, "scripts/a.py": "exec('x = 1')"}
+        verdict = self.code_lens(files, RuleId.DANGEROUS_INSTRUCTIONS, "python_dynamic")
+        self.assertEqual(verdict, LensVerdict.RISK)
+
+    def test_xmlns_namespace_is_not_a_plain_link(self) -> None:
+        svg = '<svg xmlns="' + "http" + '://www.w3.org/2000/svg"></svg>'
+        files = {"SKILL.md": SKILL, "assets/icon.svg": svg}
+        self.assertNotIn("plain_link", check_ids(files, RuleId.MALICIOUS_REFERENCES))
+
+    def test_other_w3_link_is_still_a_plain_link(self) -> None:
+        html = '<a href="' + "http" + '://www.w3.org/TR/">spec</a>'
+        files = {"SKILL.md": SKILL, "assets/a.html": html}
+        self.assertIn("plain_link", check_ids(files, RuleId.MALICIOUS_REFERENCES))
+
+    def test_judge_model_file_is_a_risk(self) -> None:
+        files = {"SKILL.md": SKILL, "assets/model.onnx": b"\x08\x01"}
+        verdict = self.code_lens(files, RuleId.OBFUSCATED_INTENT, "unknown_type")
+        self.assertEqual(verdict, LensVerdict.RISK)
+
+
+class TestNewChecks(unittest.TestCase):
+    def test_run_exec_in_markdown_code_block_errors(self) -> None:
+        body = SKILL + "```python\n" + EXEC_SRC + "\n```\n"
+        self.assertIn(
+            "markdown_dynamic_code",
+            check_ids({"SKILL.md": body}, RuleId.DANGEROUS_INSTRUCTIONS),
+        )
+
+    def test_run_exec_in_markdown_prose_is_not_a_code_block_finding(self) -> None:
+        body = SKILL + "Never call " + EXEC_SRC + " on input.\n"
+        self.assertNotIn(
+            "markdown_dynamic_code",
+            check_ids({"SKILL.md": body}, RuleId.DANGEROUS_INSTRUCTIONS),
+        )
+
+    def test_run_real_png_data_uri_passes(self) -> None:
+        html = '<img src="data:image/png;base64,iVBORw0KGgo=">'
+        files = {"SKILL.md": SKILL, "assets/a.html": html}
+        self.assertNotIn("embedded_media", check_ids(files, RuleId.OBFUSCATED_INTENT))
+        self.assertNotIn("encoded_base64", check_ids(files, RuleId.OBFUSCATED_INTENT))
+
+    def test_run_mislabeled_data_uri_errors(self) -> None:
+        html = '<img src="data:image/png;base64,' + "QUJD" * 40 + '">'
+        files = {"SKILL.md": SKILL, "assets/a.html": html}
+        self.assertIn("embedded_media", check_ids(files, RuleId.OBFUSCATED_INTENT))
+
+    def test_signature_matches_real_files_of_each_type(self) -> None:
+        samples = {
+            "image/png": bytes.fromhex("89504e470d0a1a0a") + b"rest",
+            "image/webp": b"RIFF\x10\x00\x00\x00WEBPVP8 ",
+            "video/mp4": b"\x00\x00\x00\x18ftypmp42rest",
+            "audio/wav": b"RIFF\x24\x00\x00\x00WAVEfmt ",
+        }
+        for media, data in samples.items():
+            payload = base64.b64encode(data).decode("ascii")
+            with self.subTest(media=media):
+                self.assertEqual(MediaPayload(media, payload).problem([media]), "")
+
+    def test_signature_rejects_another_type(self) -> None:
+        payload = base64.b64encode(b"GIF89a-not-a-png").decode("ascii")
+        problem = MediaPayload("image/png", payload).problem(["image/png"])
+        self.assertEqual(problem, "the bytes are not image/png")
+
+    def test_base64_svg_is_a_finding(self) -> None:
+        payload = base64.b64encode(b"<svg></svg>").decode("ascii")
+        problem = MediaPayload("image/svg+xml", payload).problem(["image/svg+xml"])
+        self.assertIn("embed the SVG as text", problem)
+
+    def test_run_split_parts_and_oversize_skill_error(self) -> None:
+        files = {
+            "SKILL.md": SKILL,
+            "assets/w.part00": "x",
+            "assets/big.md": "x " * 1_100_000,
+        }
+        ids = check_ids(files, RuleId.OBFUSCATED_INTENT)
+        self.assertIn("split_file", ids)
+        self.assertIn("skill_size", ids)
+
+    def test_run_evals_are_not_counted_in_skill_size(self) -> None:
+        files = {"SKILL.md": SKILL, "evals/files/big.md": "x " * 1_100_000}
+        self.assertNotIn("skill_size", check_ids(files, RuleId.OBFUSCATED_INTENT))
+
+    def test_run_package_outside_manifest_errors(self) -> None:
+        files = {"SKILL.md": SKILL, "scripts/a.py": "import onnxruntime\nimport numpy"}
+        results = [
+            r
+            for r in found(files, RuleId.SUPPLY_CHAIN)
+            if r.check_id == "python_third_party"
+        ]
+        self.assertEqual([r.quote for r in results], ["onnxruntime"])
+        self.assertEqual(results[0].status, Status.CONFIRMED)
+
+    def test_run_docstring_is_not_a_long_literal(self) -> None:
+        source = '"""' + "x" * 5000 + '"""\nX = 1\n'
+        files = {"SKILL.md": SKILL, "scripts/a.py": source}
+        self.assertNotIn(
+            "python_long_literal", check_ids(files, RuleId.OBFUSCATED_INTENT)
+        )
+
+    def test_run_unbounded_loop_and_huge_allocation_warn(self) -> None:
+        source = WHILE_TRUE + "\n    n = 1\nb = bytes(10**9)\n"
+        files = {"SKILL.md": SKILL, "scripts/a.py": source}
+        results = found(files, RuleId.RESOURCE_ABUSE)
+        self.assertEqual(
+            len([r for r in results if r.check_id == "python_resource"]), 2
+        )
+
+
+class TestDismissals(unittest.TestCase):
+    def problems(self, result: Result) -> list[str]:
+        report = results_with([result], [TestVerdictVerifier.done])
+        texts = TestVerdictVerifier.texts
+        return [issue.problem for issue in VerdictVerifier(report, texts).verify()]
+
+    def test_verify_dismissal_with_three_benign_lenses_passes(self) -> None:
+        result = code_result(
+            status=Status.DISMISSED,
+            level=Level.ERROR,
+            lenses=[lens(item, LensVerdict.BENIGN) for item in Lens],
+        )
+        self.assertEqual(self.problems(result), [])
+
+    def test_verify_dismissal_without_reviewer_fails(self) -> None:
+        result = code_result(
+            status=Status.DISMISSED,
+            level=Level.WARNING,
+            lenses=[
+                lens(Lens.CODE, LensVerdict.UNCLEAR),
+                lens(Lens.AGENT, LensVerdict.BENIGN),
+            ],
+        )
+        self.assertEqual(
+            self.problems(result), ["dismissed without a benign verdict from: reviewer"]
+        )
+
+    def test_verify_error_needs_a_benign_code_lens(self) -> None:
+        result = code_result(
+            status=Status.DISMISSED,
+            level=Level.ERROR,
+            lenses=[
+                lens(Lens.CODE, LensVerdict.UNCLEAR),
+                lens(Lens.AGENT, LensVerdict.BENIGN),
+                lens(Lens.REVIEWER, LensVerdict.BENIGN),
+            ],
+        )
+        self.assertEqual(
+            self.problems(result),
+            ["an error can be dismissed only when the code lens also finds it benign"],
+        )
+
+    def test_verify_any_risk_lens_blocks_dismissal(self) -> None:
+        result = code_result(
+            status=Status.DISMISSED,
+            lenses=[
+                lens(Lens.CODE, LensVerdict.RISK),
+                lens(Lens.AGENT, LensVerdict.BENIGN),
+                lens(Lens.REVIEWER, LensVerdict.BENIGN),
+            ],
+        )
+        self.assertTrue(self.problems(result)[0].startswith("a lens found a risk"))
+
+    def test_verify_guard_catches_removed_or_downgraded_code_results(self) -> None:
+        fresh = code_result(status=Status.CONFIRMED, level=Level.ERROR)
+        self.assertEqual(
+            [i.problem for i in CodeResultsGuard([], [fresh]).verify()],
+            ["code result removed"],
+        )
+        lowered = fresh.model_copy(update={"level": Level.WARNING})
+        self.assertEqual(
+            [i.problem for i in CodeResultsGuard([lowered], [fresh]).verify()],
+            ["code result level or code lens changed"],
+        )
+
+
+def accept(result: Result) -> Acceptance:
+    return Acceptance(
+        rule_id=result.rule_id,
+        path=result.path,
+        line=result.line,
+        quote=result.quote,
+        date="2026-11-20",
+    )
+
+
+class TestPendingDecisions(unittest.TestCase):
+    def pending(
+        self, results: list[Result], acceptances: list[Acceptance] | None = None
+    ) -> list[str]:
+        report = results_with(results, [TestVerdictVerifier.done]).model_copy(
+            update={"acceptances": acceptances or []}
+        )
+        return [d.problem for d in PendingDecisions(report).list()]
+
+    def test_confirmed_finding_waits_until_accepted(self) -> None:
+        self.assertEqual(
+            self.pending([agent_result()]),
+            ["confirmed: the user fixes or accepts it"],
+        )
+
+    def test_accepted_finding_is_not_pending(self) -> None:
+        finding = agent_result()
+        self.assertEqual(self.pending([finding], [accept(finding)]), [])
+
+    def test_acceptance_of_another_line_does_not_count(self) -> None:
+        moved = accept(agent_result(line=9))
+        self.assertEqual(
+            self.pending([agent_result()], [moved]),
+            ["confirmed: the user fixes or accepts it"],
+        )
+
+    def test_no_findings_means_nothing_pending(self) -> None:
+        self.assertEqual(self.pending([]), [])
+
+    def test_acceptance_records_no_name(self) -> None:
+        self.assertNotIn("accepted_by", Acceptance.model_fields)
+
+    def test_unsure_finding_waits_for_the_user(self) -> None:
+        unsure = agent_result(status=Status.UNSURE)
+        self.assertIn("unsure: the user must decide", self.pending([unsure]))
+
+    def test_report_warns_and_marks_an_accepted_finding(self) -> None:
+        finding = agent_result()
+        report = results_with([finding], [TestVerdictVerifier.done]).model_copy(
+            update={"acceptances": [accept(finding)]}
+        )
+        text = ReportBuilder(report, BY_ID).build()
+        self.assertIn("The user accepted 1 finding", text)
+        self.assertIn("| yes |", text)
+        self.assertNotIn("lock", text.lower())
 
 
 class TestKindsCovered(unittest.TestCase):

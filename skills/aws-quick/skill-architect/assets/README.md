@@ -1,6 +1,6 @@
 ---
 description: "What skill-architect needs, how to install it, and how to start."
-last_updated: 2026-11-18
+last_updated: 2026-11-20
 ---
 
 # Skill Architect

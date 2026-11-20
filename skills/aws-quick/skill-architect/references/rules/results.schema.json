@@ -1,5 +1,102 @@
 {
   "$defs": {
+    "Acceptance": {
+      "additionalProperties": false,
+      "description": "One confirmed finding the user accepted after seeing its evidence. It records\nno name: the user's own answer in the conversation is the consent.",
+      "properties": {
+        "rule_id": {
+          "$ref": "#/$defs/RuleId"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "path",
+        "line",
+        "quote",
+        "date"
+      ],
+      "title": "Acceptance",
+      "type": "object"
+    },
+    "Lens": {
+      "title": "Lens",
+      "description": "One independent way of judging a finding. A finding is dismissed as a false alarm only when the lenses agree.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "code",
+          "description": "A second program the engine runs at check time on the match's context, such as its syntax tree, its arguments, or its surrounding attribute. It is different from the check that raised the match."
+        },
+        {
+          "const": "agent",
+          "description": "The agent's reading of the finding in its surrounding text, against the rule's review question."
+        },
+        {
+          "const": "reviewer",
+          "description": "A separate background task with no conversation history that judges the finding from the file and the rule alone."
+        }
+      ]
+    },
+    "LensResult": {
+      "additionalProperties": false,
+      "description": "One lens's verdict on a finding, with the evidence it rests on.",
+      "properties": {
+        "lens": {
+          "$ref": "#/$defs/Lens"
+        },
+        "verdict": {
+          "$ref": "#/$defs/LensVerdict"
+        },
+        "evidence": {
+          "minLength": 1,
+          "title": "Evidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "lens",
+        "verdict",
+        "evidence"
+      ],
+      "title": "LensResult",
+      "type": "object"
+    },
+    "LensVerdict": {
+      "title": "LensVerdict",
+      "description": "What one lens concluded about a finding.",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "benign",
+          "description": "The lens found evidence the match is harmless."
+        },
+        {
+          "const": "risk",
+          "description": "The lens found evidence the match is a real risk. A finding with any risk verdict can't be dismissed."
+        },
+        {
+          "const": "unclear",
+          "description": "The lens can't tell. The code lens says unclear when only reading can judge the meaning, such as what a word means in a sentence."
+        }
+      ]
+    },
     "Level": {
       "title": "Level",
       "description": "How sure a check is when it matches.",
@@ -67,6 +164,14 @@
           "default": "",
           "title": "Reason",
           "type": "string"
+        },
+        "lenses": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LensResult"
+          },
+          "title": "Lenses",
+          "type": "array"
         }
       },
       "required": [
@@ -146,7 +251,7 @@
         },
         {
           "const": "dangerous_instructions",
-          "description": "Steps that bypass a security control, run commands or programs, or change system settings."
+          "description": "Steps that get around a security control, run commands or programs, or change system settings."
         },
         {
           "const": "security_guidance",
@@ -170,11 +275,15 @@
         },
         {
           "const": "context_poisoning",
-          "description": "Steps that write to memory or files later conversations read, to change how the agent behaves next time."
+          "description": "Steps that save notes or files that later conversations read, to change how the agent behaves next time."
         },
         {
           "const": "secrets_and_personal_data",
           "description": "Real credentials, personal data, or account details in the files, or steps that collect personal data the purpose doesn't need."
+        },
+        {
+          "const": "resource_abuse",
+          "description": "Code that uses far more CPU, RAM, or disk than the task needs, or runs without a bound, even when it works."
         },
         {
           "const": "frontmatter",
@@ -297,6 +406,10 @@
         {
           "const": "body_prose",
           "description": "The SKILL.md body with fenced code blanked out, keeping line numbers."
+        },
+        {
+          "const": "code_blocks",
+          "description": "Only the fenced code blocks of a Markdown file, with everything else blanked out, keeping line numbers."
         }
       ]
     },
@@ -331,7 +444,7 @@
         },
         {
           "const": "file_match",
-          "description": "Flags files whose suffix or name is on the list."
+          "description": "Flags files whose suffix or name is on the list, or whose name matches the pattern."
         },
         {
           "const": "hidden_path",
@@ -351,7 +464,7 @@
         },
         {
           "const": "unknown_file_type",
-          "description": "Flags files whose suffix isn't on the known list."
+          "description": "Flags files whose suffix isn't on the allowed list."
         },
         {
           "const": "file_count",
@@ -360,6 +473,10 @@
         {
           "const": "file_size",
           "description": "Flags a file larger than the limit."
+        },
+        {
+          "const": "skill_size",
+          "description": "Flags a skill whose selected files add up to more than the limit."
         },
         {
           "const": "frontmatter_parse",
@@ -375,7 +492,7 @@
         },
         {
           "const": "python_third_party",
-          "description": "Flags Python imports outside the standard library and the skill's own modules."
+          "description": "Flags Python imports outside the standard library, the skill's own modules, and the allowed list."
         },
         {
           "const": "python_call",
@@ -388,6 +505,18 @@
         {
           "const": "python_syntax",
           "description": "Flags Python that doesn't parse, since unparsed code can't be reviewed."
+        },
+        {
+          "const": "python_resource",
+          "description": "Flags Python that can hold the CPU, RAM, or disk: a while True loop with no break or return, and a call or repetition whose size is a literal over the limit."
+        },
+        {
+          "const": "data_uri",
+          "description": "Flags a base64 data URI whose media type isn't on the allowed list, whose payload doesn't start with that type's encoded signature, or that holds an SVG, which can't be checked for active content without decoding it. A real image, video, or audio file of the declared type passes."
+        },
+        {
+          "const": "python_long_literal",
+          "description": "Flags a Python string or bytes literal, other than a docstring, that is longer than the limit or has a long run with no whitespace, which is how data or code is hidden in a script."
         },
         {
           "const": "js_module",
@@ -454,6 +583,14 @@
         "$ref": "#/$defs/ReviewTask"
       },
       "title": "Tasks",
+      "type": "array"
+    },
+    "acceptances": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Acceptance"
+      },
+      "title": "Acceptances",
       "type": "array"
     }
   },

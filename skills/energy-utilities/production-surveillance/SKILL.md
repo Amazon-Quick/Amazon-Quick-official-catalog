@@ -5,13 +5,13 @@ icon: assets/eye.svg
 description: "Analyze synthetic production surveillance data with deterministic field, well-log, flow-assurance, reservoir, safety, petrophysics, and economics checks. Use when asked to 'generate a morning field report', 'run production surveillance', 'read this LAS file', 'ingest well logs', 'what curves are in SK-14', 'investigate the RED alarm', 'run a full investigation on a well', 'check flow assurance', 'calculate hydrate margin', 'assess reservoir constraints', 'run a safety compliance check', or 'create a production surveillance watch'."
 license: MIT-0
 created_date: "2026-09-14"
-last_updated: "2026-11-05"
+last_updated: "2026-11-20"
 preferred_model: balanced
 preferred_thinking: medium
 tools: [run_python, run_python_with_write, file_read, open_in_session_tab, get_current_time, start_task, create_task_group, get_task_group_result, inspect_task, agent_management, memory_management, list_scheduled_agents, create_scheduled_agent, recall_memories, save_to_memory]
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required Python system tool and optional dashboard, scheduling, memory, and local LAS/DLIS conversion capabilities; verify availability, stop if the required tool is missing, and note reduced capability when an optional prerequisite is missing."
 scripts: [run_tiger_fixture.py, run_petrophysics.py, run_economics.py, run_las_reader.py]
-checksum: "sha256:6727d4acd4c0381148c8076f8c174e2fab2ccd636c464ac5f352358fea4de27a"
+checksum: "sha256:86e75694f13949158044d59aff490ac894594e4b29f5dd543dfcc110d80e5d79"
 id: "76fd71db-dda4-440e-b7c5-31e0a8afea8c"
 ---
 
@@ -32,7 +32,7 @@ Produce a traceable analysis that identifies the synthetic source, preserves cal
 <Definitions>
 
 \<Definition - Synthetic fixture>
-All bundled data under `references/` and `evals/files/` is synthetic. `references/tiger-data-sample-response.json` contains the 27-well field snapshot, `references/formation-tops.json` contains two synthetic formation summaries, `references/petrophysics-summary.json` contains pre-computed results derived from synthetic well-log sidecars, and `evals/files/` contains synthetic LAS 2.0 logs for SK-14 and SK-22. None represents a real field, customer, or operator.
+All bundled data under `references/` and `evals/files/` is synthetic. `references/tiger-data-sample-response.json` contains the 27-well field snapshot, `references/formation-tops.json` contains two synthetic formation summaries, `references/petrophysics-summary.json` contains pre-computed results derived from synthetic well-log sidecars, and `evals/files/` contains a synthetic LAS 2.0 log for SK-14. None represents a real field, customer, or operator.
 \</Definition - Synthetic fixture>
 
 \<Definition - Signed scenario margin>
@@ -497,5 +497,4 @@ A script error, sandbox failure after two attempts, timeout, missing input, malf
 - `scripts/tests/unit/test_run_petrophysics.py`: filesystem-free petrophysics unit test.
 - `scripts/tests/unit/test_run_economics.py`: filesystem-free economics unit test.
 - `evals/files/SK-14.las`: bundled synthetic LAS 2.0 evaluation log.
-- `evals/files/SK-22.las`: bundled synthetic LAS 2.0 evaluation log.
 </Resources>

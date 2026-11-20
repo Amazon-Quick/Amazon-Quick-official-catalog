@@ -1,6 +1,6 @@
 ---
 description: "How to evaluate a skill: fixed checks, runs with and without the skill, grading, scoring over time, and reading the results."
-last_updated: 2026-11-18
+last_updated: 2026-11-20
 ---
 
 # Evals
@@ -53,7 +53,7 @@ Good cases are realistic user messages with real specifics (file paths, field na
 
 Good checks pass when the skill does the job and fail when it does not. A check the agent alone would pass tests the model, not the skill. Leave out what resists pass/fail, such as tone, and note it in the optional summary instead.
 
-When a case would call a connector or AWS Quick data (a space, a knowledge base, a dashboard), put a canned response in `evals/files/` and list it in the case's `files`. The run reads it instead of calling the live service, so results do not drift and nothing real is sent. Check write actions as intent ("prepared a message to #channel"), never as a sent message.
+When a case would call a connector or AWS Quick data (a space, a knowledge base, a dashboard), put a canned response in `evals/files/` and list it in the case's `files`. A script in `evals/` may generate or serve fixtures, and nothing outside `evals/` runs it. Name every fixture in a case's `files`, or write it from such a script. check_skill.py fails a fixture nothing uses, so delete a fixture when its last case goes. The run reads it instead of calling the live service, so results do not drift and nothing real is sent. Check write actions as intent ("prepared a message to #channel"), never as a sent message.
 
 </step-1-define>
 
@@ -90,7 +90,7 @@ Run the whole set before changing the skill. Changing the skill after one case a
     { "id": "routes-to-plan", "passed": true, "evidence": "Transcript step 2: 'Routing to Plan'" },
     { "id": "suggests-names", "passed": false, "evidence": "Only one name was suggested" }
   ],
-  "claims": [{ "claim": "The runbook has 5 steps", "verified": true }],
+  "claims": [{ "claim": "The runbook has 5 steps", "holds": true }],
   "suggestions": [{ "id": "suggests-names", "reason": "Passes for any names; check each is kebab-case" }]
 }
 ```
@@ -101,7 +101,7 @@ Every check gets one entry, matched by `id`; a missing entry counts as a FAIL. O
 
 <step-4-score>
 
-**Score the iteration** with `python scripts/create_benchmark.py <iteration_dir> <skill>/evals --model <tier>`. It appends one line to `evals/results.jsonl` and prints the scorecard.
+**Score the iteration** with run_python: `import create_benchmark; create_benchmark.main(["<iteration_dir>", "<skill>/evals", "--model", "<tier>"])`. It appends one line to `evals/results.jsonl` and prints the scorecard.
 
 </step-4-score>
 
@@ -138,7 +138,7 @@ skill-name-workspace/
         └── without_skill/run-1/  (or old_skill/run-1/)
 ```
 
-Delete `skill-name-workspace/` once the result is saved, and never commit it. Only `evals/` is kept: `evals.json`, `results.jsonl`, `evals/files/`, and an optional `eval_result_<date>.md` summary that must not point at workspace paths (Rule 9).
+Delete `skill-name-workspace/` once the result is saved, and never commit it. Only `evals/` is kept: `evals.json`, `results.jsonl`, `evals/files/`, and one optional `eval_result_<date>.md` summary that must not point at workspace paths (Rule 9). A new summary replaces the last one, since `results.jsonl` keeps every run's numbers; check_skill.py warns about a superseded summary.
 
 </workspace-layout>
 

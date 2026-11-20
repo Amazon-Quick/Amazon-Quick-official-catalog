@@ -1,6 +1,6 @@
 """
-description: Run the mechanical pass/fail checks on a SKILL.md (frontmatter fields, naming, length limits, XML tag balance, block order, em dashes and emojis, rule numbering, declared and unused tools, file headers, and the checksum), plus staleness WARNINGs for files over six months old. Qualitative review is done by reading, not here.
-last_updated: 2026-11-18
+description: Run the mechanical pass/fail checks on a SKILL.md (frontmatter fields, naming, length limits, XML tag balance, block order, em dashes and emojis, rule numbering and references, declared and unused tools, file headers, the checksum, and eval fixtures no case uses), plus staleness WARNINGs for files over six months old and for superseded eval summaries. Qualitative review is done by reading, not here.
+last_updated: 2026-11-20
 
 Usage:
     python check_skill.py <path/to/SKILL.md>
@@ -69,7 +69,7 @@ BLOCK_ORDER = (
 # Compiled once, named for intent, referenced wherever needed.
 FENCE_RE = re.compile(r"```.*?```", re.S)
 DEFINITIONS_RE = re.compile(r"<Definitions>.*?</Definitions>", re.S)
-RULES_BLOCK_RE = re.compile(r"<Rules>(.*?)</Rules>", re.S)
+RULES_BLOCK_RE = re.compile(r"^<Rules>(.*?)</Rules>\s*$", re.S | re.M)
 NAME_RE = re.compile(r'^name\s*:\s*"?([^"\n]+)"?', re.M)
 PAIRED_OPEN_RE = re.compile(r"^\s*<([A-Z][A-Za-z ]*?)>\s*$", re.M)
 PAIRED_CLOSE_RE = re.compile(r"^\s*</([A-Z][A-Za-z ]*?)>\s*$", re.M)
@@ -104,6 +104,8 @@ TOOL_PLACEHOLDERS = frozenset({"...", "built_in_tool"})
 PY_DOCSTRING_RE = re.compile(r'"""(.*?)"""', re.S)
 MD_FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.S)
 HEADER_FILE_GROUPS = (("references", "*.md"), ("scripts", "*.py"))
+EVAL_SUMMARY_GLOB = "eval_result_*.md"
+EVAL_REFERENCE_GLOBS = ("evals.json", "**/*.py")
 
 
 class CheckStatus(StrEnum):
@@ -493,15 +495,14 @@ class _WorkflowAttributesCheck:
 
 
 class _RuleCrossRefCheck:
-    """Every 'Rule N' reference in the body points to a rule that exists."""
+    """Every 'Rule N' reference in the body, including one rule citing another,
+    points to a rule that exists."""
 
     def run(self, document: SkillDocument) -> CheckResult | None:
         if document.rules_block() is None:
             return None
         rule_count = len(document.rule_numbers())
-        body = document.body
-        outside = body[: body.index("<Rules>")] + body[body.index("</Rules>") :]
-        refs = sorted({int(n) for n in RULE_CROSSREF_RE.findall(outside)})
+        refs = sorted({int(n) for n in RULE_CROSSREF_RE.findall(document.body)})
         broken = [n for n in refs if n < 1 or n > rule_count]
         if broken:
             return CheckResult.failed(
@@ -783,6 +784,99 @@ class _FileStalenessCheck:
         return CheckResult.passed("all file headers are within the staleness window")
 
 
+@dataclass(frozen=True)
+class EvalFiles:
+    """What the evals folder holds: the fixture paths under evals/files/, the text
+    of the files that can use a fixture (evals.json and fixture generators), and
+    the eval summary file names."""
+
+    fixtures: list[str]
+    references: str
+    summaries: list[str]
+
+
+class EvalFilesAudit:
+    """Finds fixtures no eval case or generator names, and eval summaries a newer
+    one supersedes (pure). A fixture counts as used when its path under
+    evals/files/, its file name, or its top folder appears in a reference."""
+
+    def __init__(self, files: EvalFiles) -> None:
+        self.files = files
+
+    def unused(self) -> list[str]:
+        refs = self.files.references
+        return [
+            f
+            for f in self.files.fixtures
+            if f not in refs
+            and f.rsplit("/", 1)[-1] not in refs
+            and f.split("/")[0] not in refs
+        ]
+
+    def superseded(self) -> list[str]:
+        return sorted(self.files.summaries)[:-1]
+
+
+class EvalFilesReader:
+    """Reads a skill's evals folder into EvalFiles (I/O)."""
+
+    def __init__(self, skill_dir: Path) -> None:
+        self.skill_dir = skill_dir
+
+    def read(self) -> EvalFiles:
+        evals = self.skill_dir / "evals"
+        fixtures_dir = evals / "files"
+        fixtures = (
+            sorted(
+                p.relative_to(fixtures_dir).as_posix()
+                for p in fixtures_dir.rglob("*")
+                if p.is_file()
+            )
+            if fixtures_dir.is_dir()
+            else []
+        )
+        references = "\n".join(
+            p.read_text(encoding="utf-8", errors="replace")
+            for pattern in EVAL_REFERENCE_GLOBS
+            for p in evals.glob(pattern)
+            if p.is_file() and fixtures_dir not in p.parents
+        )
+        summaries = (
+            [p.name for p in evals.glob(EVAL_SUMMARY_GLOB)] if evals.is_dir() else []
+        )
+        return EvalFiles(fixtures=fixtures, references=references, summaries=summaries)
+
+
+class _UnusedEvalFixturesCheck:
+    """FAILs on a fixture under evals/files/ that no eval case or generator names."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        if document.skill_dir is None or not (document.skill_dir / "evals").is_dir():
+            return None
+        unused = EvalFilesAudit(EvalFilesReader(document.skill_dir).read()).unused()
+        if unused:
+            return CheckResult.failed(
+                "eval fixtures no case uses (delete them): " + ", ".join(unused)
+            )
+        return CheckResult.passed("every eval fixture is used by a case")
+
+
+class _SupersededEvalSummaryCheck:
+    """WARNING when evals/ holds more than one eval summary. results.jsonl keeps
+    every run's numbers, so only the latest summary is kept."""
+
+    def run(self, document: SkillDocument) -> CheckResult | None:
+        if document.skill_dir is None or not (document.skill_dir / "evals").is_dir():
+            return None
+        older = EvalFilesAudit(EvalFilesReader(document.skill_dir).read()).superseded()
+        if older:
+            return CheckResult.warned(
+                "superseded eval summaries (results.jsonl keeps their numbers; delete them): "
+                + ", ".join(older)
+            )
+        return None
+
+
 def build_checks(today: datetime.date | None = None) -> list[Check]:
     """The ordered list of checks. Injected into SkillChecker by main().
 
@@ -824,6 +918,8 @@ def build_checks(today: datetime.date | None = None) -> list[Check]:
         _SkillChecksumFieldCheck(),
         _ChecksumIntegrityCheck(),
         _FileHeadersCheck(),
+        _UnusedEvalFixturesCheck(),
+        _SupersededEvalSummaryCheck(),
         _SkillStalenessCheck(evaluator),
         _FileStalenessCheck(evaluator),
     ]

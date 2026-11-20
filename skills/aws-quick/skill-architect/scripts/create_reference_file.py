@@ -1,6 +1,6 @@
 """
-description: Scaffold a new references/*.md file with a standard-conforming frontmatter header (description, last_updated, and optional sources) plus a purpose skeleton, so a new reference file starts compliant with the reference-file header standard.
-last_updated: 2026-11-18
+description: Scaffold a new references/*.md file with a standard-conforming frontmatter header (description, last_updated, and optional sources) plus a purpose skeleton, so a new reference file starts compliant with the reference-file header standard. It never overwrites an existing file.
+last_updated: 2026-11-20
 
 Usage:
     python create_reference_file.py references <name> --description "..." [--source URL ...]
@@ -9,6 +9,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import sys
 from dataclasses import dataclass
@@ -62,7 +63,7 @@ class ReferenceRenderer:
         title = spec.name.replace("-", " ").replace("_", " ").title()
         return (
             "---\n"
-            f'description: "{spec.description}"\n'
+            f"description: {json.dumps(spec.description, ensure_ascii=False)}\n"
             f"last_updated: {date.today().isoformat()}\n"
             f"{sources}"
             "---\n\n"
@@ -81,8 +82,10 @@ class ReferenceFileGenerator:
         self.spec = spec
 
     def generate(self) -> Path:
-        """Write the reference file and return its path."""
+        """Write the reference file and return its path. Never overwrites a file."""
         target = self.references_dir / f"{self.spec.name}.md"
+        if target.exists():
+            raise FileExistsError(f"{target} already exists; edit it instead")
         target.write_text(
             ReferenceRenderer(self.spec).render(), encoding="utf-8", newline="\n"
         )
@@ -119,7 +122,11 @@ def main(argv: list[str] | None = None) -> int:
         description=args.description,
         sources=tuple(args.source),
     )
-    target = ReferenceFileGenerator(references_dir, spec).generate()
+    try:
+        target = ReferenceFileGenerator(references_dir, spec).generate()
+    except FileExistsError as e:
+        logger.error("%s", e)
+        return 2
     logger.info("Wrote %s", target)
     return 0
 

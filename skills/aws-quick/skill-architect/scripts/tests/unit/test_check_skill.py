@@ -1,6 +1,6 @@
 """
-description: Unit tests for check_skill.py. Filesystem-free: each check is fed a SkillDocument built directly, so individual checks (checksum field, name format, tag balance, tools, headers) are verified without reading a file.
-last_updated: 2026-11-18
+description: Unit tests for check_skill.py. Filesystem-free: each check is fed a SkillDocument built directly, so individual checks (checksum field, name format, tag balance, the Rules block and rule references, tools, headers, unused eval fixtures) are checked without reading a file.
+last_updated: 2026-11-20
 
 Run: PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"
 """
@@ -11,10 +11,13 @@ import unittest
 from check_skill import (
     SOURCES_PROBLEM,
     CheckStatus,
+    EvalFiles,
+    EvalFilesAudit,
     FileHeaderValidator,
     HeaderExtractor,
     SkillDocument,
     StalenessEvaluator,
+    _RuleCrossRefCheck,
     _RuleFileCheck,
     _SkillChecksumFieldCheck,
     _TagBalanceCheck,
@@ -27,6 +30,32 @@ VALID_CHECKSUM = "sha256:" + "a" * 64
 
 def _doc(frontmatter: str = "", body: str = "", dirname: str = "demo") -> SkillDocument:
     return SkillDocument(frontmatter=frontmatter, body=body, dirname=dirname)
+
+
+RULES_BODY = (
+    "<Definitions>\n- `<Rules>`: constraints.\n</Definitions>\n\n"
+    "<Rules>\n1. Do x.\n2. Follow Rule {cited}.\n</Rules>\n"
+)
+
+
+class TestRulesBlock(unittest.TestCase):
+    def test_block_starts_at_the_real_tag_not_a_backticked_mention(self) -> None:
+        block = _doc(body=RULES_BODY.format(cited=1)).rules_block()
+        self.assertTrue(block.startswith("\n1. Do x."))
+
+    def test_inline_block_is_found(self) -> None:
+        doc = _doc(body="<Rules>1. Keep every blocker.</Rules>\n")
+        self.assertEqual(doc.rule_numbers(), [1])
+
+
+class TestRuleCrossRefCheck(unittest.TestCase):
+    def test_rule_citing_an_existing_rule_passes(self) -> None:
+        result = _RuleCrossRefCheck().run(_doc(body=RULES_BODY.format(cited=1)))
+        self.assertIs(result.status_code, CheckStatus.PASS)
+
+    def test_rule_citing_a_missing_rule_fails(self) -> None:
+        result = _RuleCrossRefCheck().run(_doc(body=RULES_BODY.format(cited=9)))
+        self.assertIs(result.status_code, CheckStatus.FAIL)
 
 
 class TestSkillChecksumFieldCheck(unittest.TestCase):
@@ -170,6 +199,34 @@ class TestStalenessEvaluator(unittest.TestCase):
 
     def test_unparseable_date_is_not_stale(self) -> None:
         self.assertFalse(self._evaluator().is_stale("not-a-date"))
+
+
+class TestEvalFilesAudit(unittest.TestCase):
+    def audit(
+        self, fixtures: list[str], references: str, summaries=()
+    ) -> EvalFilesAudit:
+        return EvalFilesAudit(
+            EvalFiles(
+                fixtures=fixtures, references=references, summaries=list(summaries)
+            )
+        )
+
+    def test_fixture_named_by_a_case_is_used(self) -> None:
+        refs = '"files": ["evals/files/a.md"]'
+        self.assertEqual(self.audit(["a.md"], refs).unused(), [])
+
+    def test_fixture_in_a_named_folder_is_used(self) -> None:
+        refs = '"files": ["evals/files/demo-skill"]'
+        self.assertEqual(self.audit(["demo-skill/SKILL.md"], refs).unused(), [])
+
+    def test_fixture_nothing_names_is_unused(self) -> None:
+        self.assertEqual(self.audit(["old.md"], '"files": []').unused(), ["old.md"])
+
+    def test_only_the_latest_summary_is_kept(self) -> None:
+        audit = self.audit(
+            [], "", ["eval_result_2026-07-02.md", "eval_result_2026-11-19.md"]
+        )
+        self.assertEqual(audit.superseded(), ["eval_result_2026-07-02.md"])
 
 
 class TestHeaderExtractor(unittest.TestCase):

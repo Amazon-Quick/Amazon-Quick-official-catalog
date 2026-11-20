@@ -1,6 +1,6 @@
 ---
 description: "Readable, correct, testable Python for the AWS Quick code sandbox: type hints, enums, Pydantic data models, one-public-method classes (SRP), constructor dependency injection, pure-vs-I/O separation, DRY via shared classes, facade and builder patterns, timestamped logging, cross-platform writes, and one dependency-injected unit test per file. Companion to quick-sandbox-code-standards."
-last_updated: 2026-11-18
+last_updated: 2026-11-20
 ---
 
 <purpose>
@@ -17,7 +17,7 @@ runtime rules live in quick-sandbox-code-standards.
 5. Parse external or unvalidated input at the boundary into a Pydantic model, then rely on that typed model downstream. Do not scatter defensive re-checks (isinstance, .get, null-guards) through code that already received a parsed model.
 6. Suffix custom exceptions with Error and inherit from an existing exception. Wrap only the statement that can raise, and catch specific exceptions: no bare except, no except that passes. Raise ValueError for a violated precondition.
 7. Never use a mutable default argument (use None and construct in the body), and bind the loop variable immediately when creating a closure inside a loop.
-8. In code passed to run_python, inline or with `file=`, do not use importlib, sys.executable, dunder attribute access, or sys.path manipulation. AWS Quick checks that code before it runs and blocks them, and its `sys` is a restricted proxy. A module in the skill's `scripts/` folder is imported instead, so that check doesn't apply and its own imports get the real modules behind a narrower block list. Such a module may use `__file__` to find the skill's own files, and the agent runs it by importing it (see Gotchas in SKILL.md), never with `file=`.
+8. Code passed to run_python, inline or with `file=`, must not use importlib, sys.executable, dunder attribute access, or sys.path manipulation: AWS Quick checks that code before it runs and blocks them, and its `sys` is a restricted proxy. Put a skill's logic in a module in its `scripts/` folder, and have the agent import it (see Gotchas in SKILL.md), never pass it with `file=`. Quick loads such a module through Python's import system under its own block list, so the module may use `__file__` to find the skill's own files.
 9. Use pathlib and context managers for file access, and build paths from WORKSPACE_DIR. Write text with encoding="utf-8" and newline="\n" so output is byte-identical on Windows and macOS (this also keeps content hashes stable across platforms). A script imported as a module doesn't see WORKSPACE_DIR, so its main takes the path as an argument.
 10. Put business logic in a class with exactly ONE public method, named for its action (SkillDigest.compute, ChecksumWriter.write). Every other method is private (leading underscore). This is the Single Responsibility Principle: one class, one reason to change. Data carriers are exempt from the one-method rule: a Pydantic model or frozen dataclass holds data and may expose fields, validators, and computed properties, but no action methods.
 11. Inject collaborators and configuration that varies through __init__ (constructor dependency injection). __init__ only assigns its arguments to attributes: no I/O, parsing, or other fallible work. Do the reading and parsing inside the public method. Reference static module constants directly rather than injecting them.
@@ -175,12 +175,4 @@ class Records:
 <references>
 - #[[file:references/quick-sandbox-code-standards.md]] - Shared runtime rules
 - #[[file:references/quick-sandbox-requirements.txt]] - Python package manifest (names only)
-- https://docs.pydantic.dev/latest/ - Pydantic
-- https://docs.python.org/3/library/enum.html - Enum
-- https://docs.python-guide.org/writing/gotchas/ - Mutable defaults, late-binding closures
-- https://docs.python.org/3/library/argparse.html - argparse
-- https://docs.python.org/3/library/logging.html - logging
-- https://docs.python.org/3/library/unittest.html - unittest
-- https://refactoring.guru/design-patterns/facade - Facade pattern
-- https://refactoring.guru/design-patterns/builder - Builder pattern
 </references>

@@ -1,6 +1,6 @@
 """
-description: Scaffold a skill's assets/README.md: the header, a one-line summary, the Pre-requisites table of dependencies (name, type, required), and the Installation and Getting started sections.
-last_updated: 2026-11-18
+description: Scaffold a skill's assets/README.md: the header, a one-line summary, the Pre-requisites table of dependencies (name, type, required), and the Installation and Getting started sections. It never overwrites an existing README.
+last_updated: 2026-11-20
 
 Usage:
     python create_readme.py <skill_dir> --title "..." --summary "..." --prefix <prefix> [--dependency "Name|TYPE|Y|URL" ...]
@@ -183,10 +183,12 @@ class ReadmeGenerator:
         self.spec = spec
 
     def generate(self) -> Path:
-        """Write README.md to assets/ and return its path."""
+        """Write README.md to assets/ and return its path. Never overwrites a README."""
         assets_dir = self.skill_dir / "assets"
-        assets_dir.mkdir(exist_ok=True)
         target = assets_dir / "README.md"
+        if target.exists():
+            raise FileExistsError(f"{target} already exists; edit it instead")
+        assets_dir.mkdir(exist_ok=True)
         target.write_text(
             ReadmeRenderer(self.spec).render(), encoding="utf-8", newline="\n"
         )
@@ -232,7 +234,11 @@ def main(argv: list[str] | None = None) -> int:
         prefix=args.prefix,
         dependencies=dependencies,
     )
-    target = ReadmeGenerator(skill_dir, spec).generate()
+    try:
+        target = ReadmeGenerator(skill_dir, spec).generate()
+    except FileExistsError as e:
+        logger.error("%s", e)
+        return 2
     logger.info("Wrote %s", target)
     return 0
 

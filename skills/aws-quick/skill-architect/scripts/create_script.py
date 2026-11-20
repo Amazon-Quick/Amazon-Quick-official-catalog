@@ -1,6 +1,6 @@
 """
-description: Scaffold a new scripts/*.py file with a standard-conforming header (description, last_updated, and optional sources) and a one-public-method class plus a main(argv) entry point, so a new script starts compliant with the Python sandbox code standard.
-last_updated: 2026-11-18
+description: Scaffold a new scripts/*.py file with a standard-conforming header (description, last_updated, and optional sources) and a one-public-method class plus a main(argv) entry point, so a new script starts compliant with the Python sandbox code standard. It never overwrites an existing file.
+last_updated: 2026-11-20
 
 Usage:
     python create_script.py scripts <file_name> --description "..." --class-name "..." --method-name "..." [--source URL ...]
@@ -131,8 +131,10 @@ class ScriptGenerator:
         self.spec = spec
 
     def generate(self) -> Path:
-        """Write the script file and return its path."""
+        """Write the script file and return its path. Never overwrites a file."""
         target = self.scripts_dir / f"{self.spec.file_name}.py"
+        if target.exists():
+            raise FileExistsError(f"{target} already exists; edit it instead")
         target.write_text(
             ScriptRenderer(self.spec).render(), encoding="utf-8", newline="\n"
         )
@@ -173,7 +175,11 @@ def main(argv: list[str] | None = None) -> int:
         method_name=args.method_name,
         sources=tuple(args.source),
     )
-    target = ScriptGenerator(scripts_dir, spec).generate()
+    try:
+        target = ScriptGenerator(scripts_dir, spec).generate()
+    except FileExistsError as e:
+        logger.error("%s", e)
+        return 2
     logger.info("Wrote %s", target)
     return 0
 

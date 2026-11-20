@@ -1,6 +1,6 @@
 """
-description: Unit tests for find_lines.py. Filesystem-free: each locator is given an injected list of lines, so grep, block, heading, rule, and range location are verified without reading any file.
-last_updated: 2026-11-18
+description: Unit tests for find_lines.py. Filesystem-free: each locator is given an injected list of lines, so grep, block, heading, rule, and range location are checked without reading any file.
+last_updated: 2026-11-20
 
 Run: PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"
 """

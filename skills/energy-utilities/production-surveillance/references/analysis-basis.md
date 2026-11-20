@@ -1,6 +1,6 @@
 ---
 description: "Assumptions, synthetic thresholds, golden outputs, and evidence limits used by the production-surveillance workflows."
-last_updated: 2026-09-15
+last_updated: 2026-11-20
 origin: original
 ---
 
@@ -71,7 +71,7 @@ Every price and heating-value assumption must be supplied in the request and rep
 
 ## Well-log calculation basis
 
-The bundled SK-14 and SK-22 LAS 2.0 files under `evals/files/` are synthetic. They use `WRAP.NO`, `NULL.-999.25`, metre depth, GAPI gamma ray, V/V neutron porosity, G/CC bulk density, US/FT sonic, inch caliper, and OHMM deep induction resistivity. The reader maps ILD to canonical RT and converts depth from metres to feet for `net_pay`.
+The bundled SK-14 LAS 2.0 file under `evals/files/` is synthetic. It uses `WRAP.NO`, `NULL.-999.25`, metre depth, GAPI gamma ray, V/V neutron porosity, G/CC bulk density, US/FT sonic, inch caliper, and OHMM deep induction resistivity. The reader maps ILD to canonical RT and converts depth from metres to feet for `net_pay`.
 
 Use these synthetic reservoir intervals with inclusive reader bounds that preserve the original upper-exclusive formation selection:
 

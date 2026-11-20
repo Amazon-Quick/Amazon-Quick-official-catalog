@@ -14,7 +14,7 @@
         {
           "path": "skills/aws-quick/skill-architect",
           "type": "skill",
-          "checksum": "sha256:ea9f37d3954262a056047d96dd5cfc58e43392b0da425d34272881ad3799fc80",
+          "checksum": "sha256:d1bfa311a16149cf880a2db194052ac0f11e7b40d94daec37f0513a015354c89",
           "id": "72af9a52-7772-49d0-a2fa-7bce118a8c9b"
         },
         {
@@ -204,7 +204,7 @@
         {
           "path": "skills/energy-utilities/production-surveillance",
           "type": "skill",
-          "checksum": "sha256:6727d4acd4c0381148c8076f8c174e2fab2ccd636c464ac5f352358fea4de27a",
+          "checksum": "sha256:86e75694f13949158044d59aff490ac894594e4b29f5dd543dfcc110d80e5d79",
           "id": "76fd71db-dda4-440e-b7c5-31e0a8afea8c"
         },
         {

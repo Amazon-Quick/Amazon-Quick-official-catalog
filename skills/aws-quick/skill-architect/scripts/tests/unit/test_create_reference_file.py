@@ -1,12 +1,13 @@
 """
-description: Unit tests for create_reference_file.py. Filesystem-free: ReferenceRenderer is given an injected spec, so the generated Markdown text is verified without writing any file.
-last_updated: 2026-11-18
+description: Unit tests for create_reference_file.py. Filesystem-free: ReferenceRenderer is given an injected spec, so the generated Markdown text, including a valid YAML header for a description with quotes, is checked without writing any file.
+last_updated: 2026-11-20
 
 Run: PYTHONPATH=scripts python -m unittest discover -s scripts/tests/unit -p "test_*.py"
 """
 
 import unittest
 
+import yaml
 from create_reference_file import ReferenceFileSpec, ReferenceRenderer
 
 
@@ -30,6 +31,13 @@ class TestReferenceRenderer(unittest.TestCase):
 
     def test_title_derived_from_name(self) -> None:
         self.assertIn("# My Ref", ReferenceRenderer(_spec()).render())
+
+    def test_description_with_quotes_stays_valid_yaml(self) -> None:
+        spec = ReferenceFileSpec(name="x", description='Lists the "top" items.')
+        header = ReferenceRenderer(spec).render().split("---")[1]
+        self.assertEqual(
+            yaml.safe_load(header)["description"], 'Lists the "top" items.'
+        )
 
 
 if __name__ == "__main__":

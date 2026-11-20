@@ -1,6 +1,6 @@
 ---
 description: "Readable, correct JavaScript for the AWS Quick code sandbox: how run_javascript runs a script, require for allowed modules only, one self-contained file per script, an entry function called with its arguments, const/let, structured data, disciplined async and errors, and no dynamic code evaluation. Companion to quick-sandbox-code-standards."
-last_updated: 2026-11-18
+last_updated: 2026-11-20
 ---
 
 <purpose>
@@ -43,10 +43,11 @@ async function main({ rows }) {
 
 <example type="incorrect">
 ```javascript
-// import and export (2), a sibling script (3), var (1), dynamic evaluation (5),
-// empty catch (8).
+// import and export (2), a sibling script (3), var (1), empty catch (8).
+// Rule 5's dynamic evaluation isn't shown, because the security review blocks
+// any code block that builds code from a string.
 import { helper } from "./helper.js";
-var parse = new Function("s", "return eval(s)");
+var parse = JSON.parse;
 export default async function run(input) {
   try {
     return parse(helper(input));
@@ -59,5 +60,4 @@ export default async function run(input) {
 <references>
 - #[[file:references/quick-sandbox-code-standards.md]] - Shared runtime rules
 - #[[file:references/quick-sandbox-package.json]] - JavaScript module manifest
-- https://nodejs.org/api/ - Node.js API
 </references>

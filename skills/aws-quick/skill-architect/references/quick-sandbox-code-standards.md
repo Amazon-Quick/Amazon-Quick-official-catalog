@@ -1,6 +1,6 @@
 ---
-description: "Runtime rules for code generated to run in the AWS Quick code sandbox (run_python and run_javascript): manifest-only dependencies, no network, time and memory limits, workspace persistence, read-only vs write execution, result handling, imports, regexes, and filtering. Applies to both languages."
-last_updated: 2026-11-18
+description: "Runtime rules for code generated to run in the AWS Quick code sandbox (run_python and run_javascript): manifest-only dependencies, no network, time and RAM limits, workspace persistence, read-only vs write execution, result handling, imports, regexes, and filtering. Applies to both languages."
+last_updated: 2026-11-20
 ---
 
 <purpose>
@@ -10,13 +10,13 @@ Runtime and hygiene rules every snippet generated for the code sandbox must foll
 <rules>
 1. Import only dependencies listed in the applicable manifest (quick-sandbox-requirements.txt for Python, quick-sandbox-package.json for JavaScript). Never install packages at runtime.
 2. Never make network calls from code. Pass external data in through a tool or connector.
-3. Split long work into bounded chunks and write each unit to WORKSPACE_DIR as it completes. Execution is time-limited, and in-memory state does not survive across separate calls.
+3. Split long work into bounded chunks and write each unit to WORKSPACE_DIR as it completes. Execution is time-limited, and variables do not survive across separate calls.
 4. Use run_python by default. Use run_python_with_write only when the code must create, modify, or delete files in allowed folders.
 5. Print every result the agent needs. Unprinted output is not returned.
 6. Print a tool result's type and structure before indexing into it, then parse against the observed shape, not a guessed key.
 7. Place all imports at the top of the file. Never import inside a function, class, or branch.
 8. Use native string methods (contains, prefix, split, replace) for fixed substrings and static text. Use a regex only for a genuinely variable pattern.
-9. Keep regex patterns simple and anchored. Do not nest quantifiers, which cause catastrophic backtracking.
+9. Keep regex patterns short and anchored. Do not nest quantifiers, which cause catastrophic backtracking.
 10. Use non-capturing groups unless the captured text is used.
 11. Compile a regex once and reuse it when filtering many items, rather than recompiling per item.
 12. Write a filter as a named predicate or a clear comprehension, not a dense chained one-liner.
@@ -67,6 +67,4 @@ def filter_rows(records):
 - #[[file:references/quick-sandbox-package.json]] - JavaScript module manifest
 - #[[file:references/python-sandbox-code-standards.md]] - Python syntax rules
 - #[[file:references/javascript-sandbox-code-standards.md]] - JavaScript syntax rules
-- https://docs.python.org/3/library/pathlib.html - Python pathlib
-- https://nodejs.org/api/path.html - Node path
 </references>

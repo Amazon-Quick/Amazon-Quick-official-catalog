@@ -903,6 +903,49 @@
           "id": "43ca2ee0-c5c9-4bcb-9936-407cec429e8b"
         }
       ]
+    },
+    {
+      "name": "AWS Events",
+      "slug": "aws-events",
+      "description": "Plan, follow, and recap AWS events such as re:Invent.",
+      "assets": [
+        {
+          "path": "skills/aws-events/reinvent-all-about-riv",
+          "type": "skill",
+          "id": "c0fb703c-1e25-47a5-ae0d-b3eab3907fea",
+          "checksum": "sha256:14cafeba4294ce2bfdbdf1fe47a017f1d77cc78a5d95dd2844e304fb8d40b467"
+        },
+        {
+          "path": "skills/aws-events/reinvent-daily-brief",
+          "type": "skill",
+          "id": "add51004-8ebc-44fa-aa05-95d25aeac1e0",
+          "checksum": "sha256:fef540dc6fc3091c91f54ab28293ab36420c41cb52099126d73d6f12c2699531"
+        },
+        {
+          "path": "skills/aws-events/reinvent-event-catalog",
+          "type": "skill",
+          "id": "79fd9c60-48ec-43f5-ba8e-5056656a6c67",
+          "checksum": "sha256:389ac2d1de44c35a771cd4442ba70da810872b23e0aaa35ab5796f5f7ad8638b"
+        },
+        {
+          "path": "skills/aws-events/reinvent-new-launches",
+          "type": "skill",
+          "id": "da2b30e7-5e7a-4bda-998e-b596103e305b",
+          "checksum": "sha256:0371d37e27a8095ead5fec8f0bf6faf300a0b3306fde5d7309c92ea49efa2794"
+        },
+        {
+          "path": "skills/aws-events/reinvent-personalized-pathway",
+          "type": "skill",
+          "id": "32553f24-aecf-4aa2-bf5a-97a9538c9669",
+          "checksum": "sha256:f3d07b5a4f9918fc06510ab194e25457a81274949ca672890d0c705e515cf299"
+        },
+        {
+          "path": "skills/aws-events/reinvent-trip-report",
+          "type": "skill",
+          "id": "e8c69012-f338-4d34-973e-7b0a2d28fa8d",
+          "checksum": "sha256:28b0e57a231b68438bc8e4c712a8310043f73a2d5638ae878af5f4c3be1f2e90"
+        }
+      ]
     }
   ],
   "roles": [
@@ -998,6 +1041,30 @@
         {
           "path": "plugins/general-productivity/calendar-meetings-assistant",
           "type": "plugin"
+        },
+        {
+          "path": "skills/aws-events/reinvent-all-about-riv",
+          "type": "skill"
+        },
+        {
+          "path": "skills/aws-events/reinvent-daily-brief",
+          "type": "skill"
+        },
+        {
+          "path": "skills/aws-events/reinvent-event-catalog",
+          "type": "skill"
+        },
+        {
+          "path": "skills/aws-events/reinvent-new-launches",
+          "type": "skill"
+        },
+        {
+          "path": "skills/aws-events/reinvent-personalized-pathway",
+          "type": "skill"
+        },
+        {
+          "path": "skills/aws-events/reinvent-trip-report",
+          "type": "skill"
         }
       ]
     },

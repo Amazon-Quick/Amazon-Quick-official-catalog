@@ -1,16 +1,13 @@
 ---
 name: deal-advance-gap
 display_name: Deal Advance Gap
-description: "Map an opportunity's path to advance or close from Salesforce stage, stakeholder, activity, qualification, and risk data plus email, documents, and Slack. Use to diagnose a stuck deal, identify blockers and owners, or test whether its close date is credible."
+description: "Diagnose why one Salesforce opportunity is not advancing, scoped to what was asked: a broad stage-exit review, a specific blocker or gap, or a direct status question, using grounded Opportunity data and available email, documents, and Slack."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:90dbfa7fb5d32383c034d030c8168bbb8c8fe0935cdf3b2ce8830331e23498dc"
+checksum: "sha256:b9e339b6052b7127236c6a18f741f0b9fae04e1f233b477cdb6a2a41a3ecae57"
 id: "1b930110-e61c-4677-98a2-afeeea97cafe"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -20,11 +17,26 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
+
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
+# Goal:
+Explain what must happen for one opportunity to advance or close, scoped to what the user asked. A broad ask maps the evidenced stage path and gaps; a specific ask reads only the requested blocker; a direct question returns only its answer and sources.
+
 # Rules:
 
+- **Scope reading and output to the prompt, never a default full deal review.** The `stages` card is the one standing exception: send it on every response, whatever the prompt, whenever stage history is grounded. Beyond that, a broad ask shows the evidenced gaps; a specific ask includes only the matching `gaps` rows; a direct question gets only a title, concise answer, the stage path, and relevant sources. Do not show other data just because you fetched it.
 - Apply the human-label rule to Opportunity child records too. State a risk as "Blocking: yes · Severity: High · Status: Mitigating", never `Is_Blocking__c = true`.
 
 # Deal Advance Gap
@@ -37,12 +49,10 @@ Ground **only Opportunity** — it always exists (naming a missing object fails 
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { objectInfos(apiNames: [\\\"Opportunity\\\"]) { fields { ApiName label relationshipName } childRelationships { childObjectApiName relationshipName } } stages: objectInfos(objectInfoInputs: [{ apiName: \\\"Opportunity\\\", recordTypeIDs: [\\\"012000000000000AAA\\\"], fieldNames: [\\\"StageName\\\"] }]) { fields { ApiName ... on PicklistField { picklistValuesByRecordTypeIDs { recordTypeID picklistValues { label value } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { objectInfos(apiNames: [\\\"Opportunity\\\"]) { fields { ApiName label relationshipName } childRelationships { childObjectApiName relationshipName } } } }\"}" })
 ```
 
 Step 1 is the authority on names. Note: (a) scalar `__c` fields carrying stage-exit / next-step / blocker / qualification signal — take `{ value }` **and keep each field's `label`**; (b) each lookup's exact `relationshipName` for spanning a related name; (c) each child `relationshipName`. **Build an ApiName→label map now and use the `label` in ALL output** (e.g. "Executive Sponsor", not `Executive_Sponsor__c`; "Target Resolution Date", not `Target_Resolution_Date__c`) — never print a `__c` API name to the user.
-
-`stages` lists the Stage picklist in the org's order, read from the primary record type (`012000000000000AAA`). It is the authority on stage order; never infer the next stage from general sales knowledge.
 
 ## 2a. Resolve to ONE opportunity Id (before the detail read)
 
@@ -71,17 +81,24 @@ Insert `<OPP_CUSTOM>` = confirmed scalar `__c { value }` fields; `<REL_BLOCKS>` 
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Id: { eq: \\\"<OPP_ID>\\\" } }, first: 1) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Probability { value } NextStep { value } ForecastCategoryName { value } LastActivityDate { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } <REL_BLOCKS> OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } Tasks(first: 15, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Status { value } Description { value } TaskSubtype { value } } } } Events(first: 10, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Description { value } } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Id: { eq: \\\"<OPP_ID>\\\" } }, first: 1) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Probability { value } NextStep { value } ForecastCategory { value } LastActivityDate { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } <REL_BLOCKS> OpportunityHistories(first: 20, orderBy: { CreatedDate: { order: ASC } }) { edges { node { StageName { value } CreatedDate { value } } } } OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } Tasks(first: 15, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Status { value } Description { value } TaskSubtype { value } } } } Events(first: 10, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Description { value } } } } } } } } } }\"}" })
 ```
 
-**Forecast category — local correction:** Both reads return `ForecastCategoryName` (Pipeline, Best Case, Commit, Closed, Omitted), the category reps see. `ForecastCategory` returns internal values, such as `Forecast` for Commit, that are not labels.
+Target = next stage (default) or "to close" if asked.
 
-Target = the stage that follows the deal's current stage in step 1's `stages` order (default; when that is Closed Won, the target is to close), or "to close" if asked.
+**Stage order (for the `stages` card).** The history above lists only stages already passed, so it cannot name the target. Read the org's active stages in order, in the same turn as 2a (it does not depend on the Id):
+
+```
+dispatch_readonly(method: "GET", url: "/services/data/v63.0/query",
+  queryParams: { "q": "SELECT MasterLabel, SortOrder, IsClosed, IsWon FROM OpportunityStage WHERE IsActive = true ORDER BY SortOrder" })
+```
+
+Resolve the target from that list, using the labels as returned: for "next stage", the first open stage (`IsClosed` false) with a higher `SortOrder` than the current `StageName`, or the won stage (`IsWon` true) when the current stage is the last open one; for "to close", the won stage. If the current stage is already closed or no target can be resolved, send the card without a target.
 
 **Retry contract on `InvalidSyntax` / "offending token `<EOF>`" (the dynamic splice dropped a brace):** construct **one** corrected query and dispatch it **only if its text differs** from the failed one (add the missing `}` — never re-send byte-identical text; an identical retry just burns a round-trip for the same error). If that corrected retry still fails, **stop retrying the spliced shape** — fall back to the fixed, guaranteed-field query below (standard fields + contact roles only, no `<OPP_CUSTOM>`/`<REL_BLOCKS>`), then continue the analysis and note that optional custom risk signals were unavailable:
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Id: { eq: \\\"<OPP_ID>\\\" } }, first: 1) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Probability { value } NextStep { value } ForecastCategoryName { value } LastActivityDate { value } Account { Name { value } } Owner { Name { value } } OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Id: { eq: \\\"<OPP_ID>\\\" } }, first: 1) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Probability { value } NextStep { value } ForecastCategory { value } LastActivityDate { value } Account { Name { value } } Owner { Name { value } } OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } } } } } } }\"}" })
 ```
 
 ## 2c. Evidence (run IN PARALLEL with 2a — same turn, issue all at once)
@@ -93,15 +110,15 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
 
 Use whatever email/doc/Slack tools are present; if none, skip silently (SF-only is fine). Cite source + date for anything used.
 
-**No extra Salesforce reads.** 2b already returned the CRM state (stage, close, next step, probability, forecast, last-activity, contact roles, recent Tasks/Events, `__c` signals). Do NOT dispatch a **separate** per-opp SF follow-up (a standalone `ActivityHistory` / `OpportunityFieldHistory` / Task query) — recent activity already rides along as the `Tasks`/`Events` child edges in the 2b query (same round-trip, no extra call). Read those children as distinct states: a completed Task (Status Completed / past-dated Event) is a done touch; an open Task or a future-dated Task/Event is **🔶 In motion / scheduled**, not done — that's the signal behind "Already in motion". Deeper detail comes from the external evidence above.
+**No extra Salesforce reads.** 2b already returned the CRM state (stage, close, next step, probability, forecast, last-activity, contact roles, recent Tasks/Events, `__c` signals). The org-wide stage list above is not a per-opp read and is allowed. Do NOT dispatch a **separate** per-opp SF follow-up (a standalone `ActivityHistory` / `OpportunityFieldHistory` / Task query) — recent activity already rides along as the `Tasks`/`Events` child edges in the 2b query (same round-trip, no extra call). Read those children as distinct states: a completed Task (Status Completed / past-dated Event) is a done touch; an open Task or a future-dated Task/Event is **🔶 In motion / scheduled**, not done — that's the signal behind "Already in motion". Deeper detail comes from the external evidence above.
 
 ## 3. Map gaps against exit criteria (cite every claim; invent nothing)
 
 Exit criteria, qualification framework, and required-stakeholders-for-close are **external knowledge** — infer from the org's own data (StageName picklist, closed-won patterns) or ask the user once. Never invent. For the current stage's exit criteria (and every later stage if target is "to close"), mark each: **✅ Done / 🔶 In motion / ❌ Not started**, with the source and the specific gap. Then check the qualification framework the same way — flag only elements that **block advancement**, not every unknown.
 
-**Row states — Quick/Kiro adaptation:** Take every Done, In motion, or Scheduled state from 2b's Tasks and Events. Done needs a completed Task or a past-dated Event; In motion or Scheduled needs an open Task or a future-dated Task or Event for that step. A step that exists only as Next Step text, or a completed touch still awaiting a reply, is Not started.
+**Row states:** Take every Done, In motion, or Scheduled state from 2b's Tasks and Events. Done needs a completed Task or a past-dated Event; In motion or Scheduled needs an open Task or a future-dated Task or Event for that step. A step that exists only as Next Step text, or a completed touch still awaiting a reply, is Not started.
 
-**Suggested steps — Quick/Kiro adaptation:** The documented reads do not return the org's exit criteria. Unless the user names them, present the checklist as suggested steps instead of asking. Base each step on this deal's returned data and cite it. Say "suggested steps" wherever the output would say exit criteria, including `headerSubtitle` and `meterValueLabel` (for example, "1 of 5 suggested steps complete"), and say in the callout that these are not the org's defined criteria.
+**Suggested steps:** The documented reads do not return the org's exit criteria. Unless the user names them, present the checklist as suggested steps instead of asking. Base each step on this deal's returned data and cite it. Say "suggested steps" wherever the output would say exit criteria, including `headerSubtitle` and `meterValueLabel` (for example, "1 of 5 suggested steps complete"), and say in the callout that these are not the org's defined criteria.
 
 ## 4. Sequence the path
 
@@ -113,480 +130,210 @@ When the data is assembled, call `display_widget`; a single one-line "Displaying
 
 ### Self-verification (before calling display_widget)
 
-- [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
-- [ ] Row states (Quick/Kiro adaptation): every row marked In motion or Scheduled names the open or future-dated task or event behind it in its `item` text. If it cannot, set that row to Not started; a completed touch awaiting a reply is never In motion.
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+- [ ] Row states: every row marked In motion or Scheduled names the open or future-dated task or event behind it in its `item` text. If it cannot, set that row to Not started; a completed touch awaiting a reply is never In motion.
 
-The widget template is embedded below — resolve its tokens and call `display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated> })` once (see the `widgetDefinition` param for token-resolution rules).
+The layout is built into the renderer and registered by name. Send only the widget name and its data:
 
-Two blocks below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}`'s type + a worked example, use it to compute each value; then the **widget template** to hydrate. Substitute your computed values into the template's `{{token}}`s (see the token-typing rules above), leaving no `{{…}}`/`{!…}`.
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/deal-advance-gap", props: <object matching the schema below> })
+```
+
+- **Send data only; never author presentation** (colours, badges, icons, HTML, emojis, or layout keys). `props` must be a nested JSON object, not a string.
+- When the widget renders, do not also produce the text fallback.
+
+### What to send
+
+Follow the block order and per-block inclusion rules in the data schema. Omit `labels` in English; in another language, translate every key and every free-text value.
+
+### Scope the blocks to the prompt
+
+| The prompt is… | Send |
+|---|---|
+| Broad ("What's blocking this deal from advancing to Close?") | `title` + `answer` (bullets) + `stages` and `gaps` when grounded + one applicable tail + `sources` |
+| Specific ("What's blocking the legal review?") | `title` + `answer` + `stages` when grounded + only the matching `gaps` rows + `sources` |
+| Direct ("What's the current stage?") | `title` + `answer` + `stages` when grounded + `sources`; no `gaps` or tail |
+
+Rules:
+- **Always send `stages` when stage history is grounded**, for broad, specific, and direct prompts alike. Do not wait for the user to say "stage". It is the deal's position at a glance and costs no extra query. Omit it only when `OpportunityHistories` was not grounded or returned no rows.
+- **Omit a key and its block is not shown.** Never send empty or placeholder values.
+- Scope the answer to the question; put evidence for a gap in that row's `detail`.
+- For a specific question, fetch only the fields and evidence its matching `gaps` rows need. For every prompt, `OpportunityHistories` stays in the 2b detail read and the active stage order comes from the stage list in 2b, since the `stages` card is always sent. If Step 1 did not ground `OpportunityHistories`, drop it from the read and omit `stages`. Never dispatch any other additional query to fill the card.
+- **`gaps[].due` is the date that step is scheduled or due, never a deal-level date.** Take it only from a record or commitment tied to that specific step, in this order, and name the source in that row's `detail` (for example "Due per open Task 'Send redlines'"):
+  1. **Task for the step**: the `ActivityDate` (Due Date) of a `Tasks` edge from the Opportunity read, matched to the step by a clear `Subject`/`Description` match (skip loose or ambiguous matches); open or completed. Only the 15 most recent Tasks and 10 most recent Events are read, so a step whose record is not in that window has no Task/Event source.
+  2. **Event for the step**: the `ActivityDate` of an `Events` edge (the scheduled meeting or call), matched the same way.
+  3. **Dated commitment in email, docs or Slack** for the step (for example "redlines back by Aug 27"). Resolve relative dates ("Friday") against the message date, and cite source and date.
+  4. **A step-specific date field**: a Step 1 `__c` date field whose label names the step or milestone, or a date in `NextStep` that names the step.
+  - **Never use** `CloseDate`, `LastActivityDate`, stage-change or history dates, a Task's `CreatedDate`, a date you estimate, or a weekday you did not compute from the date.
+  - **No source for the step → omit `due`.** Timing that is not a date ("when Priya re-engages") belongs in `detail`, not `due`. Format as a display-ready date ("Aug 27"); add the weekday only when computed from the date.
+- Use stage history only when grounded and returned. Never invent stage order, stage age, average duration, dates, owners, or exit criteria.
+- **Never drop the `stages` card only because the target is unknown.** Send the passed stages and the current stage, and add a `target` item only when the stage list in 2b resolves one. Build `items` in stage order: each history stage before the current one as `completed` (once each, even if it recurs), the current stage as `current`, then the resolved target as `target`. If a prompt asks for the next stage, the target is that next stage, not Closed Won, unless Closed Won is next.
+- `gaps[].status` is `blocked`, `notStarted`, or `completed`; `gaps[].tone` is `error`, `warning`, or `success`. Status must match evidence and remain visibly labelled.
+- **Tail.** For a broad "what's blocking this deal" ask, send one `callout`: its `lead` is the single most important blocker or move in one sentence, `text` is the recommended move and why, and `buttonLabel` + `actionMsg` (a first-person request, e.g. "Draft a message to ... to agree owners and dates") give the one primary button. A callout does **not** need a date; when no step has a scheduled date, say so in `text` and recommend agreeing owners and dates, without inventing one. For a specific question, send a plain `nextStep` (no icon, no button) only when a button would not help, or send neither. For a direct question send no tail. Never send both a `callout` and a `nextStep`.
+- Values are display-ready strings (currency and dates); names are plain strings. Put record URLs only in `url` fields. Sources without a known record URL omit `url`.
+- Before calling, remove keys not in the schema and any `{!…}` or `{{…}}` expressions.
+
+#### Worked examples (the data object only)
+
+**Broad — "What's blocking this deal from advancing to Close?"** (stage history, evidenced path, one urgent move):
+
 ```json
 {
-  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate display_widget call — it names every {{token}} in the template with its type and a worked example so you compute the right value for each. Workflow: build a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — arrays stay arrays, numbers stay numbers; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Realistic values: sample-data.json (sibling). Authoring guidance (from the skill): `headerTitle headerStatus headerSubtitle` (strings) · `meterValue meterMax meterTarget` (numbers — meter `value`/`max`/`target`) · `meterValueLabel meterTargetLabel meterStatus` (strings) · `meterBands` (array: `[{ from, to, variant, label }]` — variants error/warning/success, covering 0→max) · `gridCaption` (string) · `gridRows` (array, one per gap, blockers first: `[{item, owner (plain string — format as the person's display name (e.g. \"You\", \"R. Chen\"); names must be plain strings, not objects: use `User.Name.value` or `Owner.Name.value` from the SF response), due (YYYY-MM-DD), state: {value, badgeVariant}, status:{value,badgeVariant}}]` — `status.value` \"Blocker\"/\"At risk\"/\"On track\"/\"Done\", `status.badgeVariant` error/warning/info/success; every row cites its source) · `calloutTitle calloutDescription` (strings) · `ctaPrimaryLabel ctaPrimaryMsg` (strings — `ctaPrimaryMsg` is the first-person prompt for action/sendMessage) · `oppUrl` (string — Lightning URL `https://<myDomain>/lightning/r/Opportunity/<Id>/view`).",
-  "props": {
-    "headerTitle": {
-      "description": "Header title for the stage-advance gap view.",
-      "type": "string",
-      "example": "What's needed to advance — Cobalt Robotics"
-    },
-    "headerStatus": {
-      "description": "Header status badge.",
-      "type": "string",
-      "example": "4 OPEN"
-    },
-    "headerSubtitle": {
-      "description": "Subtitle summarizing the gap to the next stage.",
-      "type": "string",
-      "example": "Negotiation → Closed Won · 4 exit criteria open · 6 days to close"
-    },
-    "meterValue": {
-      "description": "Readiness/progress toward the next stage — the meter's current value.",
-      "type": "number",
-      "example": 3
-    },
-    "meterMax": {
-      "description": "The meter's max.",
-      "type": "number",
-      "example": 7
-    },
-    "meterTarget": {
-      "description": "Target marker on the meter.",
-      "type": "number",
-      "example": 7
-    },
-    "meterValueLabel": {
-      "description": "Display string for the current value.",
-      "type": "string",
-      "example": "3 of 7 exit criteria complete"
-    },
-    "meterTargetLabel": {
-      "description": "Display string for the target.",
-      "type": "string",
-      "example": "7 to advance"
-    },
-    "meterStatus": {
-      "description": "Short readiness read shown on the meter.",
-      "type": "string",
-      "example": "4 open"
-    },
-    "meterBands": {
-      "description": "Color bands for the meter, in order covering 0→max.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "description": "Band start value.",
-            "type": "number"
-          },
-          "to": {
-            "description": "Band end value.",
-            "type": "number"
-          },
-          "variant": {
-            "description": "Band color.",
-            "type": "string",
-            "enum": [
-              "error",
-              "warning",
-              "success"
-            ]
-          },
-          "label": {
-            "description": "Short band label.",
-            "type": "string"
-          }
-        }
-      },
-      "example": [
-        {
-          "from": 0,
-          "to": 4,
-          "variant": "error",
-          "label": "Blocked"
-        },
-        {
-          "from": 4,
-          "to": 7,
-          "variant": "warning",
-          "label": "Nearly"
-        },
-        {
-          "from": 7,
-          "to": 7,
-          "variant": "success",
-          "label": "Ready"
-        }
-      ]
-    },
-    "gridCaption": {
-      "description": "Caption for the gaps datagrid.",
-      "type": "string",
-      "example": "Gap-to-close checklist, blockers first"
-    },
-    "gridRows": {
-      "description": "Stage-exit gaps — one row per gap, blockers first. Empty array → the datagrid is omitted.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Leading Status badge cell; omit on normal rows.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "item": {
-            "description": "The gap / required item; cite its source.",
-            "type": "string"
-          },
-          "owner": {
-            "description": "Gap owner's display name, a plain string (use User.Name.value or Owner.Name.value — never a nested object).",
-            "type": "string"
-          },
-          "due": {
-            "description": "Target date to close the gap, ISO YYYY-MM-DD.",
-            "type": "string"
-          },
-          "state": {
-            "description": "Status badge cell for the gap.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          }
-        }
-      },
-      "example": [
-        {
-          "status": {
-            "value": "Blocker",
-            "badgeVariant": "error"
-          },
-          "item": "Redlines returned to legal",
-          "owner": "You",
-          "due": "2026-07-24",
-          "state": {
-            "value": "Not started",
-            "badgeVariant": "error"
-          }
-        },
-        {
-          "status": {
-            "value": "At risk",
-            "badgeVariant": "warning"
-          },
-          "item": "Security review signed off",
-          "owner": "R. Chen",
-          "due": "2026-07-25",
-          "state": {
-            "value": "In review",
-            "badgeVariant": "warning"
-          }
-        },
-        {
-          "status": {
-            "value": "On track",
-            "badgeVariant": "info"
-          },
-          "item": "Final pricing approved (CFO)",
-          "owner": "M. Lee",
-          "due": "2026-07-26",
-          "state": {
-            "value": "Scheduled",
-            "badgeVariant": "info"
-          }
-        },
-        {
-          "status": {
-            "value": "At risk",
-            "badgeVariant": "warning"
-          },
-          "item": "Procurement PO issued",
-          "owner": "Buyer",
-          "due": "2026-07-29",
-          "state": {
-            "value": "Waiting",
-            "badgeVariant": "warning"
-          }
-        },
-        {
-          "status": {
-            "value": "Done",
-            "badgeVariant": "success"
-          },
-          "item": "Metrics agreed",
-          "owner": "You",
-          "due": "2026-07-18",
-          "state": {
-            "value": "Done",
-            "badgeVariant": "success"
-          }
-        },
-        {
-          "status": {
-            "value": "Done",
-            "badgeVariant": "success"
-          },
-          "item": "Economic buyer confirmed",
-          "owner": "You",
-          "due": "2026-07-16",
-          "state": {
-            "value": "Done",
-            "badgeVariant": "success"
-          }
-        },
-        {
-          "status": {
-            "value": "Done",
-            "badgeVariant": "success"
-          },
-          "item": "Mutual close plan signed",
-          "owner": "You",
-          "due": "2026-07-17",
-          "state": {
-            "value": "Done",
-            "badgeVariant": "success"
-          }
-        }
-      ]
-    },
-    "calloutTitle": {
-      "description": "Synthesis callout heading — the top blocker to advancing the stage.",
-      "type": "string",
-      "example": "Two of the four opens are yours to unblock"
-    },
-    "calloutDescription": {
-      "description": "Synthesis callout body — the blocker and the move.",
-      "type": "string",
-      "example": "Redlines and the CFO pricing sign-off sit with your side. Send the contract to legal today and confirm Marcus's Friday CFO slot — that clears the critical path and leaves only procurement's PO on the buyer."
-    },
-    "ctaPrimaryLabel": {
-      "description": "Primary button label (action/sendMessage).",
-      "type": "string",
-      "example": "Draft action plan"
-    },
-    "ctaPrimaryMsg": {
-      "description": "First-person prompt the primary button sends (action/sendMessage).",
-      "type": "string",
-      "example": "Draft an action plan to clear the legal blocker and confirm the CFO pricing slot for the Cobalt Robotics deal."
-    },
-    "oppUrl": {
-      "description": "Opportunity Lightning URL for the \"View in Salesforce\" button; omit if no Id.",
-      "type": "string",
-      "example": "https://org.lightning.force.com/lightning/r/Opportunity/006AX00000M8k2pYAD/view"
-    }
-  }
+  "title": "Cedarline is stuck in Negotiation / Review — it's been there 31 days and can't advance to Closed Won while the CFO stays dark.",
+  "answer": "- The **$640K Enterprise Sales Cloud Platform** deal reached Negotiation / Review on Jul 24 and hasn't moved in **31 days** — more than double the 14-day stage average.\n- Probability sits at **40%** (deals that close from this stage usually clear 60%+), and the Aug 31 close is **7 days out**.\n- Economic buyer Priya Anand (CFO) shows **no engagement for 3+ weeks**, and the champion reorged out.",
+  "stages": { "items": [{"name":"Qualification","state":"completed"},{"name":"Needs Analysis","state":"completed"},{"name":"Proposal / Price Quote","state":"completed"},{"name":"Negotiation / Review","state":"current","detail":"Stuck · 31d"},{"name":"Closed Won","state":"target"}], "summary":"Advancing to **Closed Won** needs the economic buyer re-engaged, phased pricing accepted, and the MSA + order form signed — all currently gated on Priya Anand. The deal has cleared every earlier stage; this is the only one it's stalled in." },
+  "gaps": [
+    {"status":"blocked","tone":"error","step":"Engage Priya Anand — or an executive who can","due":"Aug 27","detail":"Due per open Task 'Intro to second exec'. Everything downstream is gated on the CFO. If she stays dark, no other gap matters. Play: a second-exec intro via Katie McKee or Robert's former manager."},
+    {"status":"notStarted","tone":"warning","step":"Deliver phased-pricing proposal","due":"Aug 27","detail":"Due per open Task 'Deliver phased proposal'. $300K Q3 + $340K Q4 structure, pre-approved by Legal Aug 20 · solves the budget objection and de-risks the \"can't justify\" framing."},
+    {"status":"completed","tone":"success","step":"MSA sent to Cedarline Legal","due":"Aug 12","detail":"Completed Task 'Send MSA v3'. MSA v3 delivered Aug 12 · no blockers flagged · counsel review in progress. Ping to lock the signing window once Priya re-engages."},
+    {"status":"notStarted","tone":"warning","step":"Capture Priya's success metrics","due":"Aug 28","detail":"Due per scheduled Event 'Metrics call'. If she engages, the first ask is what this must deliver in Q4 for her to defend it to the board · get her metric on the table."},
+    {"status":"blocked","tone":"error","step":"Send order form for countersign","due":"Aug 30","detail":"Due per Task 'Send order form'. Can't send until the CFO signs off and the MSA finalizes · templates are ready · send within 48 hours of Priya's yes."}
+  ],
+  "callout": {"lead":"The critical gap closes Aug 27 — 3 days out — and the CFO has been dark 3 weeks.","text":"Another email is the least-likely-to-work move. Route the phased proposal through Katie McKee so she can walk it into Priya's next staff meeting, and open a second exec path in parallel. Two routes to signature; you only need one to land before the Aug 31 close slips again.","buttonLabel":"Draft the Katie McKee message","actionMsg":"Draft a message to Katie McKee with the phased proposal for Priya's staff meeting, and suggest a second executive path to keep the Cedarline deal on track."},
+  "sources": [{"label":"Opportunity: Cedarline — Enterprise Sales Cloud Platform","url":"https://<myDomain>/lightning/r/Opportunity/<Id>/view"},{"label":"Opportunity Field History · stage changes"},{"label":"Contact: Priya Anand (CFO)"},{"label":"Contract: MSA v3 · Cedarline Financial"}]
 }
 ```
+
+**Specific — "What's blocking the legal review?"** (stage path plus only the requested gap):
+
+```json
+{"title":"The MSA is with Cedarline Legal; counsel review is still in progress.","stages":{"items":[{"name":"Qualification","state":"completed"},{"name":"Needs Analysis","state":"completed"},{"name":"Proposal / Price Quote","state":"completed"},{"name":"Negotiation / Review","state":"current","detail":"Stuck · 31d"},{"name":"Closed Won","state":"target"}],"summary":"Legal review sits inside **Negotiation / Review**, the last open stage before **Closed Won**."},"answer":"MSA v3 was delivered Aug 12, and no blocker has been reported. The signing window can't lock until Priya re-engages, and the order form is gated behind that same sign-off.","gaps":[{"status":"notStarted","tone":"warning","step":"Confirm the MSA signing window","detail":"Cedarline Legal is reviewing MSA v3; the signing window opens when Priya re-engages (no scheduled date). Cite the returned source and date."},{"status":"blocked","tone":"error","step":"Send order form for countersign","due":"Aug 30","detail":"Due per Task 'Send order form'. Can't send until the CFO signs off and the MSA finalizes · templates are ready · send within 48 hours of Priya's yes."}],"sources":[{"label":"Contract: MSA v3 · Cedarline Legal"}]}
+```
+
+**Direct — "What's the current stage?"** (answer plus the stage path):
+
+```json
+{"title":"Cedarline is in Negotiation / Review.","answer":"The opportunity is currently in **Negotiation / Review**. The close date is Aug 31.","stages":{"items":[{"name":"Qualification","state":"completed"},{"name":"Needs Analysis","state":"completed"},{"name":"Proposal / Price Quote","state":"completed"},{"name":"Negotiation / Review","state":"current"},{"name":"Closed Won","state":"target"}],"summary":"Three stages cleared; **Negotiation / Review** is the last open stage before **Closed Won**."},"sources":[{"label":"Opportunity · Cedarline — Enterprise Sales Cloud Platform","url":"https://<myDomain>/lightning/r/Opportunity/<Id>/view"}]}
+```
+
+`props` schema (JSON Schema). Only `title`, `answer` and `sources` are required; include optional blocks only when grounded and prompt-relevant:
 ```json
 {
-  "renderer": {
-    "componentOverrides": {
-      "$": {
-        "type": "mosaic",
-        "definition": "tile/widget",
-        "children": [
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "justify": "between",
-              "isWrapped": true
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center"
-                },
-                "children": [
-                  {
-                    "definition": "tile/icon",
-                    "attributes": {
-                      "name": "trending-up",
-                      "size": "xl",
-                      "alt": ""
-                    }
-                  },
-                  {
-                    "definition": "tile/text",
-                    "attributes": {
-                      "text": "{{headerTitle}}",
-                      "variant": "h1"
-                    }
-                  }
-                ]
-              },
-              {
-                "definition": "tile/badge",
-                "attributes": {
-                  "label": "{{headerStatus}}",
-                  "variant": "warning"
-                }
-              }
-            ]
-          },
-          {
-            "definition": "tile/text",
-            "attributes": {
-              "text": "{{headerSubtitle}}",
-              "variant": "caption",
-              "color": "muted"
-            }
-          },
-          {
-            "definition": "tile/separator"
-          },
-          {
-            "definition": "tile/meter",
-            "attributes": {
-              "label": "Exit criteria met",
-              "value": "{{meterValue}}",
-              "min": 0,
-              "max": "{{meterMax}}",
-              "target": "{{meterTarget}}",
-              "valueFormat": "number",
-              "valueLabel": "{{meterValueLabel}}",
-              "targetLabel": "{{meterTargetLabel}}",
-              "status": "{{meterStatus}}",
-              "size": "lg",
-              "bands": "{{meterBands}}"
-            }
-          },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "{{gridCaption}}",
-              "appearance": "striped",
-              "size": "sm",
-              "columns": [
-                {
-                  "key": "status",
-                  "header": "Status",
-                  "type": "badge"
-                },
-                {
-                  "key": "item",
-                  "header": "Exit criterion",
-                  "type": "text"
-                },
-                {
-                  "key": "owner",
-                  "header": "Owner",
-                  "type": "avatar"
-                },
-                {
-                  "key": "due",
-                  "header": "Due",
-                  "type": "date"
-                },
-                {
-                  "key": "state",
-                  "header": "State",
-                  "type": "badge"
-                }
-              ],
-              "rows": "{{gridRows}}"
-            }
-          },
-          {
-            "definition": "tile/callout",
-            "attributes": {
-              "variant": "warning",
-              "title": "{{calloutTitle}}",
-              "description": "{{calloutDescription}}"
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": [
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "{{ctaPrimaryLabel}}",
-                      "variant": "primary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{ctaPrimaryMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "View in Salesforce",
-                      "iconName": "open-in-new",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/openLink",
-                            "attributes": {
-                              "url": "{{oppUrl}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Render in this order: title, answer, optional stages card, optional gaps card, at most one tail (callout OR nextStep), then sources. Only title, answer and sources are required. Omit a key and its block is not shown. A broad stage-exit review can include both cards; a specific question includes only its matching card; a direct question usually gets no tail and no card. Send display-ready text strings and only claims supported by the Opportunity and cited evidence.",
+  "required": ["title", "answer", "sources"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A concise, contextual takeaway answering the prompt. Include ONLY when a grounded answer is available.",
+      "example": "Cedarline is stuck in Negotiation / Review and cannot advance while the CFO remains unresponsive."
+    },
+    "answer": {
+      "type": "string",
+      "description": "The prompt-scoped answer as 2–4 markdown bullets with bolded key facts for a broad question, or a concise paragraph for a direct question. Include ONLY facts supported by returned Opportunity data or cited evidence.",
+      "example": "- The **$640K Enterprise Sales Cloud Platform** deal reached Negotiation / Review on Jul 24 and has not moved in **31 days**.\n- Probability is **40%** and the Aug 31 close is **7 days out**.\n- Economic buyer Priya Anand shows no engagement for 3+ weeks, and the champion left."
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Fixed interface labels. Omit for English. For another language, include every key translated, preserving the status meaning.",
+      "properties": {
+        "opportunityStage": { "type": "string", "default": "Opportunity Stage", "description": "Stage-path card eyebrow." },
+        "stageState": { "type": "string", "default": "Stage state", "description": "Stage state column heading." },
+        "pathToNextStage": { "type": "string", "default": "Path to Next Stage", "description": "Gaps card caption." },
+        "status": { "type": "string", "default": "Status", "description": "Gap status column heading." },
+        "step": { "type": "string", "default": "Step", "description": "Gap step/reason column heading." },
+        "dueDate": { "type": "string", "default": "Due date", "description": "Gap due-date column heading." },
+        "completed": { "type": "string", "default": "Completed", "description": "Completed stage state label." },
+        "current": { "type": "string", "default": "Current", "description": "Current stage state label." },
+        "target": { "type": "string", "default": "Target", "description": "Target stage state label." },
+        "blocked": { "type": "string", "default": "Blocked", "description": "Blocked gap status label." },
+        "notStarted": { "type": "string", "default": "Not started", "description": "Not-started gap status label." },
+        "sources": { "type": "string", "default": "Sources", "description": "Sources accordion label." }
       }
+    },
+    "stages": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Opportunity stage path. Include on every response, whatever the prompt, whenever stage transitions are grounded by returned history; the user does not need to ask for it. Do not invent missing stages, stage duration, or average duration.",
+      "required": ["items", "summary"],
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "Ordered stage transitions evidenced by the grounded Opportunity stage history, followed by the current stage and, when the active stage order resolves one, a target. A missing target never removes the card. Include ONLY stages supported by history, the stage order, and current Opportunity state.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "state"],
+            "properties": {
+              "name": { "type": "string", "description": "Salesforce stage label as returned." },
+              "state": { "type": "string", "enum": ["completed", "current", "target"], "description": "The stage's evidenced relationship to the current Opportunity stage." },
+              "detail": { "type": "string", "description": "Optional grounded current-state note, such as elapsed time, only when the source supports it." }
+            }
+          },
+          "example": [
+            { "name": "Qualification", "state": "completed" },
+            { "name": "Needs Analysis", "state": "completed" },
+            { "name": "Proposal / Price Quote", "state": "completed" },
+            { "name": "Negotiation / Review", "state": "current", "detail": "Stuck · 31d" },
+            { "name": "Closed Won", "state": "target" }
+          ]
+        },
+        "summary": { "type": "string", "description": "Brief explanation of the grounded path to the target stage. Required whenever the stage-path card is sent." }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "description": "Ranked path-to-next-stage gaps. Include ONLY when the user asks what blocks advancement or a broad review makes the path materially clearer. Each row needs an evidence-based status, step and reason; `due` is the date that step is scheduled or due (not the deal close date); see the `due` field.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status", "tone", "step", "detail"],
+        "properties": {
+          "status": { "type": "string", "enum": ["blocked", "notStarted", "completed"], "description": "Visible status label for the path step. Choose only when supported by evidence." },
+          "tone": { "type": "string", "enum": ["error", "warning", "success"], "description": "Status tone: error for blocked, warning for not started, success for completed. The visible status text is still required." },
+          "step": { "type": "string", "description": "Concise, display-ready action or completed step." },
+          "due": { "type": "string", "description": "Display-ready date this step is scheduled or due, e.g. \"Aug 27\". Source only from: (1) the step's Task ActivityDate, (2) the step's Event ActivityDate, (3) a dated commitment in email/doc/Slack for the step, (4) a step-specific date field or a date in NextStep naming the step. Name the source in `detail`. Never use CloseDate, LastActivityDate, stage/history dates, CreatedDate or an estimated date. Not a date (e.g. \"when X happens\") or no source: omit this key." },
+          "detail": { "type": "string", "description": "Evidence and why the step matters. Include source/date in the text when available; never invent a rationale." }
+        }
+      }
+    },
+    "callout": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The one recommended move, shown with an icon and one primary button. Include for a broad 'what is blocking this deal' ask, whether or not a date exists (never invent one). Omit for a specific or direct question. Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "required": ["lead", "text", "buttonLabel", "actionMsg"],
+      "properties": {
+        "lead": { "type": "string", "description": "REQUIRED, visible (non-whitespace). The single most important blocker or move, in one evidence-backed sentence. Needs no date." },
+        "text": { "type": "string", "description": "REQUIRED, visible (non-whitespace). Recommended move and its grounded rationale." },
+        "buttonLabel": { "type": "string", "description": "One concise primary action label." },
+        "actionMsg": { "type": "string", "description": "First-person request sent by action/sendMessage." }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Plain suggestion with no icon or button. Use ONLY for a specific question where a button would not help (never for a direct question), and never alongside a callout.",
+      "required": ["text"],
+      "properties": {
+        "lead": { "type": "string", "description": "Optional short bold lead." },
+        "text": { "type": "string", "description": "Plain suggestion and brief rationale. Include ONLY when no urgent callout is sent." }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Sources actually used for the answer, in display order. Include at least one source. Add a record URL only when its Id and org domain are known. Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label"],
+        "properties": {
+          "label": { "type": "string", "description": "Readable source name and type." },
+          "url": { "type": "string", "description": "Optional direct record URL. Keep URLs separate from visible text." }
+        }
+      },
+      "example": [
+        { "label": "Opportunity · Cedarline — Enterprise Sales Cloud Platform", "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view" },
+        { "label": "Opportunity stage history" },
+        { "label": "Contact · Priya Anand (CFO)" },
+        { "label": "MSA v3 · Cedarline Legal" }
+      ]
     }
   }
 }
 ```
+
 
 
 ## 6. Text — FALLBACK ONLY — DO NOT USE IF `display_widget` SUCCEEDED
@@ -607,5 +354,5 @@ Two blocks below: first the **variable contract** (`renderer.props.schema.json`)
 
 ## Suggested SFDC updates
 - NextStep → "<the #1 action>" · CloseDate → <if path math says current date isn't credible>
-[Apply with `update-opportunity`, or manually if read-only.]
+[Apply manually if read-only.]
 ```

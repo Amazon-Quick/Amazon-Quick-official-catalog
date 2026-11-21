@@ -1,9 +1,9 @@
 ---
 name: salesforce-for-sales
 display_name: Salesforce for Sales
-description: "Sales workflows for account executives and sales leaders, grounded in Salesforce: daily briefings, call prep and follow-up, deal and account reviews, account plans, renewals, prospect research, lead triage, outreach drafts, pipeline reviews, forecasts and confirmed record updates. Use when a seller or sales leader wants answers from, or changes to, their own Salesforce data. Skills read Salesforce through Amazon Quick's existing Salesforce connector (Headless 360 MCP). Five skills each make one write to Salesforce, only after the user says yes to the exact change, and emails and Slack messages are created only as drafts for the user to send."
+description: "Sales workflows for account executives and sales leaders, grounded in Salesforce: daily briefings, call prep and follow-up, deal and account reviews, account plans, renewals, prospect research, lead triage, outreach drafts, pipeline reviews, forecasts and confirmed record updates. Use when a seller or sales leader wants answers from, or changes to, their own Salesforce data. Skills read Salesforce through Amazon Quick's existing Salesforce connector (Headless 360 MCP). Four skills each make one write to Salesforce, only after the user says yes to the exact change, and emails and Slack messages are created only as drafts for the user to send."
 author: Salesforce
-version: 2.0.0
+version: 1.0.0-beta.3.10
 kind: solution
 icon: assets/icon.svg
 
@@ -17,7 +17,6 @@ skills:
   - sales/call-follow-up
   - sales/call-prep
   - sales/close-plan
-  - sales/configure
   - sales/customer-health
   - sales/customer-voice
   - sales/daily-briefing
@@ -26,6 +25,8 @@ skills:
   - sales/deal-signals
   - sales/deal-slip-scenario
   - sales/draft-outreach
+  - sales/event-invite-list
+  - sales/executive-movement
   - sales/expansion-whitespace
   - sales/find-internal-answer
   - sales/forecast-narrative
@@ -43,8 +44,6 @@ skills:
   - sales/stakeholder-map
   - sales/summarize-conversation-transcript
   - sales/team-pipeline
-  - sales/update
-  - sales/update-opportunity
   - sales/using-display-widget
   - sales/voice-profile
   - sales/weekly-wrap
@@ -63,7 +62,7 @@ connectors:
 
 # Salesforce for Sales
 
-Sales workflows for account executives and sales leaders, grounded in Salesforce: daily briefings, call prep and follow-up, deal and account reviews, account plans, renewals, prospect research, lead triage, outreach drafts, pipeline reviews, forecasts and confirmed record updates. Use when a seller or sales leader wants answers from, or changes to, their own Salesforce data. Skills read Salesforce through Amazon Quick's existing Salesforce connector (Headless 360 MCP). Five skills each make one write to Salesforce, only after the user says yes to the exact change, and emails and Slack messages are created only as drafts for the user to send.
+Sales workflows for account executives and sales leaders, grounded in Salesforce: daily briefings, call prep and follow-up, deal and account reviews, account plans, renewals, prospect research, lead triage, outreach drafts, pipeline reviews, forecasts and confirmed record updates. Use when a seller or sales leader wants answers from, or changes to, their own Salesforce data. Skills read Salesforce through Amazon Quick's existing Salesforce connector (Headless 360 MCP). Four skills each make one write to Salesforce, only after the user says yes to the exact change, and emails and Slack messages are created only as drafts for the user to send.
 
 Starter prompts are in `initial-starter-prompt.md` and the use case in `use-case.md`.
 

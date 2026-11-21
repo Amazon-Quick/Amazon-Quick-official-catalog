@@ -125,6 +125,7 @@
             "tile/scatter",
             "tile/timeline",
             "tile/rangeband",
+            "tile/stepper",
             "tile/tabSet",
             "tile/tab",
             "tile/richText"
@@ -581,6 +582,25 @@
             "properties": {
               "attributes": {
                 "$ref": "#/$defs/rangebandAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "definition": {
+                "const": "tile/stepper"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/stepperAttributes"
               }
             }
           }
@@ -1256,9 +1276,10 @@
         "number",
         "percent",
         "currency",
-        "compact"
+        "compact",
+        "currencyCompact"
       ],
-      "description": "Value display format. number (default), percent, currency, or compact (e.g. 1.2M)."
+      "description": "Value display format. number (default), percent, currency, compact (e.g. 1.2M), or currencyCompact (e.g. $1.14M)."
     },
     "valueFormat3": {
       "type": "string",
@@ -1557,6 +1578,205 @@
         "showValue": {
           "type": "boolean",
           "description": "Show the value label. Defaults to true."
+        },
+        "appearance": {
+          "type": "string",
+          "enum": [
+            "bullet",
+            "scale",
+            "row",
+            "split",
+            "dot"
+          ],
+          "description": "bullet (default): RAG bands with a measure bar. scale: a danger→healthy gradient track with a marker at value, captioned by valueLabel (e.g. 'Today · 3'); bands, target and status are ignored. row: one compact line for a stack of comparable meters sharing min/max/target — label and sublabel left, a thin bar with the target notch, valueLabel and valueCaption right; targetLabel names the quota notch in its hover text and summary. Optional segments, showAxis, and showLegend/legend add a segmented stack, shared-scale ticks and color keys. The bar takes its band's status color, or the data palette's first color (blue) when no band applies. split: one total cut into parts (segments), a full-width bar with each part's label inside and a legend underneath; min, target, bands and status are ignored. dot: a bare color dot (no bar, label or value; give value 0 and any non-empty valueLabel, e.g. the name the dot keys) in the data-palette slot colorIndex, to key a name to its chart series."
+        },
+        "lowLabel": {
+          "type": "string",
+          "description": "scale only: caption under the track's left end (e.g. 'Danger · 0')."
+        },
+        "midLabel": {
+          "type": "string",
+          "description": "scale only: caption under the track's middle (e.g. 'Danger · 0')."
+        },
+        "highLabel": {
+          "type": "string",
+          "description": "scale only: caption under the track's right end (e.g. 'Danger · 0')."
+        },
+        "sublabel": {
+          "type": "string",
+          "description": "Row appearance only: a muted second line under the label (e.g. 'Closed Won only')."
+        },
+        "valueCaption": {
+          "type": "string",
+          "description": "Row appearance only: a muted second line under the value (e.g. '12% of quota'). When omitted, the band's standing word is shown there instead."
+        },
+        "showAxis": {
+          "type": "boolean",
+          "description": "Row appearance only: draw the scale's tick labels (min to max) under the bar. Set it on the last row of a stack."
+        },
+        "axisFormat": {
+          "type": "string",
+          "enum": [
+            "number",
+            "currency",
+            "percent"
+          ],
+          "description": "Row appearance only: how axis ticks are written (currency is compact, e.g. $500K). Defaults to number."
+        },
+        "segments": {
+          "type": "array",
+          "description": "Row and split appearances: the bar as parts laid end to end, each in its own color. Row draws them in place of the single fill (e.g. Closed / Commit / Best case toward quota); split is built from them (e.g. $1.23M at risk / $695K on track). Omit for one fill.",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "value": {
+                "type": "number",
+                "description": "Part size, on the meter's scale. Required.",
+                "minimum": 0
+              },
+              "label": {
+                "type": "string",
+                "description": "Part name, e.g. '$1.23M at risk'. Split prints it inside the bar and in the legend. Required."
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "success",
+                  "warning",
+                  "error",
+                  "info"
+                ],
+                "x-swatches": [
+                  "#2e844a",
+                  "#ea580c",
+                  "#ba0517",
+                  "#0176d3"
+                ],
+                "description": "Optional status color for this part, in the design-token status marks: success green, warning orange, error red, info the action blue. Wins over colorIndex. Pair it with text that names the status (the label), never color alone."
+              },
+              "colorIndex": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "x-swatches": [
+                  "#0176d3",
+                  "#d97757",
+                  "#0d9488",
+                  "#db2777",
+                  "#2e844a",
+                  "#7e57c2",
+                  "#e8a765",
+                  "#64748b"
+                ],
+                "description": "Optional categorical color for this part: an index into the Aiforce data palette (the same palette tile/chart and tile/piechart assign by position). 0 primary blue (#0176d3) · 1 warm terracotta (#d97757) · 2 teal-green (#0d9488) · 3 magenta (#db2777) · 4 forest green (#2e844a) · 5 violet (#7e57c2) · 6 warm amber (#e8a765) · 7 slate (#64748b). Ignored when tone is set."
+              },
+              "detail": {
+                "type": "string",
+                "description": "Split only: muted text after the label in the legend, e.g. '3 deals'."
+              },
+              "names": {
+                "type": "string",
+                "description": "Split only: a second legend line, e.g. 'Cedarline, Summit Health, Orion'."
+              },
+              "soft": {
+                "type": "boolean",
+                "description": "Optional, with tone: draw a softer tint of the tone (mixed toward the card surface). Use it for the lighter sibling of a category, e.g. Commit as a soft Closed green."
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "fillScale": {
+          "type": "string",
+          "enum": [
+            "blue"
+          ],
+          "description": "Split only: color the parts with a single-hue sequential scale by position (first part = darkest), for a breakdown that is ranks of one measure (e.g. opportunities by stage, most to least) rather than status categories. Only colors parts that have no tone of their own. 'blue' is the SLDS primary-blue scale."
+        },
+        "legendSeparator": {
+          "type": "boolean",
+          "description": "Split only: print '·' between each part's label and its detail in the legend (e.g. '5 · external'). Defaults to true; false gives '5 external'."
+        },
+        "legend": {
+          "type": "array",
+          "description": "row only: shared labelled color keys, overriding the keys derived from this row's segments. Requires showLegend to display.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Legend category label."
+              },
+              "colorIndex": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 7
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "error",
+                  "warning",
+                  "success",
+                  "info"
+                ]
+              },
+              "soft": {
+                "type": "boolean",
+                "description": "Optional, with tone: the softer tint, matching the segments it keys."
+              }
+            }
+          }
+        },
+        "showLegend": {
+          "type": "boolean",
+          "description": "row only: show labelled color keys below the meter, from legend when provided or otherwise from segments."
+        },
+        "legendPosition": {
+          "type": "string",
+          "enum": [
+            "top",
+            "bottom"
+          ],
+          "description": "Row only: legend placement. Defaults to bottom; top places shared category keys before the rows."
+        },
+        "legendShape": {
+          "type": "string",
+          "enum": [
+            "square",
+            "circle"
+          ],
+          "description": "Row only: legend key shape. Defaults to square."
+        },
+        "valueTone": {
+          "type": "string",
+          "enum": [
+            "target"
+          ],
+          "description": "Row only: tint the value green when it reaches the target and red when it falls short. Needs target and valueCaption. Omit for plain value text."
+        },
+        "colorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "Dot appearance only: the data-palette slot of the dot. Use the same slot a chart gives the series at that position (series N uses slot N-1)."
         }
       }
     },
@@ -1640,7 +1860,7 @@
     },
     "waterfallAttributes": {
       "type": "object",
-      "description": "Attributes for a tile/waterfall block: a running-total bridge from a start value through signed steps to an end. Each step is signed so increase/decrease reads without color.",
+      "description": "Attributes for a tile/waterfall block: a running-total bridge from a start value through signed steps to an end. Bars are flat fills: the start and end totals in a light slate with bold labels, steps green up / red down unless they set a tone or colorIndex. Under a 420px-wide widget it switches to compact rows (label and value, then a bar of the magnitude) with the optional note under them. Each step is signed so increase/decrease reads without color.",
       "required": [
         "start",
         "steps",
@@ -1663,12 +1883,26 @@
             "value": {
               "type": "number",
               "description": "Start value. Required."
+            },
+            "tone": {
+              "type": "string",
+              "enum": [
+                "success",
+                "warning",
+                "error"
+              ],
+              "x-swatches": [
+                "#2e844a",
+                "#ea580c",
+                "#ba0517"
+              ],
+              "description": "Optional status color for this bar (start/end bars are grey otherwise), in the design-token status marks: success green, warning orange, error red. Wins over colorIndex. Pair it with text that names the status (the label), never color alone."
             }
           }
         },
         "steps": {
           "type": "array",
-          "description": "The signed steps, applied in order. Required.",
+          "description": "The signed steps, applied in order. Required. Each step: label, delta, and optionally role, tone (status color), colorIndex (data-palette color) and sublabel (second label line).",
           "items": {
             "type": "object",
             "required": [
@@ -1693,6 +1927,48 @@
                   "decrease"
                 ],
                 "description": "Direction. Defaults to auto (inferred from the sign of delta)."
+              },
+              "colorIndex": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "x-swatches": [
+                  "#0176d3",
+                  "#d97757",
+                  "#0d9488",
+                  "#db2777",
+                  "#2e844a",
+                  "#7e57c2",
+                  "#e8a765",
+                  "#64748b"
+                ],
+                "description": "Optional categorical color for this step: an index into the Aiforce data palette, the same palette tile/chart, tile/piechart and tile/scatter assign by position. 0 primary blue (#0176d3) · 1 warm terracotta (#d97757) · 2 teal-green (#0d9488) · 3 magenta (#db2777) · 4 forest green (#2e844a) · 5 violet (#7e57c2) · 6 warm amber (#e8a765) · 7 slate (#64748b). Themes may restyle each slot through --chart-1 … --chart-8. Replaces the increase/decrease green/red for this step; its value label and sublabel take the same color, and the signed value still carries direction. Omit for the default direction colors."
+              },
+              "sublabel": {
+                "type": "string",
+                "description": "Optional second line under the step's category label (e.g. '(Commit)'), in the step's color."
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "success",
+                  "warning",
+                  "error"
+                ],
+                "x-swatches": [
+                  "#2e844a",
+                  "#ea580c",
+                  "#ba0517"
+                ],
+                "description": "Optional status color for this step, in the design-token status marks: success green, warning orange, error red. Wins over colorIndex. Pair it with text that names the status (the label), never color alone."
               }
             }
           }
@@ -1712,6 +1988,20 @@
             "value": {
               "type": "number",
               "description": "End value. Computed from start + steps when omitted."
+            },
+            "tone": {
+              "type": "string",
+              "enum": [
+                "success",
+                "warning",
+                "error"
+              ],
+              "x-swatches": [
+                "#2e844a",
+                "#ea580c",
+                "#ba0517"
+              ],
+              "description": "Optional status color for this bar (start/end bars are grey otherwise), in the design-token status marks: success green, warning orange, error red. Wins over colorIndex. Pair it with text that names the status (the label), never color alone."
             }
           }
         },
@@ -1732,15 +2022,75 @@
         },
         "size": {
           "$ref": "#/$defs/vizSize"
+        },
+        "target": {
+          "type": "number",
+          "description": "Optional reference value (e.g. quota) drawn as a dashed line across the plot; the scale always includes it."
+        },
+        "targetLabel": {
+          "type": "string",
+          "description": "Short label at the right end of the target line (e.g. 'Quota')."
+        },
+        "stepDefaults": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional values for every step that doesn't set its own, so a template can color a model-sent list of steps (e.g. every slipping deal red with '(at risk)' under it).",
+          "properties": {
+            "tone": {
+              "type": "string",
+              "enum": [
+                "success",
+                "warning",
+                "error"
+              ],
+              "x-swatches": [
+                "#2e844a",
+                "#ea580c",
+                "#ba0517"
+              ],
+              "description": "Optional status color for this step, in the design-token status marks: success green, warning orange, error red. Wins over colorIndex. Pair it with text that names the status (the label), never color alone."
+            },
+            "colorIndex": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "x-swatches": [
+                "#0176d3",
+                "#d97757",
+                "#0d9488",
+                "#db2777",
+                "#2e844a",
+                "#7e57c2",
+                "#e8a765",
+                "#64748b"
+              ],
+              "description": "Optional categorical color for this step: an index into the Aiforce data palette (the same palette tile/chart and tile/piechart assign by position). 0 primary blue (#0176d3) · 1 warm terracotta (#d97757) · 2 teal-green (#0d9488) · 3 magenta (#db2777) · 4 forest green (#2e844a) · 5 violet (#7e57c2) · 6 warm amber (#e8a765) · 7 slate (#64748b). Ignored when tone is set."
+            },
+            "sublabel": {
+              "type": "string",
+              "description": "Second label line for each step, e.g. '(at risk)'."
+            }
+          }
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional one-line reading of the chart (e.g. 'Commit totals **$505K** – under the **$800K** quota'). Shown only in the compact layout the chart switches to under a 420px-wide widget (label + value rows with bars, no target line); **bold** spans render bold. Not drawn on the wide chart."
         }
       }
     },
     "heatmapAttributes": {
       "type": "object",
-      "description": "Attributes for a tile/heatmap block: a matrix or calendar of a single measure. Provide cells (+ xLabels/yLabels) for matrix layout, or days for calendar layout. Every cell prints its value so the read never rests on color.",
+      "description": "Attributes for a tile/heatmap block: a matrix or calendar of a single measure. Provide cells (+ xLabels/yLabels) for matrix layout, or days for calendar layout. Every cell prints its value so the read never rests on color. For layout state, cells carry a categorical state (purchased|inPlay|whitespace|lost|empty) and an optional label instead of a value; domain is not needed.",
       "required": [
-        "caption",
-        "domain"
+        "caption"
       ],
       "properties": {
         "caption": {
@@ -1749,7 +2099,7 @@
         },
         "domain": {
           "type": "array",
-          "description": "Value range [min, max] the color/size scale maps. Required.",
+          "description": "Value range [min, max] the color/size scale maps. Required for matrix and calendar layouts; omit for state.",
           "items": {
             "type": "number"
           },
@@ -1760,7 +2110,8 @@
           "type": "string",
           "enum": [
             "matrix",
-            "calendar"
+            "calendar",
+            "state"
           ],
           "description": "Grid layout. Defaults to matrix."
         },
@@ -1780,13 +2131,12 @@
         },
         "cells": {
           "type": "array",
-          "description": "Matrix cells. x and y match an xLabel/yLabel.",
+          "description": "Matrix cells. x and y match an xLabel/yLabel. For layout state, each cell has a state and optional label instead of value; a missing cell renders as empty.",
           "items": {
             "type": "object",
             "required": [
               "x",
-              "y",
-              "value"
+              "y"
             ],
             "additionalProperties": false,
             "properties": {
@@ -1800,11 +2150,26 @@
               },
               "value": {
                 "type": "number",
-                "description": "Cell value. Required."
+                "description": "Cell value. Required unless layout is state."
               },
               "valueLabel": {
                 "type": "string",
                 "description": "Custom display label for the cell."
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "purchased",
+                  "inPlay",
+                  "whitespace",
+                  "lost",
+                  "empty"
+                ],
+                "description": "Cell state (state layout). Required for state layout."
+              },
+              "label": {
+                "type": "string",
+                "description": "Display text for a state cell (state layout), e.g. '$220K'."
               }
             }
           }
@@ -1831,6 +2196,35 @@
             }
           }
         },
+        "grouping": {
+          "type": "string",
+          "enum": [
+            "continuous",
+            "month"
+          ],
+          "description": "Calendar layout. \"continuous\" (default): one week-column grid with a month rail. \"month\": one small grid per calendar month."
+        },
+        "range": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "Calendar layout: [first, last] ISO days. Every day in it gets a cell; days without an entry in `days` are drawn empty."
+        },
+        "showValues": {
+          "type": "boolean",
+          "description": "Calendar layout: print each day's value in its cell. Default true."
+        },
+        "legendLabels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3,
+          "description": "Calendar layout: [low, high] words around the shade swatches of a legend row under the grid. With grouping \"month\": [no activity, activity, outside the range] words beside the outlined, blue and grey swatches."
+        },
         "encode": {
           "type": "string",
           "enum": [
@@ -1856,6 +2250,35 @@
         },
         "size": {
           "$ref": "#/$defs/vizSize"
+        },
+        "legend": {
+          "type": "array",
+          "description": "Legend entries beneath the grid (state layout).",
+          "items": {
+            "type": "object",
+            "required": [
+              "state",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "purchased",
+                  "inPlay",
+                  "whitespace",
+                  "lost",
+                  "empty"
+                ],
+                "description": "State the swatch represents. Required."
+              },
+              "label": {
+                "type": "string",
+                "description": "Legend text. Required."
+              }
+            }
+          }
         }
       }
     },
@@ -1906,9 +2329,10 @@
                   "avatar",
                   "rating",
                   "databar",
-                  "sparkline"
+                  "sparkline",
+                  "markdown"
                 ],
-                "description": "How to render/format the cell. Defaults to text."
+                "description": "How to render/format the cell. Defaults to text. markdown renders a model-authored markdown string (bold, links), sanitized."
               },
               "align": {
                 "type": "string",
@@ -1934,6 +2358,241 @@
               "target": {
                 "type": "number",
                 "description": "Target value for a databar-type column."
+              },
+              "databarLayout": {
+                "type": "string",
+                "enum": [
+                  "inline",
+                  "stacked"
+                ],
+                "description": "Databar layout. inline (default): bar beside the %. stacked: full-width bar above an optional rich caption (the cell's display) — use in a narrow column where an inline bar would collapse."
+              },
+              "richText": {
+                "type": "boolean",
+                "description": "Render **double-asterisk** spans in this text column bold; nothing else is parsed. Defaults to false."
+              },
+              "textStyle": {
+                "type": "object",
+                "description": "How the column's text looks. Each field is independent, so they combine (e.g. bold and uppercase).",
+                "additionalProperties": false,
+                "properties": {
+                  "weight": {
+                    "type": "string",
+                    "enum": [
+                      "bold"
+                    ],
+                    "description": "bold: semibold, e.g. the record name."
+                  },
+                  "case": {
+                    "type": "string",
+                    "enum": [
+                      "upper"
+                    ],
+                    "description": "upper: uppercase the value line (tags, category chips)."
+                  },
+                  "color": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "muted"
+                    ],
+                    "description": "muted: the muted text colour."
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "caption"
+                    ],
+                    "description": "caption: the small meta size, e.g. a date gutter."
+                  },
+                  "style": {
+                    "type": "string",
+                    "enum": [
+                      "italic",
+                      "quote"
+                    ],
+                    "description": "italic: italicise the value line. quote: italic and wrapped in \"…\", for a verbatim quote."
+                  }
+                }
+              },
+              "subStyle": {
+                "type": "object",
+                "description": "How the column's second line (the cellParts.sub text) looks. Defaults to muted, so a column that omits it renders exactly as before.",
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "muted",
+                      "warning"
+                    ],
+                    "description": "muted (the default): the muted text colour. default: the regular text colour. warning: the warning text colour, for a caveat. Pair a muted textStyle.color with a default subStyle.color for a muted first line over a regular second line."
+                  }
+                }
+              },
+              "cellParts": {
+                "type": "object",
+                "description": "Extra content the cell takes from other fields of the same row. Each part is optional.",
+                "additionalProperties": false,
+                "properties": {
+                  "suffix": {
+                    "description": "Row key (or list of keys) shown after the value as \" – <text>\" in normal weight. A list joins the non-empty fields with \" · \".",
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "minItems": 1
+                      }
+                    ]
+                  },
+                  "sub": {
+                    "description": "Row key (or list of keys) of a muted second line under the value (e.g. '$640K · Proposal · closes 8/31'). A list joins the non-empty fields with \" · \".",
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "minItems": 1
+                      }
+                    ]
+                  },
+                  "subHref": {
+                    "type": "string",
+                    "description": "Row key of a URL that turns the sub-line into a link in the link colour (e.g. the quote's source). A row without the URL keeps the plain muted sub-line."
+                  },
+                  "tag": {
+                    "type": "string",
+                    "description": "Row key of a small chip beside the value (e.g. '3 signals'), in the row's tone."
+                  },
+                  "databarLabel": {
+                    "type": "string",
+                    "description": "Row key whose text captions a databar column, replacing the default \"X% of target\" (e.g. '40% · MSA in redlines'). Only read by databar columns."
+                  },
+                  "action": {
+                    "type": "object",
+                    "description": "An outline button under the value that sends a chat message; shown only when the row has a message and a label (from the row or defaultLabel). A column with no value shows just the button.",
+                    "required": [
+                      "message"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "description": "Row key holding the button label. Required unless defaultLabel is set."
+                      },
+                      "defaultLabel": {
+                        "type": "string",
+                        "description": "Literal button label used when the row has no value under label."
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Row key holding the message sent on click. Required."
+                      },
+                      "iconName": {
+                        "type": "string",
+                        "description": "Button icon name. Defaults to 'arrow-up'."
+                      }
+                    }
+                  }
+                }
+              },
+              "rowStyle": {
+                "type": "array",
+                "description": "Per-row styles: each rule applies when the row's field equals the value (e.g. strike through an inactive contact, mute a summary row).",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "key",
+                    "equals",
+                    "style"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "description": "Row key to test. Required."
+                    },
+                    "equals": {
+                      "type": [
+                        "string",
+                        "number",
+                        "boolean"
+                      ],
+                      "description": "Value that triggers the style. Required."
+                    },
+                    "style": {
+                      "type": "string",
+                      "enum": [
+                        "muted",
+                        "strikethrough"
+                      ],
+                      "description": "muted: muted caption-size plain text (no **bold**). strikethrough: the value line struck through. Required."
+                    }
+                  }
+                }
+              },
+              "valueMap": {
+                "type": "object",
+                "description": "Raw cell value -> display label and colour, so rows can keep a domain enum (e.g. status: \"blocked\") while the cell shows a label. variant colours a badge column's badge, or any other column's text.",
+                "additionalProperties": false,
+                "properties": {
+                  "map": {
+                    "type": "object",
+                    "description": "Raw value -> { label?, variant? }.",
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "description": "Text shown (and read) in place of the raw value."
+                        },
+                        "variant": {
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "success",
+                            "warning",
+                            "error",
+                            "info"
+                          ],
+                          "description": "Badge or text colour."
+                        }
+                      }
+                    }
+                  },
+                  "fallback": {
+                    "type": "object",
+                    "description": "Colour for a non-empty value missing from map. A badge column without one is neutral.",
+                    "required": [
+                      "variant"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "variant": {
+                        "type": "string",
+                        "enum": [
+                          "neutral",
+                          "success",
+                          "warning",
+                          "error",
+                          "info"
+                        ]
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -2090,9 +2749,10 @@
           "enum": [
             "default",
             "bordered",
-            "striped"
+            "striped",
+            "plain"
           ],
-          "description": "Table styling. Defaults to default."
+          "description": "Table styling. Defaults to default. plain drops the outer border, edge padding and visible caption so the grid sits flush inside a card under its own heading; the caption still names the grid for assistive tech."
         },
         "size": {
           "type": "string",
@@ -2105,6 +2765,102 @@
         "isStickyHeader": {
           "type": "boolean",
           "description": "Keep the header row visible while scrolling. Defaults to false."
+        },
+        "isUppercaseHeader": {
+          "type": "boolean",
+          "description": "Render column headers as small uppercase labels. Defaults to false."
+        },
+        "headerColor": {
+          "type": "string",
+          "enum": ["muted", "ink"],
+          "default": "muted",
+          "description": "Column and status header text color, including phone card labels. muted preserves the existing appearance (default); ink opts into the design-system ink token. Does not change cell values."
+        },
+        "statusHeader": {
+          "type": "string",
+          "description": "Header of the status column shown when rows carry _tone and _status. Defaults to \"Status\"."
+        },
+        "statusStyle": {
+          "type": "string",
+          "enum": [
+            "badge",
+            "rail"
+          ],
+          "description": "How row tone shows. badge (default): a pill in a status column plus row tint, for rows with a non-default tone and a status word. rail: no status column or tint; a left rail on every row that resolves a tone (from _tone or rowTone), grey for default. On the rail the status word is optional and read by screen readers only, so the colour must repeat something the row already says."
+        },
+        "isRowTinted": {
+          "type": "boolean",
+          "description": "Tint toned rows in their tone. Defaults to true; false keeps rows plain so only the status pill and rail carry the tone."
+        },
+        "isBorderless": {
+          "type": "boolean",
+          "description": "Drop the grid's own outer border and rounding so it sits flush inside a card, whatever the appearance. Defaults to false; appearance plain is already borderless."
+        },
+        "isHeaderless": {
+          "type": "boolean",
+          "description": "Hide the column header row visually (it stays available to screen readers). On a phone the rows become an unlabelled list instead of header/value cards. Defaults to false."
+        },
+        "rowTone": {
+          "type": "object",
+          "description": "Derive each row's tone and status word from one of its fields instead of _tone/_status. A row's own _tone wins.",
+          "required": [
+            "key",
+            "map"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "Row key to look up. Required."
+            },
+            "map": {
+              "type": "object",
+              "description": "Field value -> tone and status word. Required.",
+              "additionalProperties": {
+                "type": "object",
+                "required": [
+                  "tone"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "tone": {
+                    "type": "string",
+                    "enum": [
+                      "error",
+                      "success",
+                      "info",
+                      "warning",
+                      "default"
+                    ],
+                    "description": "Row tone. Required."
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "Status word for the row."
+                  }
+                }
+              }
+            },
+            "fallback": {
+              "type": "string",
+              "enum": [
+                "error",
+                "success",
+                "info",
+                "warning",
+                "default"
+              ],
+              "description": "Tone for a row whose field is missing or not in the map; use default for a grey rail."
+            }
+          }
+        },
+        "verticalAlign": {
+          "type": "string",
+          "enum": [
+            "middle",
+            "top"
+          ],
+          "description": "Cell vertical alignment. Use top when cells wrap to several lines. Defaults to middle."
         }
       }
     },
@@ -2311,6 +3067,65 @@
         },
         "size": {
           "$ref": "#/$defs/vizSize"
+        }
+      }
+    },
+    "stepperAttributes": {
+      "type": "object",
+      "description": "Attributes for a tile/stepper block: an ordered sequence of named stages with completed, current, or target state. This represents discrete process progress, not dated intervals.",
+      "required": [
+        "caption",
+        "items"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "caption": {
+          "type": "string",
+          "description": "Accessible name describing this stage progression. Required."
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Stages in process order. Required.",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "state"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Visible stage name. Required."
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "completed",
+                  "current",
+                  "target"
+                ],
+                "description": "Stage state. Required; it is also announced in text, not conveyed by color alone."
+              },
+              "detail": {
+                "type": "string",
+                "description": "Optional visible detail for this stage, such as elapsed time."
+              }
+            }
+          }
+        },
+        "completedLabel": {
+          "type": "string",
+          "description": "Localized visible status for completed stages; defaults to Completed."
+        },
+        "currentLabel": {
+          "type": "string",
+          "description": "Localized visible status for the current stage; defaults to Current."
+        },
+        "targetLabel": {
+          "type": "string",
+          "description": "Localized visible status for the target stage; defaults to Target."
         }
       }
     },

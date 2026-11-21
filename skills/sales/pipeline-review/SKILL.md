@@ -1,16 +1,13 @@
 ---
 name: pipeline-review
 display_name: Pipeline Review
-description: "Build exactly one rep's current pipeline assessment from Salesforce stage aggregates, deal samples and closed-deal history, covering coverage, hygiene and risks. Use only for the current user's own book or one named rep. Two or more named reps, a rep list, team, or multi-rep comparison: team-pipeline. For changes over time: deal-signals."
+description: "Answer questions about one rep's current pipeline, scoped to what was asked: a full review (stage spread and stalled deals), how much is at risk, which deals are stalled, or the biggest lever, from Salesforce stage aggregates, deal samples and closed-deal history. For changes over time, use deal-signals."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:7fbcb5ca4ab5227ed439bdd2a4d6f3a55a76421d791662653751e3af090e5eb8"
+checksum: "sha256:dbff194344f88473a2830aa6a5f7bcafb4df1a408b243ab6ce2e479b28aa9cb4"
 id: "edaf42b7-8acc-4f36-a5d7-4ffa29cc14ed"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -20,11 +17,26 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
+
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
+# Goal:
+Answer what the user asked about their pipeline (how it is spread across stages, how much is at risk, which deals are stalled, coverage, or the next move) in one pass. **Read only what the question needs** and present only that: a broad review ("review my pipeline for the quarter", "where's the risk?") reads and shows the whole picture; a specific ask ("which deals are stalled?", "how much of my pipeline is at risk?") reads and shows only that.
+
 # Rules:
 
+- **Scope reading and output to the prompt, never a default full review.** A broad review reads and shows the whole book; a specific ask reads and shows only that. Skip reads the question doesn't need (each read step says which), and don't show something just because you fetched it.
 - Resolve scope to one owner before the read; if a named rep is ambiguous, ask — don't guess or probe.
 - Reconcile headline totals with the detail rows.
 
@@ -41,7 +53,7 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
   queryParams: { "queryInput": "{\"query\":\"query { uiapi { objectInfos(apiNames: [\\\"Opportunity\\\"]) { fields { ApiName label } } } }\"}" })
 ```
 
-Step 1 is the authority on names — use exact strings, never guess. Note scalar `__c` fields worth rolling up (stage-entry date, risk, health, forecast). **Response can be large** on customized orgs — if it truncates and auto-persists to a temp file, that file is **outside the bash mount**: don't shell to it (`cat`/`jq`/`python3`/`ls` will fail, it's not on that mount). Read it back with the **Read tool only**, go straight there — don't retry bash first — and scan for `__c` fields whose `label` matches your keywords. Grounding is best-effort (customs are additive); if the Read tool can't load it either, take the standard fields and move on. Stage buckets come from the `StageName` values the reads return; standard fields, `Account`/`Owner` spans, and `OpportunityContactRoles` are reliable across orgs.
+Step 1 is the authority on names — use exact strings, never guess. Note scalar `__c` fields worth rolling up (stage-entry date, risk, health, forecast). **Response can be large** on customized orgs — if it overflows or comes back truncated, scan what came back for `__c` fields whose `label` matches your keywords. Grounding is best-effort (customs are additive): if it's still unwieldy, take the standard fields and move on. Stage buckets come from the `StageName` values the reads return; standard fields, `Account`/`Owner` spans, and `OpportunityContactRoles` are reliable across orgs.
 
 ## 1b. Resolve scope
 
@@ -56,7 +68,9 @@ Step 1 is the authority on names — use exact strings, never guess. Note scalar
 
 ## 2. Read (fill from step 1) — AGGREGATE the book, SAMPLE the top deals, ISSUE ALL IN ONE TURN
 
-**Do not pull the whole book as raw records.** A rep with 100+ open opps returns 75KB+, which overflows the tool result and auto-persists to a temp file (then you can't shell to it — it's outside the bash mount; you'd have to read it back directly). Salesforce aggregates server-side — use it. The stats come from aggregate rows (a handful, not hundreds); only a small, bounded sample of concrete deals comes back as raw records.
+**Do not pull the whole book as raw records.** A rep with 100+ open opps returns 75KB+, which overflows the tool result. Salesforce aggregates server-side — use it. The stats come from aggregate rows (a handful, not hundreds); only a small, bounded sample of concrete deals comes back as raw records.
+
+A narrow ask fires only the reads it needs: at-risk, stalled-deal and biggest-lever asks need only 2b (it carries the stage aggregate); win rate needs 2c; book-wide hygiene needs 2d. A broad review fires all three.
 
 Fire these as tool calls in **one turn** (independent). Insert `<OPP_CUSTOM>` = confirmed `__c { value }` fields on the sample query only (aggregates don't need them).
 
@@ -64,16 +78,13 @@ Fire these as tool calls in **one turn** (independent). Insert `<OPP_CUSTOM>` = 
 
 **2b. Top-N sample per stage + whole-book stage rollup (ONE request).** The rollup gives the shape; the sample gives named deals to point at. Cap the sample hard (`first: 40`, biggest first) so it never overflows — this is a sample, not the book. Order by `Amount DESC`; take the top few per stage when you present. The 2a stage `aggregate` rides in this same request as a sibling of the sample — read the by-stage counts/sums and open total from its `aggregate` edges and `totalCount`, the named deals from the sample rows.
 
-**Combined-request integrity — Quick/Kiro adaptation (candidate-style experiment):**
+**Canonical query integrity:** Treat the literal request below as the canonical template, not an outline. Substitute only grounded `<OPP_CUSTOM>` fields and the documented scope and date values; do not retype, reformat, shorten, or merge or split it, and keep `aggregate` a sibling of `query` under `uiapi`. Before the first dispatch, verify that the nested `queryInput` JSON decodes, every placeholder is resolved or omitted, and `()`, `[]`, and `{}` are balanced. On a JSON or GraphQL syntax error (`InvalidSyntax` or an unexpected `<EOF>`), discard that request and rebuild it once from the literal template with the same substitutions; never patch braces in place or route the request through generated code. If the rebuilt request still fails with a syntax error, report the error and stop.
 
-- **Prepare:** Treat the inline literal 2b request below as authoritative. Before constructing it, load `references/combined-request.md` as a mechanically identical construction copy. If the sibling cannot be loaded, use the inline request. Substitute only grounded `<OPP_CUSTOM>` fields and the documented scope/date values; do not add fields, roots, or calls.
-- **Validate before dispatch:** Decode `queryInput` and require valid outer JSON, no unresolved placeholders, one `uiapi.query.Opportunity` sample root and one sibling `uiapi.aggregate.Opportunity` stage root, the same resolved owner/date predicates on both roots, and structurally closed GraphQL.
-- **If validation fails before dispatch:** Do not dispatch. Reload the unchanged sibling copy once, or the inline authority if the sibling was unavailable, repeat only the documented substitutions, and validate once more. Do not repair individual braces, compose another GraphQL request, or enter the aggregate fallback.
-- **If Salesforce returns `InvalidSyntax` or unexpected `<EOF>`:** Treat it as reconstruction or truncation, not unsupported aggregation, and retry once from the unchanged literal template without brace repair.
-- **If the validated canonical request returns a real aggregate execution error:** Use only the documented detail-only 2b request plus the exact SOQL stage rollup below; never author a standalone GraphQL stage-rollup request.
+A syntax error (`InvalidSyntax` or an unexpected `<EOF>`) means the request was reconstructed or truncated, not that GraphQL aggregate is unsupported. Only when the canonical request returns an aggregate execution error may you use the detail-only 2b request plus the SOQL rollup below; never author a standalone GraphQL stage-rollup request.
+
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(scope: MINE, where: { IsClosed: { eq: false } }, first: 40, orderBy: { Amount: { order: DESC } }) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } CreatedDate { value } NextStep { value } LastActivityDate { value } Type { value } <OPP_CUSTOM> Account { Name { value } } OpportunityContactRoles { edges { node { Id } } } } } } } aggregate { Opportunity(scope: MINE, where: { IsClosed: { eq: false } }, groupBy: { StageName: { group: true } }) { edges { node { aggregate { StageName { value } Id { count { value } } Amount { sum { value } } } } } totalCount } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(scope: MINE, where: { IsClosed: { eq: false } }, first: 40, orderBy: { Amount: { order: DESC } }) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } CreatedDate { value } NextStep { value } LastActivityDate { value } Type { value } Probability { value } <OPP_CUSTOM> Account { Name { value } } OpportunityContactRoles { edges { node { Id } } } } } } } aggregate { Opportunity(scope: MINE, where: { IsClosed: { eq: false } }, groupBy: { StageName: { group: true } }) { edges { node { aggregate { StageName { value } Id { count { value } } Amount { sum { value } } } } } totalCount } } } }\"}" })
 ```
 
 **2c. Closed-baseline win rate (GraphQL aggregate, last full quarter).** Counts grouped by won/lost — no record pull, zero date math (`eq: { literal: LAST_QUARTER }`; widen only if asked):
@@ -100,550 +111,463 @@ dispatch_readonly(method: "GET", url: "/services/data/v63.0/query",
 
 ## 3. Assemble + flag (record only; reconcile totals; invent nothing)
 
+Assemble only what the prompt needs; the bullets below are the full review.
+
 - **By stage** — straight from 2a's aggregate rows: count, $ sum per stage. Σ of stage $ = open total (they come from the same query, so they reconcile by construction). **Blank-NextStep per stage is whole-book from 2d** — report those counts as book-wide. Staleness/aging per-stage aren't in an aggregate; report those from the 2b sample and **say they're "among the top N sampled," not whole-book**.
 - **Top deals per stage** — from the 2b sample, name the biggest 2–3 opps in each stage (Account · $ · close · next-step state · type) so the rep sees concrete deals, not just totals.
 - **At-risk opps** — from the 2b sample, flag any that hit: stale (no activity 14d+) · past `CloseDate` · blank `NextStep` · **single-threaded (`OpportunityContactRoles` edge count ≤ 1)**. **If a flag matches nearly the whole sample** (e.g. every opp has a blank `NextStep`, common in lightly-maintained orgs), report it once as a **systemic finding** — use 2d's book-wide blank-NextStep count for that line ("next-step blank on N of M open — hygiene gap") — and rank the at-risk list by $, rather than dumping dozens of identical-looking rows.
 
-**At-risk ranking — Quick/Kiro adaptation (candidate-style experiment):**
+**At-risk ranking:** Derive counts and display rows by transforming the returned Opportunity nodes keyed by Id; never hand-author or retype an intermediate tuple or row list, and copy each `Name.value`, Amount, and CloseDate exactly, including punctuation. When the sample's edge count equals `totalCount`, count and sum every matching row and reconcile the headline with the rows; otherwise label the finding sampled. Build candidates from every sampled Opportunity matching any risk above, even when a pervasive risk is summarized once, sort the complete set by returned Amount descending before truncating, and self-check that no later row is larger than an earlier row.
 
-- **Build:** Transform the returned 2b Opportunity nodes directly into one candidate collection keyed by Id; never hand-author or retype an intermediate tuple or row list. Include every sampled Id matching any source risk before truncation. Copy each `Name.value`, Amount, CloseDate, stage, and supporting risk field from that same Id, including punctuation. Past close means `CloseDate` is earlier than the as-of date. Sort the complete qualifying collection by returned Amount descending, then truncate for display.
-- **Validate before hydration:** For every candidate and displayed row, compare Name, Amount, CloseDate, stage, and risk inputs with the same returned Id. Require no later row to have a larger Amount. Treat 2b detail-node findings as `among the top R sampled` unless sample edge count equals `totalCount`; when they are equal, reconcile every matching row's count and sum. Use whole-book wording only for the 2a aggregate/SOQL rollup and 2d hygiene aggregate, never for a capped detail sample.
-- **If validation fails:** Discard the derived candidate/display collection and rebuild it once from the original Id-keyed returned nodes. Make no Salesforce call, do not patch or retype individual rows, and repeat validation before hydrating the unchanged widget.
 - **Coverage** — weighted open pipeline (from 2a totals × stage probability if grounded, else raw open $) vs quota (only if the user gives one) or vs last-quarter closed $ from 2c; 3× remaining-gap heuristic; note if under.
-
-**Probability grounding — Quick/Kiro adaptation:** `objectInfos` field metadata proves only that a field exists; it supplies no Opportunity probability value or stage-probability mapping. Compute weighted pipeline only from numeric probability values selected and returned by a literal documented request or from an explicit user-supplied mapping—never add `Probability` or `LastStageChangeDate` outside the documented placeholder substitutions and never infer default stage percentages. Without that evidence, show raw open pipeline only; without a quota or nonzero prior-quarter closed baseline, omit the coverage ratio and meter.
 - **Velocity** — from 2c: win rate = won ÷ (won+lost) counts. **Cycle time / median: don't compute it** — no API (GraphQL aggregate or SOQL) supports median or date subtraction, and reconstructing it means pulling every closed record (the overflow we're avoiding). Only report an average cycle if grounding surfaced a numeric sales-cycle `__c` field you can `avg` in the aggregate. Stage→stage conversion needs stage history; omit — don't fabricate.
-
-**Stage age — Quick/Kiro adaptation:** Populate each row's `age` only from a selected and returned stage-entry date whose grounded label has that meaning. `LastActivityDate` supports days idle in the risk text, not days in stage. If no stage-entry date was returned, remove `age` from every row and remove the `Days in stage` column while retaining the rest of the datagrid; never rename or repurpose that column as days idle.
 
 ## 4. Output — widget FIRST (the rendered UI is the default)
 
-**Renderer transport — Quick/Kiro adaptation:** Pass the fully hydrated renderer directly as the native `widgetDefinition` object in the `display_widget` call; never serialize or quote it and never route it through a code block. If that call succeeds, it is the terminal output: stop immediately with no assistant text, including no render-success line, recap, or button suggestion. If it returns any error, do not create or open a substitute artifact or try another rendering path: emit only the Step 5 text fallback and stop; never claim that the widget rendered.
+**Widget transport:** Pass the fully hydrated renderer to `display_widget` as a direct top-level tool call whose `widgetDefinition` is a native JSON object. Never serialize or quote it, and never build or send it through generated code, a shell, a code runner, or temporary files. A returned string, printed preview, or generated file is not a mounted visual and is never a successful render. If the call succeeds, it is the terminal output: stop with no further assistant text. If it returns an error or the tool is unavailable, do not retry, repair, or create a substitute artifact; emit only the section 5 text fallback and stop, and never claim the widget rendered.
+- ❌ WRONG: `widgetDefinition: "{\"key\":...}"` (stringified with escaped quotes)
+- ✅ RIGHT: `widgetDefinition: {"key":...}` (native object, no quotes around the opening brace)
 
 When the data is assembled, call `display_widget`; a single one-line "Displaying the visualization now (this may take a minute)." notice may precede it.
 
 ### Self-verification (before calling display_widget)
 
-- [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
-- [ ] Every {{token}} replaced with a resolved literal — no {{…}}, no {!…}.
-- [ ] Numeric attributes (meter value/max/target, meter band from/to, datagrid amount/age) are numbers, not strings.
-- [ ] Any "Win rate" / "Last-Q Win Rate" value shown in the widget or accompanying text is a 0–100 percentage computed as `won_count ÷ (won_count + lost_count) × 100`. If either count is unavailable, omit the win-rate line.
-- [ ] The meter bands span [0, max] and the chart series data matches categories length.
-- [ ] Every risky datagrid row carries a leading status:{value,badgeVariant} (badgeVariant error/warning); healthy rows omit it.
-- [ ] The callout carries resolved title/description, and both buttons are real actions (sendMessage/openLink).
-- [ ] The Step 5 text is produced only when `display_widget` is unavailable (the terminal fallback) — not alongside a rendered widget.
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+The layout is built into the renderer and registered by name — you send **only the widget name and its data**. Call `display_widget` once:
 
-The widget template is embedded below — resolve its tokens and call `display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated> })` once (see the `widgetDefinition` param for token-resolution rules).
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/pipeline-review", props: <object matching the schema below> })
+```
 
-Two blocks below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}`'s type + a worked example, use it to compute each value; then the **widget template** to hydrate. Substitute your computed values into the template's `{{token}}`s (see the token-typing rules above), leaving no `{{…}}`/`{!…}`.
+- **Send data only; never author presentation** (colours, pills, icons, HTML, emoji, layout keys, `{!…}`/`{{…}}`): the renderer owns the look and shows or hides each block from the keys you send. Keys outside the schema are rejected.
+- **CRITICAL — `props` must be a nested JSON object, NOT a string.** ❌ WRONG: `props: "{\"title\":...}"`. ✅ RIGHT: `props: {"title": ...}`. If you hold a JSON string, `JSON.parse` it first.
+- When `display_widget` is available the widget is the output; produce the section 5 text only as the fallback when the tool is unavailable (e.g. a terminal).
+
+### What to send
+
+Follow the block order and the per-block inclusion rules in the `props` schema below (the root description and each property's `description`).
+
+Rules:
+- **Language:** when the user writes in English, omit `labels`. When they write in another language, send `labels` with EVERY key translated (headings in upper case) and write every free-text field (`why`, `next`, `close`, `_status`, ...) in that language. Never join translated text with English fragments: each phrase is written whole, because word order differs.
+
+### Scope the blocks to the prompt
+
+The schema marks only `title`, `answer` and `sources` as required. **Every other key is a choice, and the choice follows the question — not what you happened to retrieve.** Data you fetched but did not use stays out of the widget.
+
+| The prompt is… | Send |
+|---|---|
+| Broad ("review my pipeline for the quarter", "where's the risk?", "how healthy is my pipeline?") | `title` + `answer` (bullets) + `byStage` + `stalledDeals` (`layout: "table"`) when deals are flagged + tail only if it applies + `sources` |
+| Stalled / at-risk deals ("which deals are stalled?", "what's slipping?") | `title` + `answer` + **only** `stalledDeals` (`layout: "list"`) + `sources` (the deals) |
+| Stage spread ("how is my pipeline spread across stages?") | `title` + `answer` + **only** `byStage` + `sources` (the list) |
+| A question with a direct answer ("how much of my pipeline is at risk?", "what's my biggest lever this week?", "am I covered for the quarter?", "what's my win rate?") | `title` + `answer` (paragraph) + `callout` only for the biggest-lever ask + `sources` — no card |
+
+Rules:
+- **Omit a key and its block is not shown.** Never send empty arrays, empty strings, placeholder text, or "N/A" to fill a block, and never send a card the prompt did not ask for or that does not speed up the answer.
+- **Scope the `answer` too:** for "how much is at risk?", the answer is the at-risk total and where it sits — not coverage, win rate, or hygiene you also read.
+- **Coverage, win rate and hygiene have no card:** put what the prompt needs from them in `answer` ("coverage 2.4× against the remaining gap", "win rate 38% last quarter", "next step blank on 14 of 40 open").
+- **At risk = the step 3 at-risk flags** (stale 14d+, past `CloseDate`, blank `NextStep`, single-threaded). The at-risk total is the sum of the flagged deals' amounts.
+- **`byStage`:** stages in sales-process order with each stage's open amount as a number. Send `atRisk` only when one stage holds most of the at-risk money: that stage's amount goes in `atRisk` and `null` takes its place in `open`.
+- **`stalledDeals`:** the flagged deals, biggest first, at most 5. On a broad review list the flagged deals of the stage that holds the risk. **Table** rows carry the deal's close probability from `Probability`: `_tone` `success` with `_status` "High" at 70% or more, `warning` with "Med" at 40–69%, `error` with "Low" below 40%. **List** rows: `_tone` is `error` with `_status` "At risk" when the deal is past its `CloseDate` or closes within 14 days; otherwise `warning` with `_status` "Stalled".
+- **Tail fork:** a broad review gets a `nextStep` line (bold lead, no button, no icon) when one move stands out; only the biggest-lever ask gets the `callout` (one button, a first-person `actionMsg`); if nothing applies, neither. A specific ask usually gets no tail. Never both (if both are sent only the callout renders).
+- **Sources:** a record is `https://<myDomain>/lightning/r/Opportunity/<Id>/view`; the book is `https://<myDomain>/lightning/o/Opportunity/list`. Omit `url` if you have no Id.
+- Format every value as a ready-to-display string except the `byStage` amounts, which are numbers. Names are plain strings, never objects. `stalledDeals.items[].next` is "None set" when `NextStep` is blank.
+- **Value formats (apply to every row; the mock values in the examples are illustrative only):** `amount` is compact — `$` + number + `K`/`M`, no thousands separators. `close` is short month + day + days left, never a year or ISO date. In a table row `account` is the bold title and `name` the subtitle under it; in `next`, wrap only the action in `**…**` and leave the stuck-reason plain.
+- Before calling: `props` has no `{!…}`/`{{…}}`, no keys outside the schema, and every optional key you included is justified by the prompt.
+
+#### Worked examples (the `props` object only)
+
+**Broad — "Review my pipeline for the quarter. Where's the risk?"** (bulleted answer, both cards, a next-step line, several sources):
+
 ```json
 {
-  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate display_widget call — it names every {{token}} in the template with its type and a worked example so you compute the right value for each. Workflow: build a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — arrays stay arrays, numbers stay numbers; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Realistic values: sample-data.json (sibling). Authoring guidance (from the skill): `pageTitle` (e.g. \"Pipeline review — Dana Ruiz\"), `pageSubtitle` (one-line summary: \"$6.4M open across 18 opps · weighted $2.1M · closes this quarter\") · `chartCaption`, `chartCategories` (array of stage names), `chartSeries` (array with one object `{ name, data }` where data is number[] matching categories) · `coverageValue` (number), `coverageMax` (number), `coverageTarget` (number, typically 3.0), `coverageValueLabel` (e.g. \"2.4× open pipeline to $2.7M gap\"), `coverageTargetLabel` (e.g. \"3.0× target\"), `coverageStatus` (string: \"under-covered\" or \"covered\"), `coverageBands` (array of `{ from, to, variant, label }`, variants warning/success, spanning 0→max) · `datagridCaption` (e.g. \"At-risk opps: stalled, past close date, or missing next step\"), `datagridRows` (array, one per at-risk opp: `{name (plain string — format as the opportunity name (e.g. \"Meridian Health platform\"); names must be plain strings, not objects: use `Opportunity.Name.value` from the SF response), stage:{value,badgeVariant}, amount(number), age(number days in stage), close(\"YYYY-MM-DD\"), risk, status:{value,badgeVariant} (badgeVariant error/warning for risky rows or omit)}`) · `calloutVariant` (\"info\"), `calloutTitle` (e.g. \"Monday focus\"), `calloutDescription` (week's priorities), `primaryButtonLabel`, `primaryButtonMsg` (first-person prompt for sendMessage, e.g. \"Draft an email to...\"), `viewOppsUrl` (Opportunities list URL: `https://<myDomain>/lightning/o/Opportunity/list`). Omit any block whose data you lack rather than passing empty arrays; each `status` word must land in its meter band (under-covered/covered).",
-  "props": {
-    "pageTitle": {
-      "description": "Page title (e.g. \"Pipeline review — Dana Ruiz\").",
-      "type": "string",
-      "example": "Pipeline review — Dana Ruiz"
-    },
-    "pageSubtitle": {
-      "description": "One-line summary: open amount, opp count, weighted value, timeframe.",
-      "type": "string",
-      "example": "$6.4M open across 18 opps · weighted $2.1M · closes this quarter"
-    },
-    "chartCaption": {
-      "description": "Caption for the pipeline-by-stage chart.",
-      "type": "string",
-      "example": "Open pipeline by stage; largest at Proposal, tapering to Closing"
-    },
-    "chartCategories": {
-      "description": "Stage names for the chart's x-axis.",
-      "type": "array",
-      "items": {
-        "type": "string"
+  "title": "$1.41M of your pipeline is at risk – and it's stacked in one stage.",
+  "answer": "- **$2.63M open** across 8 opportunities.\n- The money and the risk sit together: **Negotiation / Review holds $1.14M**.\n- **2 of the 3 deals** in that stage are stalled.",
+  "byStage": {
+    "stages": ["Prospecting", "Qualification", "Needs Analysis", "Value Proposition", "Id. Decision Makers", "Perception Analysis", "Proposal / Price Quote", "Negotiation / Review"],
+    "open": [180000, 210000, 90000, 155000, 120000, 95000, 645000, null],
+    "atRisk": [null, null, null, null, null, null, null, 1140000]
+  },
+  "stalledDeals": {
+    "layout": "table",
+    "items": [
+      {
+        "account": "Cedarline Financial",
+        "name": "Enterprise Sales Cloud Platform",
+        "amount": "$640K",
+        "next": "Stale 43d · new CFO sponsor unresponsive 3 wks. Draft ROI-repack outreach.",
+        "close": "Aug 31 · 7d",
+        "stage": "Negotiation / Review",
+        "_tone": "error",
+        "_status": "Low"
       },
-      "example": [
-        "Qualification",
-        "Proposal",
-        "Negotiation",
-        "Closing"
-      ]
+      {
+        "account": "Brightview Media",
+        "name": "Ad Sales Cloud + CPQ",
+        "amount": "$410K",
+        "next": "MSA redlines returned 8/12 · no movement since (18d stale). Nudge Elena Cortez for signing call.",
+        "close": "Aug 31 · 7d",
+        "stage": "Negotiation / Review",
+        "_tone": "warning",
+        "_status": "Med"
+      }
+    ]
+  },
+  "nextStep": {
+    "lead": "Reopen the biggest deal first.",
+    "text": "Cedarline is the biggest lever – $640K stalled on a CFO with no engagement, and getting that sponsor back in the conversation is the highest-value move before the quarter closes. Want me to draft a re-engagement plan for it?"
+  },
+  "sources": [
+    {
+      "label": "Opportunities · 8 open (this quarter)",
+      "url": "https://<myDomain>/lightning/o/Opportunity/list"
     },
-    "chartSeries": {
-      "description": "Chart series — one object {name, data}; data matches chartCategories.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Series name.",
-            "type": "string"
-          },
-          "data": {
-            "description": "Amount per stage — a number array matching chartCategories.",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          }
-        }
-      },
-      "example": [
-        {
-          "name": "Open $",
-          "data": [
-            1600000,
-            2400000,
-            1600000,
-            800000
-          ]
-        }
-      ]
+    {
+      "label": "Opportunity · Cedarline Financial",
+      "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"
     },
-    "coverageValue": {
-      "description": "Pipeline coverage ratio — the meter's current value (e.g. 2.4).",
-      "type": "number",
-      "example": 2.4
-    },
-    "coverageMax": {
-      "description": "The meter's max.",
-      "type": "number",
-      "example": 5
-    },
-    "coverageTarget": {
-      "description": "Coverage target (typically 3.0).",
-      "type": "number",
-      "example": 3
-    },
-    "coverageValueLabel": {
-      "description": "Display string for coverage (e.g. \"2.4× open pipeline to $2.7M gap\").",
-      "type": "string",
-      "example": "2.4× open pipeline to $2.7M gap"
-    },
-    "coverageTargetLabel": {
-      "description": "Display string for the target (e.g. \"3.0× target\").",
-      "type": "string",
-      "example": "3.0× target"
-    },
-    "coverageStatus": {
-      "description": "Coverage read — under-covered or covered.",
-      "type": "string",
-      "enum": [
-        "under-covered",
-        "covered"
-      ],
-      "example": "under-covered"
-    },
-    "coverageBands": {
-      "description": "Color bands for the coverage meter, in order spanning 0→max.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "description": "Band start value.",
-            "type": "number"
-          },
-          "to": {
-            "description": "Band end value.",
-            "type": "number"
-          },
-          "variant": {
-            "description": "Band color.",
-            "type": "string",
-            "enum": [
-              "error",
-              "warning",
-              "success"
-            ]
-          },
-          "label": {
-            "description": "Short band label.",
-            "type": "string"
-          }
-        }
-      },
-      "example": [
-        {
-          "from": 0,
-          "to": 3,
-          "variant": "warning",
-          "label": "Under"
-        },
-        {
-          "from": 3,
-          "to": 5,
-          "variant": "success",
-          "label": "Covered"
-        }
-      ]
-    },
-    "datagridCaption": {
-      "description": "Caption for the at-risk opps datagrid.",
-      "type": "string",
-      "example": "At-risk opps: stalled, past close date, or missing next step"
-    },
-    "datagridRows": {
-      "description": "At-risk opps (stalled, past close, or missing next step) — one row per opp. Empty array → the datagrid is omitted.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Leading Status badge cell; omit on normal rows.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "name": {
-            "description": "Opportunity name, a plain string (use Opportunity.Name.value — never a nested object).",
-            "type": "string"
-          },
-          "stage": {
-            "description": "Stage badge cell.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Stage label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "amount": {
-            "description": "Deal amount (number).",
-            "type": "number"
-          },
-          "age": {
-            "description": "Days in current stage (number).",
-            "type": "number"
-          },
-          "close": {
-            "description": "Close date, ISO YYYY-MM-DD.",
-            "type": "string"
-          },
-          "risk": {
-            "description": "Why the opp is at risk.",
-            "type": "string"
-          }
-        }
-      },
-      "example": [
-        {
-          "status": {
-            "value": "Stalled",
-            "badgeVariant": "error"
-          },
-          "name": "Meridian Health platform",
-          "stage": {
-            "value": "Proposal",
-            "badgeVariant": "info"
-          },
-          "amount": 2400000,
-          "age": 41,
-          "close": "2026-08-05",
-          "risk": "⚠ 41d in stage, no exec sponsor"
-        },
-        {
-          "status": {
-            "value": "At risk",
-            "badgeVariant": "warning"
-          },
-          "name": "Cobalt Robotics renewal",
-          "stage": {
-            "value": "Negotiation",
-            "badgeVariant": "warning"
-          },
-          "amount": 1800000,
-          "age": 22,
-          "close": "2026-07-30",
-          "risk": "⚠ close date in 6d, redlines open"
-        },
-        {
-          "name": "Pier 9 expansion",
-          "stage": {
-            "value": "Proposal",
-            "badgeVariant": "info"
-          },
-          "amount": 600000,
-          "age": 18,
-          "close": "2026-07-31",
-          "risk": "Legal review of MSA"
-        },
-        {
-          "status": {
-            "value": "At risk",
-            "badgeVariant": "warning"
-          },
-          "name": "Northwind logistics",
-          "stage": {
-            "value": "Qualification",
-            "badgeVariant": "neutral"
-          },
-          "amount": 450000,
-          "age": 55,
-          "close": "2026-09-15",
-          "risk": "⚠ 55d, single-threaded"
-        }
-      ]
-    },
-    "calloutVariant": {
-      "description": "Callout color; typically \"info\".",
-      "type": "string",
-      "enum": [
-        "error",
-        "warning",
-        "success",
-        "info",
-        "recommended"
-      ],
-      "example": "info"
-    },
-    "calloutTitle": {
-      "description": "Synthesis callout heading (e.g. \"Monday focus\").",
-      "type": "string",
-      "example": "Monday focus"
-    },
-    "calloutDescription": {
-      "description": "Synthesis callout body — the week's priorities.",
-      "type": "string",
-      "example": "Confirm the Meridian exec sponsor call before it ages out of Proposal, and get Cobalt redlines back this week — it closes in 6 days. Coverage is thin at 2.4×; two more qualified Proposal-stage opps would close the gap."
-    },
-    "primaryButtonLabel": {
-      "description": "Primary button label (action/sendMessage).",
-      "type": "string",
-      "example": "Draft sponsor ask"
-    },
-    "primaryButtonMsg": {
-      "description": "First-person prompt the primary button sends (action/sendMessage).",
-      "type": "string",
-      "example": "Draft an email to the Meridian Health platform sponsor to confirm next week's call and set the agenda."
-    },
-    "viewOppsUrl": {
-      "description": "Opportunities list-view Lightning URL for the \"View in Salesforce\" button.",
-      "type": "string",
-      "example": "https://org.lightning.force.com/lightning/o/Opportunity/list"
+    {
+      "label": "Opportunity · Brightview Media",
+      "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"
     }
-  }
+  ]
 }
 ```
+
+**Direct — "How much of my pipeline is at risk?"** (paragraph answer, no card, no tail, the book as the source):
+
 ```json
 {
-  "renderer": {
-    "componentOverrides": {
-      "$": {
-        "type": "mosaic",
-        "definition": "tile/widget",
-        "children": [
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "isWrapped": false
-            },
-            "children": [
-              {
-                "definition": "tile/icon",
-                "attributes": {
-                  "name": "dashboard",
-                  "size": "xl",
-                  "alt": ""
-                }
-              },
-              {
-                "definition": "tile/text",
-                "attributes": {
-                  "text": "{{pageTitle}}",
-                  "variant": "h1"
-                }
-              }
-            ]
-          },
-          {
-            "definition": "tile/text",
-            "attributes": {
-              "text": "{{pageSubtitle}}",
-              "variant": "caption",
-              "color": "muted"
-            }
-          },
-          {
-            "definition": "tile/separator"
-          },
-          {
-            "definition": "tile/column",
-            "attributes": {
-              "gap": "md"
-            },
-            "children": [
-              {
-                "definition": "tile/chart",
-                "attributes": {
-                  "chartType": "column",
-                  "caption": "{{chartCaption}}",
-                  "categories": "{{chartCategories}}",
-                  "series": "{{chartSeries}}",
-                  "valueFormat": "compact",
-                  "showValues": true,
-                  "showLegend": false
-                }
-              },
-              {
-                "definition": "tile/meter",
-                "attributes": {
-                  "label": "Coverage vs remaining gap",
-                  "value": "{{coverageValue}}",
-                  "min": 0,
-                  "max": "{{coverageMax}}",
-                  "target": "{{coverageTarget}}",
-                  "valueLabel": "{{coverageValueLabel}}",
-                  "targetLabel": "{{coverageTargetLabel}}",
-                  "status": "{{coverageStatus}}",
-                  "bands": "{{coverageBands}}"
-                }
-              }
-            ]
-          },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "{{datagridCaption}}",
-              "appearance": "striped",
-              "defaultSort": {
-                "key": "amount",
-                "direction": "desc"
-              },
-              "columns": [
-                {
-                  "key": "status",
-                  "header": "Status",
-                  "type": "badge"
-                },
-                {
-                  "key": "name",
-                  "header": "Opportunity",
-                  "type": "text"
-                },
-                {
-                  "key": "stage",
-                  "header": "Stage",
-                  "type": "badge"
-                },
-                {
-                  "key": "amount",
-                  "header": "Amount",
-                  "type": "currency",
-                  "align": "right",
-                  "sortable": true
-                },
-                {
-                  "key": "age",
-                  "header": "Days in stage",
-                  "type": "number",
-                  "align": "right",
-                  "sortable": true
-                },
-                {
-                  "key": "close",
-                  "header": "Close",
-                  "type": "date"
-                },
-                {
-                  "key": "risk",
-                  "header": "Risk",
-                  "type": "text"
-                }
-              ],
-              "rows": "{{datagridRows}}"
-            }
-          },
-          {
-            "definition": "tile/callout",
-            "attributes": {
-              "variant": "{{calloutVariant}}",
-              "title": "{{calloutTitle}}",
-              "description": "{{calloutDescription}}"
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": [
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "{{primaryButtonLabel}}",
-                      "variant": "primary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{primaryButtonMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "View in Salesforce",
-                      "iconName": "open-in-new",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/openLink",
-                            "attributes": {
-                              "url": "{{viewOppsUrl}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
+  "title": "$1.41M of your $2.63M open pipeline is at risk.",
+  "answer": "Of **$2.63M open across 8 opportunities, $1.41M is at risk** – concentrated in Negotiation / Review, which holds $1.14M on its own.",
+  "sources": [
+    {
+      "label": "Opportunities · 8 open",
+      "url": "https://<myDomain>/lightning/o/Opportunity/list"
+    }
+  ]
+}
+```
+
+**Specific — "Which deals are stalled?"** (the stalledDeals list only, the deals as sources, no tail):
+
+```json
+{
+  "title": "Two Negotiation deals are stalled – $1.05M between them.",
+  "answer": "Both sit in **Negotiation / Review** and haven't moved.",
+  "stalledDeals": {
+    "layout": "list",
+    "items": [
+      {
+        "account": "Cedarline Financial",
+        "amount": "$640K",
+        "why": "CFO dark · 16 days silent",
+        "_tone": "warning",
+        "_status": "Stalled"
+      },
+      {
+        "account": "Brightview Media",
+        "amount": "$410K",
+        "why": "In Legal · MSA idle since 8/12",
+        "_tone": "warning",
+        "_status": "Stalled"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Opportunity · Cedarline Financial",
+      "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"
+    },
+    {
+      "label": "Opportunity · Brightview Media",
+      "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"
+    }
+  ]
+}
+```
+
+**Direct — "What's my biggest lever this week?"** (paragraph answer, a callout with one button, no card):
+
+```json
+{
+  "title": "Reopen Cedarline – $640K on a dark CFO.",
+  "answer": "It's the single highest-value move: **$640K stalled** on a dark CFO. Get that conversation back open before the quarter closes.",
+  "callout": {
+    "lead": "Cedarline closes Aug 31 – the CFO has been silent for 16 days.",
+    "text": "Send a short ROI recap to re-engage the new CFO sponsor this week.",
+    "buttonLabel": "Draft the CFO re-engagement",
+    "actionMsg": "Draft a re-engagement email to the new CFO at Cedarline Financial with an ROI recap to restart the $640K deal."
+  },
+  "sources": [
+    {
+      "label": "Opportunity · Cedarline Financial",
+      "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"
+    }
+  ]
+}
+```
+
+`props` schema (JSON Schema). Only `title`, `answer` and `sources` are required; include any other key only when the prompt asks for it or it clearly speeds up the answer (see "Scope the blocks to the prompt"):
+
+```json
+{
+  "type": "object",
+  "description": "Block order: title, answer, then the optional cards (byStage, stalledDeals), then at most one tail (callout OR nextStep), then sources. Only title, answer and sources are required. Which optional cards to include: see the scope table in the skill instructions. Omit a key and its block is not shown: never send empty arrays, empty strings, placeholders or 'N/A', and never a card the prompt did not ask for. A direct question ('how much of my pipeline is at risk?') usually gets no tail. Format every value as a ready-to-display string (currency, dates) except the byStage chart amounts, which are numbers; names are plain strings, never objects.",
+  "required": [
+    "title",
+    "answer",
+    "sources"
+  ],
+  "properties": {
+    "labels": {
+      "type": "object",
+      "description": "OPTIONAL. Every fixed label of the widget (card headings, chart series names, table headers, the sources toggle); each key's `default` is its English text, and a missing or blank key falls back to it. Omit when the user writes in English; for another language follow the Language rule in SKILL.md.",
+      "properties": {
+        "byStage": {
+          "type": "string",
+          "default": "OPEN PIPELINE BY STAGE",
+          "description": "Heading of the by-stage chart card. English: 'OPEN PIPELINE BY STAGE'."
+        },
+        "seriesOpen": {
+          "type": "string",
+          "default": "Open pipeline",
+          "description": "Chart series name (read by screen readers and tooltips; no legend is drawn) for the stages that are not the risk stage. English: 'Open pipeline'."
+        },
+        "seriesAtRisk": {
+          "type": "string",
+          "default": "Where the risk sits",
+          "description": "Chart series name (read by screen readers and tooltips; no legend is drawn) for the highlighted risk stage. English: 'Where the risk sits'."
+        },
+        "openOpportunities": {
+          "type": "string",
+          "default": "OPEN OPPORTUNITIES",
+          "description": "Heading of the deals card (table and list). English: 'OPEN OPPORTUNITIES'."
+        },
+        "colStatus": {
+          "type": "string",
+          "default": "Close Probability",
+          "description": "Stalled-deals table header over the _status badges (High / Med / Low). English: 'Close Probability'."
+        },
+        "colAccount": {
+          "type": "string",
+          "default": "Account",
+          "description": "Header of the stalled-deals list's Account column, read by screen readers (the list hides its header row; the table has no Account column). English: 'Account'."
+        },
+        "colOpportunity": {
+          "type": "string",
+          "default": "Opportunity",
+          "description": "Stalled-deals table header. English: 'Opportunity'."
+        },
+        "colAmount": {
+          "type": "string",
+          "default": "Amount",
+          "description": "Stalled-deals table header. English: 'Amount'."
+        },
+        "colNextStep": {
+          "type": "string",
+          "default": "Next Step",
+          "description": "Stalled-deals table header. English: 'Next Step'."
+        },
+        "colClose": {
+          "type": "string",
+          "default": "Close Date",
+          "description": "Stalled-deals table header. English: 'Close Date'."
+        },
+        "colStage": {
+          "type": "string",
+          "default": "Stage",
+          "description": "Stalled-deals table header. English: 'Stage'."
+        },
+        "sources": {
+          "type": "string",
+          "default": "Sources",
+          "description": "Word shown on the sources toggle; the renderer appends the count, e.g. 'Sources (3)'. Send the word only, no number. English: 'Sources'."
+        }
+      }
+    },
+    "title": {
+      "type": "string",
+      "description": "REQUIRED. The takeaway for the pipeline in the user's context, one bold sentence that already answers the question (e.g. '$1.41M of your pipeline is at risk – and it's stacked in one stage.'). Never the skill name or 'Pipeline Review'."
+    },
+    "answer": {
+      "type": "string",
+      "description": "REQUIRED. Answer-first markdown with **bold** on the key facts (amounts, counts, stages, names). A broad review gets 2-4 short '- ' bullets; a direct question ('how much is at risk?', 'what's my biggest lever?') gets a 1-3 sentence paragraph. Answer ONLY what the user asked; do not restate the cards below it."
+    },
+    "byStage": {
+      "type": "object",
+      "description": "OPTIONAL card 'OPEN PIPELINE BY STAGE · AMOUNT': a horizontal bar per stage with its amount printed. Include ONLY for a broad review ('review my pipeline', 'where's the risk?', 'pipeline health') or when the prompt asks how the pipeline is spread across stages. Omit the key otherwise.",
+      "required": [
+        "stages",
+        "open"
+      ],
+      "properties": {
+        "stages": {
+          "type": "array",
+          "description": "Stage display values in sales-process order, earliest first (e.g. ['Prospecting', 'Qualification', 'Negotiation / Review']). One entry per stage with open pipeline.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open": {
+          "type": "array",
+          "description": "Open amount per stage as a NUMBER (e.g. 1140000), same length and order as stages. Put null at the risk stage's position when atRisk is sent.",
+          "items": {
+            "type": [
+              "number",
+              "null"
             ]
           }
-        ]
+        },
+        "atRisk": {
+          "type": "array",
+          "description": "OPTIONAL. Highlights the one stage where the at-risk money sits: same length as stages, that stage's amount at its position and null everywhere else. Omit when no single stage holds the risk.",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "stalledDeals": {
+      "type": "object",
+      "description": "OPTIONAL card 'OPEN OPPORTUNITIES': the flagged deals from the sample, biggest first. Include ONLY for a broad review (layout 'table') or when the prompt asks which deals are stalled, slipping or at risk (layout 'list'). Omit the key otherwise; never an empty items array.",
+      "required": [
+        "layout",
+        "items"
+      ],
+      "properties": {
+        "layout": {
+          "type": "string",
+          "enum": [
+            "table",
+            "list"
+          ],
+          "description": "'table' for a broad review (close probability, opportunity, amount, next step, close date, stage); 'list' for a stalled/at-risk ask (account – amount, and why it is stuck)."
+        },
+        "items": {
+          "type": "array",
+          "description": "One entry per flagged deal, biggest amount first (never an empty array - omit stalledDeals instead).",
+          "items": {
+            "type": "object",
+            "required": [
+              "account",
+              "amount",
+              "_tone",
+              "_status"
+            ],
+            "properties": {
+              "account": {
+                "type": "string",
+                "description": "Table: the bold title of the Opportunity cell (the account name, e.g. 'Cedarline Financial'). List: the account name."
+              },
+              "name": {
+                "type": "string",
+                "description": "Table only: the opportunity name, shown as the muted subtitle under the bold account (e.g. 'Enterprise Sales Cloud Platform')."
+              },
+              "amount": {
+                "type": "string",
+                "description": "Compact pre-formatted amount: $ + number + K or M, no thousands separators (e.g. '$640K', '$1.2M'; never '$640,000')."
+              },
+              "next": {
+                "type": "string",
+                "description": "Table only: what is stuck, then the move, from NextStep and days since last activity. Wrap only the action (the move) in markdown bold '**…**'; the stuck-reason stays plain (e.g. 'Stale 43d · CFO sponsor unresponsive 3 wks. **Draft ROI-repack outreach.**'). 'None set' (no bold) when NextStep is blank."
+              },
+              "close": {
+                "type": "string",
+                "description": "Table only: short month and day with no year, then days left (e.g. 'Aug 31 · 7d', 'Aug 12 · 5d late'). Never a year, never ISO YYYY-MM-DD."
+              },
+              "stage": {
+                "type": "string",
+                "description": "Stage display value (e.g. 'Negotiation / Review'). Table only."
+              },
+              "why": {
+                "type": "string",
+                "description": "Why it is stuck, a few words joined by ' · ' (e.g. 'CFO dark · 16 days silent'). List only."
+              },
+              "_tone": {
+                "type": "string",
+                "enum": [
+                  "error",
+                  "warning",
+                  "success"
+                ],
+                "description": "Row status tone (see the tone rule in the skill instructions). Table: the close-probability tone (success High, warning Med, error Low); list: error or warning only."
+              },
+              "_status": {
+                "type": "string",
+                "description": "The status word shown with the tone, in the user's language. Table (English): 'High' for success, 'Med' for warning, 'Low' for error. List (English): 'At risk' for error, 'Stalled' for warning."
+              }
+            }
+          }
+        }
+      }
+    },
+    "callout": {
+      "type": "object",
+      "description": "OPTIONAL tail for the biggest-lever ask only (not on a broad review). Warning icon, a bold first sentence followed by normal text, then ONE blue primary button. Use INSTEAD of nextStep, never both (if both are sent only the callout renders). Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "required": [
+        "lead",
+        "text",
+        "buttonLabel",
+        "actionMsg"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). The bold first sentence of the callout (the move in one sentence, ending with a period, e.g. 'Reopen Cedarline – $640K on a dark CFO.')."
+        },
+        "text": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). One to three sentences: what, why now, and the move."
+        },
+        "buttonLabel": {
+          "type": "string",
+          "description": "Label of the single primary button (e.g. 'Draft the CFO re-engagement')."
+        },
+        "actionMsg": {
+          "type": "string",
+          "description": "First-person request sent to chat when the button is clicked."
+        }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "description": "OPTIONAL tail, the default for a broad review: a plain suggestion line with a bold lead, NO button and NO icon. Use INSTEAD of callout, never both.",
+      "required": [
+        "lead",
+        "text"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "Bold lead (the suggested move, e.g. 'Reopen the biggest deal first.')."
+        },
+        "text": {
+          "type": "string",
+          "description": "One or two sentences of reasoning, ending with an offer to help if natural."
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "REQUIRED. Where the answer came from: the Salesforce records/lists you actually read, linked (this is where Opportunity record links go). Shown as a compact 'Salesforce · Sources (N)' toggle (the word comes from labels.sources). Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
+      "items": {
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Source name: object · record (e.g. 'Opportunities · 8 open', 'Opportunity · Cedarline Financial')."
+          },
+          "url": {
+            "type": "string",
+            "description": "Record URL https://<myDomain>/lightning/r/<SObjectType>/<Id>/view, or for a list https://<myDomain>/lightning/o/Opportunity/list. Omit if none."
+          }
+        }
       }
     }
   }
@@ -652,6 +576,8 @@ Two blocks below: first the **variable contract** (`renderer.props.schema.json`)
 
 
 ## 5. Text — FALLBACK ONLY — DO NOT USE IF `display_widget` SUCCEEDED
+
+Scope this to the prompt too: a specific ask ("which deals are stalled?", "how much is at risk?") gets only the lines that answer it, not every section below.
 
 ```
 # Pipeline Review — <Scope> — <Period>

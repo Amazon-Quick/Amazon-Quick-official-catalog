@@ -4,13 +4,10 @@ display_name: Using Display Widget
 description: "Render assembled Salesforce data as a styled widget using either a hydrated dynamic definition or a registered widget with props. Use when a skill needs a composed visual presentation or guidance on rendering mode, structure and supported tiles."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:3bcaf449ba572d84ccbfa2afe629ad8e67297f22771c8cc623522cf7b77b3613"
+checksum: "sha256:306bc5d6fe66992eeede9e675d9a363cd497d51a43f7e6662b9232f98a9c7145"
 id: "d5babfdf-1653-476f-9723-e43896682105"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -19,8 +16,12 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
 
 # Using `display_widget`
@@ -43,8 +44,8 @@ Gather first, render once. Do all your `dispatch` work, assemble the finished
 picture, then call `display_widget` a single time to present it. The widget
 reflects completed work, not one intermediate query.
 
-- Use it in clients that mount MCP Apps widgets (Cowork, Claude Desktop, web).
-- In a terminal (Claude Code), the widget won't mount — the tool's text
+- Use it in clients that mount MCP Apps widgets (a widget-capable client).
+- In a terminal, the widget won't mount — the tool's text
   fallback is shown instead, so always keep the text content meaningful.
 
 ## Calling it
@@ -194,6 +195,11 @@ Other available blocks (same `{definition, attributes, children}` shape):
 wires their events; for a read-only presentation, stick to the content/layout
 blocks above.
 
+- **`tile/stepper`** — `caption` (**required**), `items` (**required**, ordered array of
+  `{ name, state, detail? }`). `state` is `completed` | `current` | `target`; it is shown
+  as visible text as well as a visual marker. Optional `completedLabel`, `currentLabel`, and
+  `targetLabel` localize the status text. Use for discrete process stages, not date intervals.
+
 ### Data visualization
 
 These tiles turn resolved numbers into charts. Two rules carry over: author
@@ -232,12 +238,16 @@ color alone.
   `end` (**required**, `{ label, value? }` — value computed when omitted).
   Optional: `valueFormat` (`number`|`percent`|`currency`), `showConnectors`,
   `showValues`, `caption`, `size`. A running-total bridge; each step is signed.
-- **`tile/heatmap`** — `caption` (**required**), `domain` (**required**,
-  `[min, max]`). Matrix layout: `xLabels`, `yLabels` (`string[]`) and `cells`
+- **`tile/heatmap`** — `caption` (**required**), `domain` (**required** except for the state
+  layout, `[min, max]`). Matrix layout: `xLabels`, `yLabels` (`string[]`) and `cells`
   (array of `{ x, y, value, valueLabel? }`). Calendar layout (`layout:
   "calendar"`): `days` (array of `{ date: "YYYY-MM-DD", value }`). Optional:
-  `layout` (`matrix`|`calendar`), `encode` (`color`|`size`), `scale`
+  `layout` (`matrix`|`calendar`|`state`), `encode` (`color`|`size`), `scale`
   (`sequential`|`diverging`), `midpoint` (diverging), `valueFormat`, `size`.
+  State layout (`layout: "state"`, no `domain`): categorical account x product
+  grid; `cells` are `{ x, y, state, label? }` with `state` one of `purchased`,
+  `inPlay`, `whitespace`, `lost`, `empty` (a missing cell is `empty`), plus
+  `legend` (array of `{ state, label }`).
 - **`tile/datagrid`** — a richer `tile/table`: typed, sortable columns and
   per-row status. `caption` (**required**), `columns` (**required**, array of
   `{ key, header, type?, align?, sortable?, width?, priority?, target? }`), `rows`
@@ -252,6 +262,9 @@ color alone.
   label?, value }`), `appearance`, `size` (`sm`|`md`), `isStickyHeader`,
   `emptyText`, `totalRows`. Reach for it over `tile/table` when you want sorting,
   typed formatting, or risk tinting; use `tile/table` for a plain read-only grid.
+  `headerColor` (`muted`|`ink`) defaults to the existing muted headers; `ink`
+  opts into the ink token for column/status headers and phone card labels,
+  without changing cell values.
 
 ## Worked example — an opportunity summary
 

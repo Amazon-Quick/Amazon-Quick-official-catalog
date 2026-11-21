@@ -51,8 +51,8 @@
     "version": {
       "type": "string",
       "maxLength": 64,
-      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
-      "description": "Semantic version (MAJOR.MINOR.PATCH)."
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$",
+      "description": "Semantic version (MAJOR.MINOR.PATCH), with optional prerelease and build metadata."
     },
     "author": {
       "type": "object",

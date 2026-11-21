@@ -1,16 +1,13 @@
 ---
 name: research-prospect
 display_name: Research Prospect
-description: "Build a prospect brief from web research and Salesforce, covering company facts, recent signals, likely priorities, contacts and ICP fit. Use to research a net-new company or person before outreach. Existing accounts: account-context."
+description: "Research a specific company or prospect before outreach, tell me about them, who they are, what I should know, or build a prospect brief with ICP fit analysis. Requires company name or domain. Combines web research and Salesforce data, covering company facts, recent signals, likely priorities, contacts and ICP fit. Use for net-new companies or people before first outreach. Existing accounts: account-context."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:05c6709a7c9f88f046e4329d6365b9d972e326cb101e1d5255844278a8b3d8f4"
+checksum: "sha256:89cba62efde7e8a923cec94975cef35bbbec300df32acb331ee1f76344a631ca"
 id: "64b8346c-09b3-4573-8247-ba4202ac1bb9"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -20,13 +17,26 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
+
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
 # Rules:
 
 
 # Research Prospect
+
+See [references/research-workflow.md](references/research-workflow.md) for workflow overview.
 
 Ground Account → CRM read + web research (ONE turn) → score fit → output. Grounding surfaces this org's custom ICP fields (tier/segment/territory) — fit scoring reads them, so don't skip it.
 
@@ -46,7 +56,7 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
 ```
 From the result, note the scalar `__c` fields whose label carries ICP/segment/tier/territory/employee-band signal — add each as `Field__c { value }` to `<ACCOUNT_CUSTOM>` in the read below.
 
-**Just scan the result by eye — do not script the extraction** (no `cat` / `python3` / `jq` / `grep` over the response). The Account catalog is large and may not come back inline: if the host wrote it to a temp file, open that file with the **Read tool only** — its path is outside the shell sandbox, so `cat` / `ls` fail on it. If the Read fails or the payload is unwieldy, skip grounding and use the standard fields below only — don't retry.
+**Just scan the result by eye — do not script the extraction**. The Account catalog is large and may not come back inline: if it overflows or comes back truncated, skip custom-field grounding and proceed with standard fields only; don't keep retrying. Do the same if the payload is unwieldy.
 
 **CRM read + web search — fire BOTH as tool calls in ONE turn (independent).**
 
@@ -84,480 +94,483 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
 
 Overall: **Strong fit / Moderate fit / Poor fit** with one-sentence rationale.
 
-**Fit badge mapping — Quick/Kiro adaptation:** Keep `fitStatus` and `fitVariant` paired: Strong fit → `STRONG FIT` / `success`; Moderate fit → `MODERATE FIT` / `warning`; Poor fit → `POOR FIT` / `error`. Do not show a success-colored badge for a Moderate or Poor verdict.
-
-**Numeric-meter provenance and scoreless branch — Quick/Kiro adaptation:** Include the ICP meter only when current org/user context supplies an explicit deterministic numeric formula with attributable inputs, target, and complete ordered bands. Embedded examples, qualitative dimension marks, and model judgment are not formulas. If that complete numeric contract is unavailable, do not estimate, copy examples, default to zero, or interrupt solely to ask for a score formula. Keep the evidence-backed Strong/Moderate/Poor verdict and its mapped badge, remove exactly the single `tile/meter` child from the widget template before resolving tokens, and do not emit or resolve any `icpValue`, `icpTarget`, `icpValueLabel`, `icpTargetLabel`, `icpStatus`, or `icpBands` value. Preserve the header, subtitle, separator, signals datagrid, synthesis callout, and every otherwise eligible action. This reduced widget remains the required widget path—not the text fallback. When the complete numeric contract is available, retain the meter and bind every numeric token from that same formula.
-
 ## 4. Relevance hooks
 
 2-3 specific, sourced hooks for outreach — things from the research that connect to your value prop. Not generic ("they're growing") but specific ("they posted 12 [relevant role] openings last month and their [exec title] spoke about [relevant pain] at [conf]").
 
 ## 5. Prospect brief widget (editorial layout)
 
-When the `display_widget` tool is available (Claude Cowork, the desktop app, the web app), render the prospect brief as a visual widget instead of the section 6 text. When `display_widget` is unavailable (e.g. a terminal) the section 6 markdown is the whole output, so produce it only then.
+When the `display_widget` tool is available (a widget-capable client), render the prospect brief as a visual widget instead of the section 6 text. When `display_widget` is unavailable (e.g. a terminal) the section 6 markdown is the whole output, so produce it only then.
 
 When the data is assembled, call `display_widget`; a single one-line "Displaying the visualization now (this may take a minute)." notice may precede it.
 
 ### Self-verification (before calling display_widget)
 
-- [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
-- [ ] Every `{{token}}` placeholder replaced with a resolved literal — no `{{…}}` left, no `{!…}` expressions in the widget definition.
-- [ ] `fitStatus` and `fitVariant` use the exact Strong/success, Moderate/warning, or Poor/error mapping.
-- [ ] With a complete attributable numeric formula, meter `value`/`max`/`target` and band `from`/`to` values are numbers, not strings; the bands cover `[0, 100]`, and every value/label/status comes from that formula.
-- [ ] Without that formula, the single `tile/meter` block and all six `icp*` tokens are absent while the header, subtitle, separator, signals, callout, and eligible actions remain.
-- [ ] Every `datagrid` signal row carries a leading `status` object; `tag` is a badge object.
-- [ ] The `tile/callout` carries a resolved `title`/`description` (the approach + the timing), not empty and not a recap.
-- [ ] No fabricated content — blank fields omitted or quoted blank, not invented.
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+- [ ] `data` is a nested JSON object, NOT a string.
+- [ ] All values in data are literals — no template syntax.
+- [ ] Only `title`, `answer`, and `sources` are required; every other optional key is justified by the prompt (see "Scope the blocks to the prompt").
+- [ ] The `answer` is scoped to the prompt: if the user asked only about ICP fit, give only the fit facts, not the full firmographics.
+- [ ] Tail fork: sent `callout` XOR `nextStep`, never both.
+- [ ] Every `contacts` row has `draftLabel`, `draftText` and `draftMsg`.
+- [ ] Omitted keys have no data or weren't asked for — never send empty placeholders.
 - [ ] The section 6 markdown is produced only when `display_widget` is unavailable (the terminal fallback) — not alongside a rendered widget.
 
-The widget template is embedded below. Call `display_widget` in **dynamic** mode with it. It is a skeleton: replace every `{{token}}` with a fully-resolved literal computed from the data you researched and scored — this echo path does no expression compilation, so no `{!…}` bindings. See `sample-data.json` in this dir for a fully-worked example of every token.
+Send only the widget name and its data — no layout, no `{!…}`:
 
-Two blocks below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}`'s type + a worked example, use it to compute each value; then the **widget template** to hydrate. Substitute your computed values into the template's `{{token}}`s (see the token-typing rules above), leaving no `{{…}}`/`{!…}`.
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/research-prospect", props: <object matching the schema below> })
+```
+
+- Send data only; no layout and no `{!…}`.
+- **`props` is a nested JSON object, NOT a string.**
+- The widget is the output, even for a narrow ask: a one-fact question sends just `title`, `answer` and `sources`, never prose. Once the call succeeds, add no text after it. Reply in text (§6) only when `display_widget` is unavailable or errors.
+
+### What to send
+
+Follow the block order and the per-block inclusion rules in the `props` schema below (the root description and each property's `description`).
+
+Rules:
+- **Scope reading and output to the prompt.** Broad asks ("Research [Company]", "Brief me on [Company]") get the full card set (ICP score, signals, contacts); specific asks ("Is [Company] a good fit?", "Who should I reach out to?") get only the matching card. Don't show something just because you fetched it.
+- **Language:** when the user writes in English, omit `labels`. When they write in another language, send `labels` with EVERY key translated and write every free-text field in that language.
+- **Send data only; never author presentation** (colors, layout, template expressions): the renderer owns the look and shows or hides each block from the keys you send.
+
+### The response is lego blocks, in this fixed order
+
+1. **`title`** (required): The takeaway sentence in the user's context — ICP fit read + hook + ownership status. Never the skill name.
+2. **`answer`** (required): 2–4 markdown bullets with **bold** facts. Scope to the prompt: broad → firmographics + CRM status + whitespace + timing; specific → only what was asked.
+3. **`icpScore`**: ICP fit score card with numeric score + rating + threshold + flag rows. **ALWAYS include for broad prompts** ("Research [Company]", "Brief me on [Company]"). Also include when specifically asked about ICP fit.
+   - `score` (number, required): Numeric ICP fit score out of 100. Example: 72
+   - `rating` (string, required): Qualitative rating based on score. Example: "moderate", "strong", "weak"
+   - `threshold` (number, required): Threshold score for "strong" rating. Example: 80
+   - `flags` (array, required): Fit dimension rows, ranked by impact (blockers first)
+4. **`signals`** (optional): External signals table (M&A, funding, earnings). Include ONLY when the prompt is broad or asks about signals/timing.
+5. **`contacts`** (optional): Stakeholder rows ranked by fit, with draft-outreach hooks and buttons. Include ONLY when the prompt is broad or asks about who to contact. **Every contact row carries a draft card:** `draftLabel` (`"DRAFT"`), `draftText` (a short first-touch message to that person, 2–3 sentences, built only from facts you gathered) and `draftMsg` (a first-person request to draft the full email, e.g. "Draft an intro email to Edward Stamos at Acme United, leading with the efficiency angle."). Without `draftText` the card does not render.
+   Add `Phone { value }` to the Contacts selection of the account query, and send `email` and `phone` on every row whose record has them; the widget renders them as links.
+6. **Tail (XOR)**: Either `callout` (time-sensitive/blocked) OR `nextStep` (non-urgent), never both.
+7. **`sources`** (required): Provenance footer: CRM records and web sources.
+
+### Scope the blocks to the prompt
+
+| The prompt is… | Send |
+|---|---|
+| Broad ("Research [Company]", "Brief me on [Company]") | `title` + `answer` + `icpScore` + `signals` + `contacts` + tail + `sources` |
+| Specific about ICP ("Is [Company] a good fit?") | `title` + `answer` + `icpScore` + tail + `sources` |
+| Specific about contacts ("Who should I reach out to at [Company]?") | `title` + `answer` + `contacts` + tail + `sources` |
+| Specific about signals ("What recent events matter at [Company]?") | `title` + `answer` + `signals` + tail + `sources` |
+| Direct question ("What's [Company]'s industry?") | `title` + `answer` + `sources`; a card only if it speeds up the answer |
+
+### Rules
+
+- Omit a key and its block is not shown; never send empty or placeholder values.
+- Scope the `answer` too: if the user asked only about ICP fit, give only the fit facts in `answer`.
+- The tail is XOR in the data: send `callout` when time-sensitive or blocked, `nextStep` otherwise, never both.
+- Currency, dates, and counts are display-ready strings (e.g., "$230K", "Jan 2026", "3 open opportunities").
+- Names are plain strings, URLs follow Lightning format (`https://<myDomain>/lightning/r/<Type>/<Id>/view`).
+- Rank `icpScore.flags` most-severe first (blockers → cautions → context).
+- Rank `signals.rows` by relevance to the value prop.
+- Rank `contacts` by fit (best entry point first).
+- Every `contacts` row includes `draftLabel`, `draftText` and `draftMsg`. Ground `draftText` in the pipeline, signals and role you found; never invent events or relationships. When the account is owned by someone else, keep the draft neutral and let `hook` carry the coordinate-first caveat.
+- Before calling: no template expressions, no keys outside the schema.
+
+#### Worked examples (the data object only)
+
+**Broad — "Research Acme United Corp before I reach out."** (all blocks — ICP fit, signals, contacts, next step):
+
 ```json
 {
-  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate display_widget call — it names every {{token}} in the template with its type and a worked example so you compute the right value for each. Workflow: build a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — arrays stay arrays, numbers stay numbers; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Realistic values: sample-data.json (sibling). Authoring guidance (from the skill): - [ ] Every `{{token}}` placeholder replaced with a resolved literal — no `{{…}}` left, no `{!…}` expressions in the widget definition.\nThe widget template is embedded below. Call `display_widget` in **dynamic** mode with it. It is a skeleton: replace every `{{token}}` with a fully-resolved literal computed from the data you researched and scored — this echo path does no expression compilation, so no `{!…}` bindings. See `sample-data.json` in this dir for a fully-worked example of every token.\n- **Header** — an icon (search) + page-title text (`{{prospectTitle}}`, the prospect brief title) + a status badge (`{{fitStatus}}`, e.g. \"STRONG FIT\", with `{{fitVariant}}` from the exact verdict mapping), with a one-line caption subhead (`{{prospectSubtitle}}`) summarizing firmographics (industry/employees/revenue/fit), and a separator.\n- **Optional meter** — retain \"ICP fit\" only when an attributable deterministic numeric formula supplies `{{icpValue}}`, `{{icpTarget}}`, `{{icpValueLabel}}`, `{{icpTargetLabel}}`, `{{icpStatus}}`, and complete `{{icpBands}}`; otherwise remove exactly this block before token resolution and keep every independent block.\n- **Signals and openings datagrid** (`{{signalRows}}`) — one row per signal. Columns: Signal (text), Read (badge), Detail (text). Every row carries a leading `status` object (`{value,badgeVariant}` — value Buy/Fit/Watch, badgeVariant success/info/warning); the leading Status column reads each row's `status`.\n- **One synthesis callout** (`variant:\"recommended\"`) — `{{synthTitle}}` (the prospect's single most important read) and `{{synthDetail}}`. It carries two real buttons: a primary prompt button (`{{ctaLabel}}` / `{{ctaMsg}}`, `action/sendMessage`) and a secondary \"View in Salesforce\" (`{{prospectUrl}}`, `action/openLink`).\n1. Determine the meter branch before hydration. A complete attributable numeric formula retains the meter; no complete formula removes exactly the meter block and its six `icp*` tokens.\n2. Start from the embedded template above — a valid-JSON widget-definition envelope whose leaf values carry `{{token}}` placeholders.\n3. Resolve every `{{token}}`. A value that is **only** a `{{token}}` (meter `value`/`bands`, datagrid `rows`) becomes the resolved **typed** literal — numbers stay numbers, arrays stay arrays. A `{{token}}` **inside** a larger string is interpolated as text.\n4. `{{signalRows}}` is an array of signal objects — each with `topic` (signal name), `tag` (`{ value, badgeVariant }`), `note` (detail text), and `status` (`{value,badgeVariant}` — value Buy/Fit/Watch, badgeVariant success/info/warning).\n5. The result is hydrated widget definition (no `{{…}}` placeholders remain). Then call:\n- Resolve every remaining `{{token}}` to a literal before calling — numbers stay numbers (`{{icpValue}}`, `{{icpTarget}}`) only on the formula-backed meter branch, arrays stay arrays (`{{icpBands}}`, `{{signalRows}}`), and strings stay strings. On the scoreless branch, remove the meter first and never synthesize its six numeric tokens. Resolve `{{fitStatus}}` and `{{fitVariant}}` from the exact verdict mapping above.\n- On the formula-backed meter branch, `{{icpBands}}` is an attributable array of `{ from, to, variant, label }` covering 0→100 in order. On the scoreless branch, the meter and this token are absent.\n- Callout buttons: the primary is `action/sendMessage` with a first-person `content` prompt (`{{ctaMsg}}`, e.g. \"Draft a warm intro request…\"); the secondary is `action/openLink` with `{{prospectUrl}}` — the account's Lightning URL (`https://<myDomain>/lightning/r/Account/<Id>/view`), opening a new tab. Omit the openLink button if you lack the Id.",
-  "props": {
-    "prospectTitle": {
-      "description": "Header page title — the prospect brief title.",
-      "type": "string",
-      "example": "Prospect brief — Beacon Health"
-    },
-    "fitStatus": {
-      "description": "Header status badge — ICP verdict (e.g. \"STRONG FIT\").",
-      "type": "string",
-      "example": "STRONG FIT"
-    },
-    "fitVariant": {
-      "description": "Header badge color paired to the verdict: success for Strong, warning for Moderate, error for Poor.",
-      "type": "string",
-      "enum": [
-        "success",
-        "warning",
-        "error"
-      ],
-      "example": "success"
-    },
-    "prospectSubtitle": {
-      "description": "Caption subhead: firmographics (industry / employees / revenue / fit).",
-      "type": "string",
-      "example": "Healthcare · 4,200 employees · $890M revenue · strong ICP fit"
-    },
-    "icpValue": {
-      "description": "Formula-backed meter branch only: ICP fit score (0–100) computed from the attributable numeric formula.",
-      "type": "number",
-      "example": 88
-    },
-    "icpTarget": {
-      "description": "Formula-backed meter branch only: target marker supplied by the same attributable numeric contract.",
-      "type": "number",
-      "example": 70
-    },
-    "icpValueLabel": {
-      "description": "Formula-backed meter branch only: display string for the computed ICP score.",
-      "type": "string",
-      "example": "88 / 100"
-    },
-    "icpTargetLabel": {
-      "description": "Formula-backed meter branch only: display string for the attributable target.",
-      "type": "string",
-      "example": "70 = qualified"
-    },
-    "icpStatus": {
-      "description": "Formula-backed meter branch only: short status derived from the numeric contract.",
-      "type": "string",
-      "example": "strong fit"
-    },
-    "icpBands": {
-      "description": "Formula-backed meter branch only: attributable ordered color bands covering 0→100.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "description": "Band start value.",
-            "type": "number"
-          },
-          "to": {
-            "description": "Band end value.",
-            "type": "number"
-          },
-          "variant": {
-            "description": "Band color.",
-            "type": "string",
-            "enum": [
-              "error",
-              "warning",
-              "success"
-            ]
-          },
-          "label": {
-            "description": "Short band label.",
-            "type": "string"
-          }
-        }
+  "title": "Acme United is a moderate fit (72/100) — the hook is efficiency, and this account is already owned.",
+  "answer": "- **Manufacturing, 680 employees, mid-market, public on NYSE as ACU** — a reasonable Ideal Customer Profile match, but not a clean one.\n- **Already in Salesforce, owned by OrgFarm EPIC with 3 open opportunities ($230K)** on a stale 2024 close date — so this is a coordinate-first motion, not a cold reach.\n- **Whitespace is Sales Cloud and Service Cloud**; the strongest angle is efficiency and cost reduction, not growth.",
+  "icpScore": {
+    "score": 72,
+    "rating": "moderate",
+    "threshold": 80,
+    "flags": [
+      {
+        "title": "Fits the profile — Manufacturing, 680 employees, public on NYSE as ACU.",
+        "detail": "Industry, size, and public-company profile match the ideal profile.",
+        "tone": "success"
       },
-      "example": [
-        {
-          "from": 0,
-          "to": 50,
-          "variant": "error",
-          "label": "Weak"
-        },
-        {
-          "from": 50,
-          "to": 70,
-          "variant": "warning",
-          "label": "Fair"
-        },
-        {
-          "from": 70,
-          "to": 100,
-          "variant": "success",
-          "label": "Strong"
-        }
-      ]
-    },
-    "signalRows": {
-      "description": "Signals and openings — one row per signal. Empty array → the datagrid is omitted.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Leading Status badge cell; omit on normal rows.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "topic": {
-            "description": "Signal name.",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Read badge cell.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Read label (Buy / Fit / Watch).",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "note": {
-            "description": "Detail for the signal.",
-            "type": "string"
-          }
-        }
-      },
-      "example": [
-        {
-          "status": {
-            "value": "Buy",
-            "badgeVariant": "success"
-          },
-          "topic": "Recent funding",
-          "tag": {
-            "value": "Opportunity",
-            "badgeVariant": "success"
-          },
-          "note": "$120M Series D in May — budget available"
-        },
-        {
-          "status": {
-            "value": "Buy",
-            "badgeVariant": "success"
-          },
-          "topic": "New CIO hired",
-          "tag": {
-            "value": "Opportunity",
-            "badgeVariant": "success"
-          },
-          "note": "From a customer of ours — warm angle"
-        },
-        {
-          "status": {
-            "value": "Fit",
-            "badgeVariant": "info"
-          },
-          "topic": "Hiring data engineers",
-          "tag": {
-            "value": "Signal",
-            "badgeVariant": "info"
-          },
-          "note": "12 open reqs — scaling analytics"
-        },
-        {
-          "status": {
-            "value": "Watch",
-            "badgeVariant": "warning"
-          },
-          "topic": "Uses competitor for CRM",
-          "tag": {
-            "value": "Obstacle",
-            "badgeVariant": "warning"
-          },
-          "note": "Contract renews Q1 — time the approach"
-        }
-      ]
-    },
-    "synthTitle": {
-      "description": "Synthesis callout heading — the prospect's single most important read.",
-      "type": "string",
-      "example": "Lead with the new CIO and the funding"
-    },
-    "synthDetail": {
-      "description": "Synthesis callout body.",
-      "type": "string",
-      "example": "Beacon just raised $120M and hired a CIO who knows us from a prior account. Open with a warm intro to the CIO framed around scaling their new data-engineering team — and time it ahead of their Q1 CRM renewal."
-    },
-    "ctaLabel": {
-      "description": "Primary button label (action/sendMessage).",
-      "type": "string",
-      "example": "Draft warm intro"
-    },
-    "ctaMsg": {
-      "description": "First-person prompt the primary button sends (action/sendMessage).",
-      "type": "string",
-      "example": "Draft a warm intro request to connect me to the Beacon Health CIO, mentioning they know our product from a prior account."
-    },
-    "prospectUrl": {
-      "description": "Account Lightning URL for the secondary \"View in Salesforce\" button; omit if no Id.",
-      "type": "string",
-      "example": "https://org.lightning.force.com/lightning/r/Account/001AX000005mNq8YAE/view"
+      {
+        "title": "Ownership conflict — already in Salesforce under a different representative.",
+        "detail": "Owned by OrgFarm EPIC with $230K of open pipeline on a stale 2024 close date. Coordinate before any outreach.",
+        "tone": "warning"
+      }
+    ]
+  },
+  "signals": {
+    "rows": [
+      {
+        "signal": "M&A",
+        "headline": "SLED Distribution acquisition · Jan 2026.",
+        "context": "Asset acquisition adds integration and scaling needs — a natural expansion conversation once ownership is coordinated. Best entry point."
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "name": "Edward Stamos",
+      "title": "President & CEO",
+      "email": "estamos@acmeunited.com",
+      "phone": "+1 (203) 555-0142",
+      "hook": "Lead with the efficiency and cost-reduction story.",
+      "draftLabel": "DRAFT",
+      "draftText": "Edward — congratulations on the SLED Distribution close...",
+      "draftMsg": "Draft an intro email to Edward Stamos at Acme United, leading with the efficiency angle and the SLED acquisition."
     }
-  }
+  ],
+  "nextStep": {
+    "text": "This is a coordinate-first account — align with OrgFarm EPIC on the efficiency angle before any outreach.",
+    "buttonLabel": "Save to Salesforce",
+    "actionMsg": "Save this research to the Acme United account record in Salesforce."
+  },
+  "sources": [
+    {
+      "label": "Account: Acme United Corp",
+      "url": "https://orgfarm.lightning.force.com/lightning/r/Account/001AX000005mNq8YAE/view"
+    }
+  ]
 }
 ```
+
+**Specific — "Is Acme United a good fit for our ICP?"** (ICP score only, answer scoped to fit):
+
 ```json
 {
-  "renderer": {
-    "componentOverrides": {
-      "$": {
-        "type": "mosaic",
-        "definition": "tile/widget",
-        "children": [
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "justify": "between",
-              "isWrapped": true
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": false
-                },
-                "children": [
-                  {
-                    "definition": "tile/icon",
-                    "attributes": {
-                      "name": "search",
-                      "size": "xl",
-                      "alt": ""
-                    }
-                  },
-                  {
-                    "definition": "tile/text",
-                    "attributes": {
-                      "text": "{{prospectTitle}}",
-                      "variant": "h1"
-                    }
-                  }
-                ]
+  "title": "Acme United is a moderate fit (72/100) — Manufacturing profile matches, but ownership conflict requires coordination.",
+  "answer": "- **Fits on industry, size, and public-company profile** — Manufacturing, 680 employees, NYSE-listed.\n- **Ownership conflict blocks direct outreach** — already owned by OrgFarm EPIC with $230K stale pipeline.\n- **Mixed financials** — tariff pressure makes efficiency story stronger than growth.",
+  "icpScore": {
+    "score": 72,
+    "rating": "moderate",
+    "threshold": 80,
+    "flags": [
+      {
+        "title": "Fits the profile — Manufacturing, 680 employees, public on NYSE as ACU.",
+        "detail": "Industry, size, and public-company profile match the ideal profile.",
+        "tone": "success"
+      },
+      {
+        "title": "Ownership conflict — already in Salesforce under a different representative.",
+        "detail": "Owned by OrgFarm EPIC with $230K of open pipeline on a stale 2024 close date. Coordinate before any outreach.",
+        "tone": "warning"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Account: Acme United Corp",
+      "url": "https://orgfarm.lightning.force.com/lightning/r/Account/001AX000005mNq8YAE/view"
+    }
+  ]
+}
+```
+
+
+`props` schema (JSON Schema). Only `title`, `answer` and `sources` are required; include any other key only when the prompt asks for it or it clearly speeds up the answer (see "Scope the blocks to the prompt").
+
+The optional `labels` object lets you override fixed eyebrow text for non-English prompts. For English prompts, omit `labels` entirely — the renderer uses defaults. Only include it when the user's prompt is clearly non-English.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "answer",
+    "sources"
+  ],
+  "description": "Data contract for research-prospect lego widget. The model sends this shape as props to ui://widget/standard/research-prospect. Only title/answer/sources are required; include any other key only when the prompt asks for it or when it speeds understanding.",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The takeaway sentence in the user's context \u2014 ICP fit read + hook + ownership status. Never the skill name."
+    },
+    "answer": {
+      "type": "string",
+      "description": "2\u20134 markdown bullets with **bold** facts. Scope to the prompt: broad \u2192 firmographics + CRM status + whitespace + timing; specific \u2192 only what was asked."
+    },
+    "icpScore": {
+      "type": "object",
+      "description": "Include ONLY when the prompt is broad or asks about ICP fit. ICP fit score card with flag rows explaining the score dimensions.",
+      "additionalProperties": false,
+      "required": [
+        "flags"
+      ],
+      "properties": {
+        "score": {
+          "type": "number",
+          "description": "Numeric ICP fit score out of 100. Example: 72"
+        },
+        "rating": {
+          "type": "string",
+          "description": "Qualitative rating based on score. Example: 'moderate', 'strong', 'weak'"
+        },
+        "threshold": {
+          "type": "number",
+          "description": "Threshold score for 'strong' rating. Example: 80"
+        },
+        "flags": {
+          "type": "array",
+          "description": "Fit dimension rows, ranked by impact (blockers first). Each row: title (the dimension + verdict), detail (evidence), tone (error/warning/success).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "tone"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Bold dimension line with verdict. Example: 'Fits the profile \u2014 Manufacturing, 680 employees, public on NYSE as ACU.'"
               },
-              {
-                "definition": "tile/badge",
-                "attributes": {
-                  "label": "{{fitStatus}}",
-                  "variant": "{{fitVariant}}"
-                }
+              "detail": {
+                "type": "string",
+                "description": "Muted evidence line beneath. Example: 'Industry, size, and public-company profile match the ideal profile; the Jan 2026 SLED Distribution acquisition signals integration and scaling needs.'"
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "error",
+                  "warning",
+                  "success",
+                  "muted"
+                ],
+                "description": "Severity: error (blocker), warning (caution), success (strong fit), muted (context)."
               }
-            ]
-          },
-          {
-            "definition": "tile/text",
-            "attributes": {
-              "text": "{{prospectSubtitle}}",
-              "variant": "caption",
-              "color": "muted"
             }
-          },
-          {
-            "definition": "tile/separator"
-          },
-          {
-            "definition": "tile/meter",
-            "attributes": {
-              "label": "ICP fit",
-              "value": "{{icpValue}}",
-              "min": 0,
-              "max": 100,
-              "target": "{{icpTarget}}",
-              "valueFormat": "number",
-              "valueLabel": "{{icpValueLabel}}",
-              "targetLabel": "{{icpTargetLabel}}",
-              "status": "{{icpStatus}}",
-              "bands": "{{icpBands}}"
-            }
-          },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "What we know — signals and openings",
-              "appearance": "striped",
-              "size": "sm",
-              "columns": [
-                {
-                  "key": "status",
-                  "header": "Status",
-                  "type": "badge"
-                },
-                {
-                  "key": "topic",
-                  "header": "Signal",
-                  "type": "text"
-                },
-                {
-                  "key": "tag",
-                  "header": "Read",
-                  "type": "badge"
-                },
-                {
-                  "key": "note",
-                  "header": "Detail",
-                  "type": "text"
-                }
-              ],
-              "rows": "{{signalRows}}"
-            }
-          },
-          {
-            "definition": "tile/callout",
-            "attributes": {
-              "variant": "recommended",
-              "title": "{{synthTitle}}",
-              "description": "{{synthDetail}}"
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": [
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "{{ctaLabel}}",
-                      "variant": "primary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{ctaMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "View in Salesforce",
-                      "iconName": "open-in-new",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/openLink",
-                            "attributes": {
-                              "url": "{{prospectUrl}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
           }
-        ]
+        }
+      }
+    },
+    "signals": {
+      "type": "object",
+      "description": "Include ONLY when the prompt is broad or asks about signals/timing. External signals (M&A, funding, earnings, etc.).",
+      "additionalProperties": false,
+      "required": [
+        "rows"
+      ],
+      "properties": {
+        "rows": {
+          "type": "array",
+          "description": "Signal rows, ranked by relevance to the value prop.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "signal",
+              "headline",
+              "context"
+            ],
+            "properties": {
+              "signal": {
+                "type": "string",
+                "description": "Signal category (bold, short). Example: 'M&A', 'Financing', 'Earnings'"
+              },
+              "headline": {
+                "type": "string",
+                "description": "Bold lead for the detail. Example: 'SLED Distribution acquisition \u00b7 Jan 2026.' or 'Q1 2026 results:'"
+              },
+              "context": {
+                "type": "string",
+                "description": "Plain text context following the headline. Example: 'Asset acquisition adds integration and scaling needs \u2014 a natural expansion conversation once ownership is coordinated. Best entry point.'"
+              }
+            }
+          }
+        }
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "description": "Include ONLY when the prompt is broad or asks about who to contact. Stakeholder rows ranked by fit, with draft-outreach hooks and buttons.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "title",
+          "hook"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name. Example: 'Edward Stamos'"
+          },
+          "title": {
+            "type": "string",
+            "description": "Role and any context. Example: 'President & CEO' or 'VP Customer Support \u00b7 potential champion'"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address if known."
+          },
+          "phone": {
+            "type": "string",
+            "description": "Formatted phone if known. Example: '+1 (203) 555-0142'"
+          },
+          "hook": {
+            "type": "string",
+            "description": "The reason to reach out, without a \"Why reach out\" prefix (the widget adds the label). Example: 'Lead with the efficiency and cost-reduction story.'"
+          },
+          "draftLabel": {
+            "type": "string",
+            "description": "Draft button label. Example: 'Draft' or omit if no draft message."
+          },
+          "draftText": {
+            "type": "string",
+            "description": "The actual drafted message body to show in the card. Example: 'Edward \u2013 congratulations on the SLED Distribution close. As you integrate those assets, a few manufacturing peers have used us to consolidate ops and protect margin against tariff pressure. Worth a 20-minute conversation on where the efficiency gains land first?'"
+          },
+          "draftMsg": {
+            "type": "string",
+            "description": "First-person prompt for action/sendMessage. Example: 'Draft an intro email to Edward Stamos at Acme United, leading with the efficiency angle and the SLED acquisition.'"
+          },
+          "source": {
+            "type": "string",
+            "description": "Context badge for non-CRM contacts. Example: 'Not in Salesforce \u00b7 from LinkedIn'"
+          }
+        }
+      }
+    },
+    "callout": {
+      "type": "object",
+      "description": "Include ONLY for time-sensitive or urgent recommendations. Mutually exclusive with nextStep (tail fork). Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "additionalProperties": false,
+      "required": [
+        "lead",
+        "text"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). Bold callout heading. Example: 'Coordinate with the owner first'"
+        },
+        "text": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). Callout body \u2014 what to do and why."
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "tip",
+            "note",
+            "blocker"
+          ],
+          "description": "Emphasis level per design rules: tip (quiet context), note (standard move), blocker (time-sensitive/blocked). Omit to default to 'note'."
+        },
+        "buttonLabel": {
+          "type": "string",
+          "description": "Primary action button label. Omit if no button."
+        },
+        "actionMsg": {
+          "type": "string",
+          "description": "First-person prompt for action/sendMessage when button is clicked."
+        }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "description": "Include ONLY when no callout (tail fork). Non-urgent suggested next action.",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "Optional bold lead-in. Example: 'Save this research to the account record'"
+        },
+        "text": {
+          "type": "string",
+          "description": "Suggested next step. Example: 'This is a coordinate-first account \u2014 align with OrgFarm EPIC on the efficiency angle before any outreach. Save this research to the account record so the owner has the signals and draft messages in context.'"
+        },
+        "buttonLabel": {
+          "type": "string",
+          "description": "Action button label. Example: 'Save to Salesforce'. Omit if no button."
+        },
+        "actionMsg": {
+          "type": "string",
+          "description": "First-person prompt for action/sendMessage when button is clicked."
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Always required. Provenance footer: CRM records and web sources. Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Source name. Example: 'Account: Acme United Corp' or 'Acme United Q1 2026 Earnings'"
+          },
+          "url": {
+            "type": "string",
+            "description": "Link if available. CRM records use Lightning URLs; web sources use their public URL."
+          }
+        }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "description": "Optional fixed label text for non-English prompts. Model omits this for English; host fills missing values from defaults.",
+      "additionalProperties": false,
+      "properties": {
+        "icpScoreCaption": {
+          "type": "string",
+          "default": "ICP Fit Summary",
+          "description": "ICP fit card heading"
+        },
+        "icpFlagsCaption": {
+          "type": "string",
+          "default": "Fit Dimensions",
+          "description": "ICP flags table caption"
+        },
+        "signalsCaption": {
+          "type": "string",
+          "default": "Recent Findings",
+          "description": "Signals card heading"
+        },
+        "signalCategoryHeader": {
+          "type": "string",
+          "default": "Signal Category",
+          "description": "Signals table first column header"
+        },
+        "signalHeader": {
+          "type": "string",
+          "default": "Signal",
+          "description": "Signals table second column header"
+        },
+        "contactsCaption": {
+          "type": "string",
+          "default": "Who to Contact",
+          "description": "Contacts card heading"
+        },
+        "hookPrefix": {
+          "type": "string",
+          "default": "Why Reach Out",
+          "description": "Hook prefix label"
+        },
+        "send": {
+          "type": "string",
+          "default": "Send",
+          "description": "Send button label"
+        }
       }
     }
   }
 }
 ```
 
-What each block shows, from data you already gathered:
-
-- **Header** — an icon (search) + page-title text (`{{prospectTitle}}`, the prospect brief title) + a status badge (`{{fitStatus}}`, e.g. "STRONG FIT", with `{{fitVariant}}` from the exact verdict mapping), with a one-line caption subhead (`{{prospectSubtitle}}`) summarizing firmographics (industry/employees/revenue/fit), and a separator.
-- **Optional meter** — include "ICP fit" only when an attributable deterministic numeric formula supplies `{{icpValue}}`, `{{icpTarget}}`, `{{icpValueLabel}}`, `{{icpTargetLabel}}`, `{{icpStatus}}`, and complete `{{icpBands}}`; without it, remove exactly the meter and preserve every independent block.
-- **Signals and openings datagrid** (`{{signalRows}}`) — one row per signal. Columns: Signal (text), Read (badge), Detail (text). Every row carries a leading `status` object (`{value,badgeVariant}` — value Buy/Fit/Watch, badgeVariant success/info/warning); the leading Status column reads each row's `status`.
-- **One synthesis callout** (`variant:"recommended"`) — `{{synthTitle}}` (the prospect's single most important read) and `{{synthDetail}}`. It carries two real buttons: a primary prompt button (`{{ctaLabel}}` / `{{ctaMsg}}`, `action/sendMessage`) and a secondary "View in Salesforce" (`{{prospectUrl}}`, `action/openLink`).
-
-**Hydration rules:**
-1. Determine the meter branch before hydration. A complete attributable numeric formula retains the meter; no complete formula removes exactly the `tile/meter` child and its six `icp*` tokens.
-2. Start from the embedded template above — a valid-JSON widget-definition envelope whose leaf values carry `{{token}}` placeholders.
-3. Resolve every remaining `{{token}}`. A value that is **only** a `{{token}}` (formula-backed meter `value`/`bands`, datagrid `rows`) becomes the resolved **typed** literal — numbers stay numbers, arrays stay arrays. A `{{token}}` **inside** a larger string is interpolated as text.
-4. `{{signalRows}}` is an array of signal objects — each with `topic` (signal name), `tag` (`{ value, badgeVariant }`), `note` (detail text), and `status` (`{value,badgeVariant}` — value Buy/Fit/Watch, badgeVariant success/info/warning).
-5. The result is a hydrated widget definition with no unresolved token. Then call:
-
-```
-display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated renderer.json> })
-```
-
-**Binding rules:**
-- Resolve every remaining `{{token}}` to a literal before calling — numbers stay numbers (`{{icpValue}}`, `{{icpTarget}}`) only on the formula-backed meter branch, arrays stay arrays (`{{icpBands}}`, `{{signalRows}}`), and strings stay strings. On the scoreless branch, remove the meter first and never synthesize its six numeric tokens. Resolve `{{fitStatus}}` and `{{fitVariant}}` from the exact verdict mapping above.
-- On the formula-backed meter branch, `{{icpBands}}` is an attributable array of `{ from, to, variant, label }` covering 0→100 in order. On the scoreless branch, the meter and this token are absent.
-- `datagrid` rows: one per signal. The Read badge (`tag.badgeVariant`) reflects signal type — `"success"` (Opportunity), `"info"` (Signal), `"warning"` (Obstacle). `status` fills the leading Status column.
-- Callout buttons: the primary is `action/sendMessage` with a first-person `content` prompt (`{{ctaMsg}}`, e.g. "Draft a warm intro request…"); the secondary is `action/openLink` with `{{prospectUrl}}` — the account's Lightning URL (`https://<myDomain>/lightning/r/Account/<Id>/view`), opening a new tab. Omit the openLink button if you lack the Id.
-- No fabricated content — quote blank fields as blank rather than inventing them; drop signals you have no data for.
 
 
+## 6. Output (FALLBACK ONLY — DO NOT USE IF display_widget SUCCEEDED)
 
-## 6. Output
+Scope this to the prompt too: if the user asked only about ICP fit, give only the ICP section and the headline. Omit any section whose source wasn't available or that the prompt didn't ask for.
 
 ```
 # Prospect Research: [Company]

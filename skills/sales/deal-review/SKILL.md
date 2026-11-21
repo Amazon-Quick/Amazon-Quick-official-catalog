@@ -1,16 +1,13 @@
 ---
 name: deal-review
 display_name: Deal Review
-description: "Build a scored deal-health assessment from Salesforce fields, contacts and activity plus email, documents and Slack, with evidence-backed risks. Use to judge whether one deal will close; for stage-exit gaps and a sequenced path, use deal-advance-gap."
+description: "Review one deal and judge whether it is real, scoped to what was asked: a full review with a qualification scorecard read, e.g. MEDDIC (or the flags and recent activity when the org has no scorecard), the deal's risks alone, what happened lately, or what to do next, from Salesforce fields, contacts and activity plus email, documents and Slack. For stage-exit gaps and a sequenced path, use deal-advance-gap."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:ed41c36c96e969fc360f056dcb9118b12a79d44df4283378e08e0180a65a887f"
+checksum: "sha256:ad316e1d35f71e0b28f8dcfcae921b083149e6ad32beebea752adbb88eafbb32"
 id: "50ea00df-5516-4263-ae33-dbd2e647a88a"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -20,10 +17,26 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
+
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
+# Goal:
+Answer what the user asked about one deal (is it real, how qualified it is, what the risks are, what happened lately, or what to do next) in one pass. **Read only what the question needs** and present only that: a review (e.g. "review the Cedarline opportunity. Is it real?") reads the deal and its evidence and shows the verdict with its cards; a specific ask (e.g. "what's the risk on Cedarline?") shows only that.
+
 # Rules:
+
+- **Scope reading and output to the prompt, never a default full review.** Skip reads the question doesn't need (each read step says which), and don't show something just because you fetched it.
 
 
 # Deal Review
@@ -41,7 +54,9 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
 
 Step 1 is the authority on names — use exact strings from it, never guess. Select relevant `__c` fields (health, next-step, exec-sponsor, forecast, risk signals, etc.) as `{ value }` and keep each field's `label`. **Build an ApiName→label map now and use the `label` in ALL output** (e.g. render `Executive_Sponsor__c` as "Executive Sponsor", `Health_Score__c` as "Health Score") — never print a `__c` API name to the user.
 
-**Stage order — local correction:** `stages` lists the Stage picklist in the org's order, read from the primary record type (`012000000000000AAA`). Take `kpiStageNum` from the deal's position in it (two digits, for example `04`) and `kpiStageSub` from the stages after it up to and including Closed Won (for example, "5 stages to close"). Never infer either from general sales knowledge.
+**Stage order:** `stages` lists the Stage picklist in the org's order, read from the master record type (`012000000000000AAA`). Take `kpiStageNum` from the deal's position in it (two digits, for example `04`) and `kpiStageSub` from the stages after it up to and including Closed Won (for example, "5 stages to close"). Never infer either from general sales knowledge.
+
+Every ask needs this grounding. It also tells you whether the org has a **qualification scorecard**: Opportunity fields whose label or ApiName names a qualification methodology's criteria (e.g. MEDDIC/MEDDPICC: Metrics, Economic Buyer, Decision Criteria, Decision Process, Paper Process, Identify Pain, Champion, Competition). It is a scorecard only when **at least three distinct criteria** each have their own field; select those as `<OPP_CUSTOM>`. One or two matches (e.g. a lone "Competition Notes" field) are ordinary deal fields: read them as evidence, but there is no scorecard.
 
 ## 2. Read (fill from step 1)
 
@@ -49,14 +64,14 @@ Step 1 is the authority on names — use exact strings from it, never guess. Sel
 
 Insert `<OPP_CUSTOM>` = relevant confirmed `__c { value }` fields. Standard fields and `OpportunityContactRoles` always work.
 
+Every ask sends this one read: the verdict, the risks and the activity all come from it. A "what should I do?" follow-up reuses what was already read in this conversation and sends nothing new.
+
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Name: { like: \\\"%DEALNAME%\\\" } }, orderBy: { CloseDate: { order: DESC } }, first: 1) { totalCount edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } CreatedDate { value } Type { value displayValue } Probability { value } ForecastCategoryName { value } NextStep { value } LastActivityDate { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } Tasks(first: 15, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Status { value } Description { value } TaskSubtype { value } } } } Events(first: 10, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Description { value } } } } OpportunityHistories(first: 200, orderBy: { CreatedDate: { order: DESC } }) { edges { node { CreatedDate { value } StageName { value } Amount { value displayValue } PrevAmount { value displayValue } CloseDate { value } PrevCloseDate { value } } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Name: { like: \\\"%DEALNAME%\\\" } }, orderBy: { CloseDate: { order: DESC } }, first: 1) { totalCount edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } CreatedDate { value } Type { value displayValue } Probability { value } ForecastCategory { value } NextStep { value } LastActivityDate { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } Tasks(first: 15, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Status { value } Description { value } TaskSubtype { value } } } } Events(first: 10, orderBy: { ActivityDate: { order: DESC } }) { edges { node { Subject { value } ActivityDate { value } Description { value } } } } OpportunityHistories(first: 200, orderBy: { CreatedDate: { order: DESC } }) { edges { node { CreatedDate { value } StageName { value } Amount { value displayValue } PrevAmount { value displayValue } CloseDate { value } PrevCloseDate { value } } } } } } } } } }\"}" })
 ```
 
-**Forecast category — local correction:** The read returns `ForecastCategoryName` (Pipeline, Best Case, Commit, Closed, Omitted), the category reps see. `ForecastCategory` returns internal values, such as `Forecast` for Commit, that are not labels.
-
-**Multiple matches — local correction:** `first: 1` returns one deal even when `totalCount` shows that several matched, and the latest close date can belong to a different deal. When `totalCount` is above 1, run the candidate read below before using the result. If `totalCount` is above 10, its list would be cut off, so first narrow `%DEALNAME%` with the account or other words from the request (for example `%Acme%Renewal%`), never with a name from a returned deal. Then:
+**Multiple matches:** `first: 1` returns one deal even when `totalCount` shows that several matched, and the latest close date can belong to a different deal. When `totalCount` is above 1, run the candidate read below before using the result. If `totalCount` is above 10, its list would be cut off, so first narrow `%DEALNAME%` with the account or other words from the request (for example `%Acme%Renewal%`), never with a name from a returned deal. Then:
 - if the list is empty or still cut off (`totalCount` above the rows returned), or narrowing was needed and the request had nothing to narrow with, say how many deals matched and ask for the full deal name or the account instead of listing a partial set;
 - if exactly one candidate's `Name` equals the deal name the user gave, take it;
 - otherwise, if exactly one candidate is open, take it;
@@ -83,6 +98,8 @@ A snapshot dated *this* cycle with `CloseDate` different from `PrevCloseDate` = 
 
 Use whatever email/doc/Slack search tools are available. If none are present, skip silently (SF-only is fine). Never block on these; cite source + date for anything you use.
 
+A review and a risk ask run these searches; an activity-only ask (e.g. "what's happened on Cedarline lately?") runs only email, and a follow-up reuses earlier results.
+
 ## 3. Analyze (cite every value/source; invent nothing)
 
 Signal-adjust from SFDC `Probability`, only on a shown trigger:
@@ -94,819 +111,359 @@ Signal-adjust from SFDC `Probability`, only on a shown trigger:
 
 Report any grounded `Executive Sponsor` by name.
 
+On a scorecard org, rate each grounded criterion from its field value and the evidence:
+- **High** — the field is filled and current evidence confirms it (an engaged, named person; a confirmed number or date).
+- **Med** — identified but partial, unresponsive or disrupted.
+- **Low** — empty, not validated with the buyer, or contradicted by the evidence (e.g. the named champion left).
+
+**Is it real?** — compare the evidence with `ForecastCategory`. It returns the API value, not the label: `Forecast` = **Commit**, `BestCase` = Best Case, `Pipeline`, `Omitted`, `Closed`; always say the label. A Commit (`Forecast`) deal with any Low criterion, or with no completed buyer touch in 14d+, is not real as a Commit; say where it belongs (Best Case, Pipeline) and why. Without a scorecard, judge it from the risks and the activity states above.
+
 ## 4. Output — widget FIRST (the rendered UI is the default)
 
 When the data is assembled, call `display_widget`; a single one-line "Displaying the visualization now (this may take a minute)." notice may precede it.
 
 ### Self-verification (before calling display_widget)
 
-- [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
 
-Two blocks are embedded below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}` in the template with its type and a worked example; then the **widget template** (`renderer.json`). Compute a value for each token per the contract, substitute it into the template, and call `display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated> })` once (see the `widgetDefinition` param for token-resolution rules).
+The layout is built into the renderer and registered by name — you send **only the widget name and its data**. Call `display_widget` once:
+
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/deal-review", props: <object matching the schema below> })
+```
+
+- **Send data only; never author presentation** (colours, pills, icons, HTML, emoji, layout keys, `{!…}`/`{{…}}`): the renderer owns the look and shows or hides each block from the keys you send. Keys outside the schema are rejected.
+- **CRITICAL — `props` must be a nested JSON object, NOT a string.** ❌ WRONG: `props: "{\"title\":...}"`. ✅ RIGHT: `props: {"title": ...}`. If you hold a JSON string, `JSON.parse` it first.
+- When `display_widget` is available the widget is the output; produce the section 5 text only as the fallback when the tool is unavailable (e.g. a terminal).
+
+### What to send
+
+Follow the block order and the per-block inclusion rules in the `props` schema below (the root description and each property's `description`).
+
+Rules:
+- **Language:** when the user writes in English, omit `labels`. When they write in another language, send `labels` with EVERY key translated (headings in upper case) and write every free-text field (`criterion`, `state`, `detail`, `_status`, flag and activity text, ...) in that language. Never join translated text with English fragments: each phrase is written whole, because word order differs.
+
+### Scope the blocks to the prompt
+
+The schema marks only `title`, `answer` and `sources` as required. **Every other key is a choice, and the choice follows the question — not what you happened to retrieve.** Data you fetched but did not use stays out of the widget.
+
+| The prompt is… | Send |
+|---|---|
+| A review, on a scorecard org (e.g. "review the Cedarline opportunity. Is it real?", "how qualified is Cedarline?") | `title` + `answer` + `qualification` + tail only if it applies + `sources` |
+| A review, no scorecard | `title` + `answer` + `flags` + `activity` + tail only if it applies + `sources` |
+| The risks (e.g. "what's the risk on Cedarline?", "why is it at risk?") | `title` + `answer` + **only** `flags` + `sources` |
+| What happened (e.g. "what's happened on Cedarline lately?") | `title` + `answer` + **only** `activity` + `sources` |
+| What to do ("what should I do about it?") | `title` + `answer` + `callout` (or `nextStep` when nothing is time-sensitive) + `sources` — no card |
+
+Rules:
+- **Omit a key and its block is not shown.** Never send empty arrays, empty strings, placeholder text, or "N/A" to fill a block, and never send a card the prompt did not ask for.
+- **`title`** is the verdict (e.g. "Not real as a Commit – …", "$640K closing in 8 days, but …"); **`answer`** is a short paragraph: the amount, stage and days to close, then why. On a no-scorecard org, say so in one clause (e.g. "There's no MEDDIC scorecard on this org, so here's the read from the record itself").
+- **`qualification`:** one row per grounded criterion, LOW rows first, then MED, then HIGH. Low is `_tone: "error"`, `_status: "LOW"`; Med is `"warning"`, `"MED"`; High is `"success"`, `"HIGH"`. `criterion` is the field's label, `state` a few words, `detail` the evidence.
+- **`flags`:** the evidenced risks, most severe first: `error` when it can stop the close, `warning` for a live threat, `neutral` for context (an inactive contact). `title` is bold (who/what + the fact), `context` a few words after it, `detail` the evidence and consequence.
+- **`activity`:** newest first, at most 6 rows, completed touches only (step 3's three states); end with one `muted: true` row, `date: "Since"`, when the buyer has gone quiet since the last row.
+- **Tail fork:** `callout` when one move is time-sensitive and the user can act on it (one button, a first-person `actionMsg`); otherwise a `nextStep` line; if nothing applies, neither. A specific ask usually gets no tail; the "what should I do?" ask gets the callout. Never both (if both are sent only the callout renders).
+- **Sources:** a record is `https://<myDomain>/lightning/r/<Object>/<Id>/view`. Omit `url` if you have no Id.
+- Format every value as a ready-to-display string ("$640K", "Aug 31", "closes in 8 days"); dates are short ("Aug 20"), never ISO. Names are plain strings, never objects.
+- Before calling: `props` has no `{!…}`/`{{…}}`, no keys outside the schema, and every optional key you included is justified by the prompt.
+
+#### Worked examples (the `props` object only)
+
+The names, amounts and dates below (e.g. Cedarline, Priya Anand, $640K, Aug 31) are illustrative; fill every value from the deal you read.
+
+**Review, scorecard org — e.g. "Review the Cedarline opportunity. Is it real?"** (the qualification card and a callout):
 
 ```json
 {
-  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate call — it names every {{token}} in the template, with each value's type and a worked example, so you compute the right value for each. Workflow: compute a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — qualRows stays an array; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Layout: header (title + status pill) → healthLine caption → recommended-move callout → 4 KPI stat strip → MEDDIC datagrid → deal card + blocker callout. Realistic values: sample-data.json (sibling).",
-  "props": {
-    "dealName": {
-      "description": "Opportunity name (page title, header row).",
-      "type": "string",
-      "example": "Cobalt Robotics renewal + expansion"
-    },
-    "headerStatus": {
-      "description": "Status pill beside the title (warning tone). Short urgency read.",
-      "type": "string",
-      "example": "6 DAYS TO CLOSE"
-    },
-    "healthLine": {
-      "description": "One muted caption under the header — the composite health read: a 🟢/🟡/🔴 marker, 'Health <X>/10', and a one-clause verdict. The emoji + text carry the state, never color alone.",
-      "type": "string",
-      "example": "🟡 Health 6/10 — strong economics, but an unstarted paper process is the risk to a Jul 30 close"
-    },
-    "recMove": {
-      "description": "Recommended-move callout heading — the #1 next action.",
-      "type": "string",
-      "example": "Get legal the contract today, reconfirm the champion holds on price"
-    },
-    "recMoveDetail": {
-      "description": "Recommended-move callout body — why, and the specific move.",
-      "type": "string",
-      "example": "Paper process hasn't started and engagement dipped this week. With 6 days to close, send redlines this morning and confirm the VP Eng will defend the price when procurement pushes back."
-    },
-    "recMoveMsg": {
-      "description": "Draft-action prompt behind the callout's primary button (compose a message/email for the top move).",
-      "type": "string",
-      "example": "Draft a note to legal requesting contract redlines for the Cobalt Robotics deal by end of day, flagging the Jul 30 close date."
-    },
-    "recMoveChampMsg": {
-      "description": "Draft-action prompt for the champion-reconfirmation secondary action.",
-      "type": "string",
-      "example": "Draft a reconfirmation message to the VP Eng at Cobalt asking if they'll hold on price when procurement counters."
-    },
-    "recMoveOpenMsg": {
-      "description": "Action prompt for the 'open in Salesforce' secondary action.",
-      "type": "string",
-      "example": "Open the Cobalt Robotics renewal + expansion opportunity in Salesforce and summarize its current state."
-    },
-    "kpiAmountNum": {
-      "description": "KPI 1 value — deal amount. Format: currency symbol + K/M/B, one decimal max, no trailing .0 (e.g., 20K, 1.3M, 20B).",
-      "type": "string",
-      "example": "$1.8M"
-    },
-    "kpiAmountSub": {
-      "description": "KPI 1 sublabel (context under the amount, e.g. current stage).",
-      "type": "string",
-      "example": "Negotiation"
-    },
-    "kpiStageNum": {
-      "description": "KPI 2 value — stage number, display-formatted.",
-      "type": "string",
-      "example": "06"
-    },
-    "kpiStageLabel": {
-      "description": "KPI 2 label — the grounded stage name (human label, never an API name).",
-      "type": "string",
-      "example": "Finalizing Closure"
-    },
-    "kpiStageSub": {
-      "description": "KPI 2 sublabel (stages remaining).",
-      "type": "string",
-      "example": "1 stage to close"
-    },
-    "kpiCloseNum": {
-      "description": "KPI 3 value — count until close (paired with kpiCloseUnit).",
-      "type": "string",
-      "example": "6"
-    },
-    "kpiCloseUnit": {
-      "description": "KPI 3 unit for kpiCloseNum.",
-      "type": "string",
-      "example": "days"
-    },
-    "kpiCloseSub": {
-      "description": "KPI 3 sublabel — the close date.",
-      "type": "string",
-      "example": "Jul 30, 2026"
-    },
-    "kpiQualNum": {
-      "description": "KPI 4 value — MEDDIC criteria met (paired with kpiQualUnit).",
-      "type": "string",
-      "example": "3"
-    },
-    "kpiQualUnit": {
-      "description": "KPI 4 unit for kpiQualNum.",
-      "type": "string",
-      "example": "of 6"
-    },
-    "kpiQualSub": {
-      "description": "KPI 4 sublabel.",
-      "type": "string",
-      "example": "MEDDIC met"
-    },
-    "qualBadge": {
-      "description": "Badge on the MEDDIC datagrid heading (gap count).",
-      "type": "string",
-      "example": "3 gaps"
-    },
-    "qualCaption": {
-      "description": "Caption above the MEDDIC datagrid.",
-      "type": "string",
-      "example": "MEDDIC qualification — gaps block the commit"
-    },
-    "qualRows": {
-      "description": "MEDDIC datagrid rows, one object per criterion (whole-token: stays an array). Each row: crit (criterion name), state ({ value, badgeVariant: success|warning|error }), detail (evidence clause), status ({value,badgeVariant} — value Met|Gap, badgeVariant success|warning|error).",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Leading Status badge cell; omit on normal rows.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "crit": {
-            "description": "MEDDIC criterion name (e.g. Metrics, Economic buyer, Paper process).",
-            "type": "string"
-          },
-          "state": {
-            "description": "Criterion status badge cell.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label shown on the badge (e.g. Confirmed / Missing).",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "detail": {
-            "description": "Evidence clause for the criterion.",
-            "type": "string"
-          }
-        }
-      },
-      "example": [
-        {
-          "status": {
-            "value": "Met",
-            "badgeVariant": "success"
-          },
-          "crit": "Metrics",
-          "state": {
-            "value": "Confirmed",
-            "badgeVariant": "success"
-          },
-          "detail": "18% cost reduction, quantified with buyer"
-        },
-        {
-          "status": {
-            "value": "Gap",
-            "badgeVariant": "error"
-          },
-          "crit": "Paper process",
-          "state": {
-            "value": "Missing",
-            "badgeVariant": "error"
-          },
-          "detail": "Redlines not started with 6 days to close"
-        }
-      ]
-    },
-    "dealAccount": {
-      "description": "Deal-card account name.",
-      "type": "string",
-      "example": "Cobalt Robotics"
-    },
-    "dealStage": {
-      "description": "Deal-card stage badge (grounded stage label).",
-      "type": "string",
-      "example": "Negotiation"
-    },
-    "dealTiming": {
-      "description": "Deal-card timing badge.",
-      "type": "string",
-      "example": "Closes in 6 days"
-    },
-    "dealAmount": {
-      "description": "Deal-card amount, display-formatted.",
-      "type": "string",
-      "example": "$1.8M"
-    },
-    "dealUrl": {
-      "description": "Lightning record URL for the deal-card link. Omit if no valid Id.",
-      "type": "string",
-      "example": "https://org.lightning.force.com/lightning/r/Opportunity/006AX00000M8k2pYAD/view"
-    },
-    "blockerTitle": {
-      "description": "Blocker callout heading — the single biggest risk.",
-      "type": "string",
-      "example": "Paper process is the long pole"
-    },
-    "blockerDesc": {
-      "description": "Blocker callout body — the risk and the move to clear it.",
-      "type": "string",
-      "example": "Redlines haven't started and engagement dipped this week. With 6 days to close, get legal the contract today and reconfirm the champion will hold on price — otherwise this slips to next quarter."
-    }
-  }
+  "title": "Not real as a Commit – $640K with zero MEDDIC criteria at High confidence.",
+  "answer": "Cedarline is **$640K with 8 days to close**, but **0 of 6 MEDDIC criteria are at High confidence** – three sit at Med, three at Low. The technology is validated (the pilot closed), but the deal has **no champion** and the economic buyer shows **no engagement**. Until that changes it belongs in Best Case, not Commit.",
+  "qualification": [
+    {"criterion": "Champion", "state": "No champion identified", "detail": "Robert Nkemelu reorged out of the CFO's decision (Jul 2026) · no replacement identified.", "_tone": "error", "_status": "LOW"},
+    {"criterion": "Identify Pain", "state": "Not validated with buyer", "detail": "Pain was held by Robert Nkemelu (gone) · Priya Anand's pain not confirmed.", "_tone": "error", "_status": "LOW"},
+    {"criterion": "Metrics", "state": "Not confirmed", "detail": "CFO success metrics not captured · ROI case not yet delivered to Priya Anand.", "_tone": "error", "_status": "LOW"},
+    {"criterion": "Economic Buyer", "state": "Identified, unresponsive", "detail": "Priya Anand (CFO) confirmed as Decision Maker · no engagement for 3+ weeks since Aug 8.", "_tone": "warning", "_status": "MED"},
+    {"criterion": "Decision Criteria", "state": "Partial", "detail": "Pricing/ROI is the stated concern · Vaultline CRM introduced as a competing option.", "_tone": "warning", "_status": "MED"},
+    {"criterion": "Decision Process", "state": "Disrupted", "detail": "Board review pending (budget freeze) · procurement gating · champion reorged out.", "_tone": "warning", "_status": "MED"}
+  ],
+  "callout": {"lead": "8 days to close, 3 criteria at Low confidence.", "text": "With no champion and the economic buyer showing no engagement, the Aug 31 date and the forecast category are both At Risk. Reach Priya Anand today with a repackaged ROI case – a CFO-level email with 2–3 package options and a 30-minute call ask this week.", "buttonLabel": "Draft the CFO ROI outreach", "actionMsg": "Draft a CFO-level email to Priya Anand at Cedarline Financial with a repackaged ROI case, 2–3 package options and a 30-minute call ask this week."},
+  "sources": [
+    {"label": "Opportunity · Cedarline Financial", "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"},
+    {"label": "Contact · Priya Anand", "url": "https://<myDomain>/lightning/r/Contact/<Id>/view"},
+    {"label": "Activities · last 30 days"}
+  ]
 }
 ```
+
+**Review, no scorecard — the same prompt** (flags, recent activity and a callout):
+
 ```json
 {
-  "renderer": {
-    "componentOverrides": {
-      "$": {
-        "type": "mosaic",
-        "definition": "tile/widget",
-        "children": [
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "justify": "between",
-              "isWrapped": true
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center"
-                },
-                "children": [
-                  {
-                    "definition": "tile/icon",
-                    "attributes": {
-                      "name": "briefcase",
-                      "size": "xl",
-                      "alt": ""
-                    }
-                  },
-                  {
-                    "definition": "tile/text",
-                    "attributes": {
-                      "text": "{{dealName}}",
-                      "variant": "h1"
-                    }
-                  }
-                ]
-              },
-              {
-                "definition": "tile/badge",
-                "attributes": {
-                  "label": "{{headerStatus}}",
-                  "variant": "error"
-                }
-              }
-            ]
+  "title": "$640K closing in 8 days, but the deal has gone quiet – no buyer engagement in 16 days.",
+  "answer": "Cedarline is a **$640K deal in Negotiation / Review, closing Aug 31**. There's no MEDDIC scorecard on this org, so here's the read from the record itself: the **pilot closed successfully**, but coverage has thinned – the economic buyer shows **no activity in 16 days**, the main contact reorged out, and a competitor was just introduced. The fit is real; the **engagement is the risk**.",
+  "flags": [
+    {"title": "CFO Priya Anand – no activity in 16 days", "context": "pricing objection unresolved", "detail": "Last logged touch Aug 8 · Aug 26 CFO 1:1 invited but not accepted · she's the decision maker on record and the deal can't close without her.", "tone": "error"},
+    {"title": "Vaultline CRM introduced by procurement", "context": "Aug 4", "detail": "Gregory Holt added a competitor to the evaluation 3 weeks after our pilot closed · a lower-cost anchor is now on the table.", "tone": "warning"},
+    {"title": "Key contact reorged out", "context": "Robert Nkemelu, Jul 12 · Inactive", "detail": "Carried the pilot; no replacement identified inside Priya's decision circle.", "tone": "neutral"}
+  ],
+  "activity": [
+    {"date": "Aug 20", "text": "Legal pre-approved a phased **$300K + $340K** structure · logged by you."},
+    {"date": "Aug 8", "text": "Last outreach to **Priya Anand (CFO)** – pricing/ROI email, no reply."},
+    {"date": "Aug 4", "text": "Procurement introduced **Vaultline CRM** into the evaluation."},
+    {"date": "Jul 28", "text": "Pilot **closed successfully** · technical validation complete."},
+    {"date": "Since", "text": "No inbound from the buying committee in 16 days · no meeting on the calendar.", "muted": true}
+  ],
+  "callout": {"lead": "8 days to close and no meeting booked.", "text": "The pilot proved the fit, but the deal stalls the moment the buyer goes silent – and it's been 16 days. Reach Priya Anand today with a repackaged ROI case and a 30-minute call ask this week, before the Aug 31 date slips.", "buttonLabel": "Draft the CFO ROI outreach", "actionMsg": "Draft a CFO-level email to Priya Anand at Cedarline Financial with a repackaged ROI case, 2–3 package options and a 30-minute call ask this week."},
+  "sources": [
+    {"label": "Opportunity · Cedarline Financial", "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"},
+    {"label": "Contact · Priya Anand", "url": "https://<myDomain>/lightning/r/Contact/<Id>/view"},
+    {"label": "Activities · last 30 days"}
+  ]
+}
+```
+
+**Specific — e.g. "What's the risk on Cedarline?"** (only the flags card, no tail):
+
+```json
+{
+  "title": "Cedarline's risk is the buyer – the CFO has been silent for 16 days.",
+  "answer": "The deal can't close without **Priya Anand**, and she hasn't engaged since **Aug 8**. A competitor and a lost champion compound it.",
+  "flags": [
+    {"title": "CFO Priya Anand – no activity in 16 days", "context": "pricing objection unresolved", "detail": "Last logged touch Aug 8 · Aug 26 CFO 1:1 invited but not accepted · she's the decision maker on record and the deal can't close without her.", "tone": "error"},
+    {"title": "Vaultline CRM introduced by procurement", "context": "Aug 4", "detail": "Gregory Holt added a competitor to the evaluation 3 weeks after our pilot closed · a lower-cost anchor is now on the table.", "tone": "warning"},
+    {"title": "Key contact reorged out", "context": "Robert Nkemelu, Jul 12 · Inactive", "detail": "Carried the pilot; no replacement identified inside Priya's decision circle.", "tone": "neutral"}
+  ],
+  "sources": [
+    {"label": "Opportunity · Cedarline Financial", "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"}
+  ]
+}
+```
+
+
+`props` schema (JSON Schema). Only `title`, `answer` and `sources` are required; include any other key only when the prompt asks for it or it clearly speeds up the answer (see "Scope the blocks to the prompt"):
+
+```json
+{
+  "type": "object",
+  "description": "Block order: title, answer, then the optional cards (qualification, flags, activity), then at most one tail (callout OR nextStep), then sources. Only title, answer and sources are required. Which optional cards to include: see the scope table in the skill instructions. Omit a key and its block is not shown: never send empty arrays, empty strings, placeholders or 'N/A', and never a card the prompt did not ask for. Format every value as a ready-to-display string (currency, dates); names are plain strings, never objects.",
+  "required": [
+    "title",
+    "answer",
+    "sources"
+  ],
+  "properties": {
+    "labels": {
+      "type": "object",
+      "description": "OPTIONAL. Every fixed label of the widget (card headings, table headers, the sources toggle); each key's `default` is its English text, and a missing or blank key falls back to it. Omit when the user writes in English; for another language follow the Language rule in SKILL.md.",
+      "properties": {
+        "qualification": {
+          "type": "string",
+          "default": "OPPORTUNITY QUALIFICATION",
+          "description": "Heading of the qualification card. English: 'OPPORTUNITY QUALIFICATION'."
+        },
+        "colConfidence": {
+          "type": "string",
+          "default": "Confidence level",
+          "description": "Qualification table header over the High / Med / Low pills. English: 'Confidence level'."
+        },
+        "colCriterion": {
+          "type": "string",
+          "default": "Criterion",
+          "description": "Qualification table header. English: 'Criterion'."
+        },
+        "colDetails": {
+          "type": "string",
+          "default": "Details",
+          "description": "Qualification table header. English: 'Details'."
+        },
+        "flagsRisks": {
+          "type": "string",
+          "default": "FLAGS & RISKS",
+          "description": "Heading of the flags card. English: 'FLAGS & RISKS'."
+        },
+        "activity": {
+          "type": "string",
+          "default": "RECENT ACTIVITY",
+          "description": "Heading of the activity card. English: 'RECENT ACTIVITY'."
+        },
+        "sources": {
+          "type": "string",
+          "default": "Sources",
+          "description": "Word shown on the sources toggle; the renderer appends the count, e.g. 'Sources (4)'. Send the word only, no number. English: 'Sources'."
+        }
+      }
+    },
+    "title": {
+      "type": "string",
+      "description": "REQUIRED. One bold sentence that already answers the question: the verdict and the key fact (e.g. 'Not real as a Commit – $640K with zero MEDDIC criteria at High confidence.'). Never the skill name."
+    },
+    "answer": {
+      "type": "string",
+      "description": "REQUIRED. A 2-4 sentence paragraph with **bold** on the key facts (amount, days to close, criteria counts, who is missing): the verdict first, then why. Answer ONLY what the user asked; do not restate the cards below it."
+    },
+    "qualification": {
+      "type": "array",
+      "maxItems": 8,
+      "description": "OPTIONAL card 'OPPORTUNITY QUALIFICATION': one row per qualification criterion (e.g. MEDDIC) read from the org's qualification fields, LOW rows first, then MED, then HIGH. Include ONLY when step 1 found a scorecard (at least three criteria fields) AND the prompt is a deal review (e.g. 'review Cedarline', 'is it real?', 'how qualified is it?'). With no scorecard send flags and activity instead. Omit the key otherwise; never an empty array.",
+      "items": {
+        "type": "object",
+        "required": [
+          "criterion",
+          "detail",
+          "_tone",
+          "_status"
+        ],
+        "properties": {
+          "criterion": {
+            "type": "string",
+            "description": "The criterion's label from the org's field (e.g. 'Champion', 'Economic Buyer'). Rendered bold."
           },
-          {
-            "definition": "tile/text",
-            "attributes": {
-              "text": "{{healthLine}}",
-              "variant": "caption",
-              "color": "muted"
-            }
+          "state": {
+            "type": "string",
+            "description": "Short muted state under the criterion, a few words (e.g. 'No champion identified', 'Identified, unresponsive')."
           },
-          {
-            "definition": "tile/callout",
-            "attributes": {
-              "variant": "recommended",
-              "eyebrow": "THE PLAY",
-              "title": "{{recMove}}",
-              "description": "{{recMoveDetail}}"
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": [
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "Draft legal push",
-                      "variant": "primary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{recMoveMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "Reconfirm champion",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{recMoveChampMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "Open deal",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{recMoveOpenMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
+          "detail": {
+            "type": "string",
+            "description": "The evidence: one or two short clauses joined by ' · ', **bold** allowed (e.g. 'Robert Nkemelu reorged out of the CFO's decision (Jul 2026) · no replacement identified.')."
           },
-          {
-            "definition": "tile/separator"
+          "_tone": {
+            "type": "string",
+            "enum": [
+              "error",
+              "warning",
+              "success"
+            ],
+            "description": "'error' for Low confidence, 'warning' for Med, 'success' for High."
           },
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "stretch",
-              "isWrapped": true
-            },
-            "children": [
-              {
-                "definition": "tile/column",
-                "attributes": {
-                  "width": "md"
-                },
-                "children": [
-                  {
-                    "definition": "tile/container",
-                    "attributes": {},
-                    "children": [
-                      {
-                        "definition": "tile/column",
-                        "attributes": {
-                          "gap": "xs"
-                        },
-                        "children": [
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "AMOUNT",
-                              "weight": "semibold",
-                              "color": "muted",
-                              "variant": "caption"
-                            }
-                          },
-                          {
-                            "definition": "tile/row",
-                            "attributes": {
-                              "gap": "xs",
-                              "align": "baseline"
-                            },
-                            "children": [
-                              {
-                                "definition": "tile/text",
-                                "attributes": {
-                                  "text": "{{kpiAmountNum}}",
-                                  "variant": "display"
-                                }
-                              }
-                            ]
-                          },
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "{{kpiAmountSub}}",
-                              "variant": "caption",
-                              "color": "muted"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "definition": "tile/column",
-                "attributes": {
-                  "width": "md"
-                },
-                "children": [
-                  {
-                    "definition": "tile/container",
-                    "attributes": {},
-                    "children": [
-                      {
-                        "definition": "tile/column",
-                        "attributes": {
-                          "gap": "xs"
-                        },
-                        "children": [
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "STAGE",
-                              "weight": "semibold",
-                              "color": "muted",
-                              "variant": "caption"
-                            }
-                          },
-                          {
-                            "definition": "tile/row",
-                            "attributes": {
-                              "gap": "xs",
-                              "align": "baseline",
-                              "isWrapped": true
-                            },
-                            "children": [
-                              {
-                                "definition": "tile/text",
-                                "attributes": {
-                                  "text": "{{kpiStageNum}}",
-                                  "variant": "display"
-                                }
-                              },
-                              {
-                                "definition": "tile/text",
-                                "attributes": {
-                                  "text": "{{kpiStageLabel}}",
-                                  "variant": "section-title",
-                                  "color": "muted"
-                                }
-                              }
-                            ]
-                          },
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "{{kpiStageSub}}",
-                              "variant": "caption",
-                              "color": "muted"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "definition": "tile/column",
-                "attributes": {
-                  "width": "md"
-                },
-                "children": [
-                  {
-                    "definition": "tile/container",
-                    "attributes": {},
-                    "children": [
-                      {
-                        "definition": "tile/column",
-                        "attributes": {
-                          "gap": "xs"
-                        },
-                        "children": [
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "CLOSE",
-                              "weight": "semibold",
-                              "color": "muted",
-                              "variant": "caption"
-                            }
-                          },
-                          {
-                            "definition": "tile/row",
-                            "attributes": {
-                              "gap": "xs",
-                              "align": "baseline"
-                            },
-                            "children": [
-                              {
-                                "definition": "tile/text",
-                                "attributes": {
-                                  "text": "{{kpiCloseNum}}",
-                                  "variant": "display",
-                                  "color": "error"
-                                }
-                              },
-                              {
-                                "definition": "tile/text",
-                                "attributes": {
-                                  "text": "{{kpiCloseUnit}}",
-                                  "variant": "section-title",
-                                  "color": "muted"
-                                }
-                              }
-                            ]
-                          },
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "{{kpiCloseSub}}",
-                              "variant": "caption",
-                              "color": "muted"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "definition": "tile/column",
-                "attributes": {
-                  "width": "md"
-                },
-                "children": [
-                  {
-                    "definition": "tile/container",
-                    "attributes": {},
-                    "children": [
-                      {
-                        "definition": "tile/column",
-                        "attributes": {
-                          "gap": "xs"
-                        },
-                        "children": [
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "QUALIFICATION",
-                              "weight": "semibold",
-                              "color": "muted",
-                              "variant": "caption"
-                            }
-                          },
-                          {
-                            "definition": "tile/row",
-                            "attributes": {
-                              "gap": "xs",
-                              "align": "baseline"
-                            },
-                            "children": [
-                              {
-                                "definition": "tile/text",
-                                "attributes": {
-                                  "text": "{{kpiQualNum}}",
-                                  "variant": "display",
-                                  "color": "warning"
-                                }
-                              },
-                              {
-                                "definition": "tile/text",
-                                "attributes": {
-                                  "text": "{{kpiQualUnit}}",
-                                  "variant": "section-title",
-                                  "color": "muted"
-                                }
-                              }
-                            ]
-                          },
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "{{kpiQualSub}}",
-                              "variant": "caption",
-                              "color": "muted"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "definition": "tile/separator"
-          },
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "justify": "between",
-              "isWrapped": true
-            },
-            "children": [
-              {
-                "definition": "tile/text",
-                "attributes": {
-                  "text": "MEDDIC qualification",
-                  "variant": "section-title"
-                }
-              },
-              {
-                "definition": "tile/badge",
-                "attributes": {
-                  "label": "{{qualBadge}}",
-                  "variant": "warning"
-                }
-              }
-            ]
-          },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "{{qualCaption}}",
-              "appearance": "striped",
-              "size": "sm",
-              "columns": [
-                {
-                  "key": "status",
-                  "header": "Status",
-                  "type": "badge"
-                },
-                {
-                  "key": "crit",
-                  "header": "Criterion",
-                  "type": "text"
-                },
-                {
-                  "key": "state",
-                  "header": "State",
-                  "type": "badge"
-                },
-                {
-                  "key": "detail",
-                  "header": "Detail",
-                  "type": "text"
-                }
-              ],
-              "rows": "{{qualRows}}"
-            }
-          },
-          {
-            "definition": "tile/separator"
-          },
-          {
-            "definition": "tile/container",
-            "attributes": {},
-            "children": [
-              {
-                "definition": "tile/column",
-                "attributes": {
-                  "gap": "md"
-                },
-                "children": [
-                  {
-                    "definition": "tile/row",
-                    "attributes": {
-                      "gap": "md",
-                      "align": "start",
-                      "justify": "between",
-                      "isWrapped": true
-                    },
-                    "children": [
-                      {
-                        "definition": "tile/column",
-                        "attributes": {
-                          "gap": "xs",
-                          "width": "stretch"
-                        },
-                        "children": [
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "{{dealAccount}}",
-                              "variant": "h4",
-                              "weight": "semibold"
-                            }
-                          },
-                          {
-                            "definition": "tile/row",
-                            "attributes": {
-                              "gap": "xs",
-                              "align": "center",
-                              "isWrapped": true
-                            },
-                            "children": [
-                              {
-                                "definition": "tile/badge",
-                                "attributes": {
-                                  "label": "{{dealStage}}",
-                                  "variant": "secondary"
-                                }
-                              },
-                              {
-                                "definition": "tile/badge",
-                                "attributes": {
-                                  "label": "{{dealTiming}}",
-                                  "variant": "error"
-                                }
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "definition": "tile/column",
-                        "attributes": {
-                          "gap": "xs",
-                          "align": "end"
-                        },
-                        "children": [
-                          {
-                            "definition": "tile/text",
-                            "attributes": {
-                              "text": "{{dealAmount}}",
-                              "variant": "h3",
-                              "weight": "bold"
-                            }
-                          },
-                          {
-                            "definition": "tile/button",
-                            "attributes": {
-                              "label": "View in Salesforce",
-                              "iconName": "open-in-new",
-                              "variant": "secondary",
-                              "actions": {
-                                "click": [
-                                  {
-                                    "definition": "action/openLink",
-                                    "attributes": {
-                                      "url": "{{dealUrl}}"
-                                    }
-                                  }
-                                ]
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "definition": "tile/separator"
-                  },
-                  {
-                    "definition": "tile/callout",
-                    "attributes": {
-                      "variant": "error",
-                      "title": "{{blockerTitle}}",
-                      "description": "{{blockerDesc}}"
-                    }
-                  }
-                ]
-              }
-            ]
+          "_status": {
+            "type": "string",
+            "description": "The confidence word shown in the pill, upper case, in the user's language (English: 'LOW', 'MED', 'HIGH')."
           }
-        ]
+        }
+      }
+    },
+    "flags": {
+      "type": "array",
+      "description": "OPTIONAL card 'FLAGS & RISKS': the evidenced risks on the deal, most severe first. Include for a deal review (e.g. 'review Cedarline', 'is it real?') when the org has NO qualification scorecard, or when the prompt asks about the deal's risks ('what's the risk on Cedarline?'). Omit the key otherwise; never an empty array.",
+      "items": {
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The bold claim of the row: who/what plus the key fact (e.g. 'CFO Priya Anand – No engagement, 3+ weeks', 'Vaultline CRM introduced by procurement'). Rendered bold."
+          },
+          "context": {
+            "type": "string",
+            "description": "Optional rest of the title line, rendered after ' – ' in normal weight (e.g. 'Aug 4 · Negative Signal'). Keep it to a few words; put evidence in detail."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Small muted line below the title: evidence and consequence, one or two sentences."
+          },
+          "tone": {
+            "type": "string",
+            "enum": [
+              "error",
+              "warning",
+              "success",
+              "neutral"
+            ],
+            "description": "Left-rule colour: error (red) = most severe, warning (orange), success (green), neutral (grey) = informational or inactive. Default neutral."
+          }
+        }
+      }
+    },
+    "activity": {
+      "type": "array",
+      "maxItems": 7,
+      "description": "OPTIONAL card 'RECENT ACTIVITY': the deal's recent touches, newest first, at most 6 plus an optional muted 'Since' row, from Tasks/Events and the email/doc searches. Include for a deal review when the org has NO qualification scorecard, or when the prompt asks what happened (e.g. 'what's happened on Cedarline lately?'). Omit the key otherwise; never an empty array.",
+      "items": {
+        "type": "object",
+        "required": [
+          "date",
+          "text"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Short display date ('Aug 20'), or 'Since' on the closing summary row. Never ISO."
+          },
+          "text": {
+            "type": "string",
+            "description": "What happened, one sentence, **bold** allowed on the key fact (e.g. 'Last outreach to **Priya Anand (CFO)** – pricing/ROI email, no reply.')."
+          },
+          "muted": {
+            "type": "boolean",
+            "description": "true only on the last row when it summarises the silence since then (e.g. 'No inbound from the buying committee in 16 days · no meeting on the calendar.'). Rendered muted, plain text."
+          }
+        }
+      }
+    },
+    "callout": {
+      "type": "object",
+      "description": "OPTIONAL tail, time-sensitive. Warning icon, a bold first sentence followed by normal text, then ONE blue primary button. Use INSTEAD of nextStep, never both (if both are sent only the callout renders). Include only if one move is time-sensitive (a close date is days away, a buyer gone quiet will stall the deal) AND the user can act on it now. Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "required": [
+        "lead",
+        "text",
+        "buttonLabel",
+        "actionMsg"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). The bold first sentence of the callout (the stake in one sentence, ending with a period, e.g. '8 days to close, 3 criteria at Low confidence.')."
+        },
+        "text": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). One to three sentences: what, why now, and the move."
+        },
+        "buttonLabel": {
+          "type": "string",
+          "description": "Label of the single primary button (e.g. 'Draft the CFO ROI outreach')."
+        },
+        "actionMsg": {
+          "type": "string",
+          "description": "First-person request sent to chat when the button is clicked."
+        }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "description": "OPTIONAL tail, not time-sensitive: a plain suggestion line with NO button. Use INSTEAD of callout, never both.",
+      "required": [
+        "lead",
+        "text"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "Bold lead (the suggested move, e.g. 'Re-engage the CFO first.')."
+        },
+        "text": {
+          "type": "string",
+          "description": "One or two sentences of reasoning, ending with an offer to help if natural."
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "REQUIRED. Where the answer came from: the Salesforce records/lists you actually read, linked (this is where Opportunity record links go). Shown as a compact 'Salesforce · Sources (N)' toggle (the word comes from labels.sources). Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
+      "items": {
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Source name: object · record (e.g. 'Opportunity · Cedarline Financial')."
+          },
+          "url": {
+            "type": "string",
+            "description": "Record URL https://<myDomain>/lightning/r/<SObjectType>/<Id>/view, or for a list https://<myDomain>/lightning/o/Opportunity/list. Omit if none."
+          }
+        }
       }
     }
   }
@@ -915,6 +472,8 @@ Two blocks are embedded below: first the **variable contract** (`renderer.props.
 
 
 ## 5. Text — FALLBACK ONLY — DO NOT USE IF `display_widget` SUCCEEDED
+
+Scope this to the prompt too: a specific ask (e.g. "what's the risk on Cedarline?") gets only the sections that answer it, not the whole review below.
 
 ```
 # Deal Review: <Name> — <Account>
@@ -958,5 +517,5 @@ Keep the three states separate; a scheduled/open item is not a completed touch.
 1. 2–4 actions, each tied to a named gap/risk above with an owner or date
 
 ## Suggested SFDC updates
-- StageName/NextStep/CloseDate if evidence differs from the record (apply with `update-opportunity`, or note if read-only)
+- StageName/NextStep/CloseDate if evidence differs from the record (note if read-only)
 ```

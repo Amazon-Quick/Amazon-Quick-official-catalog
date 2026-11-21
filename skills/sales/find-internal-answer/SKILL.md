@@ -1,16 +1,13 @@
 ---
 name: find-internal-answer
 display_name: Find Internal Answer
-description: "Find the authoritative internal source for a policy, approver, asset, or subject-matter question across internal documents, Slack, email, and Salesforce; return a concise cited answer without synthesizing a new policy. Use for 'what is our policy on', 'who approves', 'where is the latest', 'who knows about', and explicit no-policy-source requests that require an unavailable result without invention."
+description: "Find a concise answer with authoritative sources from internal documents, Slack, email and Salesforce, prioritizing the newest canonical material. Use when locating a policy, approver, deck, security asset, prior precedent or teammate with relevant experience."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:7f0d60cd2f7c1ce52e6210479c0d67c1ccff4ad4fcd9a4e5d2e10ae50ce24dd7"
+checksum: "sha256:6b35447ef248dcc5cdaeeab44b55732b29abdc382711fd3207d6b1c9e3f9cfea"
 id: "dee7f51e-eab2-4399-a45f-a03fc5de47df"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -19,9 +16,20 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
+
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
 
 
 # Find Internal Answer
@@ -42,26 +50,25 @@ Fire the independent searches together where you can.
 
 ## Answer with the source
 
+Answer only what was asked — only what the sources actually say — in this order:
+
 ```
-# <The question>
-## Answer
-<2–4 sentences — only what the sources actually say>
-## Source
+**<The answer in one sentence>**
+
+- <one fact the question needs, from the sources, with its key terms in **bold** — threshold, approver, version, date>
+- <…one bullet per fact, 2–4 in all>
+- Confidence is <high / medium / low>; <why — e.g. the recent sources all agree, they conflict, or the newest is old>
+
+<Who can confirm this is current – the person/role the sources point to, and what to ask them.>
+
+Sources (<N>)
 - [<Doc name>](link) — updated <date> — <owner if known>
-- <Slack thread / email> — <date> — answered by <name>
-## Caveats
-- <if sources conflict or the newest is old — and who could confirm>
-## Who to ask if this isn't current
-- <the person/role the sources point to>
+- [<Slack thread / email>](link) — <date> — answered by <name>
 ```
 
-Nothing authoritative? Say so plainly, list the closest things found, name the person most likely to know — never synthesize a policy that isn't written anywhere.
+- Bold the facts the user acts on (the threshold, the approver, the document name); no other formatting.
+- The confidence line is always the last bullet. Lower it when sources conflict or the newest one is old, and say which.
+- `<N>` is the number of sources listed.
+- Every source is a link when a URL exists: a doc's link, a Slack thread or email permalink, a Salesforce record `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`, or for a group of records the list view `https://[instanceUrl]/lightning/o/[SObjectType]/list`. Plain text only when there is no URL.
 
-**Explicit unavailable-source branch — Quick/Kiro adaptation (candidate-derived):** When the request
-itself explicitly states that no relevant policy source is available, treat that as a source-
-availability constraint, not as policy evidence and not as proof that a connector is disconnected.
-Do not claim that an unavailable source was searched. Use the existing `Answer`, `Source`, `Caveats`,
-and `Who to ask if this isn't current` headings. State that the answer and source are unavailable;
-under `Caveats`, say the source was not searched because the request declared it unavailable. Name no
-person, role, approver, policy, threshold, date, link, or record unless the request or returned
-evidence grounds it. Make no source call on this explicit branch.
+Nothing authoritative? Say so plainly (in the format above, with the closest things found as the sources), list the closest things found, name the person most likely to know — never synthesize a policy that isn't written anywhere.

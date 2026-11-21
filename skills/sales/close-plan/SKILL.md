@@ -1,16 +1,13 @@
 ---
 name: close-plan
 display_name: Close Plan
-description: "Build a customer-facing business case and dated mutual action plan from Salesforce opportunity data plus transcripts, email, documents, and Slack. Use to frame why buy and why now, quantify return, map the path to signature, or test the close date."
+description: "Build a dated mutual action plan and customer-facing business case from Salesforce opportunity data plus transcripts, email, documents, and Slack, scoped to what was asked: whether the close date holds, the path to signature and who owns each step, or why buy and why now. Use to test the close date, map the path to signature, or quantify return."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:1a97656fe33dfc9195cdb16e2c37c3cbfca77194c17f1c426b9e141830ca54a5"
+checksum: "sha256:6d15630a4b171a429ba037d1150b3f0bbd8b326ab2e6b85f9a93e85b4492bc5d"
 id: "4197dd88-4d80-4851-8323-2be87085cd92"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -20,16 +17,29 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
+
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
 
 # Rules:
 
+- **Scope reading and output to the prompt, never a default full plan.** A broad ask ("build a close plan", "can we hit the date?") shows the progress meter and the steps; "how are we tracking?" shows only the progress; "what's left / who owns what" shows only the steps; "why buy / build the ROI" is the business case. Think in lego blocks: a broad ask shows every block that carries real signal; a specific ask shows only the block(s) it names; a direct question gets no blocks. Don't show something just because you fetched it.
+- Resolve to ONE opportunity before the deep read. When the name is ambiguous, ask the user to pick — don't guess.
 
 # Close Plan
 
-Ground + find the deal (one turn) → read the selected opp + gather evidence (one turn) → draft business case + MAP.
+Ground → read opp → gather evidence (all ONE turn) → draft business case + MAP.
 
 ## 1. Ground (hardcoded — Opportunity only)
 
@@ -42,35 +52,20 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
 
 From the result: (a) scalar `__c` fields (business-case data, why-now, ROI, etc.) — take their `{ value }`; (b) each lookup field's exact `relationshipName` to span for a related record's Name. The standard contact-role child is hardcoded below.
 
-## 2. Find the deal, then read opp + evidence
+## 2. Read opp + evidence (issue ALL in one turn)
 
-**Find the deal (same turn as step 1).** If the user gave an Opportunity Id (prefix `006`), skip this lookup and use it as `<OPP_ID>`. Otherwise run one of the two candidate reads below; both list the newest close dates first. Replace `%DEALNAME%` with the deal name as the user gave it, keeping a `%` wildcard on each side. When the request names the deal's account, including as the first part of the deal name, use the rest of the deal name for `%DEALNAME%`, replace `%ACCOUNTNAME%` with the account name as the user gave it, and run the second read. Otherwise run the first:
-
-```
-dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Name: { like: \\\"%DEALNAME%\\\" } }, orderBy: { CloseDate: { order: DESC } }, first: 10) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Account { Name { value } } } } totalCount } } } }\"}" })
-```
-```
-dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Name: { like: \\\"%DEALNAME%\\\" }, Account: { Name: { like: \\\"%ACCOUNTNAME%\\\" } } }, orderBy: { CloseDate: { order: DESC } }, first: 10) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Account { Name { value } } } } totalCount } } } }\"}" })
-```
-
-- **Exactly one returned row and `totalCount = 1`** → take its Id as `<OPP_ID>` and continue.
-- **Several rows or `totalCount > 1`** → list only Account · Opportunity · Stage · Amount · Close date and ask which deal the user means. If the total exceeds the returned rows, say the list is partial and ask for a more distinctive name, the account, or the exact Id. Do not guess and do not run the opp read yet.
-- **No rows** → ask for a more distinctive name, the account, or the exact Opportunity Id. Do not substitute another deal.
-
-**Read the selected opp + evidence (issue ALL in one turn).** Reference-field rules: scalar → `Field__c { value }`; related name → span via the exact `relationshipName`: `<relationshipName> { Name { value } }`. Only span relationships Step 1 returned. If no usable relationshipName, take the `__c { value }` (the Id) and move on.
+`%DEALNAME%` = 1–2 words. Reference-field rules: scalar → `Field__c { value }`; related name → span via the exact `relationshipName`: `<relationshipName> { Name { value } }`. Only span relationships Step 1 returned. If no usable relationshipName, take the `__c { value }` (the Id) and move on.
 
 Insert `<OPP_CUSTOM>` = confirmed scalar `__c { value }` fields; `<REL_BLOCKS>` = one block per confirmed custom lookup relationship. Standard fields + `OpportunityContactRoles` always work.
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Id: { eq: \\\"<OPP_ID>\\\" } }, first: 1) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } NextStep { value } Description { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } <REL_BLOCKS> OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Name: { like: \\\"%DEALNAME%\\\" } }, first: 1) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } NextStep { value } Description { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } <REL_BLOCKS> OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } } } } } } }\"}" })
 ```
 
-No row → say the deal could not be read and ask the user to confirm the Id or access; never fall back to another candidate.
+Empty `edges` → broaden `%…%`.
 
-**Evidence (in PARALLEL with the opp read — same turn):** Fire email/doc/Slack searches keyed on the selected deal and account names; these don't depend on the opp read's result. Use whatever tools are present; if none, skip silently.
+**Evidence (in PARALLEL with step 2 — same turn):** Fire email/doc/Slack searches keyed on the deal/account name; these don't depend on the SF result. Use whatever tools are present; if none, skip silently.
 
 - **Call transcripts / proposals:** customer's stated problems, success metrics, quantified pain, who said what.
 - **Email:** commitments already made in writing, procurement/legal/security threads.
@@ -96,507 +91,312 @@ Flag every claim that has no customer evidence behind it — those are the point
 
 Work backward from the target signature date (default: opportunity CloseDate) through both sides' steps: remaining validation, security review, legal redlines, procurement, signatures, plus any internal approvals the user mentions. Each row: step, owner (us / customer / named person), target date, status. Flag the steps whose dates make the CloseDate impossible.
 
-## 5. Widget (default output when `display_widget` is present: Cowork/desktop/web)
+## 5. Widget (default output when `display_widget` is present: AWS Quick)
 
 When the data is assembled, call `display_widget`; a single one-line "Displaying the visualization now (this may take a minute)." notice may precede it.
 
 ### Self-verification (before calling display_widget)
 
-- [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
 
-The widget template is embedded below — a widget-definition envelope whose leaf values carry `{{token}}` placeholders. Resolve every `{{token}}` to a literal (no `{{…}}`/`{!…}` left), then call `display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated> })` once. A value that is *only* a `{{token}}` (meter arrays, datagrid rows) becomes the typed literal — arrays stay arrays, numbers stay numbers; a `{{token}}` inside a larger string is interpolated as text. No fabricated content: blank fields stay blank, drop steps with no data.
+The layout is built into the renderer and registered by name — you send **only the widget name and its data**. Call `display_widget` once:
 
-Layout (editorial restraint, one chart): header (check-circle icon + serif title + status badge) → subhead caption → one meter (close-plan progress) → path-to-signature datagrid → one `variant:"error"` synthesis callout with two buttons.
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/close-plan", props: <object matching the schema below> })
+```
 
-Two blocks below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}`'s type + a worked example, use it to compute each value; then the **widget template** to hydrate. Substitute your computed values into the template's `{{token}}`s (see the token-typing rules above), leaving no `{{…}}`/`{!…}`.
+- **CRITICAL — `props` must be a nested JSON object, NOT a string.** ❌ WRONG: `props: "{\"title\":...}"`. ✅ RIGHT: `props: {"title": ...}`. If you hold a JSON string, `JSON.parse` it first.
+- When `display_widget` is available the widget is the output; produce the section 6 text only as the fallback when the tool is unavailable (e.g. a terminal).
+
+### What to send
+
+Follow the block order and the per-block inclusion rules in the `props` schema below (the root description and each property's `description`).
+
+Rules:
+- **Language:** when the user writes in English, omit `labels`. When they write in another language, send `labels` with EVERY key translated (headings and status pills in upper case) and write every free-text field (`detail`, `side`, `doneLabel`, ...) in that language. Never join translated text with English fragments: each phrase is written whole, because word order differs.
+- **Send data only; never author presentation** (colours, pills, icons, HTML, emoji, layout keys, `{!…}`/`{{…}}`): the renderer owns the look and shows or hides each block from the keys you send. A step's `status` picks its pill, rule and colour — never put colour words in the text. Keys outside the schema are rejected, and every optional key you include must be justified by the prompt.
+- **Pick each step's `status` from its real state:** `notStarted` (not begun, including steps nobody has scheduled yet), `blocked` (cannot move until something else happens, or overdue and stuck), `inProgress` (underway or scheduled), `completed` (done). Put the reason in `detail` (e.g. "Blocked on CFO endorsement").
+- **Always set `pace.tone`:** `error` (red) when the plan is behind pace or the date is at risk, `warning` (orange) only when it is tight but still on track, `success` (green) when on pace. A "behind by N days" label is always `error`.
+- **Steps come from the plan you drafted in step 4,** sorted by due date and ending with the signature. `pace.done` / `pace.total` are counts of those same steps — compute them, never estimate.
+- **Every step gets a `side`** (`Us`, `Them` or `Both`, in the user's language), decided from what the step is — never leave it blank.
+- **Fill `owner` from data you read, not from guesswork:** the Opportunity `Owner.Name` for your side's steps, the `OpportunityContactRoles` contact whose role fits the step (e.g. the Economic Buyer for signature), or the person who committed to it in a call, email or Slack thread. Omit `owner` only when none of these names one.
+
+### Scope the blocks to the prompt
+
+The schema marks only `title`, `answer` and `sources` as required. **Every other key is a choice, and the choice follows the question — not what you happened to retrieve.** Data you fetched but did not use stays out of the widget.
+
+| The prompt is… | Send |
+|---|---|
+| **Broad** ("build a close plan for X", "close plan", "can we still hit the date?", "where do we stand on closing X?") | `title` (the verdict on the date) + `answer` + `pace` + `steps` + `callout` if a step's date gates the close (else `nextStep`) + `sources` |
+| **Specific: progress only** ("how are we tracking?", "are we behind?", "how far along is the plan?") | `title` + `answer` + **only** `pace` + tail only if it applies + `sources` |
+| **Specific: the steps** ("what's left to sign?", "who owns what?", "what's blocking signature?") | `title` + `answer` + **only** `steps` + tail only if it applies + `sources` |
+| **Direct question or the business case** ("when is the next step due?", "why buy / why now", "build the ROI story") | `title` + `answer` (the case in 2-4 bullets, each grounded in the customer's words) + `sources`; offer the full customer-facing doc (section 6). No cards |
+
+#### Worked examples (the `props` object only)
+
+**Close plan — "Build me a close plan for the Cedarline deal"** (pace + steps, the gating step as a callout):
+
 ```json
 {
-  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate display_widget call — it names every {{token}} in the template with its type and a worked example so you compute the right value for each. Workflow: build a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — arrays stay arrays, numbers stay numbers; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Realistic values: sample-data.json (sibling). Authoring guidance (from the skill): `planTitle` (header title, \"Mutual close plan — [Account]\") + `headerStatus` (header badge, e.g. \"6 DAYS OUT\") · `subtitle` (one line: amount, target close, days out, steps done) · meter — `progressValue`/`progressMax`/`progressTarget` (numbers), `progressValueLabel`/`progressTargetLabel`/`progressStatus` (strings), `progressBands` (array of `{ from, to, variant, label }`, variants warning/success, covering 0→max in order) · `pathRows` (datagrid array, one row per action-plan step, each `{ step, side:{value,badgeVariant}, owner (plain string — format as the person's display name (e.g. \"R. Chen\"); names must be plain strings, not objects: use `Contact.Name.value` or `User.Name.value` from the SF response), due (ISO YYYY-MM-DD), state:{value,badgeVariant}, status:{value,badgeVariant} (value Critical/At risk/On track/Target, badgeVariant error/warning/info/default) }`; the leading Status column reads each row's `status`; Side badgeVariant primary=Us / secondary=Them / info=Both; State badgeVariant error=Due today/Critical, warning=In review/Waiting/At risk, info=Scheduled, secondary=Target/On track) · callout — `calloutTitle` (headline blocker), `calloutDesc` (cost if it slips), primary button `ctaLabel`/`ctaMsg` (`action/sendMessage`, first-person prompt), secondary `oppUrl` (`action/openLink`, `https://<myDomain>/lightning/r/Opportunity/<Id>/view` — omit if no Id). Before calling: no `{{…}}`/`{!…}` remain, meter is the only chart, every button is `action/sendMessage` or `action/openLink` with real content.",
-  "props": {
-    "planTitle": {
-      "description": "Header title — \"Mutual close plan — [Account]\".",
-      "type": "string",
-      "example": "Mutual close plan — Cobalt Robotics"
-    },
-    "headerStatus": {
-      "description": "Header urgency badge (e.g. \"6 DAYS OUT\").",
-      "type": "string",
-      "example": "6 DAYS OUT"
-    },
-    "subtitle": {
-      "description": "One-line summary: amount, target close date, days out, steps done.",
-      "type": "string",
-      "example": "$1.8M · target close Jul 30 · 6 days out · 4 of 9 steps done"
-    },
-    "progressValue": {
-      "description": "Steps completed (weighted progress) — the meter's current value.",
-      "type": "number",
-      "example": 4
-    },
-    "progressMax": {
-      "description": "Total steps — the meter's max.",
-      "type": "number",
-      "example": 9
-    },
-    "progressTarget": {
-      "description": "Target progress marker on the meter.",
-      "type": "number",
-      "example": 9
-    },
-    "progressValueLabel": {
-      "description": "Display string for current progress (e.g. \"4 of 7 steps\").",
-      "type": "string",
-      "example": "4 of 9 steps complete"
-    },
-    "progressTargetLabel": {
-      "description": "Display string for the target.",
-      "type": "string",
-      "example": "9 to sign"
-    },
-    "progressStatus": {
-      "description": "Short progress read shown on the meter.",
-      "type": "string",
-      "example": "on the critical path"
-    },
-    "progressBands": {
-      "description": "Color bands for the progress meter, in order covering 0→max.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "description": "Band start value.",
-            "type": "number"
-          },
-          "to": {
-            "description": "Band end value.",
-            "type": "number"
-          },
-          "variant": {
-            "description": "Band color.",
-            "type": "string",
-            "enum": [
-              "error",
-              "warning",
-              "success"
-            ]
-          },
-          "label": {
-            "description": "Short band label.",
-            "type": "string"
-          }
-        }
-      },
-      "example": [
-        {
-          "from": 0,
-          "to": 5,
-          "variant": "warning",
-          "label": "In progress"
-        },
-        {
-          "from": 5,
-          "to": 9,
-          "variant": "success",
-          "label": "Closing"
-        }
-      ]
-    },
-    "pathRows": {
-      "description": "Mutual action-plan steps — one row per step. Empty array → the datagrid is omitted.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Leading Status badge cell; omit on normal rows.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "step": {
-            "description": "The action-plan step / task.",
-            "type": "string"
-          },
-          "side": {
-            "description": "Which side owns the step (badge cell).",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Side label — Us / Them / Both.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Side badge color: primary=Us, secondary=Them, info=Both.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "owner": {
-            "description": "Step owner's display name, a plain string (use Contact.Name.value or User.Name.value — never a nested object).",
-            "type": "string"
-          },
-          "due": {
-            "description": "Step due date, ISO YYYY-MM-DD.",
-            "type": "string"
-          },
-          "state": {
-            "description": "Step status badge cell.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label (e.g. \"Due today\", \"Scheduled\", \"On track\").",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Status badge color: error=Due today/Critical, warning=In review/Waiting/At risk, info=Scheduled, secondary=Target/On track.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          }
-        }
-      },
-      "example": [
-        {
-          "status": {
-            "value": "Critical",
-            "badgeVariant": "error"
-          },
-          "step": "Send redlined MSA",
-          "side": {
-            "value": "Us",
-            "badgeVariant": "neutral"
-          },
-          "owner": "You",
-          "due": "2026-07-24",
-          "state": {
-            "value": "Due today",
-            "badgeVariant": "error"
-          }
-        },
-        {
-          "status": {
-            "value": "At risk",
-            "badgeVariant": "warning"
-          },
-          "step": "Security review sign-off",
-          "side": {
-            "value": "Them",
-            "badgeVariant": "neutral"
-          },
-          "owner": "R. Chen",
-          "due": "2026-07-25",
-          "state": {
-            "value": "In review",
-            "badgeVariant": "warning"
-          }
-        },
-        {
-          "status": {
-            "value": "On track",
-            "badgeVariant": "info"
-          },
-          "step": "CFO final price approval",
-          "side": {
-            "value": "Us",
-            "badgeVariant": "neutral"
-          },
-          "owner": "M. Lee",
-          "due": "2026-07-26",
-          "state": {
-            "value": "Scheduled",
-            "badgeVariant": "info"
-          }
-        },
-        {
-          "status": {
-            "value": "At risk",
-            "badgeVariant": "warning"
-          },
-          "step": "Legal redlines returned",
-          "side": {
-            "value": "Them",
-            "badgeVariant": "neutral"
-          },
-          "owner": "Buyer legal",
-          "due": "2026-07-28",
-          "state": {
-            "value": "Waiting",
-            "badgeVariant": "warning"
-          }
-        },
-        {
-          "status": {
-            "value": "At risk",
-            "badgeVariant": "warning"
-          },
-          "step": "Procurement PO",
-          "side": {
-            "value": "Them",
-            "badgeVariant": "neutral"
-          },
-          "owner": "Buyer",
-          "due": "2026-07-29",
-          "state": {
-            "value": "Waiting",
-            "badgeVariant": "warning"
-          }
-        },
-        {
-          "step": "Signature",
-          "side": {
-            "value": "Both",
-            "badgeVariant": "info"
-          },
-          "owner": "Dana Kwon",
-          "due": "2026-07-30",
-          "state": {
-            "value": "Target",
-            "badgeVariant": "neutral"
-          }
-        }
-      ]
-    },
-    "calloutTitle": {
-      "description": "Synthesis callout heading — the headline blocker.",
-      "type": "string",
-      "example": "Redlines are due today and gate everything after"
-    },
-    "calloutDesc": {
-      "description": "Synthesis callout body — the cost if the deal slips.",
-      "type": "string",
-      "example": "The MSA hasn't gone out and four downstream steps wait on it. Send it this morning; if it slips a day, the Jul 30 signature date is no longer realistic and the deal moves to next quarter."
-    },
-    "ctaLabel": {
-      "description": "Primary button label (action/sendMessage).",
-      "type": "string",
-      "example": "Draft MSA send"
-    },
-    "ctaMsg": {
-      "description": "First-person prompt the primary button sends (action/sendMessage).",
-      "type": "string",
-      "example": "Draft a note to legal and the Cobalt legal counterpart attaching the redlined MSA, flagging that security review and procurement both wait on this, with Jul 30 close date."
-    },
-    "oppUrl": {
-      "description": "Opportunity Lightning URL for the secondary \"View in Salesforce\" button (action/openLink); omit if no Id.",
-      "type": "string",
-      "example": "https://org.lightning.force.com/lightning/r/Opportunity/006AX00000M8k2pYAD/view"
-    }
-  }
+  "title": "You can still hit Aug 31 – but only if the CFO deck goes out today.",
+  "answer": "- You're **1 of 6 steps done** with **8 days left** – behind pace by **3 days**.\n- The ROI deck to Priya Anand is **overdue** and the CFO 1:1 **isn't scheduled**.",
+  "pace": { "done": 1, "total": 6, "tone": "error", "doneLabel": "**1 of 6** steps done", "paceLabel": "Behind by 3 days · **6 of 6** by 8/31" },
+  "steps": [
+    { "status": "notStarted", "step": "Send CFO ROI deck", "detail": "Re-packaged proposal to Priya Anand", "side": "Us", "owner": "Bryan Corcoran", "due": "Aug 24" },
+    { "status": "notStarted", "step": "CFO 1:1 → Priya Anand", "detail": "30m to walk through the re-packaged model", "side": "Both", "owner": "Priya Anand", "due": "Aug 26" },
+    { "status": "notStarted", "step": "Execute signatures – close", "detail": "Signatures + countersign", "side": "Them", "owner": "Priya Anand", "due": "Aug 31" }
+  ],
+  "callout": { "lead": "The CFO 1:1 by Aug 26 is the real deadline.", "text": "Procurement, legal and signature all wait on Priya's endorsement; miss it and the close slips to Q4.", "buttonLabel": "Draft the CFO ROI deck + 1:1 invite", "actionMsg": "Draft the re-packaged CFO ROI deck cover email to Priya Anand and a 1:1 invite for before Aug 26." },
+  "sources": [{ "label": "Opportunity – Enterprise Sales Cloud Platform" }, { "label": "Call – Aug 20 pricing review" }]
 }
 ```
+
+**Specific — "What's left before Joja can sign?"** (steps only, a plain next step):
+
 ```json
 {
-  "renderer": {
-    "componentOverrides": {
-      "$": {
-        "type": "mosaic",
-        "definition": "tile/widget",
-        "children": [
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "justify": "between",
-              "isWrapped": true
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center"
-                },
-                "children": [
-                  {
-                    "definition": "tile/icon",
-                    "attributes": {
-                      "name": "check-circle",
-                      "size": "xl",
-                      "alt": ""
-                    }
-                  },
-                  {
-                    "definition": "tile/text",
-                    "attributes": {
-                      "text": "{{planTitle}}",
-                      "variant": "h1"
-                    }
-                  }
-                ]
-              },
-              {
-                "definition": "tile/badge",
-                "attributes": {
-                  "label": "{{headerStatus}}",
-                  "variant": "warning"
-                }
-              }
-            ]
+  "title": "Two steps left before Joja signs, both on their side.",
+  "answer": "- Security review is **in progress** with **Sam Ortiz**, due **Oct 24**.\n- The order form goes out once it clears; signature target is **Oct 31**.",
+  "steps": [
+    { "status": "inProgress", "step": "Security review sign-off", "side": "Them", "owner": "Sam Ortiz", "due": "Oct 24" },
+    { "status": "notStarted", "step": "Execute signatures – close", "side": "Them", "owner": "Morgan Lee", "due": "Oct 31" }
+  ],
+  "nextStep": { "lead": "Confirm the security review date with Sam.", "text": "A one-line check-in keeps Oct 31 honest. Want me to draft it?" },
+  "sources": [{ "label": "Opportunity – Joja Platform Upsell" }]
+}
+```
+
+`props` schema (JSON Schema). Only `title`, `answer` and `sources` are required; follow the root description and each property's `description`:
+
+```json
+{
+  "type": "object",
+  "description": "Block order: title, answer, then the optional cards (pace, steps), then at most one tail (callout OR nextStep), then sources. Only title, answer and sources are required. Which optional cards to include: see the scope table in the skill instructions. Omit a key and its block is not shown: never send empty arrays, empty strings, placeholders or 'N/A', and never a card the prompt did not ask for. A pure business-case or single-fact question usually gets no cards. Format every value as a ready-to-display string (dates as 'Aug 24'); names are plain strings, never objects (use `Contact.Name.value` / `Owner.Name.value`).",
+  "required": [
+    "title",
+    "answer",
+    "sources"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "REQUIRED. One bold line: the verdict on the close date in the user's context, naming the one thing it hinges on (e.g. 'You can still hit Aug 31 – but only if the CFO deck goes out today.'). Plain text, no markdown. Never the skill name or 'Close Plan: X'."
+    },
+    "answer": {
+      "type": "string",
+      "description": "REQUIRED. Answer-first markdown bullets, rendered under the title: 2-4 short '- ' bullets, each ONE sentence, that answer ONLY what the user asked (pace vs. the date, which steps are red and why, what has to happen this week). Put **bold** inline on the key values inside each sentence (counts, days, dates, names, 'overdue'), never on a whole bullet. Do not restate every row of the steps card. No headings, tables or paragraphs."
+    },
+    "labels": {
+      "type": "object",
+      "description": "OPTIONAL. Every fixed label of the widget (card headings, column headers, status pills, the sources toggle); each key's `default` is its English text, and a missing or blank key falls back to it. Omit when the user writes in English; for another language follow the Language rule in SKILL.md.",
+      "properties": {
+        "closePlanPace": {
+          "type": "string",
+          "default": "CLOSE PLAN PROGRESS",
+          "description": "Heading of the progress card. English: 'CLOSE PLAN PROGRESS'."
+        },
+        "pathToSignature": {
+          "type": "string",
+          "default": "CLOSE PLAN STEPS",
+          "description": "Heading of the steps card. English: 'CLOSE PLAN STEPS'."
+        },
+        "status": {
+          "type": "string",
+          "default": "STATUS",
+          "description": "Steps column header. English: 'STATUS'."
+        },
+        "step": {
+          "type": "string",
+          "default": "STEP",
+          "description": "Steps column header. English: 'STEP'."
+        },
+        "side": {
+          "type": "string",
+          "default": "SIDE",
+          "description": "Steps column header. English: 'SIDE'."
+        },
+        "owner": {
+          "type": "string",
+          "default": "OWNER",
+          "description": "Steps column header. English: 'OWNER'."
+        },
+        "due": {
+          "type": "string",
+          "default": "DUE DATE",
+          "description": "Steps column header. English: 'DUE DATE'."
+        },
+        "sources": {
+          "type": "string",
+          "default": "Sources",
+          "description": "Word shown on the sources toggle; the renderer appends the count, e.g. 'Sources (3)'. Send the word only, no number. English: 'Sources'."
+        },
+        "notStarted": {
+          "type": "string",
+          "default": "NOT STARTED",
+          "description": "Status pill for a step with status 'notStarted'. English: 'NOT STARTED'."
+        },
+        "blocked": {
+          "type": "string",
+          "default": "BLOCKED",
+          "description": "Status pill for a step with status 'blocked'. English: 'BLOCKED'."
+        },
+        "inProgress": {
+          "type": "string",
+          "default": "IN PROGRESS",
+          "description": "Status pill for a step with status 'inProgress'. English: 'IN PROGRESS'."
+        },
+        "completed": {
+          "type": "string",
+          "default": "COMPLETED",
+          "description": "Status pill for a step with status 'completed'. English: 'COMPLETED'."
+        }
+      }
+    },
+    "pace": {
+      "type": "object",
+      "description": "OPTIONAL card 'CLOSE PLAN PROGRESS': steps done vs. total on a bar, and whether the plan is ahead or behind. Include for a broad ask (a close plan, whether the date is realistic) and when the prompt asks how the deal is tracking. Omit when the prompt asks only about the steps, and for a pure business-case question.",
+      "required": [
+        "done",
+        "total",
+        "doneLabel"
+      ],
+      "properties": {
+        "done": {
+          "type": "number",
+          "description": "Number of steps completed (fills the bar)."
+        },
+        "total": {
+          "type": "number",
+          "description": "Total number of steps in the plan (the bar's full length)."
+        },
+        "tone": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning",
+            "success"
+          ],
+          "description": "Pace colour: error (red) = behind pace / the date is at risk, warning (orange) = tight, success (green) = on pace. Default warning.",
+          "default": "warning"
+        },
+        "doneLabel": {
+          "type": "string",
+          "description": "Left caption under the bar, markdown, bold on the count (e.g. '**1 of 6** steps done'). Written whole in the user's language."
+        },
+        "paceLabel": {
+          "type": "string",
+          "description": "Right caption under the bar, markdown: the pace verdict and the landing (e.g. 'Behind by 3 days · **6 of 6** by 8/31'). Written whole in the user's language. Omit if unknown."
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "description": "OPTIONAL card 'CLOSE PLAN STEPS': the mutual action plan, one row per step, sorted by due date (earliest first), ending with the signature. Include for a broad ask (a close plan, path to signature) and when the prompt asks what's left / who owns what / what's blocking. Omit when the prompt asks only how the deal is tracking; never an empty array.",
+      "items": {
+        "type": "object",
+        "required": [
+          "step",
+          "status",
+          "side"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "notStarted",
+              "blocked",
+              "inProgress",
+              "completed"
+            ],
+            "description": "Drives the status pill and the left rule: notStarted (orange) = not begun yet, including steps not scheduled; blocked (red) = cannot move until something else happens, or overdue and stuck; inProgress (blue) = underway or scheduled; completed (green) = done."
           },
-          {
-            "definition": "tile/text",
-            "attributes": {
-              "text": "{{subtitle}}",
-              "variant": "caption",
-              "color": "muted"
-            }
+          "step": {
+            "type": "string",
+            "description": "Bold step name, short (e.g. 'Send CFO ROI deck', 'CFO 1:1 → Priya Anand')."
           },
-          {
-            "definition": "tile/separator"
+          "detail": {
+            "type": "string",
+            "description": "Small muted line under the step: what it is or what it depends on (e.g. 'Blocked on CFO endorsement'). Omit if nothing useful."
           },
-          {
-            "definition": "tile/meter",
-            "attributes": {
-              "label": "Close plan progress",
-              "value": "{{progressValue}}",
-              "min": 0,
-              "max": "{{progressMax}}",
-              "target": "{{progressTarget}}",
-              "valueFormat": "number",
-              "valueLabel": "{{progressValueLabel}}",
-              "targetLabel": "{{progressTargetLabel}}",
-              "status": "{{progressStatus}}",
-              "size": "lg",
-              "bands": "{{progressBands}}"
-            }
+          "side": {
+            "type": "string",
+            "description": "REQUIRED on every step. Who carries the step, in the user's language: 'Us' (your team does it), 'Them' (the customer does it) or 'Both' (a joint step such as a meeting or a redline cycle). Decide it from what the step is; it is never unknown."
           },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "Path to signature, by date",
-              "appearance": "striped",
-              "size": "sm",
-              "columns": [
-                {
-                  "key": "status",
-                  "header": "Status",
-                  "type": "badge"
-                },
-                {
-                  "key": "step",
-                  "header": "Step",
-                  "type": "text"
-                },
-                {
-                  "key": "side",
-                  "header": "Side",
-                  "type": "badge"
-                },
-                {
-                  "key": "owner",
-                  "header": "Owner",
-                  "type": "avatar"
-                },
-                {
-                  "key": "due",
-                  "header": "Due",
-                  "type": "date"
-                },
-                {
-                  "key": "state",
-                  "header": "State",
-                  "type": "badge"
-                }
-              ],
-              "rows": "{{pathRows}}"
-            }
+          "owner": {
+            "type": "string",
+            "description": "Named owner (person). Resolve it from data you read: the Opportunity Owner for your side's steps, the OpportunityContactRoles contact whose role fits the step (e.g. the Economic Buyer for signature) or the person who committed to it in a call, email or Slack thread. Omit only if none of those names the step's owner; never invent one."
           },
-          {
-            "definition": "tile/callout",
-            "attributes": {
-              "variant": "error",
-              "title": "{{calloutTitle}}",
-              "description": "{{calloutDesc}}"
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": [
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "{{ctaLabel}}",
-                      "variant": "primary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{ctaMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "View in Salesforce",
-                      "iconName": "open-in-new",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/openLink",
-                            "attributes": {
-                              "url": "{{oppUrl}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
+          "due": {
+            "type": "string",
+            "description": "Target date, short (e.g. 'Aug 24')."
           }
-        ]
+        }
+      }
+    },
+    "callout": {
+      "type": "object",
+      "description": "OPTIONAL tail, time-sensitive: the real deadline. Warning icon, a bold first sentence followed by normal text, then ONE blue primary button. Use INSTEAD of nextStep, never both (if both are sent only the callout renders). Include only if a step's date gates the close AND the user can act on it now. Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "required": [
+        "lead",
+        "text",
+        "buttonLabel",
+        "actionMsg"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). The bold first sentence: the gating date in one sentence, ending with a period (e.g. 'The CFO 1:1 by Aug 26 is the real deadline.')."
+        },
+        "text": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). One to three sentences of normal-weight text after the bold lead: what waits on it, what slipping costs, and the move."
+        },
+        "buttonLabel": {
+          "type": "string",
+          "description": "Label of the single primary button (e.g. 'Draft the CFO ROI deck + 1:1 invite')."
+        },
+        "actionMsg": {
+          "type": "string",
+          "description": "First-person request sent to chat when the button is clicked."
+        }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "description": "OPTIONAL tail, not time-sensitive: a plain suggestion line with NO button, only when there is a genuinely useful next move. Use INSTEAD of callout, never both.",
+      "required": [
+        "lead",
+        "text"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "Bold lead (the suggested move)."
+        },
+        "text": {
+          "type": "string",
+          "description": "One or two sentences of reasoning, ending with an offer to help if natural."
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "REQUIRED. Where the plan came from: the Salesforce records you actually read, linked (this is where the Opportunity record link goes), plus any call/email/doc you cited. Shown as a compact 'Salesforce · Sources (N)' toggle (the word comes from labels.sources). Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
+      "items": {
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Source name (e.g. 'Opportunity – Enterprise Sales Cloud Platform', 'Call – Aug 20 pricing review')."
+          },
+          "url": {
+            "type": "string",
+            "description": "Record or document URL. Omit if none."
+          }
+        }
       }
     }
   }
@@ -647,7 +447,7 @@ Two blocks below: first the **variable contract** (`renderer.props.schema.json`)
 ## Suggested SFDC updates
 - NextStep → "[next dated step from the plan]"
 - CloseDate → [if backward plan says current date not credible]
-[Apply with `update-opportunity`, or manually if read-only.]
+[Apply manually if read-only.]
 
 ## Draft email to champion
 [Sharing the action plan and asking them to confirm owners on their side]

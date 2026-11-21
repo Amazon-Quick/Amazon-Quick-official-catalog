@@ -1,16 +1,13 @@
 ---
 name: calendar-events
 display_name: Calendar Events
-description: "Show a schedule from Salesforce Event data with local times, subjects, locations, and linked contacts, accounts or deals. Use to review today's calendar, upcoming meetings, or a past or future schedule; for a broader morning rundown, use daily-briefing."
+description: "Show a schedule from Salesforce Event data with local times, subjects, locations, and linked contacts, accounts or deals, scoped to what was asked. Use to review today's calendar, upcoming meetings, or a past or future schedule; for a broader morning rundown, use daily-briefing."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:d6f6181e9670751f308f5f6b23cf8715e21dd3e0533ebb702afcd3bcbd60e3ea"
+checksum: "sha256:1ff6ff4942bdfb0f5eddfdb498d76cd1a20a2ef2a98fb9e998301217a1d626ab"
 id: "d985c1e1-1872-4ef4-92e8-daaaf6f1c18a"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -20,13 +17,19 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
 
 # Calendar Events
 
 Resolve timezone → compute range (no call) → read Events → render. All dates/times in the user's **local** timezone, not UTC.
+
+- **Scope reading and output to the prompt, never a default full agenda.** Answer what the user asked about their schedule; data you fetched but did not use stays out of the widget (see step 4).
 
 ## 1. Resolve timezone
 
@@ -37,467 +40,400 @@ dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql",
   queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { TimeZoneSidKey { value } } } }\"}" })
 ```
 
-Resolve the IANA zone first. Derive the UTC offset separately at each requested range boundary;
-do not reuse the current offset for a future or past boundary. A range that crosses a daylight-
-saving transition can therefore have different start and end offsets. Unresolvable → fall back to
-UTC (`+00:00`), note it in the output.
+Derive the current UTC offset from the IANA zone (e.g. `America/Los_Angeles` → `-07:00` or `-08:00`), accounting for DST at the dates in question — use the actual current date from context as the reference. Unresolvable → fall back to UTC (`+00:00`) and say so in `answer` (the only case besides hidden meetings where `answer` is sent).
 
 ## 2. Date range (prompt-only — no dispatch)
 
-Treat the requested period as inclusive local calendar dates. `%START%` is local midnight on the
-first day, inclusive. `%END%` is local midnight after the final day, exclusive. Compute each
-boundary with the UTC offset that the resolved zone observes on that boundary date.
+Anchor to the resolved local timezone:
+- **today** → today 00:00–23:59 · **tomorrow** → tomorrow 00:00–23:59
+- **this/next/last week** → Mon–Sun of that week · **this month** → 1st–last day
+- **specific date** → that date 00:00–23:59 · **explicit range** → as given
 
-- **today / tomorrow / yesterday** → that one local date
-- **this / next / last week** → Monday–Sunday of that week
-- **this / next / last month** → first–last day of that month
-- **specific date** → that one local date
-- **explicit range** → first and last dates as given, both inclusive; if end precedes start, ask for correction
-
-Always ISO-8601 with each boundary's own offset (e.g. a daylight-saving transition may start at
-`-07:00` and end at `-08:00`).
+Always ISO-8601 with the offset from Step 1 (e.g. `2026-08-04T00:00:00-07:00`).
 
 ## 3. Read Events
 
-`scope: MINE` already filters to the current user — no Id lookup needed. `%START%`/`%END%` are
-Step 2's inclusive-start/exclusive-end ISO boundaries. `%FIRST_DAY%`/`%LAST_DAY%` are the same
-inclusive local dates in `YYYY-MM-DD`. `Who`/`What` are polymorphic unions on Event (stable, not
-org-specific) — span via inline fragments, never bare:
+`scope: MINE` already filters to the current user — no Id lookup needed. `%START%`/`%END%` = Step 2's ISO boundaries. The filter returns every event that overlaps the range (starts before `%END%` and ends at or after `%START%`), so a multi-day event that began before the range still appears. `Who`/`What` are polymorphic unions on Event (stable, not org-specific) — span via inline fragments, never bare:
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Event(scope: MINE, where: { or: [ { and: [ { IsAllDayEvent: { eq: false } }, { StartDateTime: { gte: { value: \\\"%START%\\\" }, lt: { value: \\\"%END%\\\" } } } ] }, { and: [ { IsAllDayEvent: { eq: true } }, { ActivityDate: { gte: { value: \\\"%FIRST_DAY%\\\" }, lte: { value: \\\"%LAST_DAY%\\\" } } } ] } ] }, orderBy: { StartDateTime: { order: ASC } }, first: 100) { pageInfo { hasNextPage } edges { node { Id Subject { value } StartDateTime { value displayValue } EndDateTime { value displayValue } ActivityDate { value } Description { value } Location { value } IsAllDayEvent { value } Who { ... on Contact { Name { value } } ... on Lead { Name { value } } } What { __typename ... on Account { Id Name { value } } ... on Opportunity { Id Name { value } Amount { value displayValue } Account { Name { value } } } } } } } } } } \"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Event(scope: MINE, where: { StartDateTime: { lt: { value: \\\"%END%\\\" } }, EndDateTime: { gte: { value: \\\"%START%\\\" } } }, orderBy: { StartDateTime: { order: ASC } }, first: 100) { edges { node { Id Subject { value } StartDateTime { value displayValue } EndDateTime { value displayValue } Description { value } Location { value } IsAllDayEvent { value } WhoId { value } WhatId { value } Who { ... on Contact { Name { value } Title { value } } ... on Lead { Name { value } } } What { ... on Account { Name { value } } ... on Opportunity { Name { value } Amount { value displayValue } Account { Name { value } } } } } } } } } } \"}" })
 ```
-**Local grounding and summary rule:** Count an Event as deal-linked only when `What.__typename` is `Opportunity`; use returned `What.Id` for the link and `Amount.value` for currency, otherwise use the existing non-deal / unavailable sentinel without inferring from `Name`. Use returned Account facts only when present. The grounded hybrid does not query or display Stage or Close Date because its agenda output does not need them. `Who` is not an attendee collection, so the subtitle contains no attendee count.
-
-**Local range and agenda rule — candidate-derived hybrid:** The two filter branches are one read,
-not two requests. For `IsAllDayEvent.value == true`, use returned `ActivityDate.value` for inclusion
-and day grouping without timezone conversion; show `All day`. For timed Events, use the converted
-`StartDateTime`/`EndDateTime` values and group by the resolved local date. Blank Subject becomes
-`(No subject)`; blank related record, Location, or Amount stays unavailable. `pageInfo.hasNextPage ==
-true` means the 100-row result is incomplete: say `showing first 100` in the widget caption or text
-fallback and ask for a shorter range, never claim a complete total. Do not infer duplicates merely
-because Events share a time or related record. This query does not establish logged follow-up,
-attendee completeness, readiness, missing prep, or task/activity state.
-
-**Grounded hybrid widget mode:** Keep the native widget and its two source actions, but use the
-candidate's factual agenda fields instead of unsupported prep/status claims. Rows contain only Time,
-Event, Related to, Location, and Value. The callout identifies the first returned Event in the range
-and repeats only its returned time, related record, location, and Opportunity value; it never says
-the Event needs prep or that work is missing. Keep the primary `Draft agenda` send-message action
-for that exact Event. Include `View in Salesforce` only when an Event Id and returned instance host
-produce the exact Event URL; otherwise remove that entire secondary button before rendering. A
-successful widget call remains terminal.
 
 Empty `edges` → say "No events found for [range]", don't retry with a broader window unasked.
+Cover at most the first 100 meetings in the range: one query, `first: 100`, never paged or split to read more.
 
 ## 4. Render — widget first
 
-Call `display_widget` immediately after assembling the event list. Do not write markdown first. A
-widget success requires a structured widget/UI result. If the tool is unavailable, returns an
-error, or returns only a flattened plain-text summary without structured widget/UI content, treat
-rendering as unavailable and emit the Step 5 fallback once. Do not mix that fallback with a free-
-form summary, correction, or choices. If a structured widget succeeds, that call is terminal.
+Call `display_widget` immediately after assembling the event list. Do not write markdown first — only fall back to the Step 5 markdown when the tool is unavailable (e.g. a text-only client).
 
 When the data is assembled, call `display_widget`; a single one-line "Displaying the visualization now (this may take a minute)." notice may precede it.
 
 ### Self-verification (before calling display_widget)
 
-- [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
-- [ ] Every `{{token}}` placeholder replaced with a resolved literal — no `{{…}}` left, no `{!…}` expressions in the widget definition.
-- [ ] No graphs (heatmap/piechart/chart/meter/waterfall count = 0).
-- [ ] Datagrid rows contain only `time`, `title`, `related`, `location`, and `value`; no `status` or
-  `prep`. `value` is a raw returned number for a deal-linked Event or
-  `{ value: 0, display: "—" }` when unavailable.
-- [ ] All-day rows use `ActivityDate` and `All day`; timed rows use converted local date/times.
-- [ ] `pageInfo.hasNextPage == true` is disclosed as `showing first 100` in `datagridCaption`.
-- [ ] The callout names the first returned Event and contains only returned factual values — no
-  duplicate, follow-up, readiness, or missing-prep claim.
-- [ ] `recordLinkButtons` contains one exact Event link per displayed row and one link per distinct
-  returned typed Account/Opportunity when the host is available; no raw Id label. If none can be
-  grounded, the complete Record links block is removed.
-- [ ] The primary button is `action/sendMessage`. The secondary `action/openLink` button is present
-  only with a grounded first-Event URL; otherwise its whole button object is removed.
-- [ ] The `display_widget` response is classified by capability: structured widget/UI result →
-  terminal success; error/unavailable/plain-text-only result → exactly the Step 5 fallback.
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
 
-The widget template is embedded below. Call `display_widget` in **dynamic** mode with it. It is a skeleton: replace every `{{token}}` with a fully-resolved literal computed from the events you gathered — this echo path does no expression compilation, so no `{!…}` bindings.
+The layout is built into the renderer and registered by name — you send **only the widget name and its data**. Call `display_widget` once:
 
-Two blocks below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}`'s type + a worked example, use it to compute each value; then the **widget template** to hydrate. Substitute your computed values into the template's `{{token}}`s (see the token-typing rules above), leaving no `{{…}}`/`{!…}`.
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/calendar-events", props: <object matching the schema below> })
+```
+
+- **Send data only; never author presentation** (colours, icons, HTML, emoji, layout keys, `{!…}`/`{{…}}`): the renderer owns the look and shows or hides each block from the keys you send. Keys outside the schema are rejected.
+- **CRITICAL — `props` must be a nested JSON object, NOT a string.** ❌ WRONG: `props: "{\"title\":...}"`. ✅ RIGHT: `props: {"title": ...}`. If you hold a JSON string, `JSON.parse` it first.
+- When `display_widget` is available the widget is the output; produce the Step 5 markdown only as the fallback when the tool is unavailable (e.g. a terminal). Empty `edges` → skip the widget and say "No events found for [range]". Never fabricate events.
+
+### What to send
+
+Follow the block order and the per-block inclusion rules in the `props` schema below (the root description and each property's `description`).
+
+Rules:
+- **Language:** when the user writes in English, omit `labels`. When they write in another language, send `labels` with EVERY key translated and write every free-text field (`caption`, `context`, `detail`, ...) in that language. Never join translated text with English fragments: each phrase is written whole, because word order differs.
+- **Everything comes from the Step 3 rows.** `Subject` → `title`; `StartDateTime`–`EndDateTime` in the Step 1 time zone → `time`, the time range (`IsAllDayEvent` → "All day"); the What Account's `Name`, or the What Opportunity's `Account.Name` → `account`; the What Opportunity's `Name` → `deal`, its `Amount.displayValue` → `amount`, and its `WhatId` → `dealUrl`; the Who `Name` (with the Contact's `Title`) → `attendees`; `Description` → `detail`; a meeting URL in `Location` or `Description` → `joinUrl`. Counts in the `title`/`answer` (meetings, deal-linked meetings) are computed from those rows, never estimated.
+- **External vs internal:** a meeting is external when the Event has a Who (Contact/Lead) or a What (Account/Opportunity), and deal-linked when its What is an Opportunity. Only external meetings get a `prepMsg`; an internal meeting gets a `context` line instead of `account`/`deal`.
+- **`isNext`** goes on the earliest meeting among those shown whose `StartDateTime` is after the current date-time from context — one row in the whole widget, shown expanded. Compare every meeting's start to now: when the whole range is in the future (e.g. tomorrow, next week), that is the first meeting shown; when some have already started, skip them. If every meeting shown has already started, omit it. Never put it on a meeting that has started. If the context gives only today's date and not the time of day, you cannot tell which of today's meetings have started — then put `isNext` on the earliest meeting shown that is on today's date or later (this is the one case where it may land on a meeting earlier today). Do not leave every row collapsed just because the time of day is unknown; only omit it when every meeting shown is on an earlier date than today.
+- **One card for the whole query.** `caption` is its heading: the day when the range asked for is one day (e.g. `Thu, Oct 29`), or the day range when it spans several (e.g. `Oct 29 – Oct 31`). Dates only: no meeting count, no time zone, no other text. `meetings` is one flat list in start-time order, one row per Event; there are no per-day cards.
+- **Each row:** `title` is the Event Subject (the row's title) and `time` is its subtitle, a ready-to-display string. When the range is one day, `time` is just the time range (e.g. `9:00 AM – 10:00 AM`). When the range spans several days, start it with the event's date (e.g. `Nov 9 · 9:00 AM – 10:00 AM`). An all-day event shows `All day` in place of the time range (with the date first when the range spans several days). The account, deal and amount (or the `context` line for an internal meeting), the attendees, the description, the deal link and the buttons all appear when the row is expanded.
+- **Multi-day events** (the end date in the user's time zone is later than the start date) appear once, as a single row, never repeated on each day. Write its `time` as `Multi Day (Mon D – D)` (e.g. `Multi Day (Nov 7 – 9)`; across months `Multi Day (Oct 30 – Nov 2)`). It sorts by its start; an event that began before the range sorts first. An event that began before the range is never `isNext`.
+- **Show at most 20 meetings in total**, in chronological order, even when Step 3 returned more. When Step 3 returned more than 20, send `answer` saying how many are shown out of how many (e.g. "Showing the first 20 of 100 meetings") and that the user can ask for the rest, and have the tail line (callout or `nextStep`) also point to the remaining meetings. If Step 3 returned exactly 100 (the query limit), say "at least 100".
+
+### Scope the blocks to the prompt
+
+The schema marks only `title` and `sources` as required. **Every other key is a choice, and the choice follows the question — not what you happened to retrieve.** Data you fetched but did not use stays out of the widget.
+
+| The prompt is… | Send |
+|---|---|
+| **Broad schedule** ("what's on my calendar today?", "show my meetings", "this week's schedule") | `title` + `caption` + `meetings` + one tail (`nextStep` or `callout`) + `sources`; add `answer` only when some meetings are not shown (see below) |
+
+Rules:
+- **Omit a key and its block is not shown.** Never send empty arrays, empty strings, placeholder text, or "N/A" to fill a block.
+- **`answer`:** omit it by default; the `title` and the agenda card are the answer. Send it only when meetings were not shown (more than 20 in the range, or the 100-meeting query limit was reached) or when the time zone fell back to UTC: 2-4 short bullets saying what is missing. Never use it to restate the agenda.
+- **Tail (always exactly one):** `callout` when something is time-sensitive and the user can act on it (one button, a first-person `actionMsg`); otherwise a `nextStep` line. Always send one of the two. Never both (if both are sent only the callout renders). `callout` carries `level` — `tip` (helpful context), `note` (one clear move, the default) or `blocker` (time-sensitive or blocked), the lowest that fits.
+- **Sources:** a record is `https://<myDomain>/lightning/r/<SObjectType>/<Id>/view` (Event, Opportunity). Omit `url` if you have no Id.
+- Format every value as a ready-to-display string (times, amounts). Names are plain strings, never objects.
+- Before calling: `props` has no `{!…}`/`{{…}}`, no keys outside the schema, and every optional key you included is justified by the prompt.
+
+#### Worked examples (the `props` object only)
+
+**Broad — "What's on my calendar today?"** (one card, the next meeting expanded, a next-step line; no `answer` because every meeting is shown):
+
 ```json
 {
-  "$comment": "Variable contract for the grounded hybrid calendar widget. Hydrate every {{token}} as a typed literal, then call display_widget once in dynamic mode. Rows use only returned Time, Event, Related to, Location, and typed Opportunity Value. Build {{recordLinkButtons}} only from returned Event and typed Account/Opportunity identities plus the returned instance host; remove the complete Record links block when none are grounded. The callout repeats factual fields for the first returned Event; it never infers prep, readiness, duplicates, or follow-up. Keep the Draft agenda action. Remove the complete View in Salesforce button when no grounded first-Event URL is available.",
-  "props": {
-    "title": {
-      "description": "Page title — the day (e.g. \"Today — Thursday, Jul 24\").",
-      "type": "string",
-      "example": "Today — Thursday, Jul 24"
+  "title": "Seven meetings today, back-to-back from 8:30 AM – six touch open deals.",
+  "caption": "Thu, Aug 20",
+  "meetings": [
+    {
+      "time": "8:30 AM – 9:00 AM",
+      "title": "Pipeline stand-up",
+      "context": "Internal team sync · no deal linked"
     },
-    "subtitle": {
-      "description": "Caption subhead: Event count, deal-linked count, first start / last end, and resolved timezone.",
-      "type": "string",
-      "example": "6 events · 4 deal-linked · first at 9:00 AM, last ends 4:30 PM · times in America/Los_Angeles"
+    {
+      "time": "9:00 AM – 9:30 AM",
+      "title": "Solution workshop – dispatch modernization",
+      "account": "Northpeak Logistics",
+      "deal": "Service Cloud + Dispatch",
+      "dealUrl": "https://<myDomain>/lightning/r/Opportunity/<Id>/view",
+      "amount": "$285K",
+      "attendees": "Marcus Reyes (VP Operations), Dana Whitfield (Director, Dispatch Systems), you.",
+      "detail": "Walk the Service Cloud + dispatch-modernization scope and open items. Your first external meeting – prep the workshop deck before the stand-up wraps.",
+      "joinUrl": "https://meet.google.com/abc-defg-hij",
+      "joinLabel": "Join Google Meet",
+      "prepMsg": "Prep me for my 9:00 AM Solution workshop with Northpeak Logistics.",
+      "isNext": true
     },
-    "datagridCaption": {
-      "description": "Use 'Schedule, in order' when complete. When pageInfo.hasNextPage is true, append ' · showing first 100; narrow the date range to check for more'.",
-      "type": "string",
-      "example": "Schedule, in order"
+    {
+      "time": "9:30 AM – 10:00 AM",
+      "title": "Contract redlines & signature walkthrough",
+      "account": "Acme Retail",
+      "deal": "Agentforce Service Agent Rollout",
+      "dealUrl": "https://<myDomain>/lightning/r/Opportunity/<Id>/view",
+      "prepMsg": "Prep me for my 9:30 AM Contract redlines & signature walkthrough with Acme Retail."
     },
-    "datagridRows": {
-      "description": "Returned Events in local-day/start order. All-day rows use ActivityDate and 'All day'. Empty array omits the datagrid.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "time": {
-            "description": "Event time: a converted local start–end range, or 'All day'.",
-            "type": "string"
-          },
-          "title": {
-            "description": "Returned Event Subject; use '(No subject)' when blank.",
-            "type": "string"
-          },
-          "related": {
-            "description": "Returned Who and What names joined with a comma; use \"—\" when neither is returned.",
-            "type": "string"
-          },
-          "location": {
-            "description": "Returned Event location; use \"—\" when blank.",
-            "type": "string"
-          },
-          "value": {
-            "description": "Returned Opportunity amount. Use a raw number only for a typed deal-linked Event; otherwise use { value: 0, display: \"—\" }.",
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "value": {
-                    "type": "number"
-                  },
-                  "display": {
-                    "type": "string"
-                  }
-                }
-              }
-            ]
-          }
-        }
-      },
-      "example": [
-        {
-          "time": "9:00–9:45 AM",
-          "title": "Cobalt contract walkthrough",
-          "related": "Jordan Lee, Cobalt renewal",
-          "location": "Video call",
-          "value": 1800000
-        },
-        {
-          "time": "All day",
-          "title": "Team offsite",
-          "related": "—",
-          "location": "Main office",
-          "value": {
-            "value": 0,
-            "display": "—"
-          }
-        }
-      ]
+    {
+      "time": "11:00 AM – 12:00 PM",
+      "title": "Data Cloud architecture deep dive",
+      "account": "Vertex Financial",
+      "deal": "Data Cloud Foundation",
+      "dealUrl": "https://<myDomain>/lightning/r/Opportunity/<Id>/view",
+      "prepMsg": "Prep me for my 11:00 AM Data Cloud architecture deep dive with Vertex Financial."
     },
-    "recordLinkButtons": {
-      "description": "One complete tile/button per returned Event and distinct typed Account/Opportunity when an exact instance host and record Id are available. Labels use returned names, never raw Ids. Use an empty array and remove the complete Record links block when no URL can be grounded.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "definition": {
-            "type": "string",
-            "enum": [
-              "tile/button"
-            ]
-          },
-          "attributes": {
-            "type": "object"
-          }
-        }
-      },
-      "example": [
-        {
-          "definition": "tile/button",
-          "attributes": {
-            "label": "Open Cobalt contract walkthrough event",
-            "iconName": "open-in-new",
-            "variant": "secondary",
-            "actions": {
-              "click": [
-                {
-                  "definition": "action/openLink",
-                  "attributes": {
-                    "url": "https://org.lightning.force.com/lightning/r/Event/00U000000000000AAA/view"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      ]
+    {
+      "time": "1:00 PM – 2:00 PM",
+      "title": "InfoSec / HIPAA review",
+      "account": "Helios Health",
+      "deal": "Service Cloud + Agentforce Expansion",
+      "dealUrl": "https://<myDomain>/lightning/r/Opportunity/<Id>/view",
+      "prepMsg": "Prep me for my 1:00 PM InfoSec / HIPAA review with Helios Health."
     },
-    "calloutVariant": {
-      "description": "Use info for the factual first-Event summary.",
-      "type": "string",
-      "enum": [
-        "error",
-        "warning",
-        "success",
-        "info",
-        "recommended"
-      ],
-      "example": "info"
+    {
+      "time": "3:00 PM – 4:00 PM",
+      "title": "CFO term sheet call",
+      "account": "Northwind Logistics",
+      "deal": "Agentforce for Field Ops",
+      "dealUrl": "https://<myDomain>/lightning/r/Opportunity/<Id>/view",
+      "prepMsg": "Prep me for my 3:00 PM CFO term sheet call with Northwind Logistics."
     },
-    "calloutTitle": {
-      "description": "Factual heading naming the first returned Event in the requested range.",
-      "type": "string",
-      "example": "First event in range: Cobalt contract walkthrough"
-    },
-    "calloutDescription": {
-      "description": "Returned facts for the first Event: time, related record, location, and typed Opportunity value. Omit unavailable facts and make no readiness or follow-up claim.",
-      "type": "string",
-      "example": "9:00–9:45 AM · Cobalt renewal · Video call · $1.8M"
-    },
-    "primaryButtonLabel": {
-      "description": "Primary button label (action/sendMessage).",
-      "type": "string",
-      "example": "Draft agenda"
-    },
-    "primaryButtonMsg": {
-      "description": "First-person prompt naming only the exact returned Event.",
-      "type": "string",
-      "example": "Draft an agenda for the Cobalt contract walkthrough."
-    },
-    "salesforceUrl": {
-      "description": "Exact Event Lightning URL for the secondary openLink. Remove the complete secondary button when the instance host or Event Id is unavailable.",
-      "type": "string",
-      "example": "https://org.lightning.force.com/lightning/r/Event/00U000000000000AAA/view"
+    {
+      "time": "4:30 PM – 5:00 PM",
+      "title": "Re-engagement call",
+      "account": "Meridian Insurance",
+      "deal": "Agentforce Claims Triage",
+      "dealUrl": "https://<myDomain>/lightning/r/Opportunity/<Id>/view",
+      "prepMsg": "Prep me for my 4:30 PM Re-engagement call with Meridian Insurance."
     }
-  }
+  ],
+  "nextStep": {
+    "lead": "Suggested next step:",
+    "text": "your first external meeting is the 9:00 AM Northpeak Logistics workshop – the only deal-valued session this morning at $285K. Review the dispatch-modernization scope and open items before the pipeline stand-up wraps."
+  },
+  "sources": [
+    {
+      "label": "Events · Today · 7 meetings"
+    },
+    {
+      "label": "Event · 9:00 AM · Solution workshop",
+      "url": "https://<myDomain>/lightning/r/Event/<Id>/view"
+    },
+    {
+      "label": "Opportunity · Service Cloud + Dispatch",
+      "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view"
+    },
+    {
+      "label": "Event · 3:00 PM · CFO term sheet call",
+      "url": "https://<myDomain>/lightning/r/Event/<Id>/view"
+    }
+  ]
 }
 ```
+
+**Broad — "What does my week look like?"** (one card for the range, the next meeting expanded, a next-step line; the range spans several days, so each `time` starts with its date; no `answer` because every meeting is shown):
+
 ```json
 {
-  "renderer": {
-    "componentOverrides": {
-      "$": {
-        "type": "mosaic",
-        "definition": "tile/widget",
-        "children": [
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "isWrapped": false
-            },
-            "children": [
-              {
-                "definition": "tile/icon",
-                "attributes": {
-                  "name": "calendar",
-                  "size": "xl",
-                  "alt": ""
-                }
-              },
-              {
-                "definition": "tile/text",
-                "attributes": {
-                  "text": "{{title}}",
-                  "variant": "h1"
-                }
-              }
-            ]
+  "title": "Three meetings this week, two of them on open deals.",
+  "caption": "Aug 17 – Aug 23",
+  "meetings": [
+    { "time": "Tue, Aug 18 · 9:30 AM – 10:00 AM", "title": "Contract redlines & signature walkthrough", "account": "Acme Retail", "deal": "Agentforce Service Agent Rollout", "dealUrl": "https://<myDomain>/lightning/r/Opportunity/<Id>/view", "prepMsg": "Prep me for my Tuesday 9:30 AM Contract redlines & signature walkthrough with Acme Retail.", "isNext": true },
+    { "time": "Tue, Aug 18 · 2:00 PM – 3:00 PM", "title": "Forecast review", "context": "Internal team sync · no deal linked" },
+    { "time": "Thu, Aug 20 · 1:00 PM – 2:00 PM", "title": "InfoSec / HIPAA review", "account": "Helios Health", "deal": "Service Cloud + Agentforce Expansion", "dealUrl": "https://<myDomain>/lightning/r/Opportunity/<Id>/view", "prepMsg": "Prep me for my Thursday 1:00 PM InfoSec / HIPAA review with Helios Health." }
+  ],
+  "nextStep": {
+    "lead": "Suggested next step:",
+    "text": "Tuesday's 9:30 AM Acme Retail redlines walkthrough is your first deal meeting – confirm the open redlines are resolved before you walk in."
+  },
+  "sources": [
+    { "label": "Events · This week · 3 meetings" },
+    { "label": "Opportunity · Agentforce Service Agent Rollout", "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view" },
+    { "label": "Opportunity · Service Cloud + Agentforce Expansion", "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view" }
+  ]
+}
+```
+
+`props` schema (JSON Schema). Only `title` and `sources` are required; include any other key only when the rules above call for it (see "Scope the blocks to the prompt"):
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Block order: title, optional answer, the agenda card (caption + meetings), exactly one tail (callout OR nextStep), then sources. Only title and sources are required. Which optional blocks to include: see the scope table in the skill instructions. Omit a key and its block is not shown: never send empty arrays, empty strings, placeholders or 'N/A'. Format every value as a ready-to-display string (times, amounts); names are plain strings, never objects.",
+  "required": [
+    "title",
+    "sources"
+  ],
+  "properties": {
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "OPTIONAL. Every fixed label of the widget (the attendees label, the button labels, the sources toggle); each key's `default` is its English text, and a missing or blank key falls back to it. Omit when the user writes in English; for another language follow the Language rule in SKILL.md.",
+      "properties": {
+        "attendees": {
+          "type": "string",
+          "default": "Attendees",
+          "description": "Bold label before a meeting's attendee list. English: 'Attendees'."
+        },
+        "join": {
+          "type": "string",
+          "default": "Join meeting",
+          "description": "Join button label when a meeting has no joinLabel. English: 'Join meeting'."
+        },
+        "prep": {
+          "type": "string",
+          "default": "Prep for meeting",
+          "description": "Prep button label. English: 'Prep for meeting'."
+        },
+        "sources": {
+          "type": "string",
+          "default": "Sources",
+          "description": "Word shown on the sources toggle; the renderer appends the count, e.g. 'Sources (4)'. Send the word only, no number. English: 'Sources'."
+        }
+      }
+    },
+    "title": {
+      "type": "string",
+      "description": "REQUIRED. The takeaway for the schedule in the user's context, one bold sentence that already answers the question (e.g. 'Seven meetings today, back-to-back from 8:30 AM – six touch open deals.'). Never the skill name or 'Calendar'."
+    },
+    "answer": {
+      "type": "string",
+      "description": "OPTIONAL. Omit by default: the title and the agenda cards are the answer. Send only when some meetings are not shown (more than 20 in the range, or the 100-meeting query limit reached) or the time zone fell back to UTC: 2-4 short '- ' bullets with **bold** on the key facts saying what is missing (e.g. 'Showing the first 20 of 34 meetings; ask for the rest'). Never restate the agenda rows."
+    },
+    "caption": {
+      "type": "string",
+      "description": "OPTIONAL, sent with `meetings`. The agenda card's heading: the day when the range is one day (e.g. 'Thu, Oct 29'), or the day range when it spans several (e.g. 'Oct 29 – Oct 31'). Dates only, in the user's language: no meeting count, no time zone, no other text."
+    },
+    "meetings": {
+      "type": "array",
+      "minItems": 1,
+      "description": "OPTIONAL. The agenda: one collapsible row per Event in the range, in start-time order, all in the one card. Include for a broad schedule ask (see the scope table). Omit the key otherwise; never an empty array. (An event that began before the range sorts first.)",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "time",
+          "title"
+        ],
+        "properties": {
+          "time": {
+            "type": "string",
+            "description": "The row's subtitle, ready to display, in the user's local time zone: the time range, 12-hour (e.g. '9:00 AM – 10:00 AM'); 'All day' for an all-day event. When the range covers more than one day, start with the date (e.g. 'Nov 9 · 9:00 AM – 10:00 AM'). A multi-day event shows 'Multi Day (Nov 7 – 9)' (e.g. 'Multi Day (Oct 30 – Nov 2)' across months)."
           },
-          {
-            "definition": "tile/text",
-            "attributes": {
-              "text": "{{subtitle}}",
-              "variant": "caption",
-              "color": "muted"
-            }
+          "title": {
+            "type": "string",
+            "description": "The Event Subject, the row's title (e.g. 'Solution workshop – dispatch modernization')."
           },
-          {
-            "definition": "tile/separator"
+          "context": {
+            "type": "string",
+            "description": "Muted line for an internal meeting (no Who and no What), shown first when the row is expanded, in place of account and deal (e.g. 'Internal team sync · no deal linked'). Omit when the meeting has an account or deal."
           },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "{{datagridCaption}}",
-              "appearance": "striped",
-              "size": "sm",
-              "columns": [
-                {
-                  "key": "time",
-                  "header": "Time",
-                  "type": "text"
-                },
-                {
-                  "key": "title",
-                  "header": "Event",
-                  "type": "text"
-                },
-                {
-                  "key": "related",
-                  "header": "Related to",
-                  "type": "text"
-                },
-                {
-                  "key": "location",
-                  "header": "Location",
-                  "type": "text"
-                },
-                {
-                  "key": "value",
-                  "header": "Value",
-                  "type": "currency",
-                  "align": "right"
-                }
-              ],
-              "rows": "{{datagridRows}}"
-            }
+          "account": {
+            "type": "string",
+            "description": "Account name: the What Account, or the What Opportunity's Account (e.g. 'Northpeak Logistics'). Shown when the row is expanded."
           },
-          {
-            "definition": "tile/column",
-            "attributes": {
-              "gap": "sm"
-            },
-            "children": [
-              {
-                "definition": "tile/text",
-                "attributes": {
-                  "text": "Record links",
-                  "variant": "section-title"
-                }
-              },
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": "{{recordLinkButtons}}"
-              }
-            ]
+          "deal": {
+            "type": "string",
+            "description": "Opportunity name when What is an Opportunity (e.g. 'Service Cloud + Dispatch'). Shown when the row is expanded."
           },
-          {
-            "definition": "tile/callout",
-            "attributes": {
-              "variant": "{{calloutVariant}}",
-              "title": "{{calloutTitle}}",
-              "description": "{{calloutDescription}}"
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": [
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "{{primaryButtonLabel}}",
-                      "variant": "primary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{primaryButtonMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "View in Salesforce",
-                      "iconName": "open-in-new",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/openLink",
-                            "attributes": {
-                              "url": "{{salesforceUrl}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
+          "dealUrl": {
+            "type": "string",
+            "description": "The Opportunity record URL https://<myDomain>/lightning/r/Opportunity/<WhatId>/view; shown as a link when the row is expanded. Omit if no Opportunity."
+          },
+          "amount": {
+            "type": "string",
+            "description": "Pre-formatted Opportunity amount (e.g. '$285K'). Shown when the row is expanded. Omit if no Opportunity or no Amount."
+          },
+          "attendees": {
+            "type": "string",
+            "description": "Who's in the meeting, from the Who (with the Contact's Title) and any names in the Description, ending with 'you' (e.g. 'Marcus Reyes (VP Operations), Dana Whitfield (Director, Dispatch Systems), you.'). Never invent attendees."
+          },
+          "detail": {
+            "type": "string",
+            "description": "One or two sentences from the Event Description and the linked deal: what the meeting is for and what to have ready."
+          },
+          "joinUrl": {
+            "type": "string",
+            "description": "Meeting link found in the Event Location or Description (an http(s) URL). Adds the Join button. Omit if none."
+          },
+          "joinLabel": {
+            "type": "string",
+            "description": "Join button label naming the provider when the URL makes it obvious (e.g. 'Join Google Meet'). Omit to use labels.join."
+          },
+          "prepMsg": {
+            "type": "string",
+            "description": "External meetings only (the Event has a Who or a What): first-person request the Prep button sends to chat (e.g. 'Prep me for my 9:00 AM Solution workshop with Northpeak Logistics.'). Omit for internal meetings."
+          },
+          "isNext": {
+            "type": "boolean",
+            "description": "true on the earliest meeting shown whose start is after the current date-time (at most one row in the whole widget); that row is shown expanded. When the whole range is in the future, that is the first meeting. Never on a meeting that has started; omit on every other row, and on all rows if every meeting shown has started. If only today's date (not the time of day) is known, use the earliest meeting shown on today's date or later."
           }
-        ]
+        }
+      }
+    },
+    "callout": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Tail, time-sensitive (send this or nextStep: one of the two is always sent). A bold first sentence followed by normal text, then ONE blue primary button. Use INSTEAD of nextStep, never both (if both are sent only the callout renders). Include only if something is time-sensitive AND the user can act on it. Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "required": [
+        "lead",
+        "text",
+        "buttonLabel",
+        "actionMsg"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). The bold first sentence of the callout (the caution in one sentence, ending with a period)."
+        },
+        "text": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). One to three sentences: what, why now, and the move."
+        },
+        "buttonLabel": {
+          "type": "string",
+          "description": "Label of the single primary button."
+        },
+        "actionMsg": {
+          "type": "string",
+          "description": "First-person request sent to chat when the button is clicked."
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "tip",
+            "note",
+            "blocker"
+          ],
+          "default": "note",
+          "description": "OPTIONAL. Emphasis of the callout: 'tip' (quiet), 'note' (standard, the default), 'blocker' (urgent or blocked). Include only when it is not 'note'."
+        }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Tail, not time-sensitive (the default tail): a plain suggestion line with NO button. Send this when there is no callout; never both.",
+      "required": [
+        "lead",
+        "text"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "Bold lead (the suggested move)."
+        },
+        "text": {
+          "type": "string",
+          "description": "One or two sentences of reasoning, ending with an offer to help if natural."
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "REQUIRED. Where the answer came from: the Salesforce records you actually read, linked. Shown as a compact 'Salesforce · Sources (N)' toggle (the word comes from labels.sources). Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Source name: object · record (e.g. 'Event · 9:00 AM · Solution workshop', 'Opportunity · Service Cloud + Dispatch')."
+          },
+          "url": {
+            "type": "string",
+            "description": "Record URL https://<myDomain>/lightning/r/<SObjectType>/<Id>/view. Omit if none."
+          }
+        }
       }
     }
   }
 }
 ```
 
-What each block shows, from data you already have:
+### Follow-up: the rest of the meetings (text only)
 
-- **Header** — an icon + page-title text (`{{title}}`) with `{{subtitle}}`: returned Event count,
-  typed deal-linked count, first/last timed boundaries when available, and resolved timezone.
-- **Schedule datagrid** (`{{datagridCaption}}`, `{{datagridRows}}`) — one row per returned Event in
-  local-day/start order. Columns: Time, Event, Related to, Location, and typed Opportunity Value.
-  All-day rows use `ActivityDate`; unavailable values use the existing `—` sentinel. The caption
-  discloses `showing first 100` when `pageInfo.hasNextPage` is true.
-- **Record links** (`{{recordLinkButtons}}`) — one exact Event button per row plus one button per
-  distinct typed Account/Opportunity, only from returned Ids and the returned instance host. Remove
-  the whole block when no exact URL is available.
-- **One factual callout** (`variant` = `{{calloutVariant}}`, normally `info`) —
-  `{{calloutTitle}}` names the first returned Event and `{{calloutDescription}}` repeats only its
-  returned time, related record, location, and typed Opportunity value. The primary button sends
-  `{{primaryButtonMsg}}` through `action/sendMessage`. Keep the secondary `action/openLink` button
-  only when `{{salesforceUrl}}` is grounded; otherwise remove that button object.
+This section overrides the "widget only" rule above and in the global rules, and the Step 5 heading, for this one case. When the user asks for the meetings that were not shown (e.g. "show the rest"), do NOT call `display_widget`. Reply with text only, using the events already read for that range (read them again with the single Step 3 query if they are no longer available; never page or split the range to read more than 100): the meetings after the first 20, up to the 100th, in chronological order, with a `##` heading per day (`[Day Name], [Mon DD]`) and one bullet per meeting showing only the time, the title and the account. If Step 3 returned exactly 100, end with one line saying the list stops at the first 100 meetings and there may be more in the range.
 
-**Hydration rules:**
-1. Start from the embedded template above — a valid-JSON widget-definition envelope whose leaf values carry `{{token}}` placeholders.
-2. Resolve every `{{token}}`. A value that is **only** a `{{token}}` (datagrid `rows`) becomes the resolved **typed** literal — numbers stay numbers, arrays stay arrays. A `{{token}}` **inside** a larger string is interpolated as text.
-3. `{{datagridRows}}` is an array with exactly `time`, `title`, `related`, `location`, and `value`.
-   Use a raw returned number for typed Opportunity value; otherwise use
-   `{ value: 0, display: "—" }`. Do not add status/prep fields.
-4. `{{recordLinkButtons}}` is an array of complete `tile/button` objects built from exact returned
-   record identity. If it is empty, remove the complete Record links column block.
-5. The result is hydrated widget definition (no `{{…}}` placeholders remain). Then call:
-
-```
-display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated renderer.json> })
-```
-
-**Binding rules:**
-- Resolve every `{{token}}` to a literal before calling — numbers stay numbers (`value`), arrays stay arrays.
-- Build every row only from the same returned Event node. Use `ActivityDate` for all-day grouping and
-  converted date-times for timed Events; never infer duplicate, follow-up, or prep state.
-- Datagrid `value` is a raw number only for a typed deal-linked Event; otherwise use
-  `{ value: 0, display: "—" }`.
-- Build `{{recordLinkButtons}}` only from exact returned Event and typed What identity. Deduplicate
-  related-record buttons by object type and Id. Remove the whole Record links block when no returned
-  instance host is available.
-- Set `{{calloutVariant}}` to `info`. The callout repeats factual fields for the first returned Event.
-- The primary button is `action/sendMessage` with a first-person exact-Event agenda prompt. Keep the
-  secondary `action/openLink` only with a grounded Event URL; otherwise remove its whole button.
-- If `pageInfo.hasNextPage` is true, disclose `showing first 100` in `{{datagridCaption}}`; otherwise
-  do not add a truncation claim.
-- Treat a flattened plain-text-only tool response with no structured widget/UI content as renderer
-  unavailable and emit only the Step 5 fallback. Do not append arbitrary prose or choices.
 
 ## 5. Markdown — FALLBACK ONLY — DO NOT USE IF `display_widget` SUCCEEDED
 
@@ -507,20 +443,15 @@ One table per day, times in the resolved local timezone (label `(times in UTC)` 
 # Calendar - [Date Range] (times in [TZ label])
 
 ## [Day Name], [Mon DD]
-| Time | Event | Related to | Location | Value |
-|------|-------|------------|----------|------:|
-| [Start]–[End] | [Subject] | [Who, What] | [Location] | [Opportunity Amount] |
-| All day | [Subject] | — | — | — |
+| Time | Event | Location |
+|------|-------|----------|
+| [Start]–[End] | [Subject] | [Location] |
+| All day | [Subject] | — |
 
 **Total events:** [N]
 ```
 
-Group by local day (`##` heading, one table each). All-day rows use returned `ActivityDate` and
-`All day`; timed rows use converted local start/end values. Blank Subject → `(No subject)`; blank
-related record, location, or typed Opportunity Amount → `—`. Use times such as `10:00 AM` /
-`2:30 PM` (12-hour). When `pageInfo.hasNextPage` is true, replace the complete-total claim with
-`**Showing first 100 events.** Ask for a shorter period to check for more.` No events →
-`No events found for [range].`
+Group by day (`##` heading, one table each); all-day rows show `All day`; empty location → `—`; no events → `No events found for [range].`; times `10:00 AM` / `2:30 PM` (12-hour).
 
 ## [CUSTOMIZE]
 

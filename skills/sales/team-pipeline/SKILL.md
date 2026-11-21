@@ -1,16 +1,13 @@
 ---
 name: team-pipeline
 display_name: Team Pipeline
-description: "Build a team pipeline brief from Salesforce users and opportunities, showing closed revenue, forecast, swing deals and coaching needs by rep. Use for a manager's team, two or more named reps, a named rep list, or a multi-rep pipeline comparison. Exactly one rep or one owner's book: pipeline-review."
+description: "Answer questions about a manager’s team pipeline, scoped to what was asked: rep attainment, stage distribution, or opportunities needing attention and coaching. Use for a manager's team, two or more named reps, a named rep list, or a multi-rep pipeline comparison. Exactly one rep or one owner's book: pipeline-review."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:2827c384b2368263b827d39a812b00a64ba554a05926813ddb0a55549c665c5f"
+checksum: "sha256:b16d3fe20cc3e024c400ac29e63b51f5e685f52bdb7f9ebaff21debb3553384d"
 id: "b11ae934-3c6a-44c5-bacb-b00ff81e4517"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -20,20 +17,35 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
+
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
 
 # Rules:
 
+- **Scope reading and output to the prompt, never a default full response. Read only what the question needs** and present only that. Resolve the team and period once, then run only the reads below that serve the question.
+- Keep one team, fiscal period and currency across comparisons. Never add unconverted currencies; use verified converted amounts or explain the limitation and omit the combined chart.
+- Never infer a quota, a territory, a buyer objection or a legal blocker. Missing activity is not proof of a silent champion. A suggested next move is a recommendation.
 
 # Team Pipeline
 
 Ground → resolve team → read opps → analyze → output. **No per-opp SF follow-ups** — the team opps read has the data.
 
 ## 1. Ground (hardcoded — User + Opportunity)
+Ground only objects needed by the selected reads. A team pipeline question needs User and Opportunity; a direct team-membership lookup needs only User. Narrow stage or hygiene asks skip quota/custom forecast fields and evidence enrichment.
 
-Ground **User** (for team resolution) and **Opportunity** (for pipeline fields). Both always exist. **Fire as two separate calls, not one combined call** — combined User+Opportunity ObjectInfo commonly exceeds the tool's char limit, and recovering from that overflow (temp file outside the bash mount, failed `cat`, retry) costs far more than just issuing two calls up front. Same turn, same shape, one `apiNames` each:
+Ground **User** (for team resolution) and **Opportunity** (for pipeline fields). Both always exist. **Fire as two separate calls, not one combined call** — combined User+Opportunity ObjectInfo commonly exceeds the tool's char limit, and recovering from that overflow costs far more than just issuing two calls up front. Same turn, same shape, one `apiNames` each:
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
@@ -43,11 +55,12 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
   queryParams: { "queryInput": "{\"query\":\"query { uiapi { objectInfos(apiNames: [\\\"Opportunity\\\"]) { fields { ApiName label dataType relationshipName } } } }\"}" })
 ```
 
-**If either still overflows**, the result auto-persists to a temp file **outside the bash mount** — don't shell to it (`cat`/`python3`/`ls` will fail, it's not on that mount). Read it back with the Read tool only, and go straight to that — don't retry bash first. If the Read tool can't load it either, skip custom-field grounding for that object and proceed with standard fields only; don't keep retrying.
+**If either still overflows** or comes back truncated, skip custom-field grounding and proceed with standard fields only; don't keep retrying. This applies per object: the one that didn't overflow keeps its custom fields.
 
 From the result: (a) scalar `__c` fields (quota, forecast, risk, etc.) — take their `{ value }`; (b) each lookup field's exact `relationshipName` to span for a related record's Name.
 
 ## 2. Resolve team
+Reuse already resolved team IDs and period. Ask on ambiguous rep names; never inspect candidate pipelines to choose a person. Do not fetch quotas for a stage-only, count-only or attention-only ask.
 
 **"my team"** (default) — reps where Manager = current user:
 
@@ -56,28 +69,41 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
   queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { User(where: { and: [{ ManagerId: { eq: \\\"<CURRENT_USER_ID>\\\" } }, { IsActive: { eq: true } }] }, first: 50) { edges { node { Id Name { value } Email { value } <USER_CUSTOM> } } } } } }\"}" })
 ```
 
-**Exact rep names only** (disambiguate — do NOT probe): shared/demo orgs collide hard on name (one name → base user plus regional variants like `(AM)`/`(BK)`/`(SG)`). Run this resolver once per exact rep name supplied by the user and pull enough candidates to disambiguate at a glance — never pull each candidate's pipeline to guess which is real. If the user supplies only a role or territory, stop and ask for the exact rep names; the implemented resolver filters `User.Name` only and cannot resolve a role or territory:
+**A named list, role, or territory** (disambiguate — do NOT probe): shared/demo orgs collide hard on name (one name → base user plus regional variants like `(AM)`/`(BK)`/`(SG)`). Pull enough to disambiguate at a glance — never pull each candidate's pipeline to guess which is real:
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
   queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { User(where: { Name: { like: \\\"%REP%\\\" } }, first: 10) { edges { node { Id Name { value } Title { value } IsActive { value } } } } } } }\"}" })
 ```
 
-**One exact active Name match** → take its Id. **Zero, several, or only inactive matches** → list returned candidates (Name · Title · active? · Id) and ask the user to pick or provide another exact name. Don't guess.
-
-**Roster scope and caps — Quick/Kiro correction:** Both roster requests are bounded: the manager path uses `first: 50`, and each exact-name resolver uses `first: 10`. If a response fills its cap, treat it as potentially capped rather than complete; say so and ask for the exact rep names needed before claiming a complete roster. A user-supplied exact list can define the requested roster, but a capped search result cannot silently define the whole team.
+**One match per name** → take its Id. **Several** → list them (Name · Title · active? · Id) and ask the user to pick; the suffix/title is usually the tell. Don't guess.
 
 Insert `<USER_CUSTOM>` = confirmed scalar `__c { value }` fields (quota, etc.). Capture the Ids — they become the owner filter in step 3.
 
-## 3. Read team opps — AGGREGATE the rollup, SAMPLE team-wide top deals, ISSUE ALL IN ONE TURN
+## 3. Read team opps — AGGREGATE the rollup, SAMPLE the top deals, ISSUE ALL IN ONE TURN
+Choose the independent reads before issuing calls in one turn:
+- Rep comparison: category rollup + closed-won aggregate + verified per-rep quotas from User/custom scalar fields or the user. Skip deal details and hygiene. For the combined request below, remove the detail `query` sibling when no sample is needed.
+- Stage distribution: only the full-book stage aggregate below. Skip category, closed-won, quota, sample and hygiene reads.
+- Attention/coaching: bounded deal sample + relevant hygiene aggregates; remove the category `aggregate` sibling when no scoreboard is needed. Skip closed-won/quota and stage reads. A specific overdue/stalled ask applies the same risk predicate to its bounded sample, so large healthy deals cannot crowd out all matching rows.
+- A direct count or amount: only its aggregate; no sample, quota or evidence.
+- Broad team review: category and closed-won aggregates, stage aggregate, sample and full-book hygiene counts.
 
-**Do not pull the whole team's book as raw records.** A team of 5+ reps with 200 open opps returns well past the point a tool result overflows and auto-persists to a temp file (then you can't shell to it — it's outside the bash mount; same overflow `pipeline-review` hit). Salesforce aggregates server-side — use it for the complete in-period scoreboard math; only one small, bounded, team-wide sample of concrete deals comes back as raw records, for swing-deal specifics and evidence-backed flags.
+**Full-book open pipeline by actual sales stage and rep** (only for `byStage`). After grounding OwnerId, StageName, Amount, IsClosed and CloseDate in step 1, validate this single read-only SOQL statement and dispatch it. Use the exact same team and period as the category rollup. Never sum the top-60 sample to populate this chart. If grouping is incomplete/limited, omit the chart and explain the limitation.
+
+```
+dispatch_readonly(method: "GET", url: "/services/data/v63.0/query",
+  queryParams: { "q": "SELECT OwnerId, StageName, SUM(Amount) amt FROM Opportunity WHERE OwnerId IN (<TEAM_USER_IDS>) AND IsClosed = false AND CloseDate >= <Q_START> AND CloseDate <= <Q_END> GROUP BY OwnerId, StageName" })
+```
+
+Use StageName display labels and order exposed by grounding; if order is unavailable, use a deterministic order and do not invent stage ranks. Join on OwnerId; categories are stages and series are reps. When team membership or aggregates exceed the documented limits, disclose partial coverage and omit full-team claims.
+
+**Do not pull the whole team's book as raw records.** A team of 5+ reps with 200 open opps returns well past the point a tool result overflows (same overflow `pipeline-review` hit). Salesforce aggregates server-side — use it for the scoreboard math; only a small, bounded sample of concrete deals comes back as raw records, for swing-deal specifics and at-risk flags.
 
 Fire these as tool calls in **one turn** (independent, all filtered by the team-user Ids from step 2). Insert `<OPP_CUSTOM>` = confirmed scalar `__c { value }` fields (risk, coaching signals, etc.) on the sample query only — aggregates don't need them.
 
 **Date filters take a `DateInput` object, never a bare string** (`gte: \"2026-07-01\"` fails `WrongType … must be an object type`). For the current-quarter bounds below, use the exact-date form on both ends: `{ value: \"YYYY-MM-DD\" }`. Multiple ops on one field (`gte`/`lte`) AND automatically — no `and: [...]` wrapper needed around them.
 
-**Rollup by forecast category (GraphQL aggregate — folded into the team-wide first-60 sample request below).** `ExpectedRevenue` (Amount × Probability, a standard field) sums straight to the Weighted column — no client-side probability math. This rollup rides in the sample query (below) as an `aggregate` sibling of the detail read — one dispatch returns both. It yields one row per rep × actual returned forecast category. Per rep: Commit $ = that rep's returned `Commit`-category `Amount.sum`; Best-case $ = the returned `Best Case` row; Weighted = Σ `ExpectedRevenue.sum` across that rep's aggregate rows.
+**Rollup by forecast category (GraphQL aggregate — folded into the top-N sample request below).** `ExpectedRevenue` (Amount × Probability, a standard field) sums straight to the Weighted column — no client-side probability math. This rollup rides in the sample query (below) as an `aggregate` sibling of the detail read — one dispatch returns both. It yields one row per rep × forecast category. Forecast Category API values map to display labels: `Pipeline` → Pipeline, `BestCase` → Best Case, `Forecast` → **Commit**, `Closed` → Closed. The `Forecast` row IS the Commit row; never report Commit as missing or unverified because no row is literally named `Commit`. Per rep: Commit $ = that rep's `Forecast`-category `Amount.sum` (label Commit); Best-case $ = the `BestCase` row; Weighted = Σ `ExpectedRevenue.sum` across that rep's rows (omit Weighted when `ExpectedRevenue` is unavailable; that never blocks `byRep`).
 
 **Closed-won this period, per rep (GraphQL aggregate).** Feeds the scoreboard's Closed column:
 ```
@@ -85,27 +111,25 @@ dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
   queryParams: { "queryInput": "{\"query\":\"query { uiapi { aggregate { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsWon: { eq: true }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, groupBy: { OwnerId: { group: true } }) { edges { node { aggregate { OwnerId { value } Id { count { value } } Amount { sum { value } } } } } } } } }\"}" })
 ```
 
-**Team-wide Amount-descending first-60 sample + complete forecast-category rollup (ONE request).** The aggregate rollup gives complete in-period scoreboard numbers for the selected owners; the detail side gives one global team-wide sample of named deals for swing-deal writeups, evidence-backed risk/hygiene overlap, and Monday questions. Cap detail hard (`first: 60`, biggest first) so it never overflows — it is not top-N per rep and can crowd out a rep's rows. **`orderBy` takes only ONE field** — a multi-field array (`orderBy: [{...},{...},{...}]`) fails `WrongType ... must be an object type`; sort by `Amount` alone and associate each sampled row with its returned `Owner.Name`. The forecast-category rollup rides in this same request as an `aggregate` sibling of detail — read Commit/Best-Case/Weighted from its complete aggregate edges and named deals only from detail rows.
+**Top-N sample per rep + forecast-category rollup (ONE request).** The rollup gives the scoreboard numbers; the sample gives named deals for the swing-deal writeups, at-risk flags, hygiene flags, and Monday questions below. Cap the sample hard (`first: 60`, biggest first) so it never overflows — this is a sample, not the book. **`orderBy` takes only ONE field** — a multi-field array (`orderBy: [{...},{...},{...}]`) fails `WrongType ... must be an object type`; sort by `Amount` alone and group by owner client-side from the `Owner.Name` on each row. The forecast-category rollup rides in this same request as an `aggregate` sibling of the sample — read the per-rep Commit/Best-Case/Weighted numbers from its edges, the named deals from the sample rows.
 
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, orderBy: { Amount: { order: DESC } }, first: 60) { edges { node { Id Name { value } StageName { value displayValue } ForecastCategoryName { value } Amount { value displayValue } CloseDate { value } NextStep { value } LastActivityDate { value } CreatedDate { value } Probability { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } } } } } aggregate { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, groupBy: { OwnerId: { group: true }, ForecastCategoryName: { group: true } }) { edges { node { aggregate { OwnerId { value } ForecastCategoryName { value } Id { count { value } } Amount { sum { value } } ExpectedRevenue { sum { value } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, orderBy: { Amount: { order: DESC } }, first: 60) { edges { node { Id Name { value } StageName { value displayValue } ForecastCategory { value } Amount { value displayValue } CloseDate { value } NextStep { value } LastActivityDate { value } CreatedDate { value } Probability { value } <OPP_CUSTOM> Account { Name { value } } Owner { Name { value } } } } } } aggregate { Opportunity(where: { OwnerId: { in: [<TEAM_USER_IDS>] }, IsClosed: { eq: false }, CloseDate: { gte: { value: \\\"<Q_START>\\\" }, lte: { value: \\\"<Q_END>\\\" } } }, groupBy: { OwnerId: { group: true }, ForecastCategory: { group: true } }) { edges { node { aggregate { OwnerId { value } ForecastCategory { value } Id { count { value } } Amount { sum { value } } ExpectedRevenue { sum { value } } } } } } } } }\"}" })
 ```
 
-**Forecast category — local correction:** The read returns `ForecastCategoryName` (Pipeline, Best Case, Commit, Closed, Omitted), the category reps see. `ForecastCategory` returns internal values, such as `Forecast` for Commit, that are not labels, so a rollup grouped by it has no `Commit` row.
+Map each row's `OwnerId` → rep name using the User list from step 2 — no extra lookup needed.
 
-Map each aggregate `OwnerId` → rep name using the User list from step 2; associate each detail row by its returned `Owner.Name` — no extra lookup needed.
+**Team-wide sample scope:** Let `R` be the number of returned detail rows and `C` be the sum of `Id.count.value` across the matching in-period forecast-category aggregate rows. Only when `R == C` may the detail rows be called complete for exactly the selected owners and period. Otherwise describe every row-derived deal, Account, stage, activity, risk, hygiene overlap, Monday question, average, and swing claim as "among the team-wide top R by Amount"; never generalize it per rep or to the complete in-period/full-open book. The aggregate remains authoritative for complete in-period count, Amount, Commit, Best Case, and Weighted totals.
 
-**Team-wide sample scope — Quick/Kiro correction:** Let `R` be the number of returned detail rows and `C` be the sum of `Id.count.value` across the matching in-period forecast-category aggregate rows. Only when `R == C` may the detail rows be called complete for exactly the selected owners and period. Otherwise describe every row-derived deal, Account, stage, activity, risk, hygiene overlap, Monday question, average, and swing claim as "among the team-wide top R by Amount"; never generalize it per rep or to the complete in-period/full-open book. The aggregate remains authoritative for complete in-period count, Amount, Commit, Best Case, and Weighted totals.
-
-**If a GraphQL `aggregate` query errors** (some orgs throw grouping a picklist/Id field), don't retry the same shape — fall to the SOQL `GROUP BY` equivalent, which groups cleanly. **For the combined sample request specifically**, the grouped `aggregate` sibling (`OwnerId`/`ForecastCategoryName`) can take the whole request down with it — re-fire the sample as the detail `query` alone (drop the `aggregate` block) to keep the named deals, and get the per-rep rollup from this SOQL:
+**If a GraphQL `aggregate` query errors** (some orgs throw grouping a picklist/Id field), don't retry the same shape — fall to the SOQL `GROUP BY` equivalent, which groups cleanly. **For the combined sample request specifically**, the grouped `aggregate` sibling (`OwnerId`/`ForecastCategory`) can take the whole request down with it — re-fire the sample as the detail `query` alone (drop the `aggregate` block) to keep the named deals, and get the per-rep rollup from this SOQL:
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v63.0/query",
-  queryParams: { "q": "SELECT OwnerId, ForecastCategoryName, COUNT(Id) cnt, SUM(Amount) amt, SUM(ExpectedRevenue) weighted FROM Opportunity WHERE OwnerId IN (<TEAM_USER_IDS>) AND IsClosed = false AND CloseDate >= <Q_START> AND CloseDate <= <Q_END> GROUP BY OwnerId, ForecastCategoryName" })
+  queryParams: { "q": "SELECT OwnerId, ForecastCategory, COUNT(Id) cnt, SUM(Amount) amt, SUM(ExpectedRevenue) weighted FROM Opportunity WHERE OwnerId IN (<TEAM_USER_IDS>) AND IsClosed = false AND CloseDate >= <Q_START> AND CloseDate <= <Q_END> GROUP BY OwnerId, ForecastCategory" })
 ```
-(Closed-won the same way: swap `IsClosed = false` for `IsWon = true` and drop the `ForecastCategoryName` group.)
+(Closed-won the same way: swap `IsClosed = false` for `IsWon = true` and drop the `ForecastCategory` group.)
 
-**Hygiene counts (GraphQL aggregate, full book — feeds step 6, not detail-sample-limited).** The team-wide top-60 sample above skews toward the biggest deals; these three reads return per-rep numerators across the full open book so stale/past-close/blank-NextStep flags are not limited to that sample. They do not return a matching full-open denominator. `<STALE_CUTOFF>` = today − 14 days, `<TODAY>` = today, both as `DateInput` (`{ value: "YYYY-MM-DD" }`):
+**Hygiene counts (GraphQL aggregate, full book — feeds step 6, not sample-limited).** The top-60 sample above skews toward the biggest deals; these three counts cover every open opp so stale/overdue/blank-NextStep flags aren't undercounted. `<STALE_CUTOFF>` = today − 14 days, `<TODAY>` = today, both as `DateInput` (`{ value: "YYYY-MM-DD" }`):
 ```
 -- Stale 14d+, per rep
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
@@ -123,55 +147,53 @@ Fire these in the same turn as the rollup/closed-won/sample queries above. If `a
 
 **Perf guardrail:** Do NOT fire per-opp SF follow-ups (`EmailMessage`, `Task`, `OpportunityFieldHistory`) — the rollups + sample above already have the data. Email/doc/Slack searches for flagged accounts only (step 3b).
 
-## 3b. Evidence (dependent wave unless Account names were already known)
+## 3b. Evidence (run after step 3 returns)
+Skip evidence for attainment-only, stage-only and direct fact asks. For attention/coaching, run this step after step 3 returns and search only the flagged account names it surfaced. Never guess account names. Tableau still completes its query waves before evidence.
 
-**Evidence dependency — Quick/Kiro correction:** Account-keyed email/document/Slack searches require the top 3–5 at-risk Account names. If those names first arrive in the step-3 detail result, wait for step 3, then issue all available searches together in a later wave; record that dependency and do not claim source-required same-turn parallelism. Only when the exact Account names were independently known before step 3 may these searches share the step-3 turn. Search by exact returned `Account.Name.value`:
+**Run step 3b after step 3 returns.** Then fire email/doc/Slack searches for top 3–5 at-risk accounts only, as tool calls in a single turn:
 - **slack**: internal mentions in team channel (if configured) → reps already flagging something
 
-Use whatever email, document, and Slack search tools are available. If none are present, skip silently. Cite source + date for anything you use.
+Use whatever Slack search tools are available. If none present, skip silently. Cite source + date for anything you use.
 
 ## 4. Per-rep scoreboard
+Skip this for stage-only, attention-only and direct hygiene asks. **Projected attainment = (Closed Won + incremental Commit) / positive verified rep quota.** Best Case is upside, excluded from projected attainment; coverage is open pipeline / quota. Format the answer with these denominators stated. A team percentage is summed projected / summed comparable quotas, never an average of rep percentages. If any quota is unavailable, omit the team percentage and identify the missing quota without blocking the other cards.
 
-**Scoreboard formulas and cohort boundaries — Quick/Kiro correction:** Build each rep's scoreboard from the complete selected-owner, selected-period aggregates, never from the bounded detail rows:
+For `byRep`, use disjoint Closed, Commit, Best Case and remaining Pipeline contributions. The SOQL/GraphQL category rollup is already incremental; on Tableau, confirm whether forecast totals are cumulative and subtract only when their semantics and scope are verified. On the Tableau path, never reconstruct a missing forecast/quota row (answer 7) from category slices; on the SOQL/GraphQL path the category rollup is the source, so use it. Omit an unavailable category rather than treating unknown as zero. **Quota is optional for `byRep`: with no quota, still send the card** — segments from Closed, Commit, Best Case and Pipeline, `projected` = Closed + Commit, a `projectedLabel`, and no `quota` or `attainment`. A missing quota, an unavailable `ExpectedRevenue`, or reps with identical figures never justifies omitting the card. Set one common max at least as large as every full stack and quota. Missing/zero quota means no marker and no percentage. Show rep segment/territory only if it was read. Use consistent category labels and colors across all reps: Closed = `tone: "success"`, Commit = `tone: "success"` with `soft: true`, Best Case = `tone: "info"`, remaining Pipeline = `tone: "info"` with `soft: true`. These reuse the design-token status and action marks (soft is the same mark mixed toward the card surface); never invent colors. Build `byRep.legend` from the union of categories actually present in any rep’s segments, not only the last rep; each entry has the same label, tone and soft flag as its segments.
 
-| Rep | Closed | Commit | Weighted | Gap | Attainment | Call (policy only) |
-|---|---|---|---|---|---|---|
+For each rep, compute and assign a one-word **Call**:
 
-- **Closed** = that rep's `Amount.sum.value` from the closed-won aggregate; a missing owner row is zero only when the aggregate succeeded for the complete requested roster.
-- **Commit** = that rep's `Amount.sum.value` for the actual returned `ForecastCategoryName.value == "Commit"`; if the complete category aggregate has no Commit row for that rep, use zero.
-- **Weighted** = the sum of that rep's returned `ExpectedRevenue.sum.value` values across all actual forecast-category aggregate rows; do not recompute it from sampled rows.
-- For a positive sourced or user-supplied quota, **gap = Closed + Commit − quota**. A negative gap is a shortfall; disclose that sign convention anywhere Gap is shown.
-- For a positive quota, **attainment = 100 × Closed / quota**. State the rounding used for display.
-- If shown, **weighted coverage = 100 × Weighted / quota**, labeled exactly `Weighted coverage`; do not substitute open Amount, Commit, or a sample-derived numerator.
+| Rep | Closed | Commit | Weighted | vs Quota | Call |
+|---|---|---|---|---|---|
 
-Keep these in-period values separate from full-open hygiene numerators. Never combine a stale/past-close/blank-NextStep count with the in-period aggregate count or detail count to claim `all`, `every`, a percentage, or a denominator. If quotas are not in Salesforce, ask once and remember them for the session; do not infer them.
+- **Weighted** = sum of (Amount × Probability/100) across open opps
+- **Call** = Ahead (closed ≥ quota or weighted comfortably covers gap) / On-track / Behind
+- Tip: if a rep's Commit > Weighted, their stages are probably optimistic — challenge it.
 
-Use the user's supplied period label exactly in titles/captions; do not add `FY`, a fiscal quarter, or a week number that the user or returned data did not supply. Use one explicit as-of date and timezone for every day count, stale cutoff, and days-left calculation, and surface that basis when any such value is shown.
-
-**Policy-neutral presentation — Quick/Kiro correction:** Worked examples below provide shape only, never runtime labels, thresholds, formulas, or values. Unless an attributable user/team rule defines pace/status thresholds and meter bands, set `headerStatus:"PIPELINE SNAPSHOT"` with `headerStatusVariant:"info"`, omit every row `status` object, pass no meter bands (or an empty array when the renderer requires the optional key), and use factual meter label/value/status wording. Do not copy `Behind`, `At risk`, `Ahead`, or 60/90 bands from examples. If an attributable policy exists, state it and apply it consistently before using qualitative calls or bands.
+If quotas aren't in SFDC, reuse a quota the user gave or omit quota markers and percentages; do not block a stage or hygiene answer to ask for quota.
 
 ## 5. Deals that decide the quarter
+Skip this for rep-attainment-only, stage-only and direct fact asks; a broad review or attention/coaching ask uses only the bounded sample and cited evidence.
 
-Identify 3–5 sampled Opportunities that could swing the selected period: large Amount × late current stage × negative rep gap × closing in the period. These are row-derived claims, so apply the `R == C` completeness rule above and otherwise label them as selected from the team-wide top-`R` Amount sample. For each, write three lines:
+Identify the 3–5 opps that swing the number: large Amount × late stage × rep-needs-it × closing this period. For each, write three lines:
 
-- **Why it matters:** if the rep's formula-defined gap is negative, use `100 × Opportunity Amount / abs(gap)` and state the rounded result (for example, "$X is N% of [rep]'s shortfall"); otherwise omit the percentage rather than inventing a denominator.
-- **Risk:** [specific thing that could kill it, from returned fields or dated external evidence]
+- **Why it matters:** [the math — "$X is N% of [rep]'s gap"]
+- **Risk:** [specific thing that could kill it, from evidence]
 - **Do this:** [one concrete leader action — "ask [rep] when they last talked to procurement; offer to send exec note if it's been 5+ days"]
 
-The "do this" is the point. Be specific enough that the leader can act without further research. A currently past-due `CloseDate` supports only `past close date`; never say `slipped`, `pushed`, or `moved` without history or a prior CloseDate.
+The "do this" is the point. Be specific enough that the leader can act without further research.
 
 ## 6. Team-level flags
+Skip this for attainment-only and stage-only asks. Full-book hygiene counts may span a broader date range than the period chart: label that scope explicitly and never imply those totals are quarter-filtered. Named deals remain a bounded sample.
 
-- **Commit deals with returned risk evidence:** any sampled Commit-category deal with a returned risk flag or dated external evidence — apply the sample qualifier unless `R == C`
-- **Coaching signals:** reps with the largest raw full-open stale/past-close/blank-NextStep counts or a formula-defined negative gap; do not turn raw counts into percentages without a matching full-open denominator
-- **Hygiene:** rank reps by the three raw full-open aggregate counts, kept separate from the in-period cohort; name specific sampled Accounts only where their returned rows overlap and label the sample scope
-- **Big swings:** use `Amount > 2 × average` only when the average's cohort is named. If `R == C`, average may be complete in-period aggregate `Amount.sum / Id.count` for the selected owners; otherwise use and label the team-wide top-`R` sample average, or omit the claim
-
-Never describe a full-open numerator as `all` or `every` open Opportunity unless a matching full-open denominator was returned and reconciled.
+- **At-risk Commit deals:** any Commit-category deal with risk flags — these threaten the number
+- **Coaching signals:** reps with high stale-% (from the hygiene aggregates above, full book) or low coverage
+- **Hygiene:** reps ranked by the stale/past-CloseDate/blank-NextStep aggregate counts (full book, not the sample) — name specific accounts from the top-60 sample where they overlap
+- **Big swings:** deals >2x average that could make or break the quarter
 
 ## 7. Monday questions
+Skip this unless the prompt asks for coaching or a broad review yields an actionable risk. Use existing evidence; do not re-search every rep by default.
 
-For each rep with a formula-defined negative gap or a sampled deal carrying specific returned risk evidence, write ONE question phrased the way the leader would actually ask it in a 1:1 or Slack. Ground it in that returned deal and apply the sample qualifier when `R != C`; keep it conversational, not interrogative. Examples: "where's the [Account] security review at — saw it's been a couple weeks" / "do you need anything from me on [Account] or is it just waiting on them."
+For each Behind or At-risk rep, write ONE question phrased the way the leader would actually ask it in a 1:1 or Slack. Grounded in a specific deal, conversational, not interrogative. Examples: "where's the [Account] security review at — saw it's been a couple weeks" / "do you need anything from me on [Account] or is it just waiting on them."
 
 Search Slack for each rep's recent posts in the team channel from config — if they already flagged something, reference it instead of re-asking.
 
@@ -182,646 +204,795 @@ When the data is assembled, call `display_widget`; a single one-line "Displaying
 
 ### Self-verification (before calling display_widget)
 
-- [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
 
-The widget template is embedded below — resolve its tokens and call `display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated> })` once (see the `widgetDefinition` param for token-resolution rules).
+The layout is registered by name. **Send data only**, using this call once:
 
-Chart series are actual returned forecast categories, not sales stages: create one `{name, data}` object for each distinct `ForecastCategoryName.value` present in the complete aggregate (for example `Pipeline`, `Best Case`, or `Commit`), using that category's raw `Amount.sum.value` per rep in `chartCategories` order and zero only for a missing rep/category row in a successful complete aggregate. Never bucket or relabel `StageName`, and never force Proposal / Negotiation / Closing. Datagrid `plan`/`closed`/`commit`/`gap` values are raw currency numbers, `attain` is the formula-defined 0–100+ percentage, and `status` is omitted unless an attributable policy defines it. Build `recordLinkButtons` with one complete User button per displayed rep followed by one complete Opportunity button per displayed swing deal, using each exact returned Name/Id and type-specific Lightning URL.
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/team-pipeline", props: <object matching the schema below> })
+```
 
-Two blocks below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}`'s type + a worked example, use it to compute each value; then the **widget template** to hydrate. Substitute your computed values into the template's `{{token}}`s (see the token-typing rules above), leaving no `{{…}}`/`{!…}`.
+`props` must be a nested JSON object, NOT a string. Never send layout, HTML, icons, colors or expressions in data. When the widget succeeds, do not repeat its contents as text.
+
+### What to send
+
+### The response is lego blocks, in this fixed order
+
+1. `title`: one bold sentence already answering the question, never the skill name.
+2. `answer`: 2–4 short markdown bullets, key facts in **bold**, scoped to the question.
+3. Optional `byRep`, `byStage`, `attention`, in that order; one card per key.
+4. At most one tail: actionable, time-sensitive `callout` with one primary button and a first-person `actionMsg`, OR a quiet `nextStep` without a button.
+5. `sources`: only records, lists and evidence actually read, collapsed as Sources (N). Include record URLs only when their IDs are known.
+
+### Scope the blocks to the prompt
+
+A prompt that combines asks, or fits no row below, is treated as Broad.
+
+| The prompt is… | Send / read |
+|---|---|
+| Broad ("how's my team's pipeline looking this quarter?") | `title` + `answer` + `byRep` + `byStage` + `attention`; tail only for a useful move; `sources`. Run the broad-review reads. Send `byRep` whenever the forecast-category rollup returned data for at least one rep; quota is not needed. |
+| Rep comparison ("who is behind quota?") | Only `byRep`, plus the required head and sources. Skip stage, sample, hygiene and evidence. |
+| Stage distribution ("show open pipeline by stage") | Only `byStage`, plus the required head and sources. Read the full-book stage aggregate only after team resolution/grounding. |
+| Attention ("which deals need attention?") | Only `attention`, plus the required head and sources; tail only if actionable. Read the bounded risk sample and relevant hygiene aggregates, not quota or stage totals. |
+| Direct fact ("how many deals are past due?", "what's our open pipeline?") | `title` + `answer` + `sources`, no cards or tail. Run only the matching aggregate. |
+
+- **Omit a key and its block is not shown.** Never fill it with empty arrays, placeholders or "N/A". Data retrieved for another purpose stays out of the response.
+- Scope the bullets too. An attainment question does not need a coaching report.
+- Preformat display amounts, percentages and dates; numeric chart amounts stay raw currency numbers. Resolve names to plain strings.
+- Omit unknown quotas and their percentages, quota line and caption; never divide by zero. The "Projected Attainment" footnote shows only when some rep has a quota percent. With a quota, send `attainment` as one string "<pct> of <quota>" (e.g. "29% of $800K"); the renderer adds the "attainment" caption, so omit `attainmentCaption`.
+- `byRep.max` still required: send largest complete stack or known quota × ~1.1. The renderer recomputes the final axis from the data (headroom, clean step; a $4.53M stack → $5M), so an approximate value is fine.
+- Use the same period and currency for compared figures.
+- A pure list or lookup usually gets no tail. Never send both `callout` and `nextStep`.
+- In English, omit `labels`. Otherwise translate every label and all free-text fields, including segment labels, stage labels, sources and the first-person action message.
+
+#### Worked examples
+
+**Broad team review**
+
 ```json
 {
-  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate display_widget call — it names every {{token}} in the template with its type and a worked example so you compute the right value for each. Workflow: build a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — arrays stay arrays, numbers stay numbers; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Realistic values: sample-data.json (sibling). Worked examples provide shape only, never runtime values, formulas, thresholds, or labels. Authoring guidance (from the skill): `title` uses the user-supplied period label exactly · `headerStatus` and `headerStatusVariant` carry a policy-grounded badge or the neutral PIPELINE SNAPSHOT/info pair · `subtitle` is a factual, cohort-qualified one-line summary · `chartCaption chartCategories chartSeries` describe rep names plus one raw-Amount series per actual returned ForecastCategoryName value · `meterLabel meterValue meterMax meterTarget meterValueLabel meterTargetLabel meterStatus meterBands` use factual sourced values; `meterBands` is optional and omitted/empty without an attributable policy · `datagridCaption datagridRows` describe one row per rep with `{rep, plan, closed, commit, gap, attain, status?}` where names are exact `User.Name.value`, gap is Closed + Commit − quota, attainment is 100 × Closed / quota, and status is omitted without an attributable policy · `recordLinkButtons` contains one exact User link per displayed rep followed by one exact Opportunity link per displayed swing deal · `calloutTitle calloutDescription ctaPrimaryLabel ctaPrimaryMsg ctaSecondaryLabel ctaSecondaryMsg` carry sample-qualified synthesis and the two retained sendMessage actions.",
-  "props": {
-    "title": {
-      "description": "Page title using the user-supplied period label exactly; do not invent fiscal or week labels.",
-      "type": "string",
-      "example": "Team pipeline — Q3 2026"
-    },
-    "headerStatus": {
-      "description": "Policy-grounded header label; use PIPELINE SNAPSHOT when no attributable pace/status policy exists.",
-      "type": "string",
-      "example": "PIPELINE SNAPSHOT"
-    },
-    "headerStatusVariant": {
-      "description": "Header badge variant; use info for the neutral PIPELINE SNAPSHOT and warning/error/success only from an attributable status policy.",
-      "type": "string",
-      "enum": [
-        "neutral",
-        "primary",
-        "secondary",
-        "outline",
-        "success",
-        "info",
-        "warning",
-        "error"
-      ],
-      "example": "info"
-    },
-    "subtitle": {
-      "description": "Factual summary using the exact requested period and one explicit as-of date/timezone when day counts appear.",
-      "type": "string",
-      "example": "Q3 2026 · $3.22M closed of $6.0M plan · 3 reps · as of 2026-07-24 UTC"
-    },
-    "chartCaption": {
-      "description": "Caption identifying the selected period and actual returned forecast-category breakdown by rep.",
-      "type": "string",
-      "example": "Q3 2026 open Amount by rep and forecast category"
-    },
-    "chartCategories": {
-      "description": "Rep names for the chart's x-axis, as strings.",
-      "type": "array",
-      "items": {
-        "type": "string"
+  "title": "Your team projects 56% of quota with 38 days left — Shannon needs the most help.",
+  "answer": "- Across **3 reps**, you have **$410K closed won** and **$7.9M open pipeline** against a **$2.4M team quota**.\n- Closed plus Commit lands at **$1.336M (56%)**; adding Best Case reaches **$2.152M**, a **$248K gap**, with **3.3× open coverage**.\n- **Marcus Levine projects 75%** and **Bryan Corcoran 63%**, while **Shannon Mathews projects 29%** and owns **8 of 11** past-due deals across the full book.",
+  "byRep": {
+    "max": 5000000,
+    "items": [
+      {
+        "name": "Shannon Mathews",
+        "detail": "Enterprise · Manufacturing",
+        "projected": 232000,
+        "attainment": "29% of $800K",
+        "quota": 800000,
+        "segments": [
+          {
+            "label": "Closed",
+            "value": 85000,
+            "tone": "success"
+          },
+          {
+            "label": "Commit",
+            "value": 147000,
+            "tone": "success",
+            "soft": true
+          },
+          {
+            "label": "Best Case",
+            "value": 250000,
+            "tone": "info"
+          },
+          {
+            "label": "Pipeline",
+            "value": 1603000,
+            "tone": "info",
+            "soft": true
+          }
+        ],
+        "projectedLabel": "$232K"
       },
-      "example": [
-        "Priya",
-        "Marcus",
-        "Dana",
-        "Tom",
-        "Sara",
-        "Jon"
-      ]
+      {
+        "name": "Bryan Corcoran",
+        "detail": "Enterprise · FS + Retail",
+        "projected": 504000,
+        "attainment": "63% of $800K",
+        "quota": 800000,
+        "segments": [
+          {
+            "label": "Closed",
+            "value": 95000,
+            "tone": "success"
+          },
+          {
+            "label": "Commit",
+            "value": 409000,
+            "tone": "success",
+            "soft": true
+          },
+          {
+            "label": "Best Case",
+            "value": 316000,
+            "tone": "info"
+          },
+          {
+            "label": "Pipeline",
+            "value": 875000,
+            "tone": "info",
+            "soft": true
+          }
+        ],
+        "projectedLabel": "$504K"
+      },
+      {
+        "name": "Marcus Levine",
+        "detail": "Enterprise · Healthcare",
+        "projected": 600000,
+        "attainment": "75% of $800K",
+        "quota": 800000,
+        "segments": [
+          {
+            "label": "Closed",
+            "value": 230000,
+            "tone": "success"
+          },
+          {
+            "label": "Commit",
+            "value": 370000,
+            "tone": "success",
+            "soft": true
+          },
+          {
+            "label": "Best Case",
+            "value": 250000,
+            "tone": "info"
+          },
+          {
+            "label": "Pipeline",
+            "value": 3680000,
+            "tone": "info",
+            "soft": true
+          }
+        ],
+        "projectedLabel": "$600K"
+      }
+    ],
+    "legend": [
+      {
+        "label": "Closed",
+        "tone": "success"
+      },
+      {
+        "label": "Commit",
+        "tone": "success",
+        "soft": true
+      },
+      {
+        "label": "Best Case",
+        "tone": "info"
+      },
+      {
+        "label": "Pipeline",
+        "tone": "info",
+        "soft": true
+      }
+    ]
+  },
+  "byStage": {
+    "stages": [
+      "Prospecting",
+      "Qualification",
+      "Needs Analysis",
+      "Value Proposition",
+      "Id. Decision Makers",
+      "Perception Analysis",
+      "Proposal/Price Quote",
+      "Negotiation/Review"
+    ],
+    "series": [
+      {
+        "name": "Shannon Mathews",
+        "data": [
+          200000,
+          250000,
+          160000,
+          170000,
+          100000,
+          100000,
+          450000,
+          570000
+        ]
+      },
+      {
+        "name": "Bryan Corcoran",
+        "data": [
+          100000,
+          150000,
+          100000,
+          150000,
+          100000,
+          100000,
+          300000,
+          600000
+        ]
+      },
+      {
+        "name": "Marcus Levine",
+        "data": [
+          600000,
+          650000,
+          550000,
+          500000,
+          450000,
+          350000,
+          450000,
+          750000
+        ]
+      }
+    ]
+  },
+  "attention": [
+    {
+      "name": "Meridian Insurance",
+      "amount": "$530K",
+      "stage": "Negotiation / Review",
+      "owner": "Shannon Mathews",
+      "evidence": "Past due 17d (Aug 7); no updated Next Step.",
+      "need": "Re-date or disqualify after confirming the close plan.",
+      "tone": "error"
     },
-    "chartSeries": {
-      "description": "One series per actual returned ForecastCategoryName value, with raw Opportunity Amount per rep in chartCategories order; never derive series from StageName.",
+    {
+      "name": "Cascade Energy",
+      "amount": "$410K",
+      "stage": "Proposal / Price Quote",
+      "owner": "Shannon Mathews",
+      "evidence": "Past due 10d (Aug 14); no updated Next Step.",
+      "need": "Confirm a new close date and the next buyer action.",
+      "tone": "error"
+    }
+  ],
+  "callout": {
+    "lead": "11 deals are past their close date — 8 of them are Shannon’s.",
+    "text": "The full-book overdue count includes $1.24M owned by Shannon. Meridian Insurance ($530K) and Cascade Energy ($410K) need confirmed close dates or disqualification. With 38 days to quarter close, make cleanup and qualification the next 1:1 topic.",
+    "buttonLabel": "Review Shannon’s at-risk deals",
+    "actionMsg": "Show me Shannon Mathews’s at-risk deals, starting with Meridian Insurance and Cascade Energy, and recommend the next action for each."
+  },
+  "sources": [
+    {
+      "label": "Team opportunity forecast-category and stage aggregates"
+    },
+    {
+      "label": "Rep quotas and team users"
+    },
+    {
+      "label": "Full-book overdue and stale-deal counts"
+    },
+    {
+      "label": "Top open opportunities sampled for coaching"
+    }
+  ]
+}
+```
+
+**Specific prompt: show open pipeline by stage**
+
+```json
+{
+  "title": "The largest stage is Negotiation/Review at $1.92M.",
+  "answer": "- **Negotiation/Review holds $1.92M**, led by **Marcus Levine at $750K**.\n- These are **full-book open opportunities this quarter**, grouped by actual sales stage.",
+  "byStage": {
+    "stages": [
+      "Prospecting",
+      "Qualification",
+      "Needs Analysis",
+      "Value Proposition",
+      "Id. Decision Makers",
+      "Perception Analysis",
+      "Proposal/Price Quote",
+      "Negotiation/Review"
+    ],
+    "series": [
+      {
+        "name": "Shannon Mathews",
+        "data": [
+          200000,
+          250000,
+          160000,
+          170000,
+          100000,
+          100000,
+          450000,
+          570000
+        ]
+      },
+      {
+        "name": "Bryan Corcoran",
+        "data": [
+          100000,
+          150000,
+          100000,
+          150000,
+          100000,
+          100000,
+          300000,
+          600000
+        ]
+      },
+      {
+        "name": "Marcus Levine",
+        "data": [
+          600000,
+          650000,
+          550000,
+          500000,
+          450000,
+          350000,
+          450000,
+          750000
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Quarter open-opportunity stage aggregate"
+    }
+  ]
+}
+```
+
+**Direct prompt: how many deals are past due?**
+
+```json
+{
+  "title": "11 open deals are past their close date across the full book.",
+  "answer": "- **Shannon Mathews owns 8** of the team’s **11 past-due deals**.\n- This count covers **all open deals**, including those outside this quarter.",
+  "sources": [
+    {
+      "label": "Full-book overdue opportunity counts by rep"
+    }
+  ]
+}
+```
+
+`props` schema (JSON Schema). Title, answer and sources are always sent; send the other keys according to the prompt-type table above:
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Block order: title, answer, byRep, byStage, attention (cards chosen by the prompt type in the scope table), at most one tail (callout OR nextStep), then sources. Only title, answer and sources are always present; which cards are sent depends on the prompt type. Omit a key and its block is not shown. Format display strings before sending, except numeric chart amounts, quota, max, projected and palette indices. Direct factual asks usually get no cards and no tail. Never invent quotas, evidence, stage totals or complete-book coverage from a sample.",
+  "required": [
+    "title",
+    "answer",
+    "sources"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "REQUIRED. One bold line: the takeaway in the user's context that already answers the question (e.g. 'Cedarline is At Risk – a $640K close and a $2.1M renewal both hinge on one unresponsive CFO.'). Plain text, no markdown. Never the skill name or 'Account Context: X'."
+    },
+    "answer": {
+      "type": "string",
+      "description": "REQUIRED. Answer-first markdown bullets, rendered under the title: 2-4 short '- ' bullets, each ONE sentence, that answer ONLY what the user asked. Put **bold** inline on the key values inside each sentence (amounts, dates, names, counts), never on a whole bullet. Do not restate the cards below it. Answer ONLY what was asked (scope the bullets to the prompt); no headings, tables or paragraphs."
+    },
+    "callout": {
+      "type": "object",
+      "description": "OPTIONAL tail, time-sensitive. Warning icon, a bold first sentence followed by normal text, then ONE blue primary button. Use INSTEAD of nextStep, never both (if both are sent only the callout renders). Include only if something is time-sensitive AND the user can act on it. Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "required": [
+        "lead",
+        "text",
+        "buttonLabel",
+        "actionMsg"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). The bold first sentence of the callout (the caution in one sentence, ending with a period)."
+        },
+        "text": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). One to three sentences of normal-weight text that follow the bold lead on the same line: what, why now, and the move."
+        },
+        "buttonLabel": {
+          "type": "string",
+          "description": "Label of the single primary button (e.g. 'Send re-engagement via Katie')."
+        },
+        "actionMsg": {
+          "type": "string",
+          "description": "First-person request sent to chat when the button is clicked."
+        }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "description": "OPTIONAL tail, not time-sensitive: a plain suggestion line with NO button, only when there is a genuinely useful next move. Use INSTEAD of callout, never both.",
+      "required": [
+        "lead",
+        "text"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "Bold lead (the suggested move)."
+        },
+        "text": {
+          "type": "string",
+          "description": "One or two sentences of reasoning, ending with an offer to help if natural."
+        }
+      }
+    },
+    "sources": {
       "type": "array",
+      "description": "REQUIRED. Where the answer came from: the Salesforce records/lists you actually read, linked (this is where Opportunity/Account record links go). Shown as a compact 'Salesforce · Sources (N)' toggle (the word comes from labels.sources). Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
       "items": {
         "type": "object",
+        "required": [
+          "label"
+        ],
         "properties": {
-          "name": {
-            "description": "Exact returned ForecastCategoryName value, such as Pipeline, Best Case, or Commit.",
-            "type": "string"
+          "label": {
+            "type": "string",
+            "description": "Source name (e.g. 'Account – Cedarline Financial', 'Open opportunities list')."
           },
-          "data": {
-            "description": "Raw Amount sums per rep for this returned category; a number array matching chartCategories.",
-            "type": "array",
-            "items": {
-              "type": "number"
+          "url": {
+            "type": "string",
+            "description": "Record or list-view URL. Omit if none."
+          }
+        }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "OPTIONAL. Omit in English; otherwise translate every label and every free-text phrase, including chart and series labels.",
+      "required": [],
+      "properties": {
+        "byRep": {
+          "type": "string",
+          "default": "PROJECTED QUOTA ATTAINMENT BY REP",
+          "description": "Translated label. English: 'PROJECTED QUOTA ATTAINMENT BY REP'. Shown when at least one rep has a quota percent."
+        },
+        "byRepForecast": {
+          "type": "string",
+          "default": "FORECAST BY REP",
+          "description": "Translated label for the rep card when no rep has a quota. English: 'FORECAST BY REP'."
+        },
+        "projectedCaption": {
+          "type": "string",
+          "default": "Closed + Commit",
+          "description": "Translated caption under a rep's projected amount when that rep has no quota. English: 'Closed + Commit'."
+        },
+        "byStage": {
+          "type": "string",
+          "default": "OPEN PIPELINE BY STAGE",
+          "description": "Translated label. English: 'OPEN PIPELINE BY STAGE'."
+        },
+        "attention": {
+          "type": "string",
+          "default": "OPPORTUNITIES THAT NEED ATTENTION",
+          "description": "Translated label. English: 'OPPORTUNITIES THAT NEED ATTENTION'."
+        },
+        "closed": {
+          "type": "string",
+          "default": "Closed",
+          "description": "Translated label. English: 'Closed'."
+        },
+        "commit": {
+          "type": "string",
+          "default": "Commit",
+          "description": "Translated label. English: 'Commit'."
+        },
+        "bestCase": {
+          "type": "string",
+          "default": "Best Case",
+          "description": "Translated label. English: 'Best Case'."
+        },
+        "pipeline": {
+          "type": "string",
+          "default": "Pipeline",
+          "description": "Translated label. English: 'Pipeline'."
+        },
+        "attainment": {
+          "type": "string",
+          "default": "attainment",
+          "description": "Translated label shown under the attainment value. English: 'attainment'."
+        },
+        "quota": {
+          "type": "string",
+          "default": "Quota",
+          "description": "Translated label. English: 'Quota'."
+        },
+        "needs": {
+          "type": "string",
+          "default": "Suggestion",
+          "description": "Translated label. English: 'Suggestion'."
+        },
+        "attainmentNote": {
+          "type": "string",
+          "default": "Projected Attainment is Closed + Commit",
+          "description": "Translated label. English: 'Projected Attainment is Closed + Commit'."
+        },
+        "sources": {
+          "type": "string",
+          "default": "Sources",
+          "description": "Translated label. English: 'Sources'."
+        }
+      }
+    },
+    "byRep": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Card 'PROJECTED QUOTA ATTAINMENT BY REP'. Send for broad team reviews and rep attainment/coverage comparisons. Omit for stage-only, attention-only and direct-fact prompts, and when the forecast-category rollup returned no data; never an empty array. Quota is optional: unknown quotas have no percentage or marker, but the card is still sent. The API value `Forecast` is the Commit category.",
+      "required": [
+        "max",
+        "items",
+        "legend"
+      ],
+      "properties": {
+        "hasAttainment": {
+          "type": "boolean",
+          "description": "Set by the renderer, never send: true when any rep has a quota percent. Controls the attainment formula footnote."
+        },
+        "max": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Shared raw-currency axis maximum. The renderer recomputes it from the data (so a rough value is fine), with headroom: the larger of the largest complete stack and every known quota, times about 1.1, rounded up to the next clean axis step (e.g. a $4.53M largest stack gives $5M)."
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Reps sorted by projected attainment ascending when quotas are known; otherwise explain the ordering.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "",
+            "required": [
+              "name",
+              "projected",
+              "segments",
+              "projectedLabel"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Rep display name, a plain string."
+              },
+              "detail": {
+                "type": "string",
+                "description": "Grounded territory or segment; omit when unavailable."
+              },
+              "projected": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Closed Won + incremental Commit. Never include Best Case."
+              },
+              "attainment": {
+                "type": "string",
+                "description": "Projected / verified positive quota as one preformatted string: percent plus quota, e.g. '29% of $800K'. Shown in red below quota, green at/above, with the 'attainment' caption underneath. Omit if quota is unknown or zero; without quota there is no percent, no quota marker and no caption."
+              },
+              "quota": {
+                "type": "number",
+                "description": "Verified rep quota, in raw currency. Omit when unknown or zero; never infer or split team quota.",
+                "exclusiveMinimum": 0
+              },
+              "attainmentCaption": {
+                "type": "string",
+                "description": "OPTIONAL override for the caption under the attainment value. Normally omit: the caption defaults to labels.attainment ('attainment')."
+              },
+              "segments": {
+                "type": "array",
+                "minItems": 1,
+                "description": "Disjoint Closed, incremental Commit, incremental Best Case, and remaining Pipeline contributions, in that order. Never put cumulative forecasts here. Omit unavailable categories; do not turn unknown into zero.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "description": "",
+                  "required": [
+                    "label",
+                    "value",
+                    "tone"
+                  ],
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "description": "Forecast category, translated; never a sales stage."
+                    },
+                    "value": {
+                      "type": "number",
+                      "minimum": 0,
+                      "description": "Raw currency amount; category contributions must be disjoint."
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "info"
+                      ],
+                      "description": "Stable forecast-category color from the design-token marks: Closed = success, Commit = success with soft, Best Case = info, remaining Pipeline = info with soft. The renderer owns the actual colors."
+                    },
+                    "soft": {
+                      "type": "boolean",
+                      "description": "true for the lighter tint: Commit (of success) and Pipeline (of info). Omit for Closed and Best Case."
+                    }
+                  }
+                }
+              },
+              "projectedLabel": {
+                "type": "string",
+                "description": "Closed + Commit as formatted currency; displayed when no verified quota percentage exists."
+              }
+            }
+          }
+        },
+        "legend": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Union of category labels across every rep, in Closed, Commit, Best Case, Pipeline order; use the same tone and soft flag as the corresponding segments. Never derive only from the final rep.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "tone"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Category label matching the segments, translated."
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "success",
+                  "info"
+                ],
+                "description": "Same tone as the matching segments."
+              },
+              "soft": {
+                "type": "boolean",
+                "description": "Same soft flag as the matching segments."
+              }
             }
           }
         }
-      },
-      "example": [
-        {
-          "name": "Pipeline",
-          "data": [
-            900000,
-            1100000,
-            700000,
-            600000,
-            500000,
-            400000
-          ]
+      }
+    },
+    "byStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "OPTIONAL card 'OPEN PIPELINE BY STAGE'. Include for broad team reviews or stage/rep distribution questions. Omit the key otherwise; never an empty array. Keep the same team, period, currency and rep order as the other cards.",
+      "required": [
+        "stages",
+        "series"
+      ],
+      "properties": {
+        "stages": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Stage categories from the full-book aggregate, never forecast categories.",
+          "items": {
+            "type": "string",
+            "description": "Actual org StageName display label, in grounded stage order."
+          }
         },
-        {
-          "name": "Best Case",
-          "data": [
-            500000,
-            700000,
-            900000,
-            500000,
-            400000,
-            300000
-          ]
-        },
-        {
-          "name": "Commit",
-          "data": [
-            200000,
-            300000,
-            400000,
-            300000,
-            300000,
-            200000
-          ]
+        "series": {
+          "type": "array",
+          "minItems": 1,
+          "description": "One series per rep in stable order. Use full-book stage totals, never sample sums.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "",
+            "required": [
+              "name",
+              "data"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Rep display name; match the team resolution."
+              },
+              "data": {
+                "type": "array",
+                "minItems": 1,
+                "description": "One value per stage, same length and order as stages.",
+                "items": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Raw currency at the corresponding stage; zero means a verified empty bucket."
+                }
+              }
+            }
+          }
         }
-      ]
+      }
     },
-    "meterLabel": {
-      "description": "Factual label for closed Amount versus the selected team plan.",
-      "type": "string",
-      "example": "Closed versus plan"
-    },
-    "meterValue": {
-      "description": "Team closed-won Amount for the selected period, as a raw currency number.",
-      "type": "number",
-      "example": 3220000
-    },
-    "meterMax": {
-      "description": "Team plan/quota as a raw currency number; may equal meterTarget.",
-      "type": "number",
-      "example": 6000000
-    },
-    "meterTarget": {
-      "description": "Team plan/quota target as a raw currency number; may equal meterMax.",
-      "type": "number",
-      "example": 6000000
-    },
-    "meterValueLabel": {
-      "description": "Factual closed-versus-plan label with formula-defined attainment.",
-      "type": "string",
-      "example": "$3.22M closed of $6.0M plan — 54% attained"
-    },
-    "meterTargetLabel": {
-      "description": "Display label for the sourced or user-supplied team plan.",
-      "type": "string",
-      "example": "$6.0M plan"
-    },
-    "meterStatus": {
-      "description": "Factual meter description; qualitative pace wording requires an attributable policy.",
-      "type": "string",
-      "example": "Closed Amount versus supplied plan"
-    },
-    "meterBands": {
-      "description": "Optional policy-grounded color bands. Use an empty array or omit the attribute when no attributable threshold policy exists; never copy worked-example thresholds into runtime output.",
+    "attention": {
       "type": "array",
+      "minItems": 1,
+      "description": "OPTIONAL card 'OPPORTUNITIES THAT NEED ATTENTION'. Include for broad team reviews with evidenced risks, or asks for at-risk/stalled/overdue deals or coaching. Omit the key otherwise; never an empty array. This is a bounded sample; full-book hygiene counts come from aggregates.",
       "items": {
         "type": "object",
+        "additionalProperties": false,
+        "description": "",
+        "required": [
+          "name",
+          "owner",
+          "evidence",
+          "need"
+        ],
         "properties": {
-          "from": {
-            "description": "Band start value.",
-            "type": "number"
+          "name": {
+            "type": "string",
+            "description": "Opportunity name, plain text; never invent a deal from an account name."
           },
-          "to": {
-            "description": "Band end value.",
-            "type": "number"
+          "amount": {
+            "type": "string",
+            "description": "Formatted currency; omit if unavailable."
           },
-          "variant": {
-            "description": "Band color.",
+          "stage": {
+            "type": "string",
+            "description": "Grounded StageName display label."
+          },
+          "owner": {
+            "type": "string",
+            "description": "Resolved rep display name."
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Specific risk with dates or age, grounded in NextStep, CloseDate, LastActivityDate or cited evidence. Describe a missing LastActivityDate as no activity logged, not a fabricated age."
+          },
+          "need": {
+            "type": "string",
+            "description": "One recommended leader action. Identify it as a recommendation, never an action already taken."
+          },
+          "tone": {
             "type": "string",
             "enum": [
               "error",
               "warning",
-              "success"
-            ]
-          },
-          "label": {
-            "description": "Short policy-grounded band label.",
-            "type": "string"
+              "success",
+              "neutral"
+            ],
+            "description": "Severity rail; evidence text must also name the risk."
           }
         }
-      },
-      "example": []
-    },
-    "datagridCaption": {
-      "description": "Caption naming the selected period and explaining that negative position values are shortfalls.",
-      "type": "string",
-      "example": "Per-rep Q3 2026 scoreboard · negative position means shortfall"
-    },
-    "datagridRows": {
-      "description": "One row per resolved rep. Omit status unless an attributable team policy defines it; an empty array omits the datagrid.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Optional policy-grounded Status badge; omit when no attributable status policy exists.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Policy-grounded status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Policy-grounded badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "rep": {
-            "description": "Exact User.Name.value for the resolved rep, as a plain string.",
-            "type": "string"
-          },
-          "plan": {
-            "description": "Sourced or user-supplied rep quota as a raw currency number.",
-            "type": "number"
-          },
-          "closed": {
-            "description": "Selected-period closed-won Amount from the complete aggregate.",
-            "type": "number"
-          },
-          "commit": {
-            "description": "Selected-period Amount for the actual returned Commit forecast category.",
-            "type": "number"
-          },
-          "gap": {
-            "description": "Closed + Commit − quota; a negative raw currency number is a shortfall.",
-            "type": "number"
-          },
-          "attain": {
-            "description": "100 × Closed / positive quota, with disclosed rounding.",
-            "type": "number"
-          }
-        }
-      },
-      "example": [
-        {
-          "rep": "Priya Nair",
-          "plan": 2000000,
-          "closed": 820000,
-          "commit": 640000,
-          "gap": -540000,
-          "attain": 41
-        },
-        {
-          "rep": "Marcus Lee",
-          "plan": 2000000,
-          "closed": 1180000,
-          "commit": 500000,
-          "gap": -320000,
-          "attain": 59
-        },
-        {
-          "rep": "Dana Ruiz",
-          "plan": 1800000,
-          "closed": 1240000,
-          "commit": 420000,
-          "gap": -140000,
-          "attain": 69
-        }
-      ]
-    },
-    "recordLinkButtons": {
-      "description": "Complete tile/button blocks: one User action/openLink per displayed rep followed by one Opportunity action/openLink per displayed swing deal, each labeled from and targeting the same exact returned Name/Id.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "definition": {
-            "type": "string",
-            "enum": [
-              "tile/button"
-            ]
-          },
-          "attributes": {
-            "type": "object"
-          }
-        }
-      },
-      "example": [
-        {
-          "definition": "tile/button",
-          "attributes": {
-            "label": "Open rep Priya Nair",
-            "iconName": "open-in-new",
-            "variant": "secondary",
-            "actions": {
-              "click": [
-                {
-                  "definition": "action/openLink",
-                  "attributes": {
-                    "url": "https://org.lightning.force.com/lightning/r/User/005000000000001AAA/view"
-                  }
-                }
-              ]
-            }
-          }
-        },
-        {
-          "definition": "tile/button",
-          "attributes": {
-            "label": "Open opportunity Cobalt Robotics — Platform Expansion",
-            "iconName": "open-in-new",
-            "variant": "secondary",
-            "actions": {
-              "click": [
-                {
-                  "definition": "action/openLink",
-                  "attributes": {
-                    "url": "https://org.lightning.force.com/lightning/r/Opportunity/006000000000001AAA/view"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
-    "calloutTitle": {
-      "description": "Factual synthesis heading grounded in the selected-period aggregate and returned detail cohort.",
-      "type": "string",
-      "example": "3 returned deals carry the largest Amount"
-    },
-    "calloutDescription": {
-      "description": "Cohort-qualified synthesis using current returned fields and dated evidence; never infer movement from a current CloseDate.",
-      "type": "string",
-      "example": "Cobalt Robotics ($1.8M, Priya), Meridian Health ($2.4M, Marcus), and Alto Financial ($0.9M, Dana) are the largest returned deals. Use their current stages, dates, and attributable evidence for follow-up."
-    },
-    "ctaPrimaryLabel": {
-      "description": "Primary button label (action/sendMessage).",
-      "type": "string",
-      "example": "Draft team review note"
-    },
-    "ctaPrimaryMsg": {
-      "description": "First-person prompt the primary button sends (action/sendMessage).",
-      "type": "string",
-      "example": "Draft a team review note covering the returned swing deals, with specific evidence-backed unblock recommendations for each rep."
-    },
-    "ctaSecondaryLabel": {
-      "description": "Secondary button label (action/sendMessage).",
-      "type": "string",
-      "example": "Open pipeline summary"
-    },
-    "ctaSecondaryMsg": {
-      "description": "First-person prompt the secondary button sends (action/sendMessage).",
-      "type": "string",
-      "example": "Summarize the team's pipeline by returned forecast category, quota gap, and raw hygiene counts."
-    }
-  }
-}
-```
-```json
-{
-  "renderer": {
-    "componentOverrides": {
-      "$": {
-        "type": "mosaic",
-        "definition": "tile/widget",
-        "children": [
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "justify": "between",
-              "isWrapped": true
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center"
-                },
-                "children": [
-                  {
-                    "definition": "tile/icon",
-                    "attributes": {
-                      "name": "dashboard",
-                      "size": "xl",
-                      "alt": ""
-                    }
-                  },
-                  {
-                    "definition": "tile/text",
-                    "attributes": {
-                      "text": "{{title}}",
-                      "variant": "h1"
-                    }
-                  }
-                ]
-              },
-              {
-                "definition": "tile/badge",
-                "attributes": {
-                  "label": "{{headerStatus}}",
-                  "variant": "{{headerStatusVariant}}"
-                }
-              }
-            ]
-          },
-          {
-            "definition": "tile/text",
-            "attributes": {
-              "text": "{{subtitle}}",
-              "variant": "caption",
-              "color": "muted"
-            }
-          },
-          {
-            "definition": "tile/separator"
-          },
-          {
-            "definition": "tile/column",
-            "attributes": {
-              "gap": "md"
-            },
-            "children": [
-              {
-                "definition": "tile/chart",
-                "attributes": {
-                  "chartType": "column",
-                  "caption": "{{chartCaption}}",
-                  "categories": "{{chartCategories}}",
-                  "series": "{{chartSeries}}",
-                  "stackMode": "stacked",
-                  "valueFormat": "compact",
-                  "showValues": false
-                }
-              },
-              {
-                "definition": "tile/meter",
-                "attributes": {
-                  "label": "{{meterLabel}}",
-                  "value": "{{meterValue}}",
-                  "min": 0,
-                  "max": "{{meterMax}}",
-                  "target": "{{meterTarget}}",
-                  "valueFormat": "currency",
-                  "valueLabel": "{{meterValueLabel}}",
-                  "targetLabel": "{{meterTargetLabel}}",
-                  "status": "{{meterStatus}}",
-                  "bands": "{{meterBands}}"
-                }
-              }
-            ]
-          },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "{{datagridCaption}}",
-              "appearance": "striped",
-              "size": "sm",
-              "defaultSort": {
-                "key": "gap",
-                "direction": "asc"
-              },
-              "columns": [
-                {
-                  "key": "status",
-                  "header": "Status",
-                  "type": "badge"
-                },
-                {
-                  "key": "rep",
-                  "header": "Rep",
-                  "type": "avatar"
-                },
-                {
-                  "key": "plan",
-                  "header": "Plan",
-                  "type": "currency",
-                  "align": "right"
-                },
-                {
-                  "key": "closed",
-                  "header": "Closed",
-                  "type": "currency",
-                  "align": "right",
-                  "sortable": true
-                },
-                {
-                  "key": "commit",
-                  "header": "Commit",
-                  "type": "currency",
-                  "align": "right"
-                },
-                {
-                  "key": "gap",
-                  "header": "Gap to plan",
-                  "type": "currency",
-                  "align": "right",
-                  "sortable": true
-                },
-                {
-                  "key": "attain",
-                  "header": "Attainment",
-                  "type": "databar",
-                  "target": 100
-                }
-              ],
-              "rows": "{{datagridRows}}"
-            }
-          },
-          {
-            "definition": "tile/column",
-            "attributes": {
-              "gap": "sm"
-            },
-            "children": [
-              {
-                "definition": "tile/text",
-                "attributes": {
-                  "text": "Team and swing records",
-                  "variant": "section-title"
-                }
-              },
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": "{{recordLinkButtons}}"
-              }
-            ]
-          },
-          {
-            "definition": "tile/callout",
-            "attributes": {
-              "variant": "warning",
-              "title": "{{calloutTitle}}",
-              "description": "{{calloutDescription}}"
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": [
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "{{ctaPrimaryLabel}}",
-                      "variant": "primary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{ctaPrimaryMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "{{ctaSecondaryLabel}}",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{ctaSecondaryMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
       }
     }
   }
 }
 ```
 
-Self-verification before calling:
-- [ ] One attainment meter only; `value`, `max`, and `target` are raw currency numbers. `target` may equal `max` when both are the team plan. `meterBands` is empty/omitted unless an attributable threshold policy supplies every bound and label.
-- [ ] Chart has a visible forecast-category caption, `stackMode: "stacked"`, and exactly one series per actual returned `ForecastCategoryName.value`, with one raw-dollar value per rep matching `chartCategories` order. No series comes from StageName or a worked example.
-- [ ] Every datagrid currency cell is a raw number (not `{ value, display }` — the type annotation handles formatting); each gap equals Closed + Commit − quota, and each attainment value equals 100 × Closed / positive quota.
-- [ ] Without an attributable status policy, the header is `PIPELINE SNAPSHOT`/`info` and every row omits `status`. With a policy, every badge and band cites and follows that same policy.
-- [ ] `recordLinkButtons` contains one exact User link per displayed rep followed by one exact Opportunity link per displayed swing deal; labels and Ids come from the same returned records. Neither action is clicked during rendering.
-- [ ] Blocks with no data are omitted rather than populated from examples; an empty optional `meterBands` array is allowed for policy-neutral output.
-- [ ] Order is header → separator → (chart | meter) column → reps grid → team/swing record links → callout last.
-
-
 
 ## 9. Text — FALLBACK ONLY — DO NOT USE IF `display_widget` SUCCEEDED
+Scope reading and output to the prompt here too. A narrow ask gets only its answer and relevant sections; direct counts get no scoreboard, stage chart, deal sample or coaching section. Do not invent a CloseDate change without field-history evidence. Explain unavailable quota or partial team coverage and cite only data actually read.
 
 ```
-# Team Pipeline - [user-supplied period label]
-Target $[X] | Closed $[X] | [N] days left as of [date/timezone, if grounded]
+# Team Pipeline - [Period]
+Target $[X] | Closed $[X] | [N] days left
 
 ## Scoreboard
-| Rep | Closed | Commit | Weighted | Gap | Attainment | Call |
-|---|---|---|---|---|---|---|
-| [linked User Name] | $[X] | $[X] | $[X] | $[X; negative = shortfall] | [X]% | [policy-grounded value or —] |
+| Rep | Closed | Commit | Weighted | Gap | Call |
+|---|---|---|---|---|---|
+| [Name] | $[X] | $[X] | $[X] | $[X] | Behind |
 ...
-| **Team** | **$[X]** | **$[X]** | **$[X]** | **$[X]** | **[X]%** | |
+| **Team** | **$[X]** | **$[X]** | **$[X]** | **$[X]** | |
 
 ## Deals That Decide the Quarter
-**[linked Opportunity Name / Account]** - $[X], [current Stage], [Rep]
-  Why it matters: [formula-defined math, with sample scope]
-  Risk: [specific returned or dated evidence; a past date is labeled past close, never slipped]
+**[Account]** - $[X], [Stage], [Rep]
+  Why it matters: [the math]
+  Risk: [specific, evidenced]
   → **Do this:** [one concrete leader action]
 
 [repeat 3–5x]
 
 ## Risk Flags
-- Close-date movement: not checked — no history or prior CloseDate was queried
-- Last activity on/before [cutoff]: [raw count] open opps - [sample-qualified Account examples]
-- Past close date: [raw count] open opps need hygiene before the call
-- Blank Next Step: [raw count] open opps
+- Pushed dates: [N] opps moved CloseDate this week
+- Stale 14d+: [N] opps - [Account, Account, ...]
+- Past close date: [N] opps need hygiene before the call
 
 ## Monday Questions
-- **[Rep]:** "[one question, conversational, deal-grounded, and sample-qualified when needed]"
+- **[Rep]:** "[one question, conversational, deal-grounded]"
 - **[Rep]:** "[...]"
 
 ## If you want to dig
 - Per-rep detail: ask "just [rep name]"
-- Full at-risk detail: choose one rep and ask "show [rep name]'s at-risk pipeline"
+- Full at-risk list: run pipeline-review with team scope
 ```

@@ -1,28 +1,42 @@
 ---
 name: handle-objection
 display_name: Handle Objection
-description: "Build a grounded response to a customer objection from the current deal, win-loss history, customer evidence and approved internal documents. Use when interpreting pricing, timing, trust or competitive pushback and preparing a talk track or written reply. For every buyer-objection response, load win-loss-review and customer-voice as conditional support, but do not invoke or use them until this skill's selected-deal and direct-evidence gates pass."
+description: "Build a grounded response to a customer objection from the current deal, win-loss history, customer evidence and approved internal documents, scoped to what was asked: what is really being said, the ways to respond, or the proof points to use. Use when interpreting pricing, timing, trust or competitive pushback and preparing a talk track or written reply."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:37cdb97c35a5ed6731a4c1dd34c726471ab98160ff32a194baa2feabb2487b39"
+checksum: "sha256:9f08a3e04ac9b8cd1efbe0c8cd11f066bc264978fc6bfed0ac4c5c45667692a1"
 id: "094d821d-0d2d-43e1-b1a6-0427fabf6110"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
 - **Execute silently between tool calls.** Do not output planning, progress, transition, waiting, or tool-result narration between calls. Execute tool calls silently and proceed directly to the next call. Parallelize independent tasks by batching tool calls into one turn whenever possible. Before the final output, speak only when the skill explicitly requires user input, approval, an exact notice, or material error/blocked reporting. Do not invent checkpoints.
 - **Keep the final output concise.** Return only the requested result or deliverable. Omit process recaps, tool-call details, redundant preambles or conclusions, and data already shown in a widget.
+- **⛔ WIDGET OUTPUT ONLY after data assembly.** Once all queries return, immediately call `display_widget` — at most a single one-line render-wait notice before it, and no summaries, transitions, or narration. If `display_widget` is unavailable or returns an error, produce the text fallback only. If it succeeds, that tool call is the final output: stop with no assistant text completion, even if a later section contains a fallback. The exceptions above do not apply after success.
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
 
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
+
+
+# Rules:
+
+- **Scope reading and output to the prompt, never a default full response.** A broad ask (a live objection) shows the ways to respond and the supporting points; "how do I respond?" shows only the ways to respond; "what proof do I have?" shows only the supporting points; "what are they really saying?" gets the read, no cards. Think in lego blocks: a broad ask shows every block that carries real signal; a specific ask shows only the block(s) it names; a direct question gets no blocks. Don't show something just because you fetched it.
+- Resolve to ONE deal before the deep read. When the name is ambiguous, ask the user to pick — don't guess.
 
 # Handle Objection
 
@@ -32,44 +46,13 @@ A grounded response, not a script: what the objection means, how deals like it w
 
 Map to type: price/value · timing/priority · competitive · risk/trust · authority ("check with…") · status quo. Distinguish an **objection** (reason not to buy) from a **negotiation move** (reason to buy cheaper) — the response differs.
 
-## 2. Resolve the deal to one Opportunity (approved #19 correction)
+## 2. Pull direct evidence first
 
-Use only a selected Opportunity as the deal. If the current user turn or attached record context supplies an Opportunity Id with prefix `006`, skip the candidate lookup and use it as `<OPP_ID>` in step 3. Otherwise run one of the two candidate reads below; both list the newest close dates first. Replace `<DEAL_NAME>` with the deal name as the user gave it, preserving the surrounding `%` wildcards. When the request names the deal's account, including as the first part of the deal name, use the rest of the deal name as `<DEAL_NAME>`, replace `<ACCOUNT_NAME>` with the account name as the user gave it, and run the second read. Otherwise run the first:
-
-```
-dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Name: { like: \\\"%<DEAL_NAME>%\\\" } }, orderBy: { CloseDate: { order: DESC } }, first: 10) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Account { Name { value } } } } totalCount } } } }\"}" })
-```
-
-```
-dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Name: { like: \\\"%<DEAL_NAME>%\\\" }, Account: { Name: { like: \\\"%<ACCOUNT_NAME>%\\\" } } }, orderBy: { CloseDate: { order: DESC } }, first: 10) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Account { Name { value } } } } totalCount } } } }\"}" })
-```
-
-- **Exactly one returned row and `totalCount = 1`** → take its Id as `<OPP_ID>` and continue.
-- **Several rows or `totalCount > 1`** → list only Account · Opportunity · Stage · Amount · Close date and ask which deal the user means. If the total exceeds the returned rows, say the list is partial and ask for a more distinctive name, account, or exact Id. Do not guess and do not run the detail read yet.
-- **No rows** → ask for a more distinctive name or exact Opportunity Id. Do not substitute another deal or claim deal grounding.
-
-Candidate fields are identification context only; they are not objection evidence.
-
-## 3. Read the selected deal by exact Id
-
-Only after a current-turn Id or one unambiguous candidate is selected, replace `<OPP_ID>` with that exact Id and run:
-
-```
-dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Opportunity(where: { Id: { eq: \\\"<OPP_ID>\\\" } }, first: 1) { edges { node { Id Name { value } StageName { value displayValue } Amount { value displayValue } CloseDate { value } Type { value } NextStep { value } Description { value } Account { Name { value } Industry { value } } Owner { Name { value } } OpportunityContactRoles { edges { node { Role { value } IsPrimary { value } Contact { Name { value } Title { value } } } } } } } } } } }\"}" })
-```
-
-No detail row → say the deal could not be read and ask the user to confirm the Id or access; never fall back to another candidate. The exact-Id read authorizes literal deal context only. Its Id, stage, amount, dates, Next Step, owner, account, and contact roles do not establish objection evidence, speaker, cause, authority, or recipient. `Description` qualifies only when its returned text directly and attributably records this customer's objection, reason, goal, or metric for this deal.
-
-## 4. Pull direct evidence first — Quick/Kiro safe branch
-
-**Safe evidence gate — Quick/Kiro adaptation:** This replaces the source's fire-in-parallel order. After the exact-Id detail read succeeds, search only for direct, customer-specific evidence of this objection: the user's supplied source, an attributable customer email/transcript/note, or returned `Description` text or a document that explicitly records the customer's words, reason, goal, or metric for this deal. The candidate list and literal deal context are identification/context only. A user paraphrase such as “the customer says it is too expensive” establishes the objection text but is not direct evidence of the reason, speaker, channel, approver, or intended recipient. Stage, Amount, Probability, Close Date, Next Step, Closed Won/Lost, owner, Contact title/role, account association, activity subject, and amount/outcome correlation never qualify as direct evidence.
+Use only a selected Opportunity as the deal. After exactly one Opportunity is selected (a current-turn Opportunity Id with prefix `006`, or a candidate the user picked after disambiguation) and read by exact Id, search only for direct, customer-specific evidence of this objection: the user's supplied source, an attributable customer email/transcript/note, or returned `Description` text or a document that explicitly records the customer's words, reason, goal, or metric for this deal. Candidate lists and literal deal context are identification/context only. A user paraphrase such as "the customer says it is too expensive" establishes the objection text but is not direct evidence of the reason, speaker, channel, approver, or intended recipient. Stage, Amount, Probability, Close Date, Next Step, Closed Won/Lost, owner, Contact title/role, account association, activity subject, and amount/outcome correlation never qualify as direct evidence.
 
 ### No direct evidence found
 
-Stop evidence collection. Do not invoke or use `win-loss-review`, do not gather account-wide opportunities, contacts, or activities to fill the gap, and ignore any such data already returned. Do not infer history, causation, thresholds, stakeholders, buying authority, implementation, or recommendations from CRM context. Go directly to the mandatory no-direct-evidence response in step 5.
+Stop evidence collection. Do not invoke or use `win-loss-review`, do not gather account-wide opportunities, contacts, or activities to fill the gap, and ignore any such data already returned. Do not infer history, causation, thresholds, stakeholders, buying authority, implementation, or recommendations from CRM context. Go directly to the no-direct-evidence response in step 3.
 
 ### Direct evidence found
 
@@ -82,13 +65,13 @@ Only after at least one qualifying source is found, gather the source evidence i
 
 Every dynamic claim must carry its inline source or Salesforce record link and exact supporting field/date. Closed Won/Lost, Next Step, amounts, stages, contact titles, and correlations retain only their literal meanings and cannot support causal or prescriptive language. If a required claim has no direct source, omit it.
 
-## 5. Build the response
+## 3. Build the response
 
-**Selected-deal output gate — Quick/Kiro structural adaptation:** Neither response template below is available until step 3 has returned exactly one Opportunity detail row for a current-turn `006` Id or a candidate explicitly selected by the user after disambiguation. If step 2 returned zero, multiple, or truncated candidates, or step 3 did not run or return that one row, output only the step-2 clarification or partial-list question and stop. Do not classify the objection, search for objection evidence, or emit even the generic no-direct-evidence response from the user's paraphrase alone. This gate is terminal for every unresolved-deal state.
+**Selected-deal gate:** Neither response template below is available until exactly one Opportunity has been selected (a current-turn `006` Id, or a candidate the user picked after disambiguation) and read by exact Id. If the deal is unresolved (zero, multiple, or truncated candidates, or no detail row), output only the clarification or partial-list question and stop. Do not classify the objection, search for objection evidence, or emit even the no-direct-evidence response from the user's paraphrase alone.
 
-### No-direct-evidence response — mandatory
+### No-direct-evidence response
 
-When the safe evidence gate finds no qualifying source, use exactly this section structure and meaning, substituting only the user's objection wording. Do not add CRM facts, people, history, proof, recommendations, closing offers, or suggested actions.
+When step 2 finds no qualifying source, use exactly this section structure and meaning, substituting only the user's objection wording. Do not add CRM facts, people, history, proof, recommendations, closing offers, or suggested actions.
 
 ```
 # Objection: "<user-provided wording>" (user-provided paraphrase)
@@ -106,9 +89,252 @@ No directly documented win/loss history explains this objection; amount/outcome 
 
 End immediately after `Don't`. Do not add a next-step menu, follow-up offer, question, button, CTA, or action.
 
-### Direct-evidence response — only after the evidence gate passes
+### Direct-evidence response
 
-Use the source response shape below. Cite each claim beside the sentence or bullet it supports; a general caveat does not cure an unsupported claim.
+Use only after the evidence gate passes. Use the response shape below, and cite each claim beside the sentence or bullet it supports; a general caveat does not cure an unsupported claim.
+
+Draft the response from the evidence, then size it to the prompt (see the scope table in section 5):
+
+1. **What's underneath it** — the real concern; objection vs negotiation move.
+2. **Ways to respond** — 2-3 plays, best first: acknowledge → answer with their own stated goals → question that moves it forward. Mark the one you would lead with.
+3. **Proof points** — customer quote / case study / metric, each with its source.
+4. **If it's a competitor** — where they're strong (be honest) and where this customer's needs don't match it.
+5. **What history says** and **what not to do** — from win/loss: what winning reps did next; the response that historically loses (overdiscounting, feature-dumping, arguing).
+
+Objection arrived in writing? Offer to draft the reply via `draft-outreach`.
+
+## 5. Widget (default output when `display_widget` is present: AWS Quick)
+
+When the data is assembled, call `display_widget`; a single one-line "Displaying the visualization now (this may take a minute)." notice may precede it.
+
+### Self-verification (before calling display_widget)
+
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+
+The layout is built into the renderer and registered by name — you send **only the widget name and its data**. Call `display_widget` once:
+
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/handle-objection", props: <object matching the schema below> })
+```
+
+- **CRITICAL — `props` must be a nested JSON object, NOT a string.** ❌ WRONG: `props: "{\"title\":...}"`. ✅ RIGHT: `props: {"title": ...}`. If you hold a JSON string, `JSON.parse` it first.
+- When `display_widget` is available the widget is the output; produce the section 6 text only as the fallback when the tool is unavailable (e.g. a terminal).
+
+### What to send
+
+Follow the block order and the per-block inclusion rules in the `props` schema below (the root description and each property's `description`).
+
+Rules:
+- **Language:** when the user writes in English, omit `labels`. When they write in another language, send `labels` with EVERY key translated (headings and the badge in upper case) and write every free-text field (`headline`, `detail`, `evidence`, ...) in that language. Never join translated text with English fragments: each phrase is written whole, because word order differs.
+- **Send data only; never author presentation** (colours, badges, icons, HTML, emoji, layout keys, `{!…}`/`{{…}}`): the renderer owns the look and shows or hides each block from the keys you send. `recommended: true` on a play picks its badge — never write "recommended" into the text. Keys outside the schema are rejected, and every optional key you include must be justified by the prompt.
+- **Plays and proof come from your own evidence in step 2,** never invented: every supporting point names its source, and a play leans on what this customer already told you. Mark at most one play `recommended`.
+- **Scope reading and output to the prompt** (see the table below): answer what the user asked about, not a default full response.
+
+### Scope the blocks to the prompt
+
+The schema marks only `title`, `answer` and `sources` as required. **Every other key is a choice, and the choice follows the question — not what you happened to retrieve.** Data you fetched but did not use stays out of the widget.
+
+| The prompt is… | Send |
+|---|---|
+| **Broad** (a live objection: "they said we're too expensive", "how do I handle…", a pasted email) | `title` (the reframe) + `answer` (what's underneath it, objection vs negotiation move) + `plays` + `supportingPoints` + `callout` if there is a dated trigger the user can act on (else `nextStep`) + `sources` |
+| **Specific: the read** ("what are they really saying?", "is this a real objection or a negotiating move?") | `title` + `answer` + `nextStep` only if useful + `sources`. No cards |
+| **Specific: the response** ("how should I respond?", "what's my play?") | `title` + `answer` + **only** `plays` + tail only if it applies + `sources` |
+| **Specific: the proof** ("what evidence do I have?", "any customer quotes on this?") | `title` + `answer` + **only** `supportingPoints` + `sources` |
+| **Competitor in the deal** ("[competitor] is in the deal") | `title` + `answer` (where they're strong, where this customer's needs don't match) + `plays` + `supportingPoints` + `sources` |
+
+#### Worked examples (the `props` object only)
+
+**Live objection — "Priya says the budget is frozen and mentioned Vaultline"** (plays, proof, a dated escalation callout):
+
+```json
+{
+  "title": "The pilot already proved value – this is a structuring conversation, not a re-evaluation.",
+  "answer": "- Priya's email is **both** a genuine CFO concern (board-level budget freeze) **and** a negotiation move – procurement introduced Vaultline 3 weeks ago to create leverage.\n- The pilot closed at $75K – they've **already voted yes on the technology**.\n- Don't re-sell – restructure.",
+  "plays": [
+    { "headline": "ROI reframe – anchor to the pilot, use her own delay-cost model", "recommended": true, "detail": "Acknowledge the budget reality, then walk back to the pilot she validated. Anchor on **her own $600K/quarter delay-cost**." },
+    { "headline": "Phased structure – split the deal across her budget cycles", "detail": "**Phase 1 $300K now, Phase 2 $340K in Q4** – keeps the full $640K in play instead of discounting to $500K." }
+  ],
+  "supportingPoints": [
+    { "headline": "The pilot itself – 47% pipeline lift, $2.4M efficiency", "evidence": "Q2 pilot dashboard · Cedarline's own numbers · Priya's team validated the model 5/18." },
+    { "headline": "Phased-deal structure pre-approved by Legal", "evidence": "Y2/Y3 escalators at 4% cleared 8/20 · pricing team OK'd the $300K + $340K split for FS accounts." }
+  ],
+  "callout": { "lead": "No response by Aug 27 → escalate to an exec-sponsor path.", "text": "Three weeks of no engagement plus a competitor introduced is a deal going Inactive. Lead with the ROI reframe, not a discount.", "buttonLabel": "Draft the reframe email", "actionMsg": "Draft the ROI reframe email to Priya Anand anchored on the pilot results and her own $600K/quarter delay-cost model." },
+  "sources": [{ "label": "Opportunity – Cedarline Financial Platform Expansion" }, { "label": "Email – Priya Anand, Aug 6" }]
+}
+```
+
+**Specific — "Is this a real objection or a negotiating move?"** (the read only, a plain next step):
+
+```json
+{
+  "title": "Treat it as a negotiating move – the technology is already approved.",
+  "answer": "- The pilot closed at **$75K** and the champion is still engaged.\n- The price pushback arrived **the same week** procurement added a competitor.",
+  "nextStep": { "lead": "Test it with one question.", "text": "Ask Priya what budget cycle the deal would need to land in. Want me to draft it?" },
+  "sources": [{ "label": "Opportunity – Cedarline Financial Platform Expansion" }]
+}
+```
+
+`props` schema (JSON Schema). Only `title`, `answer` and `sources` are required; follow the root description and each property's `description`:
+
+```json
+{
+  "type": "object",
+  "description": "Block order: title, answer, then the optional cards (plays, supportingPoints), then at most one tail (callout OR nextStep), then sources. Only title, answer and sources are required. Which optional cards to include: see the scope table in the skill instructions. Omit a key and its block is not shown: never send empty arrays, empty strings, placeholders or 'N/A', and never a card the prompt did not ask for. A pure 'what is really being said' question usually gets no cards. Format every value as a ready-to-display string (currency, dates); names are plain strings, never objects (use `Contact.Name.value` / `Owner.Name.value`).",
+  "required": [
+    "title",
+    "answer",
+    "sources"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "REQUIRED. One bold line: the reframe or verdict that already answers the question in the user's context (e.g. 'The pilot already proved value – this is a structuring conversation, not a re-evaluation.'). Plain text, no markdown. Never the skill name or 'Handle Objection: X'."
+    },
+    "answer": {
+      "type": "string",
+      "description": "REQUIRED. Answer-first markdown bullets, rendered under the title: 2-4 short '- ' bullets, each ONE sentence, that say what is really being said (objection vs negotiation move), what the customer already told you, and the stance to take. Put **bold** inline on the key values inside each sentence (amounts, dates, names), never on a whole bullet. Do not restate the cards below it. Answer ONLY what was asked (scope the bullets to the prompt); no headings, tables or paragraphs."
+    },
+    "labels": {
+      "type": "object",
+      "description": "OPTIONAL. Every fixed label of the widget (card headings, the recommended badge, the sources toggle); each key's `default` is its English text, and a missing or blank key falls back to it. Omit when the user writes in English; for another language follow the Language rule in SKILL.md.",
+      "properties": {
+        "waysToRespond": {
+          "type": "string",
+          "default": "WAYS TO RESPOND",
+          "description": "Heading of the plays card. English: 'WAYS TO RESPOND'."
+        },
+        "recommended": {
+          "type": "string",
+          "default": "RECOMMENDED",
+          "description": "Badge on the play marked `recommended`. English: 'RECOMMENDED'."
+        },
+        "supportingPoints": {
+          "type": "string",
+          "default": "SUPPORTING POINTS",
+          "description": "Heading of the supporting-points card. English: 'SUPPORTING POINTS'."
+        },
+        "sources": {
+          "type": "string",
+          "default": "Sources",
+          "description": "Word shown on the sources toggle; the renderer appends the count, e.g. 'Sources (3)'. Send the word only, no number. English: 'Sources'."
+        }
+      }
+    },
+    "plays": {
+      "type": "array",
+      "description": "OPTIONAL card 'WAYS TO RESPOND'. Include ONLY if the prompt asks how to respond / what to say / how to handle the objection. 2-3 plays, best first. Omit the key otherwise; never send an empty array.",
+      "items": {
+        "type": "object",
+        "required": [
+          "headline"
+        ],
+        "properties": {
+          "headline": {
+            "type": "string",
+            "description": "The bold name of the play, with its angle after an en dash (e.g. 'ROI reframe – anchor to the pilot, use her own delay-cost model'). Plain text."
+          },
+          "recommended": {
+            "type": "boolean",
+            "description": "true on at most ONE play, the one you would lead with; shows a green RECOMMENDED badge next to the headline. Omit on the others."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Muted line below the headline: how to run the play, one or two sentences. Markdown: put **bold** on the key facts (amounts, the customer's own numbers)."
+          }
+        }
+      }
+    },
+    "supportingPoints": {
+      "type": "array",
+      "description": "OPTIONAL card 'SUPPORTING POINTS'. Include ONLY if the prompt asks for proof/evidence/ammunition, or you are building a full response and have real evidence from the deal, win/loss history, customer quotes or approved documents. Every row needs a source. Omit the key otherwise; never send an empty array.",
+      "items": {
+        "type": "object",
+        "required": [
+          "headline"
+        ],
+        "properties": {
+          "headline": {
+            "type": "string",
+            "description": "The bold proof point with its key number (e.g. 'The pilot itself – 47% pipeline lift, $2.4M efficiency'). Plain text."
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Muted line below: where it comes from and why it persuades (e.g. 'Q2 pilot dashboard · Cedarline's own numbers · Priya's team validated the model 5/18.')."
+          }
+        }
+      }
+    },
+    "callout": {
+      "type": "object",
+      "description": "OPTIONAL tail, time-sensitive: a deadline or escalation trigger. Warning icon, a bold first sentence followed by normal text, then ONE blue primary button. Use INSTEAD of nextStep, never both (if both are sent only the callout renders). Include only if there is a dated trigger AND the user can act on it now. Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "required": [
+        "lead",
+        "text",
+        "buttonLabel",
+        "actionMsg"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). The bold first sentence: the trigger and the move in one sentence, ending with a period (e.g. 'No response by Aug 27 → escalate to an exec-sponsor path.')."
+        },
+        "text": {
+          "type": "string",
+          "description": "REQUIRED, visible (non-whitespace). One to three sentences of normal-weight text after the bold lead: why it matters and what to lead with."
+        },
+        "buttonLabel": {
+          "type": "string",
+          "description": "Label of the single primary button (e.g. 'Draft the reframe email')."
+        },
+        "actionMsg": {
+          "type": "string",
+          "description": "First-person request sent to chat when the button is clicked."
+        }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "description": "OPTIONAL tail, not time-sensitive: a plain suggestion line with NO button, only when there is a genuinely useful next move. Use INSTEAD of callout, never both.",
+      "required": [
+        "lead",
+        "text"
+      ],
+      "properties": {
+        "lead": {
+          "type": "string",
+          "description": "Bold lead (the suggested move)."
+        },
+        "text": {
+          "type": "string",
+          "description": "One or two sentences of reasoning, ending with an offer to help if natural."
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "REQUIRED. Where the response came from: the Salesforce records you actually read, linked (this is where the Opportunity record link goes), plus any win/loss analysis, customer quote, email or doc you cited. Shown as a compact 'Salesforce · Sources (N)' toggle (the word comes from labels.sources). Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
+      "items": {
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Source name (e.g. 'Opportunity – Enterprise Sales Cloud Platform', 'Email – Priya Anand, Aug 6')."
+          },
+          "url": {
+            "type": "string",
+            "description": "Record or document URL. Omit if none."
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## 6. Text — FALLBACK ONLY — DO NOT USE IF `display_widget` SUCCEEDED
 
 ```
 # Objection: "<their words>"
@@ -125,9 +351,3 @@ Use the source response shape below. Cite each claim beside the sentence or bull
 ## Don't
 - <the response that historically loses this — overdiscounting, feature-dumping, arguing>
 ```
-
-For the direct-evidence response only, link the selected Opportunity inline using its returned Id. The no-direct-evidence response remains intentionally free of CRM facts and links.
-
-Objection arrived in writing? Offer to draft the reply via `draft-outreach`.
-
-**Written-objection gate — Quick/Kiro adaptation:** Treat the objection as written only when explicit user input or a retrieved written source establishes both the written channel and an attributable speaker or intended recipient. A paraphrased objection in the request establishes only its content; a Contact name, title, or Opportunity role does not establish who raised it or should receive a reply. Without both the channel and participant evidence, return an unaddressed talk track and omit every draft CTA or action, including a conditional request to tell you that it came in writing; do not name a speaker, addressee, or recipient.

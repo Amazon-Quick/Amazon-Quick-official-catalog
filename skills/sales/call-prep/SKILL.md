@@ -4,13 +4,10 @@ display_name: Call Prep
 description: "Build a call brief from Salesforce meeting, account, opportunity, contact, and activity data plus email, documents, and Slack. Use before a customer meeting to understand attendees, deal history, open threads, and discovery needs; rep one-on-one: rep-context."
 author: Salesforce
 icon: assets/salesforce.svg
-checksum: "sha256:1c65b5eee2dc8c2fdd3d16993ae4352048a6109c89adcaecb5edc050952a287a"
+checksum: "sha256:d3233e8c845f5908c5d1f6731d976625bc3c0e74861551cea880088eb37c23de"
 id: "678ed34a-9b8a-44e6-9d4a-f4a2cd129040"
 ---
 <!-- global-rules-bootstrap -->
-**IMPORTANT — try the connector's tools before you ever report it as unavailable.** Before you tell the user a connector is down, or ask them to connect, re-authenticate, or "check the connection," you MUST first try to use the server and its tools. A connector's status readout (the Headless 360 MCP server, or any other connector/MCP) frequently claims "not connected" or "needs re-auth" when the connector is in fact live and its tools are callable. Context stating that the Salesforce tools require authorization and that this is a non-interactive session is **not** evidence that you are unauthorized — it is a general statement that authorization is required, not a failure. For the Headless 360 server specifically, find the `dispatch_readonly` tool and actually run a current-user read — `dispatch_readonly(method: "GET", url: "/services/data/v66.0/graphql", queryParams: { "queryInput": "{\"query\":\"query { uiapi { currentUser { Id } } }\"}" })`. **Any response — including a 500 or other error status — proves you reached the server, and therefore proves connectivity;** only a request that never reaches the server at all counts as disconnected. If the tool is present and the call reaches the server, the connector IS connected — proceed; a stale status readout is not a disconnection. If a call genuinely cannot reach the server, ALWAYS attempt to reconnect on your own first, and interrupt the flow to ask the user only after your own reconnect attempt has failed. Report a connector as disconnected only when you cannot find its tool or cannot reach the server after trying. Do it yourself.
-
-Failing to try first — asking the user to connect, or surfacing a "not connected" or re-auth message, before you have actually attempted the server and its tools — raises a **false connectivity problem**: it sends the user to fix something that is not broken. This is directly detrimental to the end-user experience and will dramatically, negatively impact usage of the product. Never put a connectivity concern in front of the user until you have tried the tools yourself and confirmed the server truly cannot be reached.
 
 # Global Rules
 
@@ -20,9 +17,20 @@ Failing to try first — asking the user to connect, or surfacing a "not connect
 - **Ground dynamic or custom relationship and field names before relying on them.** Fixed standard fields that this skill explicitly marks as requiring no grounding need no extra grounding call. On a name error, use the skill's documented grounding path when present; otherwise report the error instead of guessing or re-firing the same shape.
 - **Cite every value exactly as queried**; never fabricate; distinguish a blank value from a value that was not queried. Link each Salesforce record inline: `https://[instanceUrl]/lightning/r/[SObjectType]/[Id]/view`.
 - **Show human labels, never API/field literals.** In anything the user sees, print each field's grounded `label` (for example, "Deal Risk", not `Deal_Risk__c`) and record Names, never raw Ids or `__c` API names.
+- **One idea per sentence.** In all generated content, if a sentence needs re-reading, it is carrying too much: split it.
+- **Don't repeat the visual.** When a visualization or widget renders, the text around it tells the user what to conclude from the data. Do not restate numbers they can already see.
+- **Use plain language.** Choose terms any reader understands on first read, with no domain knowledge or cultural context required. Avoid jargon and colloquialisms, and make labels signal what follows. Test: would a reader unfamiliar with the idiom understand the term and know what content to expect? Use "No engagement", not "went dark" or "ghosted".
+- **Reproduce Salesforce terminology exactly.** Use the field labels, object names, and stage values the data returns; do not paraphrase them. Spell out acronyms on first use unless the term is an industry framework (for example, MEDDIC).
 - **Empty `MINE` scope → fail fast, then ask which scope.** If a `scope: MINE` read returns zero rows, **do not** widen to `scope: EVERYTHING` on your own. Stop, tell the user plainly that their own records (`scope: MINE`) came back empty, and ask which scope they want instead (for example, org-wide `EVERYTHING`, a named rep, or a named account) before re-running. Never invent records, and never silently fall back to org-wide.
-- **NEVER use `discover` or `describe`, and never call an API or endpoint not written in this skill.** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
+- **While following this skill, don't call `discover` or `describe`, and don't call any API or endpoint not written here. This file already has every query and widget reference you need. (Outside this skill, they're available as normal.)** Every Salesforce URL you need is in the skill. Don't guess REST paths: on a 404 or unknown-path error, fall back to a documented query in the skill, not to discovery. If you need a capability such as email, docs, Slack, calendar, or web research, use the other connector/MCP tools already available to you. Endpoint guessing and discovery add needless round-trips. Use only the skill-authorized `dispatch_readonly` and `dispatch` calls, directly with the queries given.
 <!-- /global-rules-bootstrap -->
+<!-- response-formatting -->
+## Response formatting
+
+- **Number formatting:** Format numbers for readability across the entire response, including values retrieved directly from Salesforce fields. Abbreviate large numbers with a suffix for their scale: K (thousand), M (million), B (billion), T (trillion), and the next suffix up for anything larger, never leaving a big number unabbreviated or spelling it out in full (e.g., $120K, $1.25M, $2.4B, $1.3T), and round percentages to whole numbers unless decimals are required for meaningful comparison.
+- **Empty table cells (structured data tables only):** keep empty states terse and never explain them inside a table cell.
+  - AI-generated cells: write "Not enough data" when the returned data cannot support a grounded answer (for example, a Suggested Action cell when no recommendation can be supported).
+  - Cells filled directly from CRM fields: leave the cell blank when the source field was queried and confirmed empty or null. Keep valid values such as 0.
 
 # Call Prep
 
@@ -46,19 +54,17 @@ Resolve meeting → ground → read account → (calendar + email + docs + slack
 
 Build the Event query based on input pattern. All patterns share the node shape (`Id Subject StartDateTime EndDateTime Location WhatId WhoId Description Who { ... on Contact { Id Name AccountId Account } } What { ... on Account { Id Name } ... on Opportunity { Id Name AccountId Account } }`). Combine filters with `and: [...]` when needed.
 
-**Pattern: "my next call"** (scope: MINE, StartDateTime >= now, first: 1):
+**Pattern: "my next call"** (scope: MINE, StartDateTime >= TODAY, first: 1):
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Event(scope: MINE, where: { StartDateTime: { gte: { value: \\\"<NOW>\\\" } } }, first: 1, orderBy: { StartDateTime: { order: ASC } }) { edges { node { Id Subject { value } StartDateTime { value } EndDateTime { value } Location { value } WhatId { value } WhoId { value } Description { value } Who { ... on Contact { Id Name { value } AccountId { value } Account { Id Name { value } } } } What { ... on Account { Id Name { value } } ... on Opportunity { Id Name { value } AccountId { value } Account { Id Name { value } } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Event(scope: MINE, where: { StartDateTime: { gte: { literal: TODAY } } }, first: 1, orderBy: { StartDateTime: { order: ASC } }) { edges { node { Id Subject { value } StartDateTime { value } EndDateTime { value } Location { value } WhatId { value } WhoId { value } Description { value } Who { ... on Contact { Id Name { value } AccountId { value } Account { Id Name { value } } } } What { ... on Account { Id Name { value } } ... on Opportunity { Id Name { value } AccountId { value } Account { Id Name { value } } } } } } } } } }\"}" })
 ```
 
-**Pattern: "[Rep]'s next call"** (OwnerId from 1a, StartDateTime >= now, first: 1):
+**Pattern: "[Rep]'s next call"** (OwnerId from 1a, StartDateTime >= TODAY, first: 1):
 ```
 dispatch_readonly(method: "GET", url: "/services/data/v65.0/graphql",
-  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Event(where: { OwnerId: { eq: \\\"<UserId>\\\" }, StartDateTime: { gte: { value: \\\"<NOW>\\\" } } }, first: 1, orderBy: { StartDateTime: { order: ASC } }) { edges { node { Id Subject { value } StartDateTime { value } EndDateTime { value } Location { value } WhatId { value } WhoId { value } Description { value } Who { ... on Contact { Id Name { value } AccountId { value } Account { Id Name { value } } } } What { ... on Account { Id Name { value } } ... on Opportunity { Id Name { value } AccountId { value } Account { Id Name { value } } } } } } } } } }\"}" })
+  queryParams: { "queryInput": "{\"query\":\"query { uiapi { query { Event(where: { OwnerId: { eq: \\\"<UserId>\\\" }, StartDateTime: { gte: { literal: TODAY } } }, first: 1, orderBy: { StartDateTime: { order: ASC } }) { edges { node { Id Subject { value } StartDateTime { value } EndDateTime { value } Location { value } WhatId { value } WhoId { value } Description { value } Who { ... on Contact { Id Name { value } AccountId { value } Account { Id Name { value } } } } What { ... on Account { Id Name { value } } ... on Opportunity { Id Name { value } AccountId { value } Account { Id Name { value } } } } } } } } } }\"}" })
 ```
-
-**Next-call start — local correction:** `<NOW>` is the current date and time as a UTC ISO-8601 instant, for example `2026-11-05T22:15:00Z`. Both next-call reads start there, because `literal: TODAY` starts at local midnight and returns a meeting that already ended earlier today. A meeting that has already started is not the next call.
 
 **Pattern: specific event name** (e.g. "City of Hope call") — match Subject with LIKE, widen window to catch it (next 30 days), list if multiple:
 ```
@@ -155,466 +161,273 @@ Based on opportunity stage and the qualification framework (inferred from org da
 
 ## 6. Dashboard widget (editorial layout)
 
-When the `display_widget` tool is available (Claude Cowork, the desktop app, the web app), render the call-prep brief as a visual widget instead of the Step 7 text. The layout follows editorial restraint: header with icon, one-line subhead, two datagrids (attendees and talk-track topics), and one synthesis callout with two buttons. When `display_widget` is unavailable (e.g. a terminal) the Step 7 markdown is the whole output, so produce it only then.
+When the `display_widget` tool is available (a widget-capable client), render the call-prep brief as a visual widget instead of the Step 7 text. When `display_widget` is unavailable (e.g. a terminal) the Step 7 markdown is the whole output, so produce it only then.
 
 When the data is assembled, call `display_widget`; a single one-line "Displaying the visualization now (this may take a minute)." notice may precede it.
 
 ### Self-verification (before calling display_widget)
 
-- [ ] `widgetDefinition` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
-- [ ] `{{attendeeRows}}` and `{{topicRows}}` are typed arrays — each row object has the required keys and a leading `status` object.
-- [ ] Every button's `onClick` is `action/sendMessage` or `action/openLink` with real content.
-- [ ] No charts (meter/piechart/chart/heatmap/waterfall) — only datagrids.
-- [ ] The callout is `variant: "info"` and closes the widget.
+- [ ] `props` is passed as a native JSON object — not a quoted string, not a code block pasted as text. If the value starts with `"{"`, it is wrong.
+- [ ] `props` holds only keys from the schema below, as plain values — no `{!…}`, no `{{…}}`, no layout, colours or icons.
+- [ ] Every optional key you included is justified by the prompt (see "Scope the blocks to the prompt"); no empty arrays, empty strings or placeholders.
+- [ ] At most one tail: `callout` or `nextStep`, never both.
 
-The widget template is embedded below — resolve its tokens and call `display_widget({ resourceType: "dynamic", widgetDefinition: <hydrated> })` once (see the `widgetDefinition` param for token-resolution rules). See `sample-data.json` in this dir for a fully-worked example.
+The layout is built into the renderer and registered by name — you send **only the widget name and its data**. Call `display_widget` once:
 
-Two blocks below: first the **variable contract** (`renderer.props.schema.json`) — every `{{token}}`'s type + a worked example, use it to compute each value; then the **widget template** to hydrate. Substitute your computed values into the template's `{{token}}`s (see the token-typing rules above), leaving no `{{…}}`/`{!…}`.
+```
+display_widget({ resourceType: "salesforce_widget", widget_resource_uri: "ui://widget/standard/call-prep", props: <object matching the schema below> })
+```
+
+- **Send data only; never author presentation** (colours, pills, icons, columns, HTML, emoji, layout keys, `{!…}`/`{{…}}`): the renderer owns the look and shows or hides each block from the keys you send.
+- **CRITICAL — `props` must be a nested JSON object, NOT a string.** ❌ WRONG: `props: "{\"title\":...}"`. ✅ RIGHT: `props: {"title": ...}`. If you hold a JSON string, `JSON.parse` it first.
+- When `display_widget` is available the widget is the output; produce the Step 7 text only as the fallback when the tool is unavailable (e.g. a terminal).
+
+### The response is lego blocks, in this fixed order
+
+1. `title` (required) — the takeaway for this meeting in one sentence (e.g. "Your 9:00 AM Northpeak Logistics proposal review is on track — …"), never the skill name or "Call Prep: X".
+2. `answer` (required) — 2–4 one-sentence `- ` bullets that answer only what was asked, **bold** on the key values (account, time, amount, dates, names).
+3. `attendees` (optional **Attendees** card) — one row per person on the invite (Steps 3–4): `name`, `role` (title, plus deal role when evidence supports it), `rsvp`, `watchFor`. When sending attendees, also send `hasAttendeeRsvp` as true if any row has an RSVP, otherwise false.
+4. `talkTrack` (optional **Talking Points** card) — the 3–5 things to cover or resolve on this call (Step 5 objective and questions, plus open threads from evidence): `item`, `purpose`. Write each topic as a concise, imperative-led statement that begins with an action verb (e.g., Discuss, Review, Confirm, Explore, Address). Topics may describe a subject to discuss or an outcome to achieve. Never phrase topics as questions.
+5. `recentActivity` (optional **Recent Activity** card) — the recent Tasks, Events and email threads (Steps 3 and 3b), at most 5: `items` with `type`, `title`, `date`, `who`, `summary`.
+6. The tail, at most one:
+   - `callout` — only when something before or on this call is time-sensitive or blocked and the user can act on it;
+   - otherwise `nextStep` — a plain line with the one genuinely useful prep move, no button.
+7. `sources` (required) — every record and evidence source you used.
+
+### Scope the blocks to the prompt
+
+The schema marks only `title`, `answer` and `sources` as required. **Every other key is a choice, and the choice follows the question — not what you happened to retrieve.** Data you fetched but did not use stays out of the widget.
+
+| The prompt is… | Send |
+|---|---|
+| Broad ("Prep me for my meeting.", "prep me for my next call", "brief me on the Northpeak call") | `title` + `answer` + the cards that carry real signal (`attendees`, `talkTrack`, `recentActivity`) + tail only if it applies (`callout` or `nextStep`) + `sources` |
+| Specific ("who's on the call?" → `attendees`; "what should I cover?" / "what should I ask?" → `talkTrack`; "what's happened so far?" → `recentActivity`) | `title` + `answer` + **only** the one matching card + tail only if it applies + `sources` |
+| A question with a direct answer ("when is my Northpeak meeting?", "is Marcus coming?") | `title` + `answer` + `sources`; add a card only if it makes the answer faster to grasp |
+
+### What to send
+
+Rules:
+- **Omit a key and its block is not shown.** Never send empty arrays, empty strings, placeholders or "N/A"; drop attendees, items or activities you have no data for. No fabricated content.
+- **Scope the `answer` too:** a specific prompt gets bullets about that topic only.
+- **Scope reading and output to the prompt.** Steps 1–3 still resolve the meeting and account, but a specific ask limits the Step 3b evidence searches to what its card needs ("who's on the call?" needs the attendees and their threads, not docs or Slack). Don't show something just because you fetched it.
+- **Tail:** `callout` carries `level` — `tip` (helpful context), `note` (one clear move, the default) or `blocker` (time-sensitive or blocked), the lowest that fits — and at most one button (`buttonLabel` + `actionMsg`, a first-person request). Otherwise send `nextStep` (`lead` is optional). If both are sent only the callout renders, so pick one. A pure lookup ("who's on the call?") usually gets no tail.
+- **Display-ready strings:** times with zone ("9:00 AM PT"), dates as "Aug 22 · Fri", amounts as "$285K". Names are plain strings (`Contact.Name.value`), never objects. Source `url`s are Lightning record URLs (`https://<myDomain>/lightning/r/<Object>/<Id>/view`); omit `url` when there is none.
+- **Language:** omit `labels` for English. For any other response language, translate every `labels` value in the schema (card and datagrid headings, RSVP values, activity icon names, and `sources`) and keep `Salesforce` unchanged.
+- **`attendees[].rsvp`** only when a calendar tool in this session returned the attendee's response status (`accepted`, `tentative`, `declined`, `needsAction`); never infer it from Salesforce records. When you send attendees, set `hasAttendeeRsvp` true if any row has `rsvp`, otherwise false; the false form removes the RSVP column. A deal role ("Economic Buyer", "Champion") goes in `role` only when evidence supports it.
+- **`recentActivity.items[].type`:** `event` for Events, `email` for email threads from evidence, `call` only when the Task is explicitly a call, otherwise `task`.
+- **Topic wording:** Write each topic as a concise, imperative-led statement that begins with an action verb (e.g., Discuss, Review, Confirm, Explore, Address). Topics may describe a subject to discuss or an outcome to achieve. Never phrase topics as questions.
+- **Ranking:** attendees by influence on the decision (external first); `talkTrack` by importance (the call objective first); `recentActivity` most recent first.
+- **Before calling:** no `{!…}` or `{{…}}` anywhere in `props`, and no keys outside the schema.
+
+#### Worked examples (the `props` object only)
+
+**Broad — "Prep me for my meeting."** (all three cards carry signal; nothing is time-sensitive, so a plain `nextStep`; trimmed):
+
 ```json
 {
-  "$comment": "Variable contract for the native-mosaic dynamic-mode template (renderer.json, sibling). This is NOT a separate display_widget call — it names every {{token}} in the template with its type and a worked example so you compute the right value for each. Workflow: build a props object with these keys, substitute each into the matching {{token}} in renderer.json (a slot that is only a {{token}} becomes the typed value — arrays stay arrays, numbers stay numbers; a {{token}} inside a larger string interpolates as text; a key you have no data for is omitted so that leaf drops), then call display_widget({ resourceType: 'dynamic', widgetDefinition: <the hydrated template> }) once with no {{…}}/{!…} left. Realistic values: sample-data.json (sibling). Authoring guidance (from the skill): - [ ] Every `{{token}}` replaced with a resolved literal — no `{{…}}`, no `{!…}`.\n- [ ] `{{attendeeRows}}` and `{{topicRows}}` are typed arrays — each row object has the required keys and a leading `status` object.\nThe widget template is embedded below. It is a skeleton: replace every `{{token}}` with a fully-resolved literal computed from the brief you built in Steps 1–5 — this echo path does no expression compilation, so no `{!…}` bindings. See `sample-data.json` in this dir for a fully-worked example.\n- **Header** — phone icon + serif `page-title` (`{{title}}`, \"Call prep — [Meeting title]\").\n- **Subhead caption** — `{{subtitle}}` (one line: time, attendees, deal size, stage).\n- **Attendee datagrid** (`{{attendeeRows}}`) — one row per attendee. Columns: Attendee (avatar), Role (text), Stance (badge), Watch for (text). Each row carries a leading `status` object (`{value,badgeVariant}` — value Ally/Neutral/Blocker, badgeVariant success/warning/error/default); the leading Status column reads each row's `status`.\n- **Talk track datagrid** (`{{topicRows}}`) — one row per open item. Columns: Topic (text), State (badge), Your ask (text). Each row carries a leading `status` object (`{value,badgeVariant}` — value Must land/Push/Defuse/Confirm).\n- **One synthesis callout** (`variant: \"info\"`) — `{{calloutTitle}}` and `{{calloutDesc}}` (the call's goal and what success looks like). Two buttons: a primary \"Draft call agenda\" (`{{ctaLabel}}` / `{{ctaMsg}}`, `action/sendMessage`) and a secondary \"View in Salesforce\" (`{{oppUrl}}`, `action/openLink`).\n1. Start from the embedded template above — a valid-JSON widget-definition envelope whose leaf values carry `{{token}}` placeholders.\n2. Resolve every `{{token}}`. A value that is **only** a `{{token}}` (datagrid `rows`) becomes the resolved **typed** literal — arrays stay arrays. A `{{token}}` **inside** a larger string is interpolated as text.\n3. `{{attendeeRows}}` is an array of attendee objects — each with `name` (plain string — format as the person's display name (e.g. \"Dana Kwon\"); names must be plain strings, not objects: use `Contact.Name.value` from the SF response), `role`, `stance` (`{ value, badgeVariant }`), `watch`, and `status` (`{ value, badgeVariant }`). `{{topicRows}}` is an array of topic objects — each with `topic`, `state` (`{ value, badgeVariant }`), `ask`, and `status` (`{ value, badgeVariant }`).\n4. The result is hydrated widget definition (no `{{…}}` placeholders remain). Then:\n- Resolve every `{{token}}` to a literal before calling — arrays stay arrays (`{{attendeeRows}}`, `{{topicRows}}`), strings stay strings.\n- Callout buttons: the primary is `action/sendMessage` with a first-person `content` prompt (`{{ctaMsg}}`, e.g. \"Draft an agenda for the Cobalt contract walkthrough…\"); the secondary is `action/openLink` with `{{oppUrl}}` — the opportunity's Lightning URL (`https://<myDomain>/lightning/r/Opportunity/<Id>/view`), opening a new tab. Omit the openLink button if you lack the Id.",
-  "props": {
-    "title": {
-      "description": "Page title — \"Call prep — [Meeting title]\".",
-      "type": "string",
-      "example": "Call prep — Cobalt contract walkthrough"
-    },
-    "subtitle": {
-      "description": "Subhead: time, attendees, deal size, stage.",
-      "type": "string",
-      "example": "Today 9:00 · Dana Kwon (CFO) + Raj Patel (VP Eng) · $1.8M · Negotiation"
-    },
-    "attendeeRows": {
-      "description": "Meeting attendees — one row per person. Empty array → the datagrid is omitted.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Leading Status badge cell; omit on normal rows.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "name": {
-            "description": "Attendee display name, a plain string (use Contact.Name.value — never a nested object).",
-            "type": "string"
-          },
-          "role": {
-            "description": "Attendee role (text).",
-            "type": "string"
-          },
-          "stance": {
-            "description": "Stance badge cell.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Stance label shown on the badge.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "watch": {
-            "description": "What to watch for with this attendee (text).",
-            "type": "string"
-          }
-        }
-      },
-      "example": [
-        {
-          "status": {
-            "value": "Ally",
-            "badgeVariant": "success"
-          },
-          "name": "Dana Kwon",
-          "role": "CFO — econ. buyer",
-          "stance": {
-            "value": "Champion",
-            "badgeVariant": "success"
-          },
-          "watch": "Will want term flexibility on the 3-yr"
-        },
-        {
-          "status": {
-            "value": "Ally",
-            "badgeVariant": "success"
-          },
-          "name": "Raj Patel",
-          "role": "VP Engineering",
-          "stance": {
-            "value": "Champion",
-            "badgeVariant": "success"
-          },
-          "watch": "Technical proof already done — keep him vocal"
-        }
-      ]
-    },
-    "topicRows": {
-      "description": "Talk-track items — one row per open item. Empty array → the datagrid is omitted.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Leading Status badge cell; omit on normal rows.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "Status label.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "topic": {
-            "description": "The topic to cover.",
-            "type": "string"
-          },
-          "state": {
-            "description": "Topic-state badge cell.",
-            "type": "object",
-            "properties": {
-              "value": {
-                "description": "State label shown on the badge.",
-                "type": "string"
-              },
-              "badgeVariant": {
-                "description": "Badge color.",
-                "type": "string",
-                "enum": [
-                  "neutral",
-                  "primary",
-                  "secondary",
-                  "outline",
-                  "success",
-                  "info",
-                  "warning",
-                  "error"
-                ]
-              }
-            }
-          },
-          "ask": {
-            "description": "Your ask on this topic (text).",
-            "type": "string"
-          }
-        }
-      },
-      "example": [
-        {
-          "status": {
-            "value": "Must land",
-            "badgeVariant": "error"
-          },
-          "topic": "MSA redlines",
-          "state": {
-            "value": "Open",
-            "badgeVariant": "error"
-          },
-          "ask": "Agree terms in principle, send today"
-        },
-        {
-          "status": {
-            "value": "Push",
-            "badgeVariant": "warning"
-          },
-          "topic": "Pricing sign-off",
-          "state": {
-            "value": "Pending",
-            "badgeVariant": "warning"
-          },
-          "ask": "Confirm CFO approves Friday"
-        },
-        {
-          "status": {
-            "value": "Defuse",
-            "badgeVariant": "warning"
-          },
-          "topic": "CIO in-house concern",
-          "state": {
-            "value": "Risk",
-            "badgeVariant": "warning"
-          },
-          "ask": "Offer exec-to-exec with our CTO"
-        },
-        {
-          "status": {
-            "value": "Confirm",
-            "badgeVariant": "success"
-          },
-          "topic": "Expansion scope",
-          "state": {
-            "value": "Agreed",
-            "badgeVariant": "success"
-          },
-          "ask": "Reconfirm modules and go-live"
-        }
-      ]
-    },
-    "calloutTitle": {
-      "description": "Synthesis callout heading — the call's goal.",
-      "type": "string",
-      "example": "Get the redlined MSA agreed in principle and lock the CFO's Friday price sign-off"
-    },
-    "calloutDesc": {
-      "description": "Synthesis callout body — what success looks like.",
-      "type": "string",
-      "example": "Success = a dated path to signature by Jul 30. If the CIO concern surfaces, offer the CTO meeting rather than debating build-vs-buy live."
-    },
-    "ctaLabel": {
-      "description": "Primary button label (action/sendMessage).",
-      "type": "string",
-      "example": "Draft call agenda"
-    },
-    "ctaMsg": {
-      "description": "First-person prompt the primary button sends (action/sendMessage).",
-      "type": "string",
-      "example": "Draft an agenda for the Cobalt contract walkthrough focused on getting the redlined MSA agreed in principle and the Friday CFO sign-off locked."
-    },
-    "oppUrl": {
-      "description": "Opportunity Lightning URL for the secondary \"View in Salesforce\" button; omit if no Id.",
-      "type": "string",
-      "example": "https://org.lightning.force.com/lightning/r/Opportunity/006AX00000M8k2pYAD/view"
-    }
-  }
+  "title": "Your 9:00 AM Northpeak Logistics proposal review is on track — three allies in the room and the goal is a path to a Sep 14 signature.",
+  "answer": "- You are meeting **Northpeak Logistics** at **9:00 AM PT** on Zoom for a 60-minute proposal review of the **$285K Service Cloud + Dispatch Modernization** opportunity (Proposal / Price Quote, closing Sep 14).\n- The proposal landed Friday and Marcus Reyes, the economic buyer, responded positively.\n- The job today is to walk the full scope and secure his yes on the phased structure — without letting the separate Data Cloud thread derail the close.",
+  "attendees": [
+    { "name": "Marcus Reyes", "role": "VP Operations · Economic Buyer", "rsvp": "accepted", "watchFor": "Wants ROI framed in ops efficiency, not tech spend. His yes on structure is the goal." },
+    { "name": "Neelu Sharma", "role": "Director, Data", "rsvp": "tentative", "watchFor": "Data Cloud interest is a separate thread — don't let it derail today's proposal." }
+  ],
+  "hasAttendeeRsvp": true,
+  "talkTrack": [
+    { "item": "Present the phased option, get Marcus's yes on structure", "purpose": "3-phase rollout — $95K Wave 1, $95K Wave 2, $95K Wave 3. Make the ops-timing case; it's the path he asked for." },
+    { "item": "Confirm the path to the Sep 14 signature", "purpose": "Get explicit confirmation of the review and approval steps between today and signature." }
+  ],
+  "recentActivity": {
+    "items": [
+      { "type": "task", "title": "Proposal sent", "date": "Aug 22 · Fri", "who": "to Marcus Reyes", "summary": "$285K structure with 3-phase rollout, Y2/Y3 escalators at 4%. Receipt acknowledged, no substantive reply yet." },
+      { "type": "call", "title": "Technical walk", "date": "Aug 15 · Fri", "who": "Ally Kim + Dana Whitfield", "summary": "Signed off on the integration approach with the existing dispatch stack. No architecture surprises." }
+    ]
+  },
+  "nextStep": { "text": "Before the call, review the phased pricing framing with Ally Kim so she can lead it for an ops-heavy audience, and have the Data Cloud deferral answer ready in case Neelu asks to bundle it in." },
+  "sources": [
+    { "label": "Event: Proposal review — Northpeak Logistics (calendar)", "url": "https://<myDomain>/lightning/r/Event/<Id>/view" },
+    { "label": "Opportunity: Service Cloud + Dispatch Modernization", "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view" },
+    { "label": "Activities: Northpeak Logistics (Aug 11–24)" }
+  ]
 }
 ```
+
+**Specific — "Who's on my Northpeak call?"** (the attendees card only; a lookup, so no tail):
+
 ```json
 {
-  "renderer": {
-    "componentOverrides": {
-      "$": {
-        "type": "mosaic",
-        "definition": "tile/widget",
-        "children": [
-          {
-            "definition": "tile/row",
-            "attributes": {
-              "gap": "sm",
-              "align": "center",
-              "isWrapped": false
-            },
-            "children": [
-              {
-                "definition": "tile/icon",
-                "attributes": {
-                  "name": "phone",
-                  "size": "xl",
-                  "alt": ""
-                }
-              },
-              {
-                "definition": "tile/text",
-                "attributes": {
-                  "text": "{{title}}",
-                  "variant": "h1"
-                }
-              }
-            ]
-          },
-          {
-            "definition": "tile/text",
-            "attributes": {
-              "text": "{{subtitle}}",
-              "variant": "caption",
-              "color": "muted"
+  "title": "Four people are on your 9:00 AM Northpeak proposal review — Marcus Reyes's yes is the one that matters.",
+  "answer": "- **Marcus Reyes** (VP Operations) is the economic buyer and has accepted.\n- **Dana Whitfield** is your champion; **Neelu Sharma** is still **tentative**.",
+  "attendees": [
+    { "name": "Marcus Reyes", "role": "VP Operations · Economic Buyer", "rsvp": "accepted", "watchFor": "Wants ROI framed in ops efficiency, not tech spend." },
+    { "name": "Dana Whitfield", "role": "Director, Dispatch Systems · Champion", "rsvp": "accepted", "watchFor": "May push to expand self-service portal scope — keep that scoped as a Q4 follow-up." },
+    { "name": "Neelu Sharma", "role": "Director, Data", "rsvp": "tentative" },
+    { "name": "Ally Kim", "role": "Salesforce Solution Engineer", "rsvp": "accepted", "watchFor": "Owns the technical walkthrough — ask her to lead pricing framing." }
+  ],
+  "hasAttendeeRsvp": true,
+  "sources": [{ "label": "Event: Proposal review — Northpeak Logistics (calendar)", "url": "https://<myDomain>/lightning/r/Event/<Id>/view" }]
+}
+```
+
+**Specific — "What should I cover on the Northpeak call?"** (the talk-track card only, plus a useful prep move as a plain `nextStep` with no lead):
+
+```json
+{
+  "title": "Lead with the phased option — Marcus's yes on structure is the path to a Sep 14 signature.",
+  "answer": "- Open with the **3-phase rollout** ($95K per wave) and get **Marcus Reyes**'s yes on structure.\n- Confirm scope, decision criteria and the steps to the **Sep 14** signature.",
+  "talkTrack": [
+    { "item": "Present the phased option, get Marcus's yes on structure", "purpose": "Make the ops-timing case; it's the path he asked for." },
+    { "item": "Confirm the path to the Sep 14 signature" }
+  ],
+  "nextStep": { "text": "Review the phased pricing framing with Ally Kim before the call so she can lead it. Want me to draft talking points?" },
+  "sources": [{ "label": "Opportunity: Service Cloud + Dispatch Modernization", "url": "https://<myDomain>/lightning/r/Opportunity/<Id>/view" }]
+}
+```
+`props` schema (JSON Schema). Only `title`, `answer` and `sources` are required; include any other key only when the prompt asks for it or it clearly speeds up the answer (see "Scope the blocks to the prompt"):
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Block order: title, answer, then the optional cards (attendees, talkTrack, recentActivity), then at most one tail (callout OR nextStep), then sources. Only title, answer and sources are required. Which optional cards to include: see the scope table in the skill instructions. Omit a key and its block is not shown: never send empty arrays, empty strings, placeholders or 'N/A', and never a card the prompt did not ask for. Format every value as a ready-to-display string (dates, times, amounts); names are plain strings, never objects (use `Contact.Name.value`).",
+  "required": ["title", "answer", "sources"],
+  "properties": {
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "OPTIONAL. Every fixed Call Prep label except the Salesforce product name. Each key's `default` is its English text; a missing or blank key falls back to it. Omit when the user writes in English; for another language, translate every label key in SKILL.md's Language rule.",
+      "properties": {
+        "attendees": { "type": "string", "default": "Attendees", "description": "Attendee card heading. English: 'Attendees'." },
+        "attendee": { "type": "string", "default": "Attendee", "description": "Attendee name column heading. English: 'Attendee'." },
+        "rsvp": { "type": "string", "default": "RSVP", "description": "Attendee RSVP column heading. English: 'RSVP'." },
+        "watchFor": { "type": "string", "default": "Notes", "description": "Attendee notes column heading. English: 'Notes'." },
+        "talkingPoints": { "type": "string", "default": "Talking Points", "description": "Talk-track card heading. English: 'Talking Points'." },
+        "topic": { "type": "string", "default": "Topic", "description": "Talk-track item column heading. English: 'Topic'." },
+        "details": { "type": "string", "default": "Details", "description": "Talk-track purpose column heading. English: 'Details'." },
+        "recentActivity": { "type": "string", "default": "Recent Activity", "description": "Recent activity card heading. English: 'Recent Activity'." },
+        "accepted": { "type": "string", "default": "Accepted", "description": "RSVP badge for an accepted invitation. English: 'Accepted'." },
+        "tentative": { "type": "string", "default": "Tentative", "description": "RSVP badge for a tentative invitation. English: 'Tentative'." },
+        "declined": { "type": "string", "default": "Declined", "description": "RSVP badge for a declined invitation. English: 'Declined'." },
+        "noResponse": { "type": "string", "default": "No Response", "description": "RSVP badge when a calendar response is pending. English: 'No Response'." },
+        "activityEvent": { "type": "string", "default": "Event", "description": "Accessible name for an event activity icon. English: 'Event'." },
+        "activityCall": { "type": "string", "default": "Call", "description": "Accessible name for a call activity icon. English: 'Call'." },
+        "activityEmail": { "type": "string", "default": "Email", "description": "Accessible name for an email activity icon. English: 'Email'." },
+        "activityTask": { "type": "string", "default": "Task", "description": "Accessible name for a task activity icon. English: 'Task'." },
+        "sources": { "type": "string", "default": "Sources", "description": "Word shown on the sources toggle; the renderer appends the count. English: 'Sources'." }
+      }
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "REQUIRED. One bold line: the takeaway for this meeting that already answers the question (e.g. 'Your 9:00 AM Northpeak Logistics proposal review is on track — three allies in the room and the goal is a path to a Sep 14 signature.'). Plain text, no markdown. Never the skill name or 'Call Prep: X'."
+    },
+    "answer": {
+      "type": "string",
+      "minLength": 1,
+      "description": "REQUIRED. Answer-first markdown bullets, rendered under the title: 2-4 short '- ' bullets, each ONE sentence, that answer ONLY what the user asked. Put **bold** inline on the key values inside each sentence (account, time, amount, dates, names), never on a whole bullet. Do not restate the cards below it. No headings, tables or paragraphs."
+    },
+    "attendees": {
+      "type": "array",
+      "description": "OPTIONAL card 'ATTENDEES'. One row per person on the invite, external first, in order of influence on the decision. Include ONLY when the prompt is broad ('prep me for my meeting') or asks who is on the call / who to watch. At most 10 rows.",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "description": "Display name, plain string (e.g. 'Marcus Reyes')." },
+          "role": { "type": "string", "description": "Title, plus the deal role only when evidence supports it, joined with ' · ' (e.g. 'VP Operations · Economic Buyer'). Omit if unknown." },
+          "rsvp": { "type": "string", "enum": ["accepted", "tentative", "declined", "needsAction"], "description": "Invite response, only when a calendar tool in this session returned the attendee's response status. Never infer it from Salesforce records. Omit otherwise; the RSVP column shows only when at least one attendee has it. Renders as a labelled pill: accepted → ACCEPTED (green), tentative → TENTATIVE (amber), declined → DECLINED (red), needsAction → NO RESPONSE (grey)." },
+          "watchFor": { "type": "string", "description": "One sentence: what this person cares about or might raise, and how to handle it (e.g. 'Wants ROI framed in ops efficiency, not tech spend.'). Omit if there is nothing specific." }
+        }
+      }
+    },
+    "hasAttendeeRsvp": {
+      "type": "boolean",
+      "description": "OPTIONAL derived display flag for the attendees grid. Include whenever `attendees` is included: true when at least one attendee has an `rsvp`, otherwise false. It selects the RSVP-column grid without a brittle fixed-length array expression."
+    },
+    "talkTrack": {
+      "type": "array",
+      "description": "OPTIONAL card 'TALKING POINTS'. The 3-5 things to cover or resolve on this call, most important first (the objective first, then open threads). Include ONLY when the prompt is broad or asks what to cover, ask or bring.",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item"],
+        "properties": {
+          "item": { "type": "string", "description": "The topic, short and bold-weight in the render. Write each topic as a concise, imperative-led statement that begins with an action verb (e.g., Discuss, Review, Confirm, Explore, Address). Topics may describe a subject to discuss or an outcome to achieve. Never phrase topics as questions. (e.g. 'Present the phased option, get Marcus's yes on structure')." },
+          "purpose": { "type": "string", "description": "One or two sentences: why it matters and what to get out of it. Omit if the item says it all." }
+        }
+      }
+    },
+    "recentActivity": {
+      "type": "object",
+      "description": "OPTIONAL card 'RECENT ACTIVITY'. The recent touches with this account, as an icon timeline, most recent first. Include ONLY when the prompt is broad or asks what has happened so far / the history.",
+      "additionalProperties": false,
+      "required": ["items"],
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "Most recent first, at most 5.",
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "title", "date"],
+            "properties": {
+              "type": { "type": "string", "enum": ["task", "event", "call", "email"], "description": "Picks the icon. 'event' for Events (meetings), 'call' only when the Task is explicitly a call, 'email' for email threads from evidence, otherwise 'task'." },
+              "title": { "type": "string", "description": "What happened, short (e.g. 'Proposal sent')." },
+              "date": { "type": "string", "description": "Display date (e.g. 'Aug 22 · Fri')." },
+              "who": { "type": "string", "description": "Who it was with or to (e.g. 'to Marcus Reyes', 'Ally Kim + Dana Whitfield'). Omit if unknown." },
+              "summary": { "type": "string", "description": "One-line narrative of what was said or decided. Keep the real content; omit only if there is none." }
             }
-          },
-          {
-            "definition": "tile/separator"
-          },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "Who's on the call",
-              "appearance": "striped",
-              "size": "sm",
-              "columns": [
-                {
-                  "key": "status",
-                  "header": "Status",
-                  "type": "badge"
-                },
-                {
-                  "key": "name",
-                  "header": "Attendee",
-                  "type": "avatar"
-                },
-                {
-                  "key": "role",
-                  "header": "Role",
-                  "type": "text"
-                },
-                {
-                  "key": "stance",
-                  "header": "Stance",
-                  "type": "badge"
-                },
-                {
-                  "key": "watch",
-                  "header": "Watch for",
-                  "type": "text"
-                }
-              ],
-              "rows": "{{attendeeRows}}"
-            }
-          },
-          {
-            "definition": "tile/datagrid",
-            "attributes": {
-              "caption": "Talk track — open items to resolve",
-              "appearance": "striped",
-              "size": "sm",
-              "columns": [
-                {
-                  "key": "status",
-                  "header": "Status",
-                  "type": "badge"
-                },
-                {
-                  "key": "topic",
-                  "header": "Topic",
-                  "type": "text"
-                },
-                {
-                  "key": "state",
-                  "header": "State",
-                  "type": "badge"
-                },
-                {
-                  "key": "ask",
-                  "header": "Your ask",
-                  "type": "text"
-                }
-              ],
-              "rows": "{{topicRows}}"
-            }
-          },
-          {
-            "definition": "tile/callout",
-            "attributes": {
-              "variant": "info",
-              "title": "{{calloutTitle}}",
-              "description": "{{calloutDesc}}"
-            },
-            "children": [
-              {
-                "definition": "tile/row",
-                "attributes": {
-                  "gap": "sm",
-                  "align": "center",
-                  "isWrapped": true
-                },
-                "children": [
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "{{ctaLabel}}",
-                      "variant": "primary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/sendMessage",
-                            "attributes": {
-                              "content": "{{ctaMsg}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    "definition": "tile/button",
-                    "attributes": {
-                      "label": "View in Salesforce",
-                      "iconName": "open-in-new",
-                      "variant": "secondary",
-                      "actions": {
-                        "click": [
-                          {
-                            "definition": "action/openLink",
-                            "attributes": {
-                              "url": "{{oppUrl}}"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
           }
-        ]
+        }
+      }
+    },
+    "callout": {
+      "type": "object",
+      "description": "OPTIONAL tail, time-sensitive: a bold first sentence followed by normal text, and at most ONE primary button. Use INSTEAD of nextStep, never both (if both are sent only the callout renders). Include only if something before or on this call is time-sensitive or blocked AND the user can act on it. Requires BOTH a visible one-sentence lead and visible explanatory text (non-whitespace); if either is unavailable, omit the ENTIRE callout object (never send blank or whitespace-only lead/text).",
+      "additionalProperties": false,
+      "required": ["lead", "text"],
+      "properties": {
+        "level": { "type": "string", "enum": ["tip", "note", "blocker"], "description": "Emphasis, lowest that fits: 'tip' helpful context, 'note' one clear move (default), 'blocker' time-sensitive or blocked." },
+        "lead": { "type": "string", "description": "REQUIRED, visible (non-whitespace). The bold first sentence of the callout (the caution in one sentence, ending with a period)." },
+        "text": { "type": "string", "description": "REQUIRED, visible (non-whitespace). One to three sentences of normal-weight text that follow the bold lead: what, why now, and the move." },
+        "buttonLabel": { "type": "string", "description": "Label of the single primary button (e.g. 'Draft the agenda'). Send with actionMsg, or omit both." },
+        "actionMsg": { "type": "string", "description": "First-person request sent to chat when the button is clicked." }
+      }
+    },
+    "nextStep": {
+      "type": "object",
+      "description": "OPTIONAL tail, not time-sensitive: a plain suggestion line with NO button, only when there is a genuinely useful move before or on the call. Use INSTEAD of callout, never both.",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "lead": { "type": "string", "description": "Optional bold lead (the suggested move). Omit to show the text alone." },
+        "text": { "type": "string", "description": "One or two sentences: the move and why, ending with an offer to help if natural." }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "description": "REQUIRED. Where the answer came from: the Salesforce records and evidence you actually read (event, account, opportunity, contacts, activities), linked where a record URL exists. Shown as a compact 'Salesforce · Sources (N)' toggle. Every source needs its record `url`. If a source has no URL of its own, label it specifically (object and record, e.g. 'Activities: Northpeak Logistics (Aug 11\u201324)'), never vaguely ('contacts and activity history'); leave out any source you cannot name specifically. Never add a timestamp.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label"],
+        "properties": {
+          "label": { "type": "string", "description": "Source name (e.g. 'Account: Northpeak Logistics', 'Activities: Northpeak Logistics (Aug 11–24)')." },
+          "url": { "type": "string", "description": "Record Lightning URL (`https://<myDomain>/lightning/r/<Object>/<Id>/view`). Omit if none." }
+        }
       }
     }
   }
 }
 ```
 
-What each block shows, from data you already have:
-
-- **Header** — phone icon + serif `page-title` (`{{title}}`, "Call prep — [Meeting title]").
-- **Subhead caption** — `{{subtitle}}` (one line: time, attendees, deal size, stage).
-- **Attendee datagrid** (`{{attendeeRows}}`) — one row per attendee. Columns: Attendee (avatar), Role (text), Stance (badge), Watch for (text). Each row carries a leading `status` object (`{value,badgeVariant}` — value Ally/Neutral/Blocker, badgeVariant success/warning/error/default); the leading Status column reads each row's `status`.
-- **Talk track datagrid** (`{{topicRows}}`) — one row per open item. Columns: Topic (text), State (badge), Your ask (text). Each row carries a leading `status` object (`{value,badgeVariant}` — value Must land/Push/Defuse/Confirm).
-- **One synthesis callout** (`variant: "info"`) — `{{calloutTitle}}` and `{{calloutDesc}}` (the call's goal and what success looks like). Two buttons: a primary "Draft call agenda" (`{{ctaLabel}}` / `{{ctaMsg}}`, `action/sendMessage`) and a secondary "View in Salesforce" (`{{oppUrl}}`, `action/openLink`).
-
-**Row shapes:** `{{attendeeRows}}` is an array of attendee objects — each with `name` (plain string — format as the person's display name (e.g. "Dana Kwon"); names must be plain strings, not objects: use `Contact.Name.value` from the SF response), `role`, `stance` (`{ value, badgeVariant }`), `watch`, and `status` (`{ value, badgeVariant }`). `{{topicRows}}` is an array of topic objects — each with `topic`, `state` (`{ value, badgeVariant }`), `ask`, and `status` (`{ value, badgeVariant }`).
-
-**Binding rules:**
-- `datagrid` rows: one per attendee (name as avatar, role, stance badge, watch text), one per topic (name, state badge, ask text). Stance badge (`stance.badgeVariant`) reflects alignment — `"success"` (Champion/Ally), `"warning"` (Neutral), `"error"` (Blocker). State badge (`state.badgeVariant`) reflects urgency — `"error"` (Open/Critical), `"warning"` (Pending/Risk), `"success"` (Agreed/Resolved). `status` fills the leading Status column.
-- Callout buttons: the primary is `action/sendMessage` with a first-person `content` prompt (`{{ctaMsg}}`, e.g. "Draft an agenda for the Cobalt contract walkthrough…"); the secondary is `action/openLink` with `{{oppUrl}}` — the opportunity's Lightning URL (`https://<myDomain>/lightning/r/Opportunity/<Id>/view`), opening a new tab. Omit the openLink button if you lack the Id.
-- No fabricated content — quote blank fields as blank rather than inventing them; drop attendees or topics you have no data for.
-
-
-
 ## 7. Output
+
+Scope this to the prompt too: if the user asked only who's on the call, give only the headline and "Who's in the room"; if they asked only what to cover, give only the headline and "This call". Omit any section whose source wasn't available or that the prompt didn't ask for.
 
 ```
 # Call Prep: [Account] - [Meeting Title]

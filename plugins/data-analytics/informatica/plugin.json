@@ -1,0 +1,33 @@
+{
+  "name": "informatica",
+  "displayName": "Informatica",
+  "description": "The plugin enables agentic workflows to discover catalog assets, such as tables, columns, files, terms, and policies, and verify ownership, certification, sensitivity, and compliance. By leveraging metadata from Informatica's data catalog, it streamlines data exploration and provides safe-usage guidance. Designed for data professionals and business users, it requires an Informatica tenant.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Informatica"
+  },
+  "icon": "assets/icon.svg",
+  "roles": [
+    "data-analytics"
+  ],
+  "skills": [
+    "data-analytics/informatica-catalog-data-discovery"
+  ],
+  "connectors": [
+    {
+      "key": "informatica-catalog-discovery",
+      "label": "Informatica Catalog Discovery",
+      "description": "Enables AI agents to find and explore data assets in Cloud Data Governance and Catalog.",
+      "type": "INFORMATICA_CATALOG_DISCOVERY",
+      "required": true
+    },
+    {
+      "key": "informatica-data-exploration",
+      "label": "Informatica Data Exploration Agent",
+      "description": "Enables AI agents to explore dataset content and mastered entities.",
+      "type": "INFORMATICA_DATA_EXPLORER",
+      "required": true
+    }
+  ],
+  "id": "7734ce63-b63a-4ca7-be3d-e6c3963f5979"
+}

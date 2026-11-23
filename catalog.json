@@ -90,6 +90,22 @@
           "type": "plugin",
           "id": "fde8f1d9-66c5-4ec4-80d9-1f88a8c7679a",
           "checksum": "sha256:92c08b9484127680850102145e1b5254c13517da3d2dc83d56aff671b827f9fc"
+        },
+        {
+          "path": "skills/data-analytics/informatica-catalog-data-discovery",
+          "type": "skill",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Informatica",
+          "id": "fbd9b046-c0e2-4777-9dd6-7ef0c4283aff",
+          "checksum": "sha256:49649a5c0829000852c12c29d78d10ac4294517a51d402338a909e0536399ff5"
+        },
+        {
+          "path": "plugins/data-analytics/informatica",
+          "type": "plugin",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Informatica",
+          "id": "7734ce63-b63a-4ca7-be3d-e6c3963f5979",
+          "checksum": "sha256:d0c1e1c1eb2b24136a401c1928355e5850eba9e5e877090e23a2b967fe6d1ac0"
         }
       ]
     },
@@ -1102,6 +1118,14 @@
         },
         {
           "path": "plugins/data-analytics/retail-merchant-operations",
+          "type": "plugin"
+        },
+        {
+          "path": "skills/data-analytics/informatica-catalog-data-discovery",
+          "type": "skill"
+        },
+        {
+          "path": "plugins/data-analytics/informatica",
           "type": "plugin"
         }
       ]

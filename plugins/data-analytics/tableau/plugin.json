@@ -1,0 +1,32 @@
+{
+  "name": "tableau",
+  "displayName": "Tableau",
+  "description": "Explore Tableau content and generate or modify Tableau workbooks.",
+  "version": "1.2.1",
+  "author": {
+    "name": "Salesforce, Inc."
+  },
+  "icon": "assets/icon.svg",
+  "roles": [
+    "data-analytics"
+  ],
+  "skills": [
+    "data-analytics/tableau-about",
+    "data-analytics/tableau-content-viewer",
+    "data-analytics/tableau-dashboard-advisor",
+    "data-analytics/tableau-data-app-authoring",
+    "data-analytics/tableau-data-quality-sentinel",
+    "data-analytics/tableau-viz-critique",
+    "data-analytics/tableau-workbook-authoring"
+  ],
+  "connectors": [
+    {
+      "key": "tableau",
+      "label": "Tableau",
+      "description": "The Tableau site that the plugin's skills connect to.",
+      "type": "TABLEAU",
+      "required": true
+    }
+  ],
+  "id": "d1f22c92-a1cf-4679-a845-3cb5a4ea6f29"
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "resources": {
+    "insights__bar_chart": {
+      "family": "pulse-insights",
+      "intent": "Rank products by ARR within a date range",
+      "parameters": {
+        "DATE_MIN": {
+          "type": "date",
+          "required": true
+        },
+        "DATE_MAX": {
+          "type": "date",
+          "required": true
+        },
+        "DIRECTION": {
+          "type": "enum",
+          "required": true,
+          "allowed": [
+            "ASC",
+            "DESC"
+          ]
+        }
+      }
+    },
+    "insights__line_chart": {
+      "family": "pulse-insights",
+      "intent": "Show ARR over close date with a trend line",
+      "parameters": {}
+    }
+  }
+}

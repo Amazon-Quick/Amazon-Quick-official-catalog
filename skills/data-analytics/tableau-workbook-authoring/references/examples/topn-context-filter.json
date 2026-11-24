@@ -1,0 +1,80 @@
+{
+  "_description": "Native Top N filter combined with another dimension filter. The other filter must be a context filter, or the Top N is computed before it and the view shows fewer than N items.",
+  "_feature": "filter,topn,context-filter",
+  "topn_filter": {
+    "_placement": "Inside worksheet > table > view, alongside other <filter> elements and before <sort>/<computed-sort> and <slices>.",
+    "type": "filter",
+    "attrs": {
+      "class": "categorical",
+      "column": "[DatasourceName].[none:Customer Name:nk]"
+    },
+    "children": [
+      {
+        "type": "groupfilter",
+        "attrs": {
+          "count": "10",
+          "end": "top",
+          "function": "end",
+          "units": "records",
+          "user:ui-marker": "end",
+          "user:ui-top-by-field": "true"
+        },
+        "children": [
+          {
+            "type": "groupfilter",
+            "attrs": {
+              "direction": "DESC",
+              "expression": "SUM([Profit])",
+              "function": "order",
+              "user:ui-marker": "order"
+            },
+            "children": [
+              {
+                "type": "groupfilter",
+                "attrs": {
+                  "function": "level-members",
+                  "level": "[none:Customer Name:nk]",
+                  "user:ui-enumeration": "all",
+                  "user:ui-marker": "enumerate"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "context_filter": {
+    "_description": "The other dimension filter, marked context='true' so it runs before the Top N.",
+    "type": "filter",
+    "attrs": {
+      "class": "categorical",
+      "column": "[DatasourceName].[none:Segment:nk]",
+      "context": "true"
+    },
+    "children": [
+      {
+        "type": "groupfilter",
+        "attrs": {
+          "function": "member",
+          "level": "[none:Segment:nk]",
+          "member": "\"Consumer\"",
+          "user:ui-domain": "database",
+          "user:ui-enumeration": "inclusive",
+          "user:ui-marker": "enumerate"
+        }
+      }
+    ]
+  },
+  "notes": {
+    "why_context": "Tableau computes a Top N filter before ordinary dimension filters (order: context filters, then Top N, then dimension filters, then measure filters). So the Top N is ranked over all the data, and the other filter then removes some of those N. Example: top 10 artists of all time, then a 'last decade' date filter, leaves only the 4 who charted in that decade. context='true' on the other filter makes Tableau apply it first and rank the Top N within what's left.",
+    "which_filters": "Mark every dimension filter that should narrow the Top N's population (dates, segments, regions) as context='true'. Measure filters and table-calc filters always run after the Top N, so making them context filters isn't possible or needed.",
+    "date_filters": "This applies to date filters too, e.g. a categorical filter on [yr:Date:ok] or a relative-date filter: add context='true' to the date filter, not to the Top N.",
+    "top_n_does_not_sort": "A Top N filter picks which members to keep but doesn't order them. Add a <computed-sort> on the same dimension using the same measure (see sort.json) to rank the bars.",
+    "expression": "The order groupfilter's expression is a calculation in the datasource's own field names, e.g. SUM([Profit]), not a column-instance name.",
+    "count_and_end": "count is N. end='top' keeps the highest N, end='bottom' the lowest.",
+    "member_quoting": "String members are written with escaped double quotes: member='&quot;Consumer&quot;' in the XML.",
+    "alternative": "For Top N within each partition (e.g. top 10 per month), use the INDEX() table-calc pattern in topn-table-calc-filter.json instead. Table-calc filters run after all dimension filters, so they need no context filter.",
+    "verification": "This structure validates against the bundled 2026.2 XSD and matches filters Tableau itself writes. The member count is only visible in a render or in query results."
+  }
+}

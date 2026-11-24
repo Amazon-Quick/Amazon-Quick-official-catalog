@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "repo": "tableau/tableau-mcp",
+      "commit": "3e77dd40997a2ffcb89fb25fa40c9abc1ac59a71",
+      "imports": [
+        {
+          "filename": "insights__bar_chart.tbm",
+          "upstreamPath": "src/desktop/data/templates/insights__bar_chart.tbm",
+          "sha256": "8bee7866c7b5b008d5385f8dcbbc8d8b5994818362f433735992c58ce095f022"
+        },
+        {
+          "filename": "insights__line_chart.tbm",
+          "upstreamPath": "src/desktop/data/templates/insights__line_chart.tbm",
+          "sha256": "2e223555446c9f940e3ac5f869114d42b3f2a25f5526e9f6af3188d2b19aaf71"
+        }
+      ]
+    }
+  ]
+}

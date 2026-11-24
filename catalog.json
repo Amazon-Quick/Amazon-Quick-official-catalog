@@ -105,7 +105,8 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Informatica",
           "id": "7734ce63-b63a-4ca7-be3d-e6c3963f5979",
-          "checksum": "sha256:d0c1e1c1eb2b24136a401c1928355e5850eba9e5e877090e23a2b967fe6d1ac0"
+          "checksum": "sha256:d0c1e1c1eb2b24136a401c1928355e5850eba9e5e877090e23a2b967fe6d1ac0",
+          "partner": "informatica"
         },
         {
           "path": "skills/data-analytics/tableau-about",

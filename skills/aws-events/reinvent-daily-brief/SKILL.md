@@ -4,7 +4,7 @@ display_name: re:Invent Daily Brief
 description: "AWS Events Central: an attendee's reserved re:Invent sessions and a morning brief. Use for 'brief me on <day>', 'my schedule today', 'set up my daily brief'. In re:Invent week use this, not the calendar, for 'what's next' or 'what do I have after 2 PM'. Replaces the older Daily Brief skill: pick this one."
 icon: "assets/sun.svg"
 created_date: "2026-10-21"
-last_updated: "2026-11-19"
+last_updated: "2026-11-24"
 license: "MIT-0"
 origin: original
 readme: "Read assets/README.md before running. Its ## Pre-requisites lists the required AWS Events Central connector; verify it is available and stop if it is missing."
@@ -16,7 +16,7 @@ inputs:
     required: true
 tools: [file_read, get_current_time, convert_timezone, load_skill, list_scheduled_routines, get_agent_config, get_tool_policy_schema, create_scheduled_agent, update_scheduled_agent, delete_scheduled_agent, describe_cloud_trigger, update_cloud_trigger, trigger_agent, get_agent_session, update_feed, skip_cycle, run_python, setup_connections]
 scripts: [create_morning_routine.py]
-checksum: "sha256:fef540dc6fc3091c91f54ab28293ab36420c41cb52099126d73d6f12c2699531"
+checksum: "sha256:a2fd9f569f19590e8dfde5102a71121d19c5f124300b151e8f3f78f45026aaf4"
 id: "add51004-8ebc-44fa-aa05-95d25aeac1e0"
 ---
 
@@ -34,7 +34,7 @@ The attendee gets their brief for the window they asked about, in the layout of 
 1. Report only what the daily brief tool returns. Never invent a session, time, room, summary, or speaker. Name a
    speaker only when that session's own `speakers` lists them; when it is empty or missing, say speakers are not
    listed for that session, never carry names over from another session. The one exception is a day with nothing
-   reserved (Workflow - Brief step 6): its keynotes come from the event catalog tool, and nothing else is listed. The `**AWS launches yesterday**` section (Workflow - Brief step 7) comes from the new launches tool.
+   reserved (Workflow - Brief step 6): its keynotes come from the event catalog tool, and nothing else is listed. The `**AWS launches yesterday**` section (Workflow - Brief step 7) comes from the new launches tool, and the morning card's `**Tips for today**` section comes only from references/day-tips.md.
 2. Head each day with the `date` and `day` the tool returns. Never work out a weekday yourself. The only dates you
    work out are today and tomorrow, from get_current_time in Las Vegas time, and the event-week date for a weekday
    the attendee names, from the event week list in <Gotchas>.
@@ -329,7 +329,7 @@ triggers=["The first-run prompt Set up my daily re:Invent brief, with no time, o
    `get_tool_policy_schema`, `create_scheduled_agent`, `update_scheduled_agent`, `describe_cloud_trigger`,
    `update_cloud_trigger`); if not, load the `agent_management` skill. Confirm the AWS Events Central tools as in
    Workflow - Brief step 1 (work apps are judged in step 8a, from the routine's own tools). Read
-   references/routine-morning.md and references/scheduling.md; every other value the setup needs is in these steps. Read the current time and
+   references/routine-morning.md, references/day-tips.md, and references/scheduling.md; every other value the setup needs is in these steps. Read the current time and
    shift it to Las Vegas time (UTC-8 in the event week) without a convert_timezone call.
    Validate: the scheduling tools and the AWS Events Central tools are available, and the file is read.
    If fails: without the AWS Events Central connector, say it is not enabled, link the connector setup doc in
@@ -401,7 +401,8 @@ triggers=["The first-run prompt Set up my daily re:Invent brief, with no time, o
 7. [Agent] Build the routine's prompt and tool policy.
    - Prompt: the text of references/routine-morning.md after its frontmatter, copied character for character from
      `re:Invent morning brief routine, unattended` to `with action "blocked" and the reason.` The only changes are
-     `{topics}` replaced by step 4's topics, with the `Topics:` line kept whole so step 9 can edit it. The prompt
+     `{topics}` replaced by step 4's topics, with the `Topics:` line kept whole so step 9 can edit it, and `{day_tips}`
+     replaced by the text of references/day-tips.md after its frontmatter, word for word (the day tips the card shows under `**Tips for today**`). The prompt
      names no work apps: each run judges Slack, Outlook, Gmail, and Teams from its own tool list. Never summarise,
      reword, shorten, or reorder it, and drop no sentence: one missing sentence changes every morning card. Step 8a's
      code fills this text from the file, so do not write it yourself. Only in step 8a's fallback, write the text out
@@ -457,10 +458,10 @@ triggers=["The first-run prompt Set up my daily re:Invent brief, with no time, o
      Make no catalog call, so say nothing about keynotes: no keynote list, and never `No keynote is left today.` (the morning card lists them itself).
    - The confirmation, copied from this template with only the `<...>` parts filled: `**Your re:Invent morning
      brief is set.** Your plan arrives at <time>, Las Vegas time<own time>, each day of re:Invent, Monday, Nov 30
-     to Friday, Dec 4.<until then> Open it here: [re:Invent morning brief](agent://<schedule_id>). Ask me to stop my re:Invent
+     to Friday, Dec 4.<until then> Ask me to stop my re:Invent
      brief anytime.<end sentence>` `<until then>` is ` Until then, from the next morning on, it brings a short card at the same time: new AWS
      launches, plus your workday once your work apps are connected.` before Monday Nov 30, otherwise nothing. `<time>` is step 4's Las Vegas time, as `7:43 AM`, never replaced by the attendee's own time or by step 8a's `schedule_time`, which is in the saved zone;
-     `<own time>` is that time in brackets, ` (8:43 AM Denver)`, when their zone is not Las Vegas time (Rule 4), otherwise nothing. The link is always there, with the `schedule_id` from step 8a.
+     `<own time>` is that time in brackets, ` (8:43 AM Denver)`, when their zone is not Las Vegas time (Rule 4), otherwise nothing.
      `<end sentence>` is never left out. It is ` You can turn it off in Schedules once re:Invent is over.` whenever no end
      date was applied (step 8b failed, was skipped, or never ran), and ` It ends after Friday, Dec 4.` only if an
      `update_cloud_trigger` call returned success. When step 2 found the routine, add `I updated your existing routine
@@ -473,10 +474,9 @@ triggers=["The first-run prompt Set up my daily re:Invent brief, with no time, o
      questions, and no topics question. A decision card follows the work-apps line and is last, always with all five options in this order:
      `<decision question="Connect work apps">` with `Connect Slack`, `Connect Outlook`, `Connect Gmail`, `Connect Microsoft Teams`, then `Skip`. In user-facing text, write Teams as `Microsoft Teams`.
 
-   Never show a bare id (the routine link is the one place an id appears), raw times like `07:43 on mon`, or tool
+   Never show an id or a link to the routine (it doesn't open from the Quick mobile app), raw times like `07:43 on mon`, or tool
    names. For reminders before each session, point to the AWS Events app.
-   Validate: the message begins with the brief's first characters; the time said matches what was saved; the routine
-   link is there once; the connect line and the card with Connect Slack, Connect Outlook, Connect Gmail, Connect Microsoft Teams and Skip are there, with the card last; there is no topics card.
+   Validate: the message begins with the brief's first characters; the time said matches what was saved; there is no routine link; the connect line and the card with Connect Slack, Connect Outlook, Connect Gmail, Connect Microsoft Teams and Skip are there, with the card last; there is no topics card.
    If fails: correct the reply before writing it.
 
 </Workflow - Schedule>
@@ -487,7 +487,8 @@ triggers=["The first-run prompt Set up my daily re:Invent brief, with no time, o
 - Voice, tone, failed calls, compliance line, and app boundary: references/voice-and-tone.md
 - Quick scheduling facts: references/scheduling.md
 - Routine prompt: references/routine-morning.md.
-- AWS Events app pointer, defined here once: `Find re:Invent sessions in the AWS Events app.` AWS Events app link: https://aws.amazon.com/events/reinvent/mobile-app/. Make the pointer a link to it.
+- Default tips per event day for the morning card (`**Tips for today**`): references/day-tips.md. Edit tips there only; a routine picks up changes when setup runs again.
+- AWS Events app pointer, defined here once: `Find and reserve re:Invent sessions in the AWS Events app.` AWS Events app link: https://aws.amazon.com/events/reinvent/mobile-app/. Link only the words `AWS Events app` in the pointer, never the whole sentence: `Find and reserve re:Invent sessions in the [AWS Events app](https://aws.amazon.com/events/reinvent/mobile-app/).`
 - Connector setup: https://docs.aws.amazon.com/quick/latest/userguide/connections-desktop.html
 - Slack, Outlook, Gmail, and Teams setup: https://docs.aws.amazon.com/quick/latest/userguide/integration-guides.html
 </Resources>

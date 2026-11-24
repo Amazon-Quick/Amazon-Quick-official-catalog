@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>{{TITLE}}</title>
+<style>
+:root{--color-bg:#faf9fc;--color-text:#131920;--color-text-secondary:#5e5e5e;--color-text-muted:#656871;
+--color-bg-secondary:#fff;--color-border:#0000001f;--color-border-light:#0000000f;--color-surface:#f9fafb;
+--color-surface-hover:#f3f4f6;--color-primary:#4200db;--color-text-on-primary:#fff;--color-error:#db0000;
+--color-error-bg:#fceaea;--color-warning:#f2b100;--color-warning-bg:#fef7e6;--color-warning-text:#573a00;
+--color-warning-dark:#573a00;--color-success:#00802f;--color-info:#006ce0;--qs-data-cat-01:#4338ca;
+--qs-data-cat-02:#d97706;--font-sans:"Amazon Ember","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+--font-mono:"SF Mono",Menlo,Consolas,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:8px}
+body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 32px}
+h1{font-size:20px;font-weight:600;margin:0 0 4px}
+.sub{color:var(--color-text-secondary);font-size:13px;margin-bottom:18px}
+h2{font-size:15px;font-weight:600;margin:0 0 4px}
+.note{color:var(--color-text-muted);font-size:12px;margin:0 0 10px;line-height:1.45}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi,.card{background:var(--color-bg-secondary);border:1px solid var(--color-border-light);border-radius:var(--radius-md);padding:14px 16px}
+.kpi .l{color:var(--color-text-muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.kpi .v{font-family:var(--font-mono);font-size:24px;font-weight:600;margin:4px 0 2px}
+.kpi .v.warn{color:var(--color-warning-dark)}.kpi .v.err{color:var(--color-error)}
+.kpi .d{font-size:12px;color:var(--color-text-secondary)}
+.card{margin-bottom:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 6px}
+.tabs button{font:inherit;font-size:12px;border:1px solid var(--color-border);background:var(--color-bg-secondary);color:var(--color-text-secondary);border-radius:var(--radius-pill);padding:4px 11px;cursor:pointer}
+.tabs button:hover{background:var(--color-surface-hover)}
+.tabs button.on{background:var(--color-primary);color:var(--color-text-on-primary);border-color:var(--color-primary)}
+.tabs button .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--color-error);margin-left:5px;vertical-align:middle}
+.tabs button .dot.data{background:var(--color-warning)}
+.tabs button.on .dot{background:var(--color-text-on-primary)}
+.explorer{display:grid;grid-template-columns:1fr 260px;gap:16px}
+.facts{font-size:13px;line-height:1.5}
+.facts .row{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--color-border-light);padding:5px 0}
+.facts .row span:last-child{font-family:var(--font-mono);text-align:right}
+.ev{margin-top:10px;padding:8px 10px;border-radius:var(--radius-sm);font-size:12px;line-height:1.45}
+.ev.biz{background:var(--color-error-bg)}
+.ev.data{background:var(--color-warning-bg);color:var(--color-warning-text)}
+.ev.none{background:var(--color-surface);color:var(--color-text-secondary)}
+.ev b{display:block}.ev i{display:block;font-style:normal;opacity:.8;margin-top:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12px}
+th{text-align:left;color:var(--color-text-muted);font-weight:600;border-bottom:1px solid var(--color-border);padding:6px 8px;white-space:nowrap}
+td{border-bottom:1px solid var(--color-border-light);padding:6px 8px;vertical-align:top;white-space:nowrap}
+td.n{font-family:var(--font-mono);text-align:right}td.w{white-space:normal;min-width:260px;color:var(--color-text-secondary)}
+.tip{position:fixed;display:none;pointer-events:none;z-index:10;max-width:320px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-sm);color:var(--color-text);font-size:12px;line-height:1.4;padding:6px 8px;box-shadow:0 2px 6px #0002}
+svg{display:block;font-family:var(--font-sans);overflow:visible}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.explorer,.two{grid-template-columns:1fr}}
+</style></head><body>
+<h1>{{TITLE}}</h1>
+<div class="sub">{{SUB}}</div>
+<div class="kpis">{{KPIS}}</div>
+<div class="card">
+ <h2>Actual against expected, by line</h2>
+ <p class="note">The dashed line is what each period would have been on the line's own pattern. Red markers are
+ business events; amber markers are probable data errors. Shaded bands are events that run over several periods.</p>
+ <div class="tabs" id="tabs"></div>
+ <div class="explorer"><div id="lineChart" style="height:340px"></div><div class="facts" id="facts"></div></div>
+</div>
+<div class="card">
+ <h2>Where the unusual periods are</h2>
+ <p class="note" id="heatnote"></p>
+ <div id="heat"></div>
+</div>
+{{TWO}}
+{{TABLES}}
+<script>
+const DATA = {{DATA}};
+const s=getComputedStyle(document.documentElement), get=v=>s.getPropertyValue(v).trim();
+const C={text:get('--color-text'),sec:get('--color-text-secondary'),muted:get('--color-text-muted'),grid:get('--color-border-light'),
+ border:get('--color-border'),surface:get('--color-surface'),err:get('--color-error'),warn:get('--color-warning'),ok:get('--color-success'),
+ info:get('--color-info'),card:get('--color-bg-secondary'),c1:get('--qs-data-cat-01')||get('--color-primary'),c2:get('--qs-data-cat-02')||get('--color-info')};
+const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=(v,d=1)=>v==null?'n/a':Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
+const pct=v=>v==null?'n/a':(v>0?'+':'')+v.toFixed(1)+'%';
+// Chart helpers draw inline SVG on this page. No external libraries; nothing is fetched.
+function rgba(c,a){c=String(c||'').trim();let r=0,g=0,b=0,al=1;
+ if(c[0]==='#'){let h=c.slice(1);if(h.length<=4)h=h.split('').map(x=>x+x).join('');
+  r=parseInt(h.slice(0,2),16);g=parseInt(h.slice(2,4),16);b=parseInt(h.slice(4,6),16);if(h.length>=8)al=parseInt(h.slice(6,8),16)/255;}
+ else{const m=c.match(/[\d.]+/g)||[0,0,0];r=+m[0];g=+m[1];b=+m[2];if(m.length>3)al=+m[3];}
+ return [r,g,b,a==null?al:al*a];}
+const css=q=>'rgba('+Math.round(q[0])+','+Math.round(q[1])+','+Math.round(q[2])+','+(+q[3].toFixed(3))+')';
+const fade=(c,a)=>css(rgba(c,a));
+function niceTicks(lo,hi,n){n=n||5;if(!(hi>lo))hi=lo+1;const raw=(hi-lo)/n,mag=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/mag;
+ const st=(f<1.5?1:f<3?2:f<7?5:10)*mag,out=[];for(let v=Math.ceil(lo/st-1e-9)*st;v<=hi+st*1e-9;v+=st)out.push(+v.toPrecision(12));return out;}
+const axisNum=v=>{const a=Math.abs(v),f=x=>(+x.toFixed(2)).toLocaleString();return a>=1e9?f(v/1e9)+'B':a>=1e6?f(v/1e6)+'M':a>=1e4?f(v/1e3)+'k':f(v);};
+const T=(x,y,t,o)=>{o=o||{};return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" fill="'+(o.fill||C.sec)+'" font-size="'+(o.size||11)+'"'+
+ (o.anchor?' text-anchor="'+o.anchor+'"':'')+(o.weight?' font-weight="'+o.weight+'"':'')+
+ (o.rot?' transform="rotate('+o.rot+' '+x.toFixed(1)+' '+y.toFixed(1)+')"':'')+'>'+t+'</text>';};
+const R=(x,y,w,h,fill,o)=>{o=o||{};return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+Math.max(0,w).toFixed(1)+'" height="'+Math.max(0,h).toFixed(1)+'" fill="'+fill+'"'+
+ (o.rx?' rx="'+o.rx+'"':'')+(o.stroke?' stroke="'+o.stroke+'" stroke-width="'+(o.sw||1)+'"':'')+(o.tip!=null?' data-tip="'+o.tip+'"':'')+'>'+
+ (o.title?'<title>'+o.title+'</title>':'')+'</rect>';};
+const Ln=(x1,y1,x2,y2,c,w,dash)=>'<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="'+c+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>';
+function pathD(pts){let d='',pen=false;pts.forEach(p=>{if(!p){pen=false;return;}d+=(pen?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1);pen=true;});return d;}
+const svgOpen=(w,h,label)=>'<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">';
+function legend(items,cx,y){const ws=items.map(it=>it.name.length*6.5+34),tot=ws.reduce((a,b)=>a+b,0);let x=cx-tot/2,g='';
+ items.forEach((it,i)=>{g+=it.kind==='line'?Ln(x,y-4,x+18,y-4,it.color,2,it.dash):R(x+4,y-10,11,11,it.color,{rx:2});g+=T(x+24,y,esc(it.name),{size:12});x+=ws[i];});return g;}
+// hover tips: one floating box for every chart; each SVG shape also carries a <title> for screen readers
+const TIPS={},tipOf=(k,h)=>{TIPS[k]=h;return k;};
+const plain=h=>esc(String(h).replace(/<br\s*\/?>/g,'\n').replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&'));
+const tip=document.createElement('div');tip.className='tip';document.body.appendChild(tip);
+document.addEventListener('mousemove',ev=>{const t=ev.target&&ev.target.closest?ev.target.closest('[data-tip]'):null;
+ if(!t||TIPS[t.getAttribute('data-tip')]==null){tip.style.display='none';return;}
+ tip.innerHTML=TIPS[t.getAttribute('data-tip')];tip.style.display='block';
+ const r=tip.getBoundingClientRect();let x=ev.clientX+14,y=ev.clientY+14;
+ if(x+r.width>innerWidth-8)x=ev.clientX-r.width-14;if(y+r.height>innerHeight-8)y=ev.clientY-r.height-14;
+ tip.style.left=x+'px';tip.style.top=y+'px';});
+document.addEventListener('mouseleave',()=>{tip.style.display='none';});
+const HOT='rgba(0,0,0,0)';
+const tick=Math.max(1,Math.round(DATA.labels.length/14));
+let curLine=0;
+function drawLine(i){
+ curLine=i;
+ const L=DATA.lines[i];
+ document.querySelectorAll('#tabs button').forEach((b,j)=>b.classList.toggle('on',j===i));
+ const peaks={}; L.events.forEach(e=>peaks[e.peak]=e);
+ const dataPeaks=L.events.filter(e=>e.data).map(e=>e.peak);
+ const normal=L.values.filter((v,k)=>v!=null&&!dataPeaks.includes(k)).concat(L.expected.filter(v=>v!=null));
+ const hi=Math.max(...normal), lo=Math.min(...normal);
+ const ymax=hi+(hi-lo)*0.2+Math.abs(hi)*0.02, ymin=Math.min(0,lo)<0?lo-(hi-lo)*0.2:null;
+ const act=L.values.map(v=>v==null?null:(v>ymax?ymax:(ymin!=null&&v<ymin?ymin:v)));
+ const el=document.getElementById('lineChart'),H=340,W=Math.max(280,el.clientWidth||600),m={l:60,r:14,t:24,b:48};
+ const pw=W-m.l-m.r,ph=H-m.t-m.b,n=DATA.labels.length,step=pw/Math.max(1,n),X=k=>m.l+(k+0.5)*step;
+ const shown=act.concat(L.expected).filter(v=>v!=null),dmin=shown.length?Math.min(...shown):0;
+ const top=ymax,bot=ymin!=null?ymin:dmin-(top-dmin)*0.05,span=(top-bot)||1,Y=v=>m.t+ph-(v-bot)/span*ph;
+ let g=svgOpen(W,H,esc(L.name)+': actual against expected');
+ L.events.filter(e=>e.end>e.start).forEach(e=>{const x0=m.l+e.start*step,x1=m.l+(e.end+1)*step;
+  g+=R(x0,m.t,x1-x0,ph,fade(C.err,0.08))+T((x0+x1)/2,m.t+12,esc(e.label),{fill:C.err,anchor:'middle'});});
+ niceTicks(bot,top).filter(v=>v>=bot-1e-9&&v<=top+1e-9).forEach(v=>{const y=Y(v);g+=Ln(m.l,y,W-m.r,y,C.grid,1)+T(m.l-6,y+4,axisNum(v),{anchor:'end'});});
+ g+=Ln(m.l,m.t+ph,W-m.r,m.t+ph,C.grid,1);
+ DATA.labels.forEach((lab,k)=>{if(k%tick===0)g+=T(X(k),m.t+ph+16,esc(lab),{anchor:'middle'});});
+ g+=T(14,m.t+ph/2,esc(DATA.units),{fill:C.muted,anchor:'middle',rot:-90});
+ g+='<path d="'+pathD(L.expected.map((v,k)=>v==null?null:[X(k),Y(v)]))+'" fill="none" stroke="'+C.muted+'" stroke-width="1.5" stroke-dasharray="6,3"/>';
+ g+='<path d="'+pathD(act.map((v,k)=>v==null?null:[X(k),Y(v)]))+'" fill="none" stroke="'+C.c1+'" stroke-width="2.5" stroke-linejoin="round"/>';
+ L.values.forEach((v,k)=>{const e=peaks[k];if(!e||v==null)return;
+  const clip=v>ymax||(ymin!=null&&v<ymin),col=e.data?C.warn:C.err,x=X(k),y=Y(act[k]);
+  g+=clip?'<path d="M'+x.toFixed(1)+','+(y-7).toFixed(1)+'L'+(x+6.5).toFixed(1)+','+(y+5).toFixed(1)+'L'+(x-6.5).toFixed(1)+','+(y+5).toFixed(1)+'Z" fill="'+col+'" stroke="'+C.card+'" stroke-width="2"/>'
+         :'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="6" fill="'+col+'" stroke="'+C.card+'" stroke-width="2"/>';
+  g+=T(x,Math.max(m.t+10,y-12),esc(clip?('off scale: '+fmt(v)):e.label.replace('Latest period: ','')),{fill:col,anchor:'middle'});});
+ DATA.labels.forEach((lab,k)=>{const a=L.values[k],x=L.expected[k];
+  let h='<b>'+esc(lab)+'</b><br/>Actual: <b>'+fmt(a)+'</b><br/>Expected: '+fmt(x);
+  if(a!=null&&x!=null)h+='<br/>Gap: '+(a-x>0?'+':'')+fmt(a-x)+(x?' ('+pct((a-x)/Math.abs(x)*100)+')':'');
+  if(peaks[k])h+='<br/><span style="color:'+(peaks[k].data?C.warn:C.err)+'">&#9679; '+esc(peaks[k].label)+'</span>';
+  g+=R(m.l+k*step,m.t,step,ph,HOT,{tip:tipOf('l'+k,h),title:plain(h)});});
+ g+=legend([{name:'Actual',color:C.c1,kind:'line'},{name:'Expected',color:C.muted,kind:'line',dash:'6,3'}],W/2,H-8);
+ el.innerHTML=g+'</svg>';
+ const row=(a,b)=>'<div class="row"><span>'+a+'</span><span>'+b+'</span></div>';
+ let f='';
+ if(L.direction)f+=row('Direction',esc(L.direction));
+ if(L.trend!=null)f+=row('Trend rate',pct(L.trend)+'/yr');
+ if(L.under!=null)f+=row('Excl. level shifts',pct(L.under)+'/yr');
+ if(L.yoy!=null)f+=row(esc(L.last)+' against a year earlier',pct(L.yoy));
+ if(L.ltm!=null)f+=row('Last 12 months',pct(L.ltm));
+ else if(L.ltm_note)f+=row('Last 12 months','n/a');
+ if(L.ltmchg!=null)f+=row('LTM change',(L.ltmchg>0?'+':'')+fmt(L.ltmchg));
+ if(L.ltm_note)f+='<div class="ev data">'+esc(L.ltm_note)+': the twelve-month figure is left out.</div>';
+ if(!L.events.length)f+='<div class="ev none">No period stands out from this line\'s own pattern.</div>';
+ L.events.forEach(e=>{f+='<div class="ev '+(e.data?'data':'biz')+'"><b>'+esc(e.period)+': '+esc(e.label)+(e.material?'':' (below threshold)')+'</b>'+
+   (e.data?'Data check: '+esc(e.data)+'. ':'')+'Gap '+(e.gap>0?'+':'')+fmt(e.gap)+(e.pct!=null&&Math.abs(e.pct)<1000?' ('+pct(e.pct)+')':'')+
+   (e.check&&!e.data?'<i>'+esc(e.check)+'</i>':'')+'</div>';});
+ document.getElementById('facts').innerHTML=f;
+}
+const tabs=document.getElementById('tabs');
+let first=-1;
+DATA.lines.forEach((L,i)=>{const b=document.createElement('button');b.textContent=L.name;
+ if(L.events.length){const d=document.createElement('span');d.className='dot'+(L.events.every(e=>e.data)?' data':'');b.appendChild(d);
+  if(first<0&&L.events.some(e=>!e.data&&e.material))first=i;}
+ b.onclick=()=>drawLine(i);tabs.appendChild(b);});
+drawLine(first<0?0:first);
+document.getElementById('heatnote').textContent='How far each period sits from its line\'s own pattern, in multiples of that line\'s usual scatter. Beyond ±'+DATA.z+' is unusual. The color scale stops at ±'+DATA.cap+' so a data error does not wash out everything else. Grey = no value.';
+document.getElementById('heat').style.height=Math.max(220,DATA.lines.length*30+90)+'px';
+function drawHeat(){
+ const el=document.getElementById('heat'),ny=DATA.lines.length,nx=DATA.labels.length,H=Math.max(220,ny*30+90),W=Math.max(280,el.clientWidth||600);
+ const lw=Math.min(220,Math.max(60,...DATA.lines.map(l=>String(l.name).length*6.5+12)));
+ const m={l:lw,r:86,t:10,b:40},pw=W-m.l-m.r,ph=H-m.t-m.b,cw=pw/Math.max(1,nx),chh=ph/Math.max(1,ny);
+ const z=DATA.z/DATA.cap/2,stops=[[0,rgba(C.info)],[0.5-z,rgba(C.info,0.25)],[0.5,rgba(C.card)],[0.5+z,rgba(C.err,0.25)],[1,rgba(C.err)]];
+ const col=v=>{const p=Math.max(0,Math.min(1,(v+DATA.cap)/(2*DATA.cap)));let i=0;while(i<stops.length-2&&p>stops[i+1][0])i++;
+  const a=stops[i],b=stops[i+1],t=(p-a[0])/((b[0]-a[0])||1);return css(a[1].map((x,j)=>x+(b[1][j]-x)*t));};
+ let g=svgOpen(W,H,'Heat map: how unusual each period is, by line');
+ DATA.lines.forEach((L,y)=>{g+=T(m.l-8,m.t+(y+0.5)*chh+4,esc(L.name),{anchor:'end'});
+  L.score.forEach((v,x)=>{const h='<b>'+esc(L.name)+', '+esc(DATA.labels[x])+'</b><br/>Score: '+
+    (v==null?'no value':fmt(v,1)+(Math.abs(v)>=DATA.z?' (unusual)':''))+'<br/>Actual '+fmt(L.values[x])+' against expected '+fmt(L.expected[x]);
+   g+=R(m.l+x*cw,m.t+y*chh,cw,chh,v==null?C.grid:col(v),{stroke:C.card,sw:1,tip:tipOf('h'+y+'_'+x,h),title:plain(h)});});});
+ DATA.labels.forEach((lab,k)=>{if(k%tick===0)g+=T(m.l+(k+0.5)*cw,m.t+ph+16,esc(lab),{anchor:'middle'});});
+ const bh=Math.min(180,ph),bx=W-m.r+24,by=m.t+(ph-bh)/2;
+ g+='<defs><linearGradient id="heatScale" x1="0" y1="0" x2="0" y2="1">'+stops.slice().reverse().map(s=>'<stop offset="'+(1-s[0]).toFixed(3)+'" stop-color="'+css(s[1])+'"/>').join('')+'</linearGradient></defs>';
+ g+=T(bx+6,Math.max(10,by-6),'Score',{fill:C.muted,anchor:'middle'})+R(bx,by,12,bh,'url(#heatScale)');
+ niceTicks(-DATA.cap,DATA.cap,4).forEach(v=>{const y=by+(DATA.cap-v)/(2*DATA.cap)*bh;g+=Ln(bx+12,y,bx+16,y,C.sec,1)+T(bx+19,y+4,axisNum(v));});
+ el.innerHTML=g+'</svg>';
+}
+drawHeat();
+function drawTrend(){
+ const el=document.getElementById('trend');if(!el)return;
+ const tl=DATA.lines.filter(l=>l.trend!=null).sort((a,b)=>b.trend-a.trend),n=tl.length,H=Math.max(260,n*34+80),W=Math.max(280,el.clientWidth||500);
+ el.style.height=H+'px';
+ const lw=Math.min(200,Math.max(60,...tl.map(l=>String(l.name).length*6.5+12)));
+ const m={l:lw,r:18,t:8,b:62},pw=W-m.l-m.r,ph=H-m.t-m.b,band=ph/Math.max(1,n);
+ const vals=[0];tl.forEach(l=>{vals.push(l.trend);if(l.ltm!=null)vals.push(l.ltm);});
+ const tk=niceTicks(Math.min(...vals),Math.max(...vals)),lo=Math.min(tk[0],...vals),hi=Math.max(tk[tk.length-1],...vals),X=v=>m.l+(v-lo)/((hi-lo)||1)*pw;
+ let g=svgOpen(W,H,'Trend rate against last twelve months, by line');
+ tk.forEach(v=>{const x=X(v);g+=Ln(x,m.t,x,m.t+ph,C.grid,1)+T(x,m.t+ph+16,axisNum(v)+'%',{anchor:'middle'});});
+ g+=Ln(X(0),m.t,X(0),m.t+ph,C.border,1)+T(m.l+pw/2,m.t+ph+32,'% change',{fill:C.muted,anchor:'middle'});
+ tl.forEach((l,i)=>{const y0=m.t+i*band,bh=band*(1-2*0.12)/2,y=y0+band*0.12;
+  g+=T(m.l-8,y0+band/2+4,esc(l.name),{anchor:'end'});
+  const bar=(v,yy,c)=>{const x0=X(Math.min(0,v)),x1=X(Math.max(0,v));return R(x0,yy+bh*0.05,x1-x0,bh*0.9,c,{rx:3});};
+  g+=bar(l.trend,y,l.direction==='Flat'?fade(C.c1,0.4):C.c1);
+  if(l.ltm!=null)g+=bar(l.ltm,y+bh,C.c2);
+  const h='<b>'+esc(l.name)+'</b><br/>Trend rate (/yr): <b>'+fmt(l.trend,1)+'%</b>'+(l.ltm!=null?'<br/>Last 12 months: <b>'+fmt(l.ltm,1)+'%</b>':'');
+  g+=R(m.l,y0,pw,band,HOT,{tip:tipOf('t'+i,h),title:plain(h)});});
+ g+=legend([{name:'Trend rate (/yr)',color:C.c1},{name:'Last 12 months',color:C.c2}],W/2,H-8);
+ el.innerHTML=g+'</svg>';
+}
+drawTrend();
+const bn=Object.keys(DATA.budget||{}),bt=document.getElementById('btabs');let curBud=-1;
+function drawBud(i){
+ const el=document.getElementById('bud');if(!el)return;curBud=i;const n=bn[i],B=DATA.budget[n];
+ bt.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('on',j===i));
+ const v=B.var,rev=/revenue|sales|income/i.test(n),good=rev?v>=0:v<=0;
+ const H=290,W=Math.max(280,el.clientWidth||500),m={l:60,r:14,t:30,b:48},pw=W-m.l-m.r,ph=H-m.t-m.b,k=DATA.bmonths.length,step=pw/Math.max(1,k),X=j=>m.l+(j+0.5)*step;
+ const all=B.actual.concat(B.budget).filter(x=>x!=null),tk=niceTicks(0,Math.max(1,...all)),top=tk[tk.length-1],Y=x=>m.t+ph-x/top*ph;
+ let g=svgOpen(W,H,esc(n)+': actual against budget');
+ g+=T(W/2,16,'Year to date '+(v>0?'+':'')+fmt(v)+' ('+pct(B.var_pct)+') '+(rev?'compared with budget':(v>0?'over budget':'under budget')),{fill:good?C.ok:C.err,anchor:'middle',size:13,weight:600});
+ tk.forEach(t=>{const y=Y(t);g+=Ln(m.l,y,W-m.r,y,C.grid,1)+T(m.l-6,y+4,axisNum(t),{anchor:'end'});});
+ g+=T(14,m.t+ph/2,esc(DATA.units),{fill:C.muted,anchor:'middle',rot:-90});
+ DATA.bmonths.forEach((lab,j)=>{const a=B.actual[j];
+  if(a!=null){const bw=step*0.6,av=Math.max(0,a);g+=R(X(j)-bw/2,Y(av),bw,Y(0)-Y(av),C.c1,{rx:3});}
+  g+=T(X(j),m.t+ph+16,esc(lab),{anchor:'middle'});});
+ g+='<path d="'+pathD(B.budget.map((x,j)=>x==null?null:[X(j),Y(x)]))+'" fill="none" stroke="'+C.text+'" stroke-width="2" stroke-dasharray="7,4"/>';
+ B.budget.forEach((x,j)=>{if(x!=null)g+='<circle cx="'+X(j).toFixed(1)+'" cy="'+Y(x).toFixed(1)+'" r="3" fill="'+C.text+'"/>';});
+ DATA.bmonths.forEach((lab,j)=>{const h='<b>'+esc(lab)+'</b><br/>Actual: <b>'+fmt(B.actual[j],1)+'</b><br/>Budget: '+fmt(B.budget[j],1);
+  g+=R(m.l+j*step,m.t,step,ph,HOT,{tip:tipOf('b'+j,h),title:plain(h)});});
+ g+=legend([{name:'Actual',color:C.c1},{name:'Budget',color:C.text,kind:'line',dash:'7,4'}],W/2,H-8);
+ el.innerHTML=g+'</svg>';
+}
+if(document.getElementById('bud')){
+ bn.forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>drawBud(i);bt.appendChild(b);});
+ let w=0;bn.forEach((n,i)=>{if(Math.abs(DATA.budget[n].var_pct||0)>Math.abs(DATA.budget[bn[w]].var_pct||0))w=i;});
+ if(bn.length)drawBud(w);}
+let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{drawLine(curLine);drawHeat();drawTrend();if(curBud>=0)drawBud(curBud);},150);});
+</script>
+</body></html>

@@ -37,11 +37,15 @@ dev = [
     "mdformat>=1,<2",
     "mdformat-frontmatter>=2,<3",
     "mkdocs-macros-plugin>=1,<2",
+    "numpy>=2,<3",
+    "openpyxl>=3.1,<4",
+    "pandas>=2.2,<4",
     "pathspec>=1,<2",
     "pydantic>=2,<3",
     "pytest>=9,<10",
     "pyyaml>=6,<7",
     "ruff>=0.15,<1",
+    "xlsxwriter>=3,<4",
     "zensical",
 ]
 

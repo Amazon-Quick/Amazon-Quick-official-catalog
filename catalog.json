@@ -376,6 +376,54 @@
           "id": "6beb887f-455c-4f74-9495-624d3e4b6f18"
         },
         {
+          "path": "skills/finance/fpa-budget-reconciliation",
+          "type": "skill",
+          "checksum": "sha256:357cfc7029a7ffb5f6b11d31049b29d5eb93b61f98be8c66af0f2f699e8e658d",
+          "id": "b90d0c98-0254-40ec-aef3-09f5cd428a25"
+        },
+        {
+          "path": "skills/finance/fpa-forecast-coach",
+          "type": "skill",
+          "checksum": "sha256:83f8614125438f8a441b6a4d91d0628a43dadeb30feca0b1f942411c1a3d2284",
+          "id": "4595dd5d-6b33-4f0e-b30f-cffb66ca9a02"
+        },
+        {
+          "path": "skills/finance/fpa-metrics-deck-app-builder",
+          "type": "skill",
+          "checksum": "sha256:e4e288d2c6b201207a3463ac9e982d07cb80307dabdc349f2e5444b1dba364a4",
+          "id": "c31469a6-c010-4273-b639-041198a8f72b"
+        },
+        {
+          "path": "skills/finance/fpa-purchase-invoice-review",
+          "type": "skill",
+          "checksum": "sha256:cd5febaad989453a08cbca9693a639357afd8cbb8cc825824cccbcb4a4096faf",
+          "id": "5683977d-c355-4271-94b7-3fda78bc49f2"
+        },
+        {
+          "path": "skills/finance/fpa-scenario-analysis",
+          "type": "skill",
+          "checksum": "sha256:8649e11aae3520c5c82ab54a61205ea1ad3b39122af8e277585373294f832b26",
+          "id": "aba7ac09-8375-4727-9c84-ccd2a161bede"
+        },
+        {
+          "path": "skills/finance/fpa-spreadsheet-evaluator",
+          "type": "skill",
+          "checksum": "sha256:eb87be33fdca55e656d46a57338aded5854e9e61d3da4bfb81220c281945a211",
+          "id": "e116f6e5-ea63-4141-acbe-08e17fd9c2ec"
+        },
+        {
+          "path": "skills/finance/fpa-trend-anomaly-detection",
+          "type": "skill",
+          "checksum": "sha256:da1bc002bbe5fc0dbf28fc0505957849984ccac5f2c51a675383c759b5919de6",
+          "id": "71a49fd3-5dda-4952-9abc-45fa1620c99c"
+        },
+        {
+          "path": "skills/finance/fpa-variance-commentary",
+          "type": "skill",
+          "checksum": "sha256:2b424d39622988930d44d895e20b750e1bfa6fcdc64ff6ff4098518d8c7c3420",
+          "id": "280e005c-35c4-46fb-829a-d77da3f036ca"
+        },
+        {
           "path": "plugins/finance/small-business-owner",
           "type": "plugin",
           "id": "fe72498d-9ecc-4266-a89a-ccf6eda28fca",
@@ -388,6 +436,12 @@
           "company": "Verisk Analytics",
           "id": "79a4a2f5-d40a-4046-b676-7fe29a381d76",
           "checksum": "sha256:beb53b5cfc8fb7c4d3bfe717dd3f8d94d454172cfed8b4b036745e2fd157e35d"
+        },
+        {
+          "path": "plugins/finance/financial-planning-analysis",
+          "type": "plugin",
+          "checksum": "sha256:2c750b63677e24a931b9530979bae428ed6e8574d15880e57de238da219f7c54",
+          "id": "8f17c2e0-41c4-48f3-8cb8-cd79680774cd"
         }
       ]
     },
@@ -1318,19 +1372,19 @@
           "path": "skills/aws-events/reinvent-all-about-riv",
           "type": "skill",
           "id": "c0fb703c-1e25-47a5-ae0d-b3eab3907fea",
-          "checksum": "sha256:14cafeba4294ce2bfdbdf1fe47a017f1d77cc78a5d95dd2844e304fb8d40b467"
+          "checksum": "sha256:e566bb495ab32b6183c646c9e8d92d0d34fe3dac56312e5b263f66d9ec6061ba"
         },
         {
           "path": "skills/aws-events/reinvent-daily-brief",
           "type": "skill",
           "id": "add51004-8ebc-44fa-aa05-95d25aeac1e0",
-          "checksum": "sha256:fef540dc6fc3091c91f54ab28293ab36420c41cb52099126d73d6f12c2699531"
+          "checksum": "sha256:a2fd9f569f19590e8dfde5102a71121d19c5f124300b151e8f3f78f45026aaf4"
         },
         {
           "path": "skills/aws-events/reinvent-event-catalog",
           "type": "skill",
           "id": "79fd9c60-48ec-43f5-ba8e-5056656a6c67",
-          "checksum": "sha256:389ac2d1de44c35a771cd4442ba70da810872b23e0aaa35ab5796f5f7ad8638b"
+          "checksum": "sha256:d284d53691b0ee7a3e78fac5eed746cc997b62b842d616ddf6fc286ce55dfa88"
         },
         {
           "path": "skills/aws-events/reinvent-new-launches",
@@ -1622,7 +1676,43 @@
           "type": "skill"
         },
         {
+          "path": "skills/finance/fpa-budget-reconciliation",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/fpa-forecast-coach",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/fpa-metrics-deck-app-builder",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/fpa-purchase-invoice-review",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/fpa-scenario-analysis",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/fpa-spreadsheet-evaluator",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/fpa-trend-anomaly-detection",
+          "type": "skill"
+        },
+        {
+          "path": "skills/finance/fpa-variance-commentary",
+          "type": "skill"
+        },
+        {
           "path": "plugins/finance/small-business-owner",
+          "type": "plugin"
+        },
+        {
+          "path": "plugins/finance/financial-planning-analysis",
           "type": "plugin"
         }
       ]

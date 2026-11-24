@@ -1,0 +1,31 @@
+{
+  "name": "reinvent",
+  "displayName": "AWS re:Invent",
+  "description": "Attendees of AWS re:Invent can plan, follow, and recap the event in one plugin. Find sessions by topic, service, speaker, day, or venue. Get a daily brief of your reserved sessions, review the AWS launches announced around the event, and look up how the event works, from badge pickup to meals and re:Play. After the event, write your trip report and get AWS Training and Certification courses matched to what you attended. The skills read your agenda and the event catalog through the AWS Events Central connector.",
+  "version": "1.0.0",
+  "author": {
+    "name": "AWS"
+  },
+  "icon": "assets/reinvent.svg",
+  "roles": [
+    "general"
+  ],
+  "skills": [
+    "aws-events/reinvent-all-about-riv",
+    "aws-events/reinvent-daily-brief",
+    "aws-events/reinvent-event-catalog",
+    "aws-events/reinvent-new-launches",
+    "aws-events/reinvent-personalized-pathway",
+    "aws-events/reinvent-trip-report"
+  ],
+  "connectors": [
+    {
+      "key": "aws-events-central",
+      "label": "AWS Events Central",
+      "description": "The skills read the event catalog, your reserved and attended sessions, booth visits, and launches from AWS Events Central.",
+      "type": "AWS_EVENTS_CENTRAL",
+      "required": true
+    }
+  ],
+  "id": "960c4a93-4d8b-4347-9c46-8b37eabb164c"
+}

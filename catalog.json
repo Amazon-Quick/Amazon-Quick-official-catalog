@@ -1284,6 +1284,12 @@
           "type": "skill",
           "id": "e8c69012-f338-4d34-973e-7b0a2d28fa8d",
           "checksum": "sha256:28b0e57a231b68438bc8e4c712a8310043f73a2d5638ae878af5f4c3be1f2e90"
+        },
+        {
+          "path": "plugins/aws-events/reinvent",
+          "type": "plugin",
+          "id": "960c4a93-4d8b-4347-9c46-8b37eabb164c",
+          "checksum": "sha256:aad5522a5037ef93f329f3f00448a31fe286aa5bd4e9d183ccace24c515b1335"
         }
       ]
     }
@@ -1405,6 +1411,10 @@
         {
           "path": "skills/aws-events/reinvent-trip-report",
           "type": "skill"
+        },
+        {
+          "path": "plugins/aws-events/reinvent",
+          "type": "plugin"
         }
       ]
     },

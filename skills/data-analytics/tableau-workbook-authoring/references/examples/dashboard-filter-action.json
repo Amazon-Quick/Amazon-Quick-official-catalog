@@ -1,0 +1,102 @@
+{
+  "_description": "Dashboard filter action: selecting marks in one worksheet filters the other worksheets on the same dashboard.",
+  "_feature": "action,filter-action,dashboard,interactivity",
+  "actions_node": {
+    "_placement": "Direct child of <workbook>, after the workbook-level <datasources> and before <worksheets>. One <actions> element holds every action in the workbook.",
+    "type": "actions",
+    "children": [
+      {
+        "type": "action",
+        "attrs": {
+          "caption": "Filter by Customer",
+          "name": "[Action1]"
+        },
+        "children": [
+          {
+            "type": "activation",
+            "attrs": {
+              "auto-clear": "true",
+              "type": "on-select"
+            }
+          },
+          {
+            "type": "source",
+            "attrs": {
+              "dashboard": "Overview",
+              "type": "sheet",
+              "worksheet": "Top Customers"
+            }
+          },
+          {
+            "type": "command",
+            "attrs": {
+              "command": "tsc:tsl-filter"
+            },
+            "children": [
+              {
+                "type": "param",
+                "attrs": {
+                  "name": "exclude",
+                  "value": "Top Customers"
+                }
+              },
+              {
+                "type": "param",
+                "attrs": {
+                  "name": "special-fields",
+                  "value": "all"
+                }
+              },
+              {
+                "type": "param",
+                "attrs": {
+                  "name": "target",
+                  "value": "Overview"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "variant_selected_fields": {
+    "_description": "Filter on specific fields instead of every field on the source sheet. Replace the special-fields param with field-captions.",
+    "type": "command",
+    "attrs": {
+      "command": "tsc:tsl-filter"
+    },
+    "children": [
+      {
+        "type": "param",
+        "attrs": {
+          "name": "field-captions",
+          "value": "Customer Name"
+        }
+      },
+      {
+        "type": "param",
+        "attrs": {
+          "name": "target",
+          "value": "Overview"
+        }
+      }
+    ]
+  },
+  "notes": {
+    "child_order": "<activation>, then <source>, then <command>. The schema enforces this order.",
+    "action_name": "name must be bracketed and unique across the workbook, e.g. [Action1], [Action2]. caption is the label users see.",
+    "source": "source/@dashboard is the dashboard name and source/@worksheet the sheet users click. Both must exactly match existing names (case-sensitive). Use type='sheet' for a sheet source.",
+    "target": "param target is the dashboard name. The action then filters every sheet on that dashboard except those listed in exclude.",
+    "exclude": "Comma-separated worksheet names that the action must not filter. List the source sheet so it doesn't filter itself. Omit the param, or use value='', to filter every sheet on the dashboard.",
+    "special_fields_all": "special-fields='all' filters on every field of the selected marks. Use field-captions (comma-separated field captions) to filter on named fields only.",
+    "activation_values_ActivationMethod-ST": [
+      "on-select",
+      "on-hover",
+      "explicit"
+    ],
+    "auto_clear": "auto-clear='true' clears the filter when the selection is cleared.",
+    "command_name": "tsc:tsl-filter is a filter action. tsc:brush is a highlight action and takes the same params.",
+    "verification": "This structure validates against the bundled 2026.2 XSD. Clicking marks only proves the action works in a live render, not in a get-view-image PNG."
+  }
+}

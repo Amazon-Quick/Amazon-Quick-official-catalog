@@ -1,0 +1,66 @@
+{
+  "_description": "URL action: selecting a mark opens a URL built from the mark's field values, either in a web page zone on the dashboard or in a browser tab.",
+  "_feature": "action,url-action,link,dashboard,interactivity",
+  "action_node": {
+    "_placement": "Inside <workbook> > <actions> (see dashboard-filter-action.json for where <actions> goes). Several actions share one <actions> element.",
+    "type": "action",
+    "attrs": {
+      "caption": "Look up customer",
+      "name": "[Action2]"
+    },
+    "children": [
+      {
+        "type": "activation",
+        "attrs": {
+          "type": "on-select"
+        }
+      },
+      {
+        "type": "source",
+        "attrs": {
+          "dashboard": "Overview",
+          "type": "sheet",
+          "worksheet": "Top Customers"
+        }
+      },
+      {
+        "type": "link",
+        "attrs": {
+          "caption": "Look up <[Customer Name]>",
+          "delimiter": ",",
+          "escape": "\\",
+          "expression": "https://www.example.com/search?q=<[Customer Name]>",
+          "include-null": "true",
+          "multi-select": "false",
+          "url-escape": "true"
+        },
+        "children": [
+          {
+            "type": "url-action-type",
+            "content": "specific-zone"
+          },
+          {
+            "type": "url-action-target",
+            "content": "5"
+          }
+        ]
+      }
+    ]
+  },
+  "notes": {
+    "child_order": "<activation>, then <source>, then <link>. A URL action has a <link> and no <command>.",
+    "field_placeholder": "Insert a field value with <[Field Name]>, the field's name in brackets wrapped in angle brackets. The field must be on the source sheet, e.g. on Detail or Tooltip. In the XML the angle brackets are escaped: expression='https://www.example.com/search?q=&lt;[Customer Name]&gt;'.",
+    "url_escape": "url-escape='true' percent-encodes field values, so values with spaces or & still give a valid URL.",
+    "multi_select": "multi-select='false' runs the action for one mark. With 'true', values from all selected marks are joined with delimiter.",
+    "url_action_type_values_UrlActionType-ST": [
+      "default-zone-or-browser",
+      "browser",
+      "specific-zone"
+    ],
+    "targeting_a_web_zone": "For specific-zone, url-action-target is the numeric id of the web zone (type-v2='web'), not its name. See web-zone.json.",
+    "default_target": "Omit both url-action-type and url-action-target to get default-zone-or-browser: the URL opens in the dashboard's web zone if there is one, otherwise in a browser tab.",
+    "schema_version": "url-action-type and url-action-target first appear in the 2019.1 schema. A workbook declaring an older version must omit them.",
+    "embeds": "Many sites, including youtube.com watch pages, refuse to load inside an iframe. For video, use an embeddable URL such as https://www.youtube.com/embed/<id>, or target the browser.",
+    "verification": "This structure validates against the bundled 2026.2 XSD. Check that the target page loads in a live render. A get-view-image PNG shows web zones as blank."
+  }
+}

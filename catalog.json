@@ -106,6 +106,71 @@
           "company": "Informatica",
           "id": "7734ce63-b63a-4ca7-be3d-e6c3963f5979",
           "checksum": "sha256:d0c1e1c1eb2b24136a401c1928355e5850eba9e5e877090e23a2b967fe6d1ac0"
+        },
+        {
+          "path": "skills/data-analytics/tableau-about",
+          "type": "skill",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Salesforce",
+          "id": "4e3493c3-15fd-4238-a9a3-40871bf843e7",
+          "checksum": "sha256:f438b6bae83143a3dee7290eebd40f7a356366f822f4dbb97442637407d73668"
+        },
+        {
+          "path": "skills/data-analytics/tableau-content-viewer",
+          "type": "skill",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Salesforce",
+          "id": "05885eda-cbc9-401b-963e-4f2d62493da2",
+          "checksum": "sha256:2e25cc89d9292c278778e32b17c8f4da793b180b7716ab652f65b32f4747135d"
+        },
+        {
+          "path": "skills/data-analytics/tableau-dashboard-advisor",
+          "type": "skill",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Salesforce",
+          "id": "f703c005-036c-4481-916a-ac7d9284943a",
+          "checksum": "sha256:24d389e096bd20ceaef66efd35e6578f7eedff02b8026953841766159ae062b9"
+        },
+        {
+          "path": "skills/data-analytics/tableau-data-app-authoring",
+          "type": "skill",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Salesforce",
+          "id": "5cadb40b-e13c-4d5f-8d52-dd977ea441e0",
+          "checksum": "sha256:1f46c6877f04116fd17a8ba80f14a16c925e5073a70201f5e2aca4ec8851c5e1"
+        },
+        {
+          "path": "skills/data-analytics/tableau-data-quality-sentinel",
+          "type": "skill",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Salesforce",
+          "id": "5ee5dce3-6043-489e-8c51-6a8f327f35af",
+          "checksum": "sha256:ffd379ce447efe89b6900f276b952ec516b7fe32f27536e4139f7f68b0fe88ae"
+        },
+        {
+          "path": "skills/data-analytics/tableau-viz-critique",
+          "type": "skill",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Salesforce",
+          "id": "eae6e66b-f7f9-477c-8724-a46f0b94974a",
+          "checksum": "sha256:90141bd434396b0d55ec15c07dbb504b4c9542f16db4817b483bf66c58d814f7"
+        },
+        {
+          "path": "skills/data-analytics/tableau-workbook-authoring",
+          "type": "skill",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Salesforce",
+          "id": "8303ce48-d693-4afb-8524-cb38427e8045",
+          "checksum": "sha256:b099ef0a1d5250088f2641ccea8b079a2725e38dcabd37083d59a93d84ee664a"
+        },
+        {
+          "path": "plugins/data-analytics/tableau",
+          "type": "plugin",
+          "publisher_type": "THIRD_PARTY",
+          "company": "Salesforce",
+          "id": "d1f22c92-a1cf-4679-a845-3cb5a4ea6f29",
+          "checksum": "sha256:9d2af7634326cb56341b31d3c175827aaefcfd713062f5f303bf21554fddaba9",
+          "partner": "tableau"
         }
       ]
     },
@@ -1460,6 +1525,38 @@
         },
         {
           "path": "plugins/data-analytics/informatica",
+          "type": "plugin"
+        },
+        {
+          "path": "skills/data-analytics/tableau-about",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/tableau-content-viewer",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/tableau-dashboard-advisor",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/tableau-data-app-authoring",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/tableau-data-quality-sentinel",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/tableau-viz-critique",
+          "type": "skill"
+        },
+        {
+          "path": "skills/data-analytics/tableau-workbook-authoring",
+          "type": "skill"
+        },
+        {
+          "path": "plugins/data-analytics/tableau",
           "type": "plugin"
         }
       ]

@@ -1,0 +1,26 @@
+{
+  "_description": "Web page zone: embeds a web page in a dashboard. Pair it with a URL action (url-action.json) to load a page chosen by the user's selection.",
+  "_feature": "dashboard,zone,web,web-page,interactivity",
+  "zone_node": {
+    "_placement": "Inside <dashboard> > <zones>, nested in a layout zone like any other zone (see dashboard-tiled.json).",
+    "type": "zone",
+    "attrs": {
+      "id": 5,
+      "x": 0,
+      "y": 400,
+      "w": 1200,
+      "h": 400,
+      "type-v2": "web",
+      "param": "https://www.example.com/"
+    }
+  },
+  "notes": {
+    "url_attribute": "The page URL goes in param, not url. Tableau writes param='https://...' on web zones. The zone's url attribute is something else.",
+    "start_blank": "To show nothing until a URL action fires, omit param.",
+    "zone_id": "id must be unique across all dashboards in the workbook. A URL action targets this zone by id (url-action-target), so keep the two in sync.",
+    "no_name_needed": "Unlike a visual zone, a web zone doesn't reference a worksheet, so it has no name and no <viewpoint> in the dashboard window.",
+    "optional_attrs": "scroll='off', show-context-menu='false', suppress-dialogs='true' and error-action='hide' are optional zone attributes that Tableau writes on some web zones.",
+    "iframe_limits": "The page loads in an iframe. Sites that send X-Frame-Options or a frame-ancestors CSP (many do, e.g. youtube.com watch pages) show as blank. Use an embeddable URL such as https://www.youtube.com/embed/<id>.",
+    "verification": "Web zones render blank in get-view-image PNGs. Check them in a live render, and wait a few seconds for the iframe to load before calling it blank."
+  }
+}

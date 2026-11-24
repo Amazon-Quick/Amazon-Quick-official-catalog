@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- build 20262.26.0528.2205 -->
+<workbook original-version='18.1' source-build='2026.2.0 (20262.26.0528.2205)' source-platform='mac' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <SheetIdentifierTracking />
+    <SortTagCleanup />
+    <WindowsPersistSimpleIdentifiers />
+  </document-format-change-manifest>
+  <preferences />
+  <datasources />
+  <worksheets />
+  <windows />
+</workbook>

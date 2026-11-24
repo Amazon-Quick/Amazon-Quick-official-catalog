@@ -15,7 +15,7 @@ inputs:
     type: string
     required: true
 tools: [file_read, get_current_time]
-checksum: "sha256:14cafeba4294ce2bfdbdf1fe47a017f1d77cc78a5d95dd2844e304fb8d40b467"
+checksum: "sha256:e566bb495ab32b6183c646c9e8d92d0d34fe3dac56312e5b263f66d9ec6061ba"
 id: "c0fb703c-1e25-47a5-ae0d-b3eab3907fea"
 ---
 
@@ -55,7 +55,7 @@ AWS Events app. The answer ends there, with no closing offer.
    "how does it work" questions from it, but hand the act of reserving to the app. When asked to
    reserve a seat, say in your own words that attendees registered for in-person re:Invent reserve
    seats for participating session types by signing in to their attendee portal or the AWS Events
-   mobile app. Several FAQ answers say "catalog" or "event catalog"; in every answer, say "the schedule" or "the
+   app. Several FAQ answers say "catalog" or "event catalog"; in every answer, say "the schedule" or "the
    sessions" instead and never quote those words.
    Never say which sessions or session types do or do not take reservations unless the FAQ says so.
 4. Never state or imply a compliance status. When asked, answer with the one line in references/voice-and-tone.md
@@ -196,7 +196,7 @@ triggers=["Attendee asks where something is, when something happens, the rules, 
    - To DO one of the app-owned actions (reserve a seat, get turn-by-turn directions, find a shuttle
      time, sync a calendar, or set an event alert): point them to the AWS Events app for that
      action per Rule 3, and still read the FAQ in step 4 so the answer explains how it works, such
-     as reserving through the attendee portal or the AWS Events mobile app.
+     as reserving through the attendee portal or the AWS Events app.
    - About compliance, such as HIPAA or FedRAMP: keep the Rule 4
      line for the answer, and put it first when the question has a second part.
    - About announcements, launches, offers, or embargoes: keep the Rule 9 line for the answer.

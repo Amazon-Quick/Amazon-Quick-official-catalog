@@ -970,10 +970,16 @@
           "id": "e792b823-52df-4e97-be04-2796c361e151"
         },
         {
+          "path": "skills/sales/selling-partner-finance-month-end-closer",
+          "type": "skill",
+          "id": "9c09b54c-d20c-49ee-90f9-c51c77b92c51",
+          "checksum": "sha256:cff4736a95b704cda7a2dda3fbad7badea257ae57607878b4bf0215ca2cf8975"
+        },
+        {
           "path": "plugins/sales/amazon-selling-partner",
           "type": "plugin",
           "id": "55a7a521-4b2d-4109-afa4-08a85dec02f3",
-          "checksum": "sha256:2214538a546231ea480817f3776eb47c495d4df135bc39627ba8711c6bb2afb3"
+          "checksum": "sha256:507c835f8863b9768106ec00050d1b09cd8045dca8fb5a678da8a82543c6760e"
         },
         {
           "path": "plugins/sales/sales-development",
@@ -1888,6 +1894,10 @@
         },
         {
           "path": "skills/sales/selling-partner-listing-compliance",
+          "type": "skill"
+        },
+        {
+          "path": "skills/sales/selling-partner-finance-month-end-closer",
           "type": "skill"
         },
         {

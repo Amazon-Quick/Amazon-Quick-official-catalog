@@ -1,6 +1,6 @@
 ---
 name: fpa-purchase-invoice-review
-display_name: Purchase and Invoice Review
+display_name: Purchase and Invoice Review (Preview)
 icon: assets/receipt.svg
 description: "Review purchase requisitions, purchase orders (POs), and supplier invoices before approval or payment: coding, budget fit, contract terms, price, approval tier, split POs, and 3-way match with duplicate checks. Returns one verdict per item with rule, number, source, and amount at stake; it recommends and does not approve. Use when asked to 'review this req', 'should I approve this PO', 'check this invoice', 'is this a split PO', 'run a 3-way match', or 'fpa-pir help'."
 created_date: "2026-11-11"
@@ -19,7 +19,7 @@ inputs:
     description: "Path to the user's finance profile JSON (tiers, tolerances, thresholds). Optional; the skill asks once where to keep one."
     type: path
     required: false
-checksum: "sha256:cd5febaad989453a08cbca9693a639357afd8cbb8cc825824cccbcb4a4096faf"
+checksum: "sha256:5a12e8c8f42729fc474feb3a61a8c7c600a2b8fcbabef0544c06d254bc086acc"
 id: "5683977d-c355-4271-94b7-3fda78bc49f2"
 ---
 

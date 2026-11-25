@@ -1,12 +1,12 @@
 ---
 name: assign-target-to-sdr
-display_name: Assign Target to SDR
+display_name: Assign Target to SDR (Preview)
 description: "Assign a Salesforce Lead or Contact to an active Agentforce Engagement Agent using target records and Agentforce agent definitions, after confirming both. Use to hand a prospect to Agentforce for automated qualification and email outreach."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:d272faf773d081691484fd45952470f27267d07eea32c236492c11a96df96c33"
+checksum: "sha256:eebe5444312b6406ab17f467f5a34524c8de06c68bcecc524ed7945d053e1ee8"
 id: "70da2230-ac60-4b95-9b67-37779d10e722"
 ---
 <!-- global-rules-bootstrap -->

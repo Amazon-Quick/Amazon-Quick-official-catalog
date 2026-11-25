@@ -1,6 +1,6 @@
 ---
 name: fpa-spreadsheet-evaluator
-display_name: Spreadsheet Evaluator
+display_name: Spreadsheet Evaluator (Preview)
 icon: assets/sheet.svg
 description: "Audit a finance workbook (.xlsx or .xlsm) before it is shared: formula integrity, cross-tab reconciliation, data integrity, and financial logic. Separates problems found by exact checks from questions for the owner, writes an HTML audit report with a sign-off checklist, applies approved fixes to a copy, and compares two versions. Use when asked to 'check this model', 'audit this forecast', 'tie out this budget', 'what changed between these versions', 'fpa-se audit', 'fpa-se compare', or 'fpa-se help'."
 created_date: "2026-11-11"
@@ -24,7 +24,7 @@ inputs:
     description: "Optional path to an earlier version of the same workbook, to run the version comparison."
     type: path
     required: false
-checksum: "sha256:eb87be33fdca55e656d46a57338aded5854e9e61d3da4bfb81220c281945a211"
+checksum: "sha256:aafad90ff4e4f619461f4e0f62d31c2acbcec27f4a0735e1725cc2fdc5dfa50b"
 id: "e116f6e5-ea63-4141-acbe-08e17fd9c2ec"
 ---
 

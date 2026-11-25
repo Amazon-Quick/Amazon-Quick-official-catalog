@@ -1,6 +1,6 @@
 ---
 name: fpa-budget-reconciliation
-display_name: Budget Reconciliation
+display_name: Budget Reconciliation (Preview)
 icon: assets/scale.svg
 description: "Reconcile actual spend to plan or budget during a close from any system: general ledger (GL) actuals, open purchase orders (POs), unposted invoices, exchange (FX) rates, and headcount. Place every dollar in one bucket and check the split with a tie-out, flag what needs inspection, and deliver a one-page HTML report and an Excel workbook. Use when asked to 'reconcile my budget', 'compare budget to actuals', 'how much budget is left', 'what is committed', 'flag variances', 'open POs against budget', or 'fpa-br help'."
 created_date: "2026-11-11"
@@ -19,7 +19,7 @@ inputs:
     description: "Folder where the skill saves the report and workbook. Asked once per session if not given."
     type: path
     required: false
-checksum: "sha256:357cfc7029a7ffb5f6b11d31049b29d5eb93b61f98be8c66af0f2f699e8e658d"
+checksum: "sha256:97b06ccefa43999fd95723705b5d5a0a50d07ccd641a6f543ba4f10863b0ff4f"
 id: "b90d0c98-0254-40ec-aef3-09f5cd428a25"
 ---
 

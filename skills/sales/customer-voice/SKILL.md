@@ -1,12 +1,12 @@
 ---
 name: customer-voice
-display_name: Customer Voice
+display_name: Customer Voice (Preview)
 description: "Compile attributable customer quotes and themes from call transcripts and email threads across Salesforce-scoped accounts. Use to understand feedback on a feature, objection, competitor, or emerging issue, compare accounts, or surface recurring themes."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:46ce5f458517f2dca35a12eab7523a722b6e7f96f1bb8398d806324c279c5ded"
+checksum: "sha256:8c9773b871418b18a6735541412312e6919aa752068cf0973abe35e18d6500aa"
 id: "ba0b24ac-d85f-447e-ada8-a73639729931"
 ---
 <!-- global-rules-bootstrap -->

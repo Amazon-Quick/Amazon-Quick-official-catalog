@@ -1,12 +1,12 @@
 ---
 name: daily-briefing
-display_name: Daily Briefing
+display_name: Daily Briefing (Preview)
 description: "What does my day look like, what should I focus on today, daily briefing, prep me for today, morning rundown, or answer what needs the rep today, scoped to what was asked: a full morning rundown, the #1 move, the next call, slipping deals, or what's closing soon, from Salesforce events, near-term and overdue deals, commitments, and unread customer email. Schedule-only requests: calendar-events."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:f826c78e2ca86eb0e1a073881962b1f56090c932859a46009ad50d0d54a561e9"
+checksum: "sha256:9f55a2ff69989d39a9fd699da850e8d483a673fe9f2408de8c3381c8dd82e7fd"
 id: "5324fc41-ff5d-4467-9bba-4d3fadb71ec8"
 ---
 <!-- global-rules-bootstrap -->

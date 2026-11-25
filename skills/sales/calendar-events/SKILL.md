@@ -1,12 +1,12 @@
 ---
 name: calendar-events
-display_name: Calendar Events
+display_name: Calendar Events (Preview)
 description: "Show a schedule from Salesforce Event data with local times, subjects, locations, and linked contacts, accounts or deals, scoped to what was asked. Use to review today's calendar, upcoming meetings, or a past or future schedule; for a broader morning rundown, use daily-briefing."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:8cc911bcd93a69e929e9cdd622a149a1d7e33eee389086428d1270947dc89ede"
+checksum: "sha256:78df1f390c484866e16b170ead051ecf81d0f980ffa0f8016c7bf489d4083fc9"
 id: "d985c1e1-1872-4ef4-92e8-daaaf6f1c18a"
 ---
 <!-- global-rules-bootstrap -->

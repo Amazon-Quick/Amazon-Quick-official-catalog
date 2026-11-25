@@ -1,6 +1,6 @@
 ---
 name: fpa-variance-commentary
-display_name: Variance Commentary
+display_name: Variance Commentary (Preview)
 icon: assets/message-square-text.svg
 description: "Write finance variance commentary a reviewer can check, for actuals against budget, forecast, plan, or prior period: checks the table foots, labels each line favorable or unfavorable by line type, splits revenue into rate, volume, and mix when units exist, and is built to state only causes the data or a named owner supports. Use when asked to 'write my variance commentary', 'explain this budget miss', 'draft the close commentary', 'why did costs go over', 'write the bridge narrative', or 'fpa-vc help'."
 created_date: "2026-11-12"
@@ -25,7 +25,7 @@ inputs:
     type: string
     required: false
     default: executive
-checksum: "sha256:2b424d39622988930d44d895e20b750e1bfa6fcdc64ff6ff4098518d8c7c3420"
+checksum: "sha256:6d92d43d350ead22ebdb41e4d4dc785ff8ef8cdf081e2ea86eb5a914eb3a84c3"
 id: "280e005c-35c4-46fb-829a-d77da3f036ca"
 ---
 

@@ -1,13 +1,13 @@
 ---
 name: tableau-workbook-authoring
-display_name: "Tableau Workbook Authoring"
+display_name: "Tableau Workbook Authoring (Preview)"
 author: "Salesforce, Inc."
 icon: assets/icon.svg
 created_date: "2026-11-21"
 last_updated: "2026-11-22"
 description: Create, edit, copy, or republish a Tableau workbook by editing TWB XML, then validate and package it for the user to upload to Tableau. Requires Tableau Creator or Explorer (can publish), plus permission to publish to the target project. Use for create, build, edit, modify, copy, republish, or add-chart requests. Do not use for read-only analysis or for just opening/showing an existing view (tableau-content-viewer).
 id: "8303ce48-d693-4afb-8524-cb38427e8045"
-checksum: "sha256:b099ef0a1d5250088f2641ccea8b079a2725e38dcabd37083d59a93d84ee664a"
+checksum: "sha256:ac732e6836c35c2e65e03d548ba44da261cb9e35d4dfc41e535f468b570662ff"
 ---
 
 # Purpose

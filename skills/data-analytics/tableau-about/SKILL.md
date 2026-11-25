@@ -1,13 +1,13 @@
 ---
 name: tableau-about
-display_name: "About the Tableau Plugin"
+display_name: "About the Tableau Plugin (Preview)"
 author: "Salesforce, Inc."
 icon: assets/icon.svg
 created_date: "2026-11-21"
 last_updated: "2026-11-22"
 description: Explain what the Tableau plugin is for and how it helps users work with existing or new Tableau content. Use when someone asks about the plugin, its purpose, suitable use cases, or why they should use it.
 id: "4e3493c3-15fd-4238-a9a3-40871bf843e7"
-checksum: "sha256:f438b6bae83143a3dee7290eebd40f7a356366f822f4dbb97442637407d73668"
+checksum: "sha256:c04486913dfcd43835e0584f8b8eef90f6dbcbe06fddb49a01ad61ce55c83482"
 ---
 
 # Tableau Plugin Overview

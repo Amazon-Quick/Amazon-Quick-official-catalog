@@ -1,6 +1,6 @@
 ---
 name: fpa-metrics-deck-app-builder
-display_name: Metrics Deck App Builder
+display_name: Metrics Deck App Builder (Preview)
 icon: assets/presentation.svg
 description: "Guide a finance team through building an AWS Quick App for a recurring metrics deck, such as a monthly business review or key performance indicator (KPI) pack. Catalogs the sources, datasets, and metric definitions, checks every number against the system of record, then builds the app. Use when asked to 'build an app for our business review deck', 'turn this deck into a Quick App', 'catalog the metrics behind this deck', 'reconcile the numbers in this deck', or 'fpa-mdab help'."
 created_date: "2026-11-11"
@@ -24,7 +24,7 @@ inputs:
     description: "Folder where the catalog files are saved, one subfolder per deck. Asked once if not given."
     type: path
     required: false
-checksum: "sha256:e4e288d2c6b201207a3463ac9e982d07cb80307dabdc349f2e5444b1dba364a4"
+checksum: "sha256:5d1da76e3c975b65c58be975abf8c33a0c2ba4738b7f514f54deec970aeb1717"
 id: "c31469a6-c010-4273-b639-041198a8f72b"
 ---
 

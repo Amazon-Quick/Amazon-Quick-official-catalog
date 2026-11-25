@@ -1,13 +1,13 @@
 ---
 name: tableau-data-quality-sentinel
-display_name: "Tableau Data Quality Sentinel"
+display_name: "Tableau Data Quality Sentinel (Preview)"
 author: "Salesforce, Inc."
 icon: assets/icon.svg
 created_date: "2026-11-21"
 last_updated: "2026-11-22"
 description: Profile published Tableau datasource metadata for schema hygiene, field naming, likely type or role mismatches, calculation complexity, documentation gaps, and freshness signals. Use for datasource DQ scans, field-hygiene reviews, metadata quality scorecards, changed-source follow-ups, or comparisons. Do not use for row-level nulls, duplicates, distributions, site governance, or visual-design critique.
 id: "5ee5dce3-6043-489e-8c51-6a8f327f35af"
-checksum: "sha256:ffd379ce447efe89b6900f276b952ec516b7fe32f27536e4139f7f68b0fe88ae"
+checksum: "sha256:ff5631f07d2c2d4c637160b9e87844c246be1a2abd642cc846e7fb91052edc14"
 ---
 
 # Tableau Data Quality Sentinel

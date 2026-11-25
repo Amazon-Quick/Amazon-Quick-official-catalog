@@ -1,12 +1,12 @@
 ---
 name: draft-outreach
-display_name: Draft Outreach
+display_name: Draft Outreach (Preview)
 description: "Write, draft or help with personalized outreach emails, cold emails, follow-ups, or reaching out to a specific prospect or customer by name. Creates email drafts from Salesforce contact, account, opportunity and activity data plus prior email, documents and Slack. Use when the user specifies who to email (person name, email address, or company name). For batch inbox replies, use inbox-sweep."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:e6d32824c98e9a4d4ea7bf273c7efc1e0a94794ca88b6cd5fe82f418054a2f07"
+checksum: "sha256:f2f87e505cadbed6d057a444c23cc807192aefa04f77330049e34f162b1848ee"
 id: "1518588d-f489-403f-bf1b-dabd08e12526"
 ---
 <!-- global-rules-bootstrap -->

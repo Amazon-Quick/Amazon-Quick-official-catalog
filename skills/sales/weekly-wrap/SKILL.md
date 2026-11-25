@@ -1,12 +1,12 @@
 ---
 name: weekly-wrap
-display_name: Weekly Wrap
+display_name: Weekly Wrap (Preview)
 description: "Answer questions about a rep's or team's sales week from Salesforce opportunity and calendar activity plus email, documents and Slack, scoped to what was asked: how the week went, what moved (wins, losses, advances, slips), or what closes next week. Use to review a week, prepare for Monday or draft an internal update."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:f88565f5db7a93c9ac60a5b6450702b497608f24b6ba756d3552b9eb19d1b760"
+checksum: "sha256:0ca25b7f574e25c88c6403be75090eb2b04205134c885bd392b0bedd84d43183"
 id: "034f9b9b-6a0e-4405-87eb-99e3deba2f7f"
 ---
 <!-- global-rules-bootstrap -->

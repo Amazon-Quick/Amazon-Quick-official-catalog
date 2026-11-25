@@ -1,12 +1,12 @@
 ---
 name: using-display-widget
-display_name: Using Display Widget
+display_name: Using Display Widget (Preview)
 description: "Render assembled Salesforce data as a styled widget using either a hydrated dynamic definition or a registered widget with props. Use when a skill needs a composed visual presentation or guidance on rendering mode, structure and supported tiles."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:c2287ec3419a3e24c2070a885f80d87d9e74a564fe53f25e5099e40b2691c8d4"
+checksum: "sha256:cc3cade993a4f93deec2ff06e0dbf8ed43a8b146e88b11f0d8a1cf4d5f197e03"
 id: "d5babfdf-1653-476f-9723-e43896682105"
 ---
 <!-- global-rules-bootstrap -->

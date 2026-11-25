@@ -1,12 +1,12 @@
 ---
 name: call-prep
-display_name: Call Prep
+display_name: Call Prep (Preview)
 description: "Build a call brief from Salesforce meeting, account, opportunity, contact, and activity data plus email, documents, and Slack. Use before a customer meeting to understand attendees, deal history, open threads, and discovery needs; rep one-on-one: rep-context."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:bcc9f4eca82c6113d8fa99bffb9311f03d426aa2d36b8420b9a0ba88075095bf"
+checksum: "sha256:ad3974d30c09fd23b2ba0a3bf1d5cefef3fbedf7a772bcbb3adaae2bdd7a8339"
 id: "678ed34a-9b8a-44e6-9d4a-f4a2cd129040"
 ---
 <!-- global-rules-bootstrap -->

@@ -1,12 +1,12 @@
 ---
 name: schedule-meeting
-display_name: Schedule Meeting
+display_name: Schedule Meeting (Preview)
 description: "Book a customer meeting from calendar availability and Salesforce account, contact and opportunity data, then log the confirmed event in Salesforce, scoped to what was asked: the scheduling email with proposed times, or the Salesforce event to save. Use to find times, draft an invitation, schedule a follow-up, demo or review, or place a call on the calendar."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:0f947f52b2ad7c3ad277deba84306042a50337091fe7c5a9bf6afd24eaf9b190"
+checksum: "sha256:ebede0f469616350b0d067231cf9300590edb55e688e80143f0e579514efebc4"
 id: "b7f87969-989f-4944-a646-edea89ee115d"
 ---
 <!-- global-rules-bootstrap -->

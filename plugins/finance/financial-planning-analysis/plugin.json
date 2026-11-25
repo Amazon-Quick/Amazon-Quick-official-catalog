@@ -1,6 +1,6 @@
 {
   "name": "financial-planning-analysis",
-  "displayName": "Financial Planning and Analysis",
+  "displayName": "Financial Planning and Analysis (Preview)",
   "description": "This plugin is for finance teams who run a planning cycle or a month-end close. With its skills, you can reconcile actuals to plan and tie out every dollar once. You can review requisitions and supplier invoices before approval, and audit a workbook's formulas before you share it. For the write-up, one skill drafts variance commentary and keeps data-supported causes apart from open items. Another builds a baseline forecast with P10, P50, and P90 bands, and a third runs a Monte Carlo simulation for Bull, Base, and Bear cases. You can also find trends and anomalies in a series over time, and turn a recurring business review deck into an AWS Quick App. The skills read spreadsheets, CSVs, and pasted figures with built-in tools, so you don't need a connector. Have a qualified accountant or finance controller review the numbers before you rely on them.",
   "version": "1.0.0",
   "author": {

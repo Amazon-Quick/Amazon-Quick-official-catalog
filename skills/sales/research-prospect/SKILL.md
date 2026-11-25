@@ -1,12 +1,12 @@
 ---
 name: research-prospect
-display_name: Research Prospect
+display_name: Research Prospect (Preview)
 description: "Research a specific company or prospect before outreach, tell me about them, who they are, what I should know, or build a prospect brief with ICP fit analysis. Requires company name or domain. Combines web research and Salesforce data, covering company facts, recent signals, likely priorities, contacts and ICP fit. Use for net-new companies or people before first outreach. Existing accounts: account-context."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:c2592c3a4173cbfe02332c3babfcd8d88bd25c9becaa431927799da079e47ae7"
+checksum: "sha256:31f4244781d0cd69c83a1a805aaa53f3d401f79a0af9fd810a6eb19f25fabd20"
 id: "64b8346c-09b3-4573-8247-ba4202ac1bb9"
 ---
 <!-- global-rules-bootstrap -->

@@ -1,6 +1,6 @@
 ---
 name: fpa-scenario-analysis
-display_name: Scenario Analysis
+display_name: Scenario Analysis (Preview)
 icon: assets/chart-spline.svg
 description: "Build a Bull, Base, and Bear forecast for any financial time series from one Monte Carlo simulation, with the probability of hitting target, a variance bridge, a sensitivity tornado, and Areas to Probe, in one HTML report. Use when asked to 'run scenario analysis', 'give me a bull and bear case', 'run a Monte Carlo forecast', 'what's the probability we hit plan', 'model our backlog roll-forward', or 'fpa-sa help'."
 created_date: "2026-11-11"
@@ -24,7 +24,7 @@ inputs:
     description: "The number to test against. If omitted, the benchmark's full-year total is used."
     type: number
     required: false
-checksum: "sha256:8649e11aae3520c5c82ab54a61205ea1ad3b39122af8e277585373294f832b26"
+checksum: "sha256:40438434a89c37ea9e8dfb011c0a698a6707a93a74a60cffe4154ae1979e1e87"
 id: "aba7ac09-8375-4727-9c84-ccd2a161bede"
 ---
 

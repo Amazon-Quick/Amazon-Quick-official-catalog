@@ -1,12 +1,12 @@
 ---
 name: account-plan
-display_name: Account Plan
+display_name: Account Plan (Preview)
 description: "Build or retrieve an account plan from Salesforce Account, AccountPlan, pipeline, activity, and relationship data, covering vision, priorities, competition, KPIs, and relationship risks. Use to review an existing plan or create one for a customer account."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:28aadb9e6b448a7e3fa63df5da8e9e599f55f02206a86fd60b4fb90ccf09b0a6"
+checksum: "sha256:b99e60949e0421e219211dfd1033d93a91e3b1a8c8ed62dae8fc9eeb48b12379"
 id: "1d5f6459-bb86-4913-a632-11ccf53cead3"
 ---
 <!-- global-rules-bootstrap -->

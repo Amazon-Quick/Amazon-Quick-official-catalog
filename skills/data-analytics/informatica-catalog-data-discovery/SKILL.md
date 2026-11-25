@@ -1,7 +1,7 @@
 ---
 name: informatica-catalog-data-discovery
 display_name: "Informatica Catalog and Data Discovery"
-author: "Informatica"
+author: "Salesforce, Inc."
 icon: assets/informatica.svg
 created_date: "2026-11-13"
 last_updated: "2026-11-13"
@@ -10,7 +10,7 @@ metadata:
   version: "1.0"
   domains: "CDGC, Claire"
 id: "fbd9b046-c0e2-4777-9dd6-7ef0c4283aff"
-checksum: "sha256:49649a5c0829000852c12c29d78d10ac4294517a51d402338a909e0536399ff5"
+checksum: "sha256:d6aead765cf467e1ab2b0289274ff128cd87a4984efda71c7c2d70bc0c05c2f4"
 ---
 
 # Catalog and Data Discovery — Intent-Driven Trusted Data Discovery

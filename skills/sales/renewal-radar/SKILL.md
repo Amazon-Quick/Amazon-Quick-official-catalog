@@ -1,12 +1,12 @@
 ---
 name: renewal-radar
-display_name: Renewal Radar
+display_name: Renewal Radar (Preview)
 description: "Answer renewal questions from Salesforce opportunities and relevant evidence: scan the requested renewal window, compare at-risk renewals, or look up a current renewal date. Scope reads and blocks to the prompt; for account health or QBR preparation, use customer-health."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:49c139bffb9243b9396446616c445da55746ed3f50d7d2a84aa24b28d0d0df12"
+checksum: "sha256:bbb0055780576e85041d73411320354c77714edacf34f33ab25a51550f1ef411"
 id: "77eb1c8e-2bcc-4c34-a655-88be3232fe44"
 ---
 <!-- global-rules-bootstrap -->

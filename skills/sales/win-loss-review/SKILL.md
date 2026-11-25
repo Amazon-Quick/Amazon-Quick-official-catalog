@@ -1,12 +1,12 @@
 ---
 name: win-loss-review
-display_name: Win Loss Review
+display_name: Win Loss Review (Preview)
 description: "Build a win-loss analysis from closed Salesforce opportunities, stage history, call transcripts and email, showing win rates, loss stages, objections and deal patterns. Use to explain wins and losses, compare segments or identify coaching and process changes."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:28ac1796c8b58cf43b239b03202e4e4529df897f4b0da780788ca504d75f801c"
+checksum: "sha256:b229fce2938cc0d3b9ae4b02b6a49d2569e562a01a3292873ecbd4f6a80bd36b"
 id: "d6b1464c-325a-4d8a-9b53-12dbb7b69319"
 ---
 <!-- global-rules-bootstrap -->

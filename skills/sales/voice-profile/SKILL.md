@@ -1,12 +1,12 @@
 ---
 name: voice-profile
-display_name: Voice Profile
+display_name: Voice Profile (Preview)
 description: "Build a reusable voice profile from recent sent emails and Slack messages, scoped to what was asked: the full profile of greetings, sign-offs, length, structure, tone and recurring phrases, one trait, or referenced messages. Use during setup or when outreach drafts should sound more like the user; requires access to sent mail (Slack is optional)."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:ece61cc1756f9dac48ae5ec63b4a3ba2b48918176f7030c570710dbb8b73a561"
+checksum: "sha256:0a56e822b5aac3353a15a5d5d6753558741c673392804365531532b700d345e0"
 id: "9358037b-d3d9-45bc-b109-88d423a334ae"
 ---
 <!-- global-rules-bootstrap -->

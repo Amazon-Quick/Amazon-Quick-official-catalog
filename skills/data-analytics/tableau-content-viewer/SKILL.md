@@ -1,13 +1,13 @@
 ---
 name: tableau-content-viewer
-display_name: "Tableau Content Viewer"
+display_name: "Tableau Content Viewer (Preview)"
 author: "Salesforce, Inc."
 icon: assets/icon.svg
 created_date: "2026-11-21"
 last_updated: "2026-11-22"
 description: Show, open, or render an existing Tableau view, dashboard, or workbook live via render-interactive-viz, by name or keyword — for "show me/open/pull up this dashboard/view" requests. Do not use to query or analyze the data behind it or to create/edit/publish a workbook (tableau-workbook-authoring).
 id: "05885eda-cbc9-401b-963e-4f2d62493da2"
-checksum: "sha256:2e25cc89d9292c278778e32b17c8f4da793b180b7716ab652f65b32f4747135d"
+checksum: "sha256:01a57b8e2ecac18ce5df680cb2300303036f16d2a4ab1e76bc3cd98800ce02f5"
 ---
 
 # Purpose

@@ -1,6 +1,6 @@
 ---
 name: fpa-forecast-coach
-display_name: Forecast Coach
+display_name: Forecast Coach (Preview)
 icon: assets/trending-up.svg
 description: "Produce a baseline forecast for any time series with P10/P50/P90 bands from classical statistics (exponential smoothing and the Theta method), finance methods side by side (trailing run-rates, prior year x growth), a backtest that says which method history favors, target phasing by seasonality, and a Microsoft Excel coach workbook. Use when asked to 'forecast this', 'project these out', 'what is the baseline', 'backtest my forecast', 'phase this target', or 'fpa-fc help'."
 created_date: "2026-11-11"
@@ -21,7 +21,7 @@ inputs:
     type: number
     required: false
     default: 12
-checksum: "sha256:83f8614125438f8a441b6a4d91d0628a43dadeb30feca0b1f942411c1a3d2284"
+checksum: "sha256:af7278d4e17c70b38ade38fd4b610fe0df4c75f78fa03340a278ff20b1394e74"
 id: "4595dd5d-6b33-4f0e-b30f-cffb66ca9a02"
 ---
 

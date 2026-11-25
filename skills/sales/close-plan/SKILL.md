@@ -1,12 +1,12 @@
 ---
 name: close-plan
-display_name: Close Plan
+display_name: Close Plan (Preview)
 description: "Build a dated mutual action plan and customer-facing business case from Salesforce opportunity data plus transcripts, email, documents, and Slack, scoped to what was asked: whether the close date holds, the path to signature and who owns each step, or why buy and why now. Use to test the close date, map the path to signature, or quantify return."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:667d9e3092873529976305ad3a0a364d3ae0e694e01a765a3d7a879efe48b495"
+checksum: "sha256:88fb3d7442966ae49e683e1edee7ad638eb8293555b724b209356153a57e2f7d"
 id: "4197dd88-4d80-4851-8323-2be87085cd92"
 ---
 <!-- global-rules-bootstrap -->

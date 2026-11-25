@@ -1,12 +1,12 @@
 ---
 name: customer-health
-display_name: Customer Health
+display_name: Customer Health (Preview)
 description: "Assess customer health from Salesforce account, renewal, case, task, and health data plus email, calendar, documents, and Slack, scoped to what was asked: the verdict, what is driving it, or a business-review kit. Use to judge risk, explain engagement or value trends, or prepare a business review; prospect meeting prep: call-prep."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:888ec77fb03f105ebc388df3f8a51e2bf6951b3f149d4a3cc7201b8f2d962273"
+checksum: "sha256:40d8c3edaa99179dd076bd37c26892b9807c2bd70f1748526df5051db765bc13"
 id: "f7053ede-94e4-4fde-a9d2-db6aab218efd"
 ---
 <!-- global-rules-bootstrap -->

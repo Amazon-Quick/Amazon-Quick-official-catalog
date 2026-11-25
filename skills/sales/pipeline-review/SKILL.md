@@ -1,12 +1,12 @@
 ---
 name: pipeline-review
-display_name: Pipeline Review
+display_name: Pipeline Review (Preview)
 description: "Answer questions about one rep's current pipeline, scoped to what was asked: a full review (stage spread and stalled deals), how much is at risk, which deals are stalled, or the biggest lever, from Salesforce stage aggregates, deal samples and closed-deal history. For changes over time, use deal-signals."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:afffe4fa9267b3003d8263e982dad7309a65e811140b6b11c881cda3c0882233"
+checksum: "sha256:b82b9243f6c6db32dd63c82418b7984e429ee72aa34c3ec7a0c03ebd8d61c6c4"
 id: "edaf42b7-8acc-4f36-a5d7-4ffa29cc14ed"
 ---
 <!-- global-rules-bootstrap -->

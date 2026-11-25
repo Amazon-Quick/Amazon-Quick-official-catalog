@@ -1,12 +1,12 @@
 ---
 name: find-internal-answer
-display_name: Find Internal Answer
+display_name: Find Internal Answer (Preview)
 description: "Find a concise answer with authoritative sources from internal documents, Slack, email and Salesforce, prioritizing the newest canonical material. Use when locating a policy, approver, deck, security asset, prior precedent or teammate with relevant experience."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:79fe88d29266c23fb7170f706e6176ceea2a4d1b9b77facca62f71b1db2d0b67"
+checksum: "sha256:962fffbd776a80c23e3f1f4bc5d2eb5c4f3ff912910f5349afcf637e3621338b"
 id: "dee7f51e-eab2-4399-a45f-a03fc5de47df"
 ---
 <!-- global-rules-bootstrap -->

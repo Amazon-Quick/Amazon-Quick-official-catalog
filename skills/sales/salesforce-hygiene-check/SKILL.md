@@ -1,12 +1,12 @@
 ---
 name: salesforce-hygiene-check
-display_name: Salesforce Hygiene Check
+display_name: Salesforce Hygiene Check (Preview)
 description: "Audit open Salesforce opportunities for past-due close dates and opportunities with no logged activity in 14+ days, scoped to what was asked: a full hygiene check, just the overdue opportunities, or just the stale ones, with a suggested fix for each. Use to check pipeline data quality or plan CRM cleanup before a forecast review, without changing records."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:4f0ff22838a3d6e2f3c03880dfb597c1825e6d4dcf8fc131cbb2c6d4a4024cfd"
+checksum: "sha256:cf5375d2d596cd1a0a00c4361a08006db55b2728e811f65b7fac7582bd58c648"
 id: "b2a132bc-a85b-42a6-8333-015564ce2cba"
 ---
 <!-- global-rules-bootstrap -->

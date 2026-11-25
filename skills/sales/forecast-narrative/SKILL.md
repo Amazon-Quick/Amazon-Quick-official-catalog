@@ -1,12 +1,12 @@
 ---
 name: forecast-narrative
-display_name: Forecast Narrative
+display_name: Forecast Narrative (Preview)
 description: "Answer questions about a rep's or team's forecast, scoped to what was asked: a full walk-through (worst / commit / best case against quota, how the number builds, the deals driving it), where commit stands against quota, what's in the commit, or what changed, from Salesforce opportunity aggregates, top-deal samples and field history. For a broader pipeline and coaching view, use team-pipeline."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:7e32f8df4157ddd43317b1b10db0197c1e55ccd527a87f6afe4e6dd68760cb88"
+checksum: "sha256:73253faae39f87fad729f0029e9e98d767b97ca0fe60dbe93bfcb312a6b5f8b3"
 id: "adef666b-a672-442f-a597-ef9fe7216901"
 ---
 <!-- global-rules-bootstrap -->

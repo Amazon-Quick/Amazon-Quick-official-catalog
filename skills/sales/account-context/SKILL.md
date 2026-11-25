@@ -1,12 +1,12 @@
 ---
 name: account-context
-display_name: Account Context
+display_name: Account Context (Preview)
 description: "Answer questions about a company already in Salesforce, scoped to what was asked: a catch-up or overview, just the open deals, risks, stakeholders, what they own, or triggers to reach out. Use when asked to tell about, catch up on, or brief on an existing account. Not in CRM: research-prospect."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:403bc8ff57404a4e50fb179417ce1a408c015f36e1bb7a68dab31fa5d5897a72"
+checksum: "sha256:bfcab7e2533300d93b9be5fb4fd36842ed00af5f477528714f636dea535632c6"
 id: "7b5070de-e505-4b3d-b231-39c5c85f4035"
 ---
 <!-- global-rules-bootstrap -->

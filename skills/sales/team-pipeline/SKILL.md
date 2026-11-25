@@ -1,12 +1,12 @@
 ---
 name: team-pipeline
-display_name: Team Pipeline
+display_name: Team Pipeline (Preview)
 description: "Answer questions about a manager’s team pipeline, scoped to what was asked: rep attainment, stage distribution, or opportunities needing attention and coaching. Use for a manager's team, two or more named reps, a named rep list, or a multi-rep pipeline comparison. Exactly one rep or one owner's book: pipeline-review."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:cbc1bf74a0ef1b488fa2d796fda858071bae39db0268db9e5b28c5af3f9e0bc1"
+checksum: "sha256:5f24221d85ef655aff1d1a65d4a5944ea78a92cf915c7dee23b494766c3d7019"
 id: "b11ae934-3c6a-44c5-bacb-b00ff81e4517"
 ---
 <!-- global-rules-bootstrap -->

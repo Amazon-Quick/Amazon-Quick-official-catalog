@@ -1,6 +1,6 @@
 ---
 name: fpa-trend-anomaly-detection
-display_name: Trend Analysis and Anomaly Detection
+display_name: Trend Analysis and Anomaly Detection (Preview)
 icon: assets/activity.svg
 description: "Find trends and anomalies in numbers over time from a spreadsheet, CSV, or pasted figures: growth rates, the underlying trend and when it changed, seasonality, and periods that break a line's own pattern, labeled one-off, temporary, or new level, in an interactive dashboard. Not for budget variance or forecasting. Use when asked 'how is this trending', 'find anomalies in this data', 'any outliers or spikes', 'run a flux analysis', or 'fpa-tad help'."
 created_date: "2026-11-12"
@@ -25,7 +25,7 @@ inputs:
     description: "The user's materiality thresholds for anomalies, for example '5% and 50,000'. Default: 10%."
     type: string
     required: false
-checksum: "sha256:da1bc002bbe5fc0dbf28fc0505957849984ccac5f2c51a675383c759b5919de6"
+checksum: "sha256:b5435a70baa93918abe194d617bd702ebdf18af51119d4ba210aae4a1d92777c"
 id: "71a49fd3-5dda-4952-9abc-45fa1620c99c"
 ---
 

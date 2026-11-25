@@ -1,12 +1,12 @@
 ---
 name: query-activity-history
-display_name: Query Activity History
+display_name: Query Activity History (Preview)
 description: "Build an interaction timeline from closed Salesforce Tasks and Events on one Account, Contact, Lead or Opportunity, with dates, people and notes, scoped to what was asked: the cadence and gaps, the individual activities, or just the last touch. Use when inspecting what happened on a record or reviewing its activity. To create an entry, use log-activity."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:ed9c3df1c7f8af09670bfef2058c14a78f480ebdb3d54891026455a949c6c3be"
+checksum: "sha256:ba09e912695bac4b87b47d3460b4e9c6625a98dda22c3d45eb05743a696f4334"
 id: "47862f45-e018-4a89-a570-e750cd0fc117"
 ---
 <!-- global-rules-bootstrap -->

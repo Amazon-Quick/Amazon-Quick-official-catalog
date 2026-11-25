@@ -1,12 +1,12 @@
 ---
 name: event-invite-list
-display_name: Event Invite List
+display_name: Event Invite List (Preview)
 description: "Build a prioritized customer invite list for an event from Salesforce Contact, Account and Opportunity data, ranked by location and ideal-customer-profile fit. Use to plan an event guest list, choose which customers to invite near a city or region, or prioritize contacts by title, segment, revenue or open-opportunity signal."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:8ee84e402affcd2106768bbc257a9473f67281a0e78bac4117195c18a3c0a730"
+checksum: "sha256:2b58d73a70777784e6a25b31fc765cb0c29bc471ddad6517c6304c7a449eeef6"
 id: "864b5435-51be-4aca-b3c9-12558b9dfac1"
 ---
 <!-- global-rules-bootstrap -->

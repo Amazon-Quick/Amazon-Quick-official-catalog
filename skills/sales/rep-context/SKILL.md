@@ -1,12 +1,12 @@
 ---
 name: rep-context
-display_name: Rep Context
+display_name: Rep Context (Preview)
 description: "Where do I stand, how am I doing, my progress, my performance, prep me for my 1:1, brief me on, get me ready for my one-on-one, give me my context, or answer questions about a sales rep's own context, scoped to what was asked: where they stand this quarter, their recent activity trend, their open deals, or their quota attainment, from Salesforce opportunities, tasks and events (plus quota data when available). Use when the person named is an internal rep, not a customer contact."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:3c22e86083321551d092683041b3b8192caa6ecccfe64c80e4404abcee14a371"
+checksum: "sha256:8e524480c8b9dad6cde44365ef0421fe8b16de9788caf34957b2819382b36837"
 id: "0b8ed4f8-7abb-4f10-8476-07bb47cf043a"
 ---
 <!-- global-rules-bootstrap -->

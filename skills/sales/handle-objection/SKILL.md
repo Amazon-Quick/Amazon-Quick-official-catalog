@@ -1,12 +1,12 @@
 ---
 name: handle-objection
-display_name: Handle Objection
+display_name: Handle Objection (Preview)
 description: "Build a grounded response to a customer objection from the current deal, win-loss history, customer evidence and approved internal documents, scoped to what was asked: what is really being said, the ways to respond, or the proof points to use. Use when interpreting pricing, timing, trust or competitive pushback and preparing a talk track or written reply."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:aa4e2571c30c2772276e7399bba7e7df84735fd08c381bafa08ce70dbc9b85b9"
+checksum: "sha256:711ea318b014a1ae520e04b21756754cc9318961ab66959af795e9e10e59dad1"
 id: "094d821d-0d2d-43e1-b1a6-0427fabf6110"
 ---
 <!-- global-rules-bootstrap -->

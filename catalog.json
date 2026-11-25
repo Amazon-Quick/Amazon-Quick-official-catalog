@@ -97,7 +97,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Informatica",
           "id": "fbd9b046-c0e2-4777-9dd6-7ef0c4283aff",
-          "checksum": "sha256:49649a5c0829000852c12c29d78d10ac4294517a51d402338a909e0536399ff5"
+          "checksum": "sha256:d6aead765cf467e1ab2b0289274ff128cd87a4984efda71c7c2d70bc0c05c2f4"
         },
         {
           "path": "plugins/data-analytics/informatica",
@@ -105,7 +105,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Informatica",
           "id": "7734ce63-b63a-4ca7-be3d-e6c3963f5979",
-          "checksum": "sha256:d0c1e1c1eb2b24136a401c1928355e5850eba9e5e877090e23a2b967fe6d1ac0"
+          "checksum": "sha256:1f6cf9ad0cc1168d3ee1a5e5df487d11f96a6c23d7374c4baedeccb3df101d22"
         },
         {
           "path": "skills/data-analytics/tableau-about",
@@ -113,7 +113,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "4e3493c3-15fd-4238-a9a3-40871bf843e7",
-          "checksum": "sha256:f438b6bae83143a3dee7290eebd40f7a356366f822f4dbb97442637407d73668"
+          "checksum": "sha256:c04486913dfcd43835e0584f8b8eef90f6dbcbe06fddb49a01ad61ce55c83482"
         },
         {
           "path": "skills/data-analytics/tableau-content-viewer",
@@ -121,7 +121,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "05885eda-cbc9-401b-963e-4f2d62493da2",
-          "checksum": "sha256:2e25cc89d9292c278778e32b17c8f4da793b180b7716ab652f65b32f4747135d"
+          "checksum": "sha256:01a57b8e2ecac18ce5df680cb2300303036f16d2a4ab1e76bc3cd98800ce02f5"
         },
         {
           "path": "skills/data-analytics/tableau-dashboard-advisor",
@@ -129,7 +129,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "f703c005-036c-4481-916a-ac7d9284943a",
-          "checksum": "sha256:24d389e096bd20ceaef66efd35e6578f7eedff02b8026953841766159ae062b9"
+          "checksum": "sha256:7a6f8e1dfd7f4f6db70c7e9683b95f07087f04122d393a063efe0b4e3c754198"
         },
         {
           "path": "skills/data-analytics/tableau-data-app-authoring",
@@ -137,7 +137,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "5cadb40b-e13c-4d5f-8d52-dd977ea441e0",
-          "checksum": "sha256:1f46c6877f04116fd17a8ba80f14a16c925e5073a70201f5e2aca4ec8851c5e1"
+          "checksum": "sha256:8d46b1b323df0dc182f19fc3e4f5e13e6f11a2560e2351d57089b40ab23b7c64"
         },
         {
           "path": "skills/data-analytics/tableau-data-quality-sentinel",
@@ -145,7 +145,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "5ee5dce3-6043-489e-8c51-6a8f327f35af",
-          "checksum": "sha256:ffd379ce447efe89b6900f276b952ec516b7fe32f27536e4139f7f68b0fe88ae"
+          "checksum": "sha256:ff5631f07d2c2d4c637160b9e87844c246be1a2abd642cc846e7fb91052edc14"
         },
         {
           "path": "skills/data-analytics/tableau-viz-critique",
@@ -153,7 +153,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "eae6e66b-f7f9-477c-8724-a46f0b94974a",
-          "checksum": "sha256:90141bd434396b0d55ec15c07dbb504b4c9542f16db4817b483bf66c58d814f7"
+          "checksum": "sha256:c306e3176547effc4150cb575f9acd53f56a0b38d1831fe264a86b08298d2d47"
         },
         {
           "path": "skills/data-analytics/tableau-workbook-authoring",
@@ -161,7 +161,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "8303ce48-d693-4afb-8524-cb38427e8045",
-          "checksum": "sha256:b099ef0a1d5250088f2641ccea8b079a2725e38dcabd37083d59a93d84ee664a"
+          "checksum": "sha256:ac732e6836c35c2e65e03d548ba44da261cb9e35d4dfc41e535f468b570662ff"
         },
         {
           "path": "plugins/data-analytics/tableau",
@@ -169,7 +169,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "d1f22c92-a1cf-4679-a845-3cb5a4ea6f29",
-          "checksum": "sha256:9d2af7634326cb56341b31d3c175827aaefcfd713062f5f303bf21554fddaba9",
+          "checksum": "sha256:aad285c1a29189e3a29283d05323e8633b6b66ad4a5b575da49e429bdb8c97e3",
           "partner": "tableau"
         }
       ]
@@ -378,49 +378,49 @@
         {
           "path": "skills/finance/fpa-budget-reconciliation",
           "type": "skill",
-          "checksum": "sha256:357cfc7029a7ffb5f6b11d31049b29d5eb93b61f98be8c66af0f2f699e8e658d",
+          "checksum": "sha256:97b06ccefa43999fd95723705b5d5a0a50d07ccd641a6f543ba4f10863b0ff4f",
           "id": "b90d0c98-0254-40ec-aef3-09f5cd428a25"
         },
         {
           "path": "skills/finance/fpa-forecast-coach",
           "type": "skill",
-          "checksum": "sha256:83f8614125438f8a441b6a4d91d0628a43dadeb30feca0b1f942411c1a3d2284",
+          "checksum": "sha256:af7278d4e17c70b38ade38fd4b610fe0df4c75f78fa03340a278ff20b1394e74",
           "id": "4595dd5d-6b33-4f0e-b30f-cffb66ca9a02"
         },
         {
           "path": "skills/finance/fpa-metrics-deck-app-builder",
           "type": "skill",
-          "checksum": "sha256:e4e288d2c6b201207a3463ac9e982d07cb80307dabdc349f2e5444b1dba364a4",
+          "checksum": "sha256:5d1da76e3c975b65c58be975abf8c33a0c2ba4738b7f514f54deec970aeb1717",
           "id": "c31469a6-c010-4273-b639-041198a8f72b"
         },
         {
           "path": "skills/finance/fpa-purchase-invoice-review",
           "type": "skill",
-          "checksum": "sha256:cd5febaad989453a08cbca9693a639357afd8cbb8cc825824cccbcb4a4096faf",
+          "checksum": "sha256:5a12e8c8f42729fc474feb3a61a8c7c600a2b8fcbabef0544c06d254bc086acc",
           "id": "5683977d-c355-4271-94b7-3fda78bc49f2"
         },
         {
           "path": "skills/finance/fpa-scenario-analysis",
           "type": "skill",
-          "checksum": "sha256:8649e11aae3520c5c82ab54a61205ea1ad3b39122af8e277585373294f832b26",
+          "checksum": "sha256:40438434a89c37ea9e8dfb011c0a698a6707a93a74a60cffe4154ae1979e1e87",
           "id": "aba7ac09-8375-4727-9c84-ccd2a161bede"
         },
         {
           "path": "skills/finance/fpa-spreadsheet-evaluator",
           "type": "skill",
-          "checksum": "sha256:eb87be33fdca55e656d46a57338aded5854e9e61d3da4bfb81220c281945a211",
+          "checksum": "sha256:aafad90ff4e4f619461f4e0f62d31c2acbcec27f4a0735e1725cc2fdc5dfa50b",
           "id": "e116f6e5-ea63-4141-acbe-08e17fd9c2ec"
         },
         {
           "path": "skills/finance/fpa-trend-anomaly-detection",
           "type": "skill",
-          "checksum": "sha256:da1bc002bbe5fc0dbf28fc0505957849984ccac5f2c51a675383c759b5919de6",
+          "checksum": "sha256:b5435a70baa93918abe194d617bd702ebdf18af51119d4ba210aae4a1d92777c",
           "id": "71a49fd3-5dda-4952-9abc-45fa1620c99c"
         },
         {
           "path": "skills/finance/fpa-variance-commentary",
           "type": "skill",
-          "checksum": "sha256:2b424d39622988930d44d895e20b750e1bfa6fcdc64ff6ff4098518d8c7c3420",
+          "checksum": "sha256:6d92d43d350ead22ebdb41e4d4dc785ff8ef8cdf081e2ea86eb5a914eb3a84c3",
           "id": "280e005c-35c4-46fb-829a-d77da3f036ca"
         },
         {
@@ -440,7 +440,7 @@
         {
           "path": "plugins/finance/financial-planning-analysis",
           "type": "plugin",
-          "checksum": "sha256:2c750b63677e24a931b9530979bae428ed6e8574d15880e57de238da219f7c54",
+          "checksum": "sha256:8257bfffc3026cb0724d1f96c2dedae35a659460d5959b9e039e617d58dda541",
           "id": "8f17c2e0-41c4-48f3-8cb8-cd79680774cd"
         }
       ]
@@ -993,7 +993,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "7b5070de-e505-4b3d-b231-39c5c85f4035",
-          "checksum": "sha256:403bc8ff57404a4e50fb179417ce1a408c015f36e1bb7a68dab31fa5d5897a72"
+          "checksum": "sha256:bfcab7e2533300d93b9be5fb4fd36842ed00af5f477528714f636dea535632c6"
         },
         {
           "path": "skills/sales/account-plan",
@@ -1001,7 +1001,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "1d5f6459-bb86-4913-a632-11ccf53cead3",
-          "checksum": "sha256:28aadb9e6b448a7e3fa63df5da8e9e599f55f02206a86fd60b4fb90ccf09b0a6"
+          "checksum": "sha256:b99e60949e0421e219211dfd1033d93a91e3b1a8c8ed62dae8fc9eeb48b12379"
         },
         {
           "path": "skills/sales/account-tiering",
@@ -1009,7 +1009,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "5092f512-fe50-475b-ac07-7bec904fc819",
-          "checksum": "sha256:f11b6951c95d7ad2cffb4994de33f93d7606a8a3ff7d07b80c8e8b3b45f3a962"
+          "checksum": "sha256:f896cfe355e0c5bcb932bba3551e0c1d6f6d6af385677dacc8068f8850b1e93c"
         },
         {
           "path": "skills/sales/assign-target-to-sdr",
@@ -1017,7 +1017,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "70da2230-ac60-4b95-9b67-37779d10e722",
-          "checksum": "sha256:d272faf773d081691484fd45952470f27267d07eea32c236492c11a96df96c33"
+          "checksum": "sha256:eebe5444312b6406ab17f467f5a34524c8de06c68bcecc524ed7945d053e1ee8"
         },
         {
           "path": "skills/sales/calendar-events",
@@ -1025,7 +1025,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "d985c1e1-1872-4ef4-92e8-daaaf6f1c18a",
-          "checksum": "sha256:8cc911bcd93a69e929e9cdd622a149a1d7e33eee389086428d1270947dc89ede"
+          "checksum": "sha256:78df1f390c484866e16b170ead051ecf81d0f980ffa0f8016c7bf489d4083fc9"
         },
         {
           "path": "skills/sales/call-follow-up",
@@ -1033,7 +1033,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "7053a479-6a0a-4e96-b2c1-b9ec242ac7d9",
-          "checksum": "sha256:5f90d55ce96a713cfe97b05d2fafebacbbc413b51c9917808e97a6fea074fe78"
+          "checksum": "sha256:0c25cd1a5eddd20b8303012dc1a81c362c5a9a066b016b3f506efd5c7c9032f8"
         },
         {
           "path": "skills/sales/call-prep",
@@ -1041,7 +1041,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "678ed34a-9b8a-44e6-9d4a-f4a2cd129040",
-          "checksum": "sha256:bcc9f4eca82c6113d8fa99bffb9311f03d426aa2d36b8420b9a0ba88075095bf"
+          "checksum": "sha256:ad3974d30c09fd23b2ba0a3bf1d5cefef3fbedf7a772bcbb3adaae2bdd7a8339"
         },
         {
           "path": "skills/sales/close-plan",
@@ -1049,7 +1049,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "4197dd88-4d80-4851-8323-2be87085cd92",
-          "checksum": "sha256:667d9e3092873529976305ad3a0a364d3ae0e694e01a765a3d7a879efe48b495"
+          "checksum": "sha256:88fb3d7442966ae49e683e1edee7ad638eb8293555b724b209356153a57e2f7d"
         },
         {
           "path": "skills/sales/customer-health",
@@ -1057,7 +1057,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "f7053ede-94e4-4fde-a9d2-db6aab218efd",
-          "checksum": "sha256:888ec77fb03f105ebc388df3f8a51e2bf6951b3f149d4a3cc7201b8f2d962273"
+          "checksum": "sha256:40d8c3edaa99179dd076bd37c26892b9807c2bd70f1748526df5051db765bc13"
         },
         {
           "path": "skills/sales/customer-voice",
@@ -1065,7 +1065,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "ba0b24ac-d85f-447e-ada8-a73639729931",
-          "checksum": "sha256:46ce5f458517f2dca35a12eab7523a722b6e7f96f1bb8398d806324c279c5ded"
+          "checksum": "sha256:8c9773b871418b18a6735541412312e6919aa752068cf0973abe35e18d6500aa"
         },
         {
           "path": "skills/sales/daily-briefing",
@@ -1073,7 +1073,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "5324fc41-ff5d-4467-9bba-4d3fadb71ec8",
-          "checksum": "sha256:f826c78e2ca86eb0e1a073881962b1f56090c932859a46009ad50d0d54a561e9"
+          "checksum": "sha256:9f55a2ff69989d39a9fd699da850e8d483a673fe9f2408de8c3381c8dd82e7fd"
         },
         {
           "path": "skills/sales/deal-advance-gap",
@@ -1081,7 +1081,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "1b930110-e61c-4677-98a2-afeeea97cafe",
-          "checksum": "sha256:aabadcd86b03ebe3aa47feb8099fc3b95767dde5232b8f2a1a065f7188b88794"
+          "checksum": "sha256:9be2d07391eb2fd1a41c920018c58806ed83e77ce3a2559da36c4d5bf1867756"
         },
         {
           "path": "skills/sales/deal-review",
@@ -1089,7 +1089,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "50ea00df-5516-4263-ae33-dbd2e647a88a",
-          "checksum": "sha256:edcbf83035c8d9e8a4c58bf9cf98eee593ffb6124d4b333f31d115bb096beabf"
+          "checksum": "sha256:045fa4e9c862436f6c266717625e881826058f79d047c500fe3e7ebdf34ed8d4"
         },
         {
           "path": "skills/sales/deal-signals",
@@ -1097,7 +1097,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "71653933-d296-4c6f-a15f-1ab338e09738",
-          "checksum": "sha256:20d35de11cefeb81376b03f7abf2c0de5725926417d50b56a82080fe46d8968e"
+          "checksum": "sha256:66e73b788fac306cf0fdc1abab54e86ce18d9801687c1e77536529167d66677a"
         },
         {
           "path": "skills/sales/deal-slip-scenario",
@@ -1105,7 +1105,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "15ffc699-e5ea-4d21-a310-6cdc45c1a51f",
-          "checksum": "sha256:d046fe4f3d794eaf3628b4918bc977cec78ec34512dba11e832b4074b5f0628f"
+          "checksum": "sha256:13ca52d00532731837be35be327f8b3eaadf8a91aa9420ff59894449f040ff44"
         },
         {
           "path": "skills/sales/draft-outreach",
@@ -1113,7 +1113,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "1518588d-f489-403f-bf1b-dabd08e12526",
-          "checksum": "sha256:e6d32824c98e9a4d4ea7bf273c7efc1e0a94794ca88b6cd5fe82f418054a2f07"
+          "checksum": "sha256:f2f87e505cadbed6d057a444c23cc807192aefa04f77330049e34f162b1848ee"
         },
         {
           "path": "skills/sales/event-invite-list",
@@ -1121,7 +1121,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "864b5435-51be-4aca-b3c9-12558b9dfac1",
-          "checksum": "sha256:8ee84e402affcd2106768bbc257a9473f67281a0e78bac4117195c18a3c0a730"
+          "checksum": "sha256:2b58d73a70777784e6a25b31fc765cb0c29bc471ddad6517c6304c7a449eeef6"
         },
         {
           "path": "skills/sales/executive-movement",
@@ -1129,7 +1129,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "11019627-a7e7-48ae-9f8e-aa9bad7c913e",
-          "checksum": "sha256:d90a298e5b678434b11d678a6c969468923b620c9c13f136756cce5a17ebd666"
+          "checksum": "sha256:7903a2e47de95182e48f237d021ed8a822751475cc1f895e5ff22f267cb6bcc2"
         },
         {
           "path": "skills/sales/expansion-whitespace",
@@ -1137,7 +1137,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "d29a21ce-1ded-4752-8e8e-768dfdd635b6",
-          "checksum": "sha256:8cafb81e1a1b6ef74bf21c159a22963ddc400fcd4f8451aefe91ba8323fd2a95"
+          "checksum": "sha256:c9ec1d7b8f78bc2e611aa00257cf9b72fc3d4a891a5e0df89917aa58e113ea1a"
         },
         {
           "path": "skills/sales/find-internal-answer",
@@ -1145,7 +1145,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "dee7f51e-eab2-4399-a45f-a03fc5de47df",
-          "checksum": "sha256:79fe88d29266c23fb7170f706e6176ceea2a4d1b9b77facca62f71b1db2d0b67"
+          "checksum": "sha256:962fffbd776a80c23e3f1f4bc5d2eb5c4f3ff912910f5349afcf637e3621338b"
         },
         {
           "path": "skills/sales/forecast-narrative",
@@ -1153,7 +1153,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "adef666b-a672-442f-a597-ef9fe7216901",
-          "checksum": "sha256:7e32f8df4157ddd43317b1b10db0197c1e55ccd527a87f6afe4e6dd68760cb88"
+          "checksum": "sha256:73253faae39f87fad729f0029e9e98d767b97ca0fe60dbe93bfcb312a6b5f8b3"
         },
         {
           "path": "skills/sales/handle-objection",
@@ -1161,7 +1161,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "094d821d-0d2d-43e1-b1a6-0427fabf6110",
-          "checksum": "sha256:aa4e2571c30c2772276e7399bba7e7df84735fd08c381bafa08ce70dbc9b85b9"
+          "checksum": "sha256:711ea318b014a1ae520e04b21756754cc9318961ab66959af795e9e10e59dad1"
         },
         {
           "path": "skills/sales/inbox-sweep",
@@ -1169,7 +1169,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "3ead03da-211a-494a-80b2-72a3818b946c",
-          "checksum": "sha256:00adf05e06d5695d9c3d20d295cf3d8ca42ffc90e07ac1be4ac61e12692f24ac"
+          "checksum": "sha256:7380a65e87610e27addc791376a41701edaa74c7bf8b2c30bfc76601a985b69a"
         },
         {
           "path": "skills/sales/lead-triage",
@@ -1177,7 +1177,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "773aabea-c936-44ca-84f8-0c80161e8e5d",
-          "checksum": "sha256:d566f1641c8ba99d4978bface3959341a776b93df6a59977a950b09bfac7591e"
+          "checksum": "sha256:802a54dd124d3207932a84f568e99fea0cd2741bd5100e3663ad645e131f301a"
         },
         {
           "path": "skills/sales/log-activity",
@@ -1185,7 +1185,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "d8784ded-6816-42b5-a4d2-897f657e44cf",
-          "checksum": "sha256:f39a08793308aa2c45dff944483400c0ed7d67712a8f56f00cc96848e37a4a72"
+          "checksum": "sha256:9bb99fdda8195088f5fb5e7ee7aa70f0ca7832fd49a589340142df08e1dae07c"
         },
         {
           "path": "skills/sales/pipeline-review",
@@ -1193,7 +1193,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "edaf42b7-8acc-4f36-a5d7-4ffa29cc14ed",
-          "checksum": "sha256:afffe4fa9267b3003d8263e982dad7309a65e811140b6b11c881cda3c0882233"
+          "checksum": "sha256:b82b9243f6c6db32dd63c82418b7984e429ee72aa34c3ec7a0c03ebd8d61c6c4"
         },
         {
           "path": "skills/sales/query-activity-history",
@@ -1201,7 +1201,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "47862f45-e018-4a89-a570-e750cd0fc117",
-          "checksum": "sha256:ed9c3df1c7f8af09670bfef2058c14a78f480ebdb3d54891026455a949c6c3be"
+          "checksum": "sha256:ba09e912695bac4b87b47d3460b4e9c6625a98dda22c3d45eb05743a696f4334"
         },
         {
           "path": "skills/sales/renewal-radar",
@@ -1209,7 +1209,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "77eb1c8e-2bcc-4c34-a655-88be3232fe44",
-          "checksum": "sha256:49c139bffb9243b9396446616c445da55746ed3f50d7d2a84aa24b28d0d0df12"
+          "checksum": "sha256:bbb0055780576e85041d73411320354c77714edacf34f33ab25a51550f1ef411"
         },
         {
           "path": "skills/sales/rep-context",
@@ -1217,7 +1217,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "0b8ed4f8-7abb-4f10-8476-07bb47cf043a",
-          "checksum": "sha256:3c22e86083321551d092683041b3b8192caa6ecccfe64c80e4404abcee14a371"
+          "checksum": "sha256:8e524480c8b9dad6cde44365ef0421fe8b16de9788caf34957b2819382b36837"
         },
         {
           "path": "skills/sales/research-prospect",
@@ -1225,7 +1225,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "64b8346c-09b3-4573-8247-ba4202ac1bb9",
-          "checksum": "sha256:c2592c3a4173cbfe02332c3babfcd8d88bd25c9becaa431927799da079e47ae7"
+          "checksum": "sha256:31f4244781d0cd69c83a1a805aaa53f3d401f79a0af9fd810a6eb19f25fabd20"
         },
         {
           "path": "skills/sales/salesforce-hygiene-check",
@@ -1233,7 +1233,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "b2a132bc-a85b-42a6-8333-015564ce2cba",
-          "checksum": "sha256:4f0ff22838a3d6e2f3c03880dfb597c1825e6d4dcf8fc131cbb2c6d4a4024cfd"
+          "checksum": "sha256:cf5375d2d596cd1a0a00c4361a08006db55b2728e811f65b7fac7582bd58c648"
         },
         {
           "path": "skills/sales/schedule-meeting",
@@ -1241,7 +1241,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "b7f87969-989f-4944-a646-edea89ee115d",
-          "checksum": "sha256:0f947f52b2ad7c3ad277deba84306042a50337091fe7c5a9bf6afd24eaf9b190"
+          "checksum": "sha256:ebede0f469616350b0d067231cf9300590edb55e688e80143f0e579514efebc4"
         },
         {
           "path": "skills/sales/stakeholder-map",
@@ -1249,7 +1249,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "ac061ae7-478f-4aaf-a688-27427f778f47",
-          "checksum": "sha256:8cec6e4378621aa533dd253aa5dede3220460d3536806c03d996bc4547ea9e7a"
+          "checksum": "sha256:63d572cff2eb7f7fe4a428fe4e66595584db49cd02cbbf993a682284771d68f7"
         },
         {
           "path": "skills/sales/summarize-conversation-transcript",
@@ -1257,7 +1257,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "093b1aa7-a20f-402e-b6ec-dac96eded814",
-          "checksum": "sha256:382e5aa939eebc60c08c0a7a1327f4985ce403431b293886ed2cc3eae91a3180"
+          "checksum": "sha256:831fed53b93d97b58a69c79e0640a70337e0b25e28a0d50ebaff777fe313e5d7"
         },
         {
           "path": "skills/sales/team-pipeline",
@@ -1265,7 +1265,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "b11ae934-3c6a-44c5-bacb-b00ff81e4517",
-          "checksum": "sha256:cbc1bf74a0ef1b488fa2d796fda858071bae39db0268db9e5b28c5af3f9e0bc1"
+          "checksum": "sha256:5f24221d85ef655aff1d1a65d4a5944ea78a92cf915c7dee23b494766c3d7019"
         },
         {
           "path": "skills/sales/using-display-widget",
@@ -1273,7 +1273,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "d5babfdf-1653-476f-9723-e43896682105",
-          "checksum": "sha256:c2287ec3419a3e24c2070a885f80d87d9e74a564fe53f25e5099e40b2691c8d4"
+          "checksum": "sha256:cc3cade993a4f93deec2ff06e0dbf8ed43a8b146e88b11f0d8a1cf4d5f197e03"
         },
         {
           "path": "skills/sales/voice-profile",
@@ -1281,7 +1281,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "9358037b-d3d9-45bc-b109-88d423a334ae",
-          "checksum": "sha256:ece61cc1756f9dac48ae5ec63b4a3ba2b48918176f7030c570710dbb8b73a561"
+          "checksum": "sha256:0a56e822b5aac3353a15a5d5d6753558741c673392804365531532b700d345e0"
         },
         {
           "path": "skills/sales/weekly-wrap",
@@ -1289,7 +1289,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "034f9b9b-6a0e-4405-87eb-99e3deba2f7f",
-          "checksum": "sha256:f88565f5db7a93c9ac60a5b6450702b497608f24b6ba756d3552b9eb19d1b760",
+          "checksum": "sha256:0ca25b7f574e25c88c6403be75090eb2b04205134c885bd392b0bedd84d43183",
           "priority": 70
         },
         {
@@ -1298,7 +1298,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "d6b1464c-325a-4d8a-9b53-12dbb7b69319",
-          "checksum": "sha256:28ac1796c8b58cf43b239b03202e4e4529df897f4b0da780788ca504d75f801c",
+          "checksum": "sha256:b229fce2938cc0d3b9ae4b02b6a49d2569e562a01a3292873ecbd4f6a80bd36b",
           "priority": 90
         },
         {
@@ -1307,7 +1307,7 @@
           "publisher_type": "THIRD_PARTY",
           "company": "Salesforce",
           "id": "23eb2f62-3654-43a5-a195-3ab1be4388b5",
-          "checksum": "sha256:21d631bce639f850f8690bd88268793ae689192e37e1d9bc5d831415dbdfaf52",
+          "checksum": "sha256:5d18c7d32de75e34c278a41dcaf307ced11181b6b2188d96c67b6f3837346734",
           "partner": "salesforce",
           "priority": 100
         }

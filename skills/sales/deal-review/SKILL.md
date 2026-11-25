@@ -1,12 +1,12 @@
 ---
 name: deal-review
-display_name: Deal Review
+display_name: Deal Review (Preview)
 description: "Review one deal and judge whether it is real, scoped to what was asked: a full review with a qualification scorecard read, e.g. MEDDIC (or the flags and recent activity when the org has no scorecard), the deal's risks alone, what happened lately, or what to do next, from Salesforce fields, contacts and activity plus email, documents and Slack. For stage-exit gaps and a sequenced path, use deal-advance-gap."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:edcbf83035c8d9e8a4c58bf9cf98eee593ffb6124d4b333f31d115bb096beabf"
+checksum: "sha256:045fa4e9c862436f6c266717625e881826058f79d047c500fe3e7ebdf34ed8d4"
 id: "50ea00df-5516-4263-ae33-dbd2e647a88a"
 ---
 <!-- global-rules-bootstrap -->

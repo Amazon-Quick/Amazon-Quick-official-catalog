@@ -1,12 +1,12 @@
 ---
 name: expansion-whitespace
-display_name: Expansion Whitespace
+display_name: Expansion Whitespace (Preview)
 description: "Answer questions about expansion whitespace, scoped to what was asked: coverage of products by account, open white space to pitch, ranked expansion plays, from Salesforce contacts, owned products and opportunities plus recent email, documents and Slack. Use to find evidence-backed whitespace, upsell paths or adjacent teams and products ready for outreach."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:8cafb81e1a1b6ef74bf21c159a22963ddc400fcd4f8451aefe91ba8323fd2a95"
+checksum: "sha256:c9ec1d7b8f78bc2e611aa00257cf9b72fc3d4a891a5e0df89917aa58e113ea1a"
 id: "d29a21ce-1ded-4752-8e8e-768dfdd635b6"
 ---
 <!-- global-rules-bootstrap -->

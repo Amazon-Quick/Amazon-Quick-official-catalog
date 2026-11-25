@@ -1,13 +1,13 @@
 ---
 name: tableau-dashboard-advisor
-display_name: "Tableau Dashboard Advisor"
+display_name: "Tableau Dashboard Advisor (Preview)"
 author: "Salesforce, Inc."
 icon: assets/icon.svg
 created_date: "2026-11-21"
 last_updated: "2026-11-22"
 description: Advise users on how to design and build effective Tableau dashboards from business questions, audience needs, and an available or described schema. Use for recommendations about chart selection, KPI hierarchy, layout, filters, interactions, responsive behavior, accessibility, implementation planning, or nonfunctional dashboard wireframes. This skill provides design advice and specifications only; it does not create, edit, or publish Tableau dashboards or workbooks. Do not use to critique an already-built dashboard or to claim facts the datasource metadata does not expose.
 id: "f703c005-036c-4481-916a-ac7d9284943a"
-checksum: "sha256:24d389e096bd20ceaef66efd35e6578f7eedff02b8026953841766159ae062b9"
+checksum: "sha256:7a6f8e1dfd7f4f6db70c7e9683b95f07087f04122d393a063efe0b4e3c754198"
 ---
 
 # Tableau Dashboard Advisor

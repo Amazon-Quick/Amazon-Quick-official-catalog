@@ -1,12 +1,12 @@
 ---
 name: executive-movement
-display_name: Executive Movement
+display_name: Executive Movement (Preview)
 description: "Answer executive-change questions scoped to what was asked: a sweep of your accounts, one account, or one executive. Confirms moves against dated external sources, ties them to Salesforce contacts, accounts and open deals, and recommends the follow-up. Use to catch leadership changes, assess relationship risk or growth when a known contact moves, or prepare outreach. Separates confirmed changes from unverified signals and never writes to the CRM."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:d90a298e5b678434b11d678a6c969468923b620c9c13f136756cce5a17ebd666"
+checksum: "sha256:7903a2e47de95182e48f237d021ed8a822751475cc1f895e5ff22f267cb6bcc2"
 id: "11019627-a7e7-48ae-9f8e-aa9bad7c913e"
 ---
 <!-- global-rules-bootstrap -->

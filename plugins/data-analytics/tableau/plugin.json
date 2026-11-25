@@ -1,6 +1,6 @@
 {
   "name": "tableau",
-  "displayName": "Tableau",
+  "displayName": "Tableau (Preview)",
   "description": "Explore Tableau content and generate or modify Tableau workbooks.",
   "version": "1.2.1",
   "author": {

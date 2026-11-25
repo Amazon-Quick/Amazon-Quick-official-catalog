@@ -1,12 +1,12 @@
 ---
 name: deal-advance-gap
-display_name: Deal Advance Gap
+display_name: Deal Advance Gap (Preview)
 description: "Diagnose why one Salesforce opportunity is not advancing, scoped to what was asked: a broad stage-exit review, a specific blocker or gap, or a direct status question, using grounded Opportunity data and available email, documents, and Slack."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:aabadcd86b03ebe3aa47feb8099fc3b95767dde5232b8f2a1a065f7188b88794"
+checksum: "sha256:9be2d07391eb2fd1a41c920018c58806ed83e77ce3a2559da36c4d5bf1867756"
 id: "1b930110-e61c-4677-98a2-afeeea97cafe"
 ---
 <!-- global-rules-bootstrap -->

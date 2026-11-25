@@ -1,12 +1,12 @@
 ---
 name: lead-triage
-display_name: Lead Triage
+display_name: Lead Triage (Preview)
 description: "Which leads are worth my time, who should I focus on, prioritize my leads, or answer questions about open leads and prospects, from Salesforce Lead, Account and activity data, research and email engagement, scoped to what was asked: a ranked worklist, who needs a reply today, one lead's priority and owner, or the best next action. Use when qualifying new leads, assessing ICP fit and intent, choosing an owner or deciding the response speed and next step."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:d566f1641c8ba99d4978bface3959341a776b93df6a59977a950b09bfac7591e"
+checksum: "sha256:802a54dd124d3207932a84f568e99fea0cd2741bd5100e3663ad645e131f301a"
 id: "773aabea-c936-44ca-84f8-0c80161e8e5d"
 ---
 <!-- global-rules-bootstrap -->

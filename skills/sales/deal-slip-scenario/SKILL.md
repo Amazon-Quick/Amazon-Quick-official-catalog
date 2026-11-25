@@ -1,12 +1,12 @@
 ---
 name: deal-slip-scenario
-display_name: Deal Slip Scenario
+display_name: Deal Slip Scenario (Preview)
 description: "Answer which deals are slipping and what a slip costs, scoped to what was asked: which open deals are at risk of slipping and why, how much of the pipeline is at risk, or what happens to the number if a deal slips, shrinks or is lost, from Salesforce pipeline and forecast data plus an available quota, including the gap and substitutes."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:d046fe4f3d794eaf3628b4918bc977cec78ec34512dba11e832b4074b5f0628f"
+checksum: "sha256:13ca52d00532731837be35be327f8b3eaadf8a91aa9420ff59894449f040ff44"
 id: "15ffc699-e5ea-4d21-a310-6cdc45c1a51f"
 ---
 <!-- global-rules-bootstrap -->

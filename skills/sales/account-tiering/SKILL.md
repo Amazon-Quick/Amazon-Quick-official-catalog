@@ -1,12 +1,12 @@
 ---
 name: account-tiering
-display_name: Account Tiering
+display_name: Account Tiering (Preview)
 description: "Rank an account list or full book into action tiers from Salesforce ICP fit, engagement, activity, contact, and opportunity data. Use to score accounts, prioritize coverage, decide where to focus, or identify accounts to activate, qualify, or deprioritize."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:f11b6951c95d7ad2cffb4994de33f93d7606a8a3ff7d07b80c8e8b3b45f3a962"
+checksum: "sha256:f896cfe355e0c5bcb932bba3551e0c1d6f6d6af385677dacc8068f8850b1e93c"
 id: "5092f512-fe50-475b-ac07-7bec904fc819"
 ---
 <!-- global-rules-bootstrap -->

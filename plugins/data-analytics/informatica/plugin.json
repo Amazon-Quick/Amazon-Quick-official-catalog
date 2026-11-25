@@ -4,7 +4,7 @@
   "description": "The plugin enables agentic workflows to discover catalog assets, such as tables, columns, files, terms, and policies, and verify ownership, certification, sensitivity, and compliance. By leveraging metadata from Informatica's data catalog, it streamlines data exploration and provides safe-usage guidance. Designed for data professionals and business users, it requires an Informatica tenant.",
   "version": "1.0.0",
   "author": {
-    "name": "Informatica"
+    "name": "Salesforce, Inc."
   },
   "icon": "assets/icon.svg",
   "roles": [

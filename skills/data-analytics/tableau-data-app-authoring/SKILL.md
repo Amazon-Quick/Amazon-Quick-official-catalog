@@ -1,13 +1,13 @@
 ---
 name: tableau-data-app-authoring
-display_name: "Tableau Data App Authoring"
+display_name: "Tableau Data App Authoring (Preview)"
 author: "Salesforce, Inc."
 icon: assets/icon.svg
 created_date: "2026-11-21"
 last_updated: "2026-11-22"
 description: Build and publish a Tableau data app, a custom viz-extension web app that queries a published datasource live, or a data file embedded in the workbook. Scaffolds the app with the scaffold-data-app MCP tool, writes its query and visualization from the user's criteria or vibe, then packages it as a .twbx for the user to upload to Tableau. Requires scaffold-data-app, which may be unavailable depending on the user's site role, site settings, or Tableau Server version; don't invoke this skill unless it is available. Use to create, build, vibe-code, or publish a data app. Not for native workbooks or dashboards built from marks, Show Me, or the chart catalog (tableau-workbook-authoring), or for opening existing content, including published data apps (tableau-content-viewer).
 id: "5cadb40b-e13c-4d5f-8d52-dd977ea441e0"
-checksum: "sha256:1f46c6877f04116fd17a8ba80f14a16c925e5073a70201f5e2aca4ec8851c5e1"
+checksum: "sha256:8d46b1b323df0dc182f19fc3e4f5e13e6f11a2560e2351d57089b40ab23b7c64"
 ---
 
 # Tableau Data App Authoring

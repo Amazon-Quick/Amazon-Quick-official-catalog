@@ -1,12 +1,12 @@
 ---
 name: summarize-conversation-transcript
-display_name: Summarize Conversation Transcript
+display_name: Summarize Conversation Transcript (Preview)
 description: "Build a call brief from a Salesforce VoiceCall or VideoCall transcript, covering customer sentiment, decisions, next steps and related opportunities. Use to recall or summarize a recorded Salesforce call. External transcripts: call-follow-up."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:382e5aa939eebc60c08c0a7a1327f4985ce403431b293886ed2cc3eae91a3180"
+checksum: "sha256:831fed53b93d97b58a69c79e0640a70337e0b25e28a0d50ebaff777fe313e5d7"
 id: "093b1aa7-a20f-402e-b6ec-dac96eded814"
 ---
 <!-- global-rules-bootstrap -->

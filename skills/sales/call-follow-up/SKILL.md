@@ -1,12 +1,12 @@
 ---
 name: call-follow-up
-display_name: Call Follow Up
+display_name: Call Follow Up (Preview)
 description: "Create a customer follow-up email and internal recap from a meeting transcript plus Salesforce account and opportunity history, scoped to what was asked: the customer email, the internal recap, or the Salesforce updates. Use after a customer call to capture decisions, commitments, objections, open questions, next steps, and proposed CRM updates."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:5f90d55ce96a713cfe97b05d2fafebacbbc413b51c9917808e97a6fea074fe78"
+checksum: "sha256:0c25cd1a5eddd20b8303012dc1a81c362c5a9a066b016b3f506efd5c7c9032f8"
 id: "7053a479-6a0a-4e96-b2c1-b9ec242ac7d9"
 ---
 <!-- global-rules-bootstrap -->

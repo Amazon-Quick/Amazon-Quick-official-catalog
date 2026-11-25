@@ -1,12 +1,12 @@
 ---
 name: deal-signals
-display_name: Deal Signals
+display_name: Deal Signals (Preview)
 description: "Answer questions about the signals on a rep's open deals, scoped to what was asked: a weekly sweep of worrying and positive signals with the book health score, the health score alone, what is wrong with one account, or what to do about it, from Salesforce close dates, activity, next steps and forecast fields plus email, documents and Slack."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:20d35de11cefeb81376b03f7abf2c0de5725926417d50b56a82080fe46d8968e"
+checksum: "sha256:66e73b788fac306cf0fdc1abab54e86ce18d9801687c1e77536529167d66677a"
 id: "71653933-d296-4c6f-a15f-1ab338e09738"
 ---
 <!-- global-rules-bootstrap -->

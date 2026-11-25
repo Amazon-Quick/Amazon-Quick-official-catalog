@@ -1,12 +1,12 @@
 ---
 name: stakeholder-map
-display_name: Stakeholder Map
+display_name: Stakeholder Map (Preview)
 description: "Identify who's making the decision, who the players are, who to win over, or map stakeholders and lay out the buying committee on a specific deal or at a specific account. Requires deal name or account name. Pulls from Salesforce contacts and roles plus email, calendar, calls and Slack, showing influence, stance, gaps and access paths. Use to identify decision makers, assess single-threading or plan introductions. Account brief: account-context."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:8cec6e4378621aa533dd253aa5dede3220460d3536806c03d996bc4547ea9e7a"
+checksum: "sha256:63d572cff2eb7f7fe4a428fe4e66595584db49cd02cbbf993a682284771d68f7"
 id: "ac061ae7-478f-4aaf-a688-27427f778f47"
 ---
 <!-- global-rules-bootstrap -->

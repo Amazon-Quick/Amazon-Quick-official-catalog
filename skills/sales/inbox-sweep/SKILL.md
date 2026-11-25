@@ -1,12 +1,12 @@
 ---
 name: inbox-sweep
-display_name: Inbox Sweep
+display_name: Inbox Sweep (Preview)
 description: "Answer what in the inbox needs the rep, scoped to what was asked: a full sweep, only the threads that need a reply, or a reply to one thread, as a prioritized response queue and email drafts from unread threads, sent-mail voice patterns and Salesforce account and opportunity context. Use when sweeping or triaging an inbox, finding messages needing replies or drafting several customer responses."
-author: Salesforce
+author: "Salesforce, Inc."
 created_date: "2026-11-20"
 last_updated: "2026-11-20"
 icon: assets/salesforce.svg
-checksum: "sha256:00adf05e06d5695d9c3d20d295cf3d8ca42ffc90e07ac1be4ac61e12692f24ac"
+checksum: "sha256:7380a65e87610e27addc791376a41701edaa74c7bf8b2c30bfc76601a985b69a"
 id: "3ead03da-211a-494a-80b2-72a3818b946c"
 ---
 <!-- global-rules-bootstrap -->

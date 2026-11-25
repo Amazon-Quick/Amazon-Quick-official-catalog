@@ -1,13 +1,13 @@
 ---
 name: tableau-viz-critique
-display_name: "Tableau Viz Critique"
+display_name: "Tableau Viz Critique (Preview)"
 author: "Salesforce, Inc."
 icon: assets/icon.svg
 created_date: "2026-11-21"
 last_updated: "2026-11-22"
 description: Review and score Tableau dashboards or views from a render plus available Tableau metadata, using an evidence-based seven-domain rubric and prioritized recommendations. Use for critique or scoring; do not use to edit workbooks, validate underlying data accuracy, or assess business performance.
 id: "eae6e66b-f7f9-477c-8724-a46f0b94974a"
-checksum: "sha256:90141bd434396b0d55ec15c07dbb504b4c9542f16db4817b483bf66c58d814f7"
+checksum: "sha256:c306e3176547effc4150cb575f9acd53f56a0b38d1831fe264a86b08298d2d47"
 ---
 
 # Tableau Viz Critique
